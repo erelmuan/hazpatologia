@@ -1,0 +1,120 @@
+<?php
+
+namespace app\models;
+
+use Yii;
+use yii\base\Model;
+use yii\data\ActiveDataProvider;
+use app\models\Biopsia;
+
+/**
+ * BiopsiaSearch represents the model behind the search form about `app\models\Biopsia`.
+ */
+class BiopsiaSearch extends Biopsia
+{
+//son necesarias las variables y tambien la modificacion en el archivo _columns.php
+// en los atributos
+  public $protocolo;
+  public $paciente;
+  public $medico;
+  public $fecharealizacion;
+  public $sexo;
+  public $procedencia;
+  public $fecha_desde;
+  public $fecha_hasta;
+ 
+    /**
+     * @inheritdoc
+     */
+    public function rules()
+    {
+        return [
+            [['id', 'id_solicitudbiopsia', 'protocolo','id_plantillatopografia', 'id_plantilladiagnostico', 'id_estado'], 'integer'],
+            [['fecha_desde','fecha_hasta','sexo','topografia','macroscopia', 'microscopia', 'ihq', 'diagnostico', 'ubicacion', 'observacion','fechalisto'], 'safe'],
+            ['fecharealizacion', 'date', 'format' => 'dd/MM/yyyy'],
+
+            //Se agrego para permitir la habilitacion del filtro en la grilla
+            [['paciente','medico','procedencia'], 'safe'],
+        ];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function scenarios()
+    {
+        // bypass scenarios() implementation in the parent class
+        return Model::scenarios();
+    }
+
+    /**
+     * Creates data provider instance with search query applied
+     *
+     * @param array $params
+     *
+     * @return ActiveDataProvider
+     */
+    public function search($params)
+    {
+        $query = Biopsia::find()->innerJoinWith('solicitudbiopsia', true)
+        ->leftJoin('paciente', 'paciente.id = solicitudbiopsia.id_paciente')
+      ->leftJoin('procedencia', 'procedencia.id = solicitudbiopsia.id_procedencia')
+      ->leftJoin('medico', 'medico.id = solicitudbiopsia.id_medico')
+
+       ->orderBy(['fecharealizacion' => SORT_DESC,]);
+        //para que pueda ordenarse colocar los atributos(se pone gris la referencia label)
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+            'sort' => ['attributes' => ['protocolo','fecharealizacion',  'paciente','sexo','procedencia','medico']]
+        ]);
+
+        $this->load($params);
+        // $dataProvider->setSort([
+        //     'attributes' => [
+        //       'fecharealizacion',
+        //  ]]);
+        if (!$this->validate()) {
+            // uncomment the following line if you do not want to return any records when validation fails
+            // $query->where('0=1');
+            return $dataProvider;
+        }
+        //filtro de busqueda
+        $query->andFilterWhere([
+            'id' => $this->id,
+            'id_solicitudbiopsia' => $this->id_solicitudbiopsia,
+            //Esto es solo posble porque se agrego una variable a la clase
+            'protocolo' => $this->protocolo,
+            'id_plantillatopografia' => $this->id_plantillatopografia,
+            'id_plantilladiagnostico' => $this->id_plantilladiagnostico,
+            'biopsia.id_estado' => $this->id_estado,
+            'fechalisto' => $this->fechalisto,
+        ]);
+        if (is_numeric($this->paciente)){
+            $query->orFilterWhere(["paciente.dni"=>$this->paciente]);
+             }
+        else {
+            $query->andFilterWhere(['ilike', '("paciente"."apellido")',strtolower($this->paciente)]);
+
+        }
+        if (is_numeric($this->medico)){
+            $query->orFilterWhere(["medico.dni"=>$this->medico]);
+             }
+        else {
+            $query->andFilterWhere(['ilike', '("medico"."apellido")',strtolower($this->medico)]);
+
+        }
+
+        $query->andFilterWhere(['ilike', 'topografia', $this->topografia])
+            ->andFilterWhere(['ilike', 'macroscopia', $this->macroscopia])
+            ->andFilterWhere(['ilike', 'microscopia', $this->microscopia])
+            ->andFilterWhere(['ilike', 'ihq', $this->ihq])
+            ->andFilterWhere(['ilike', 'sexo', $this->sexo])
+            ->andFilterWhere(['ilike', 'procedencia.nombre', $this->procedencia])
+            ->andFilterWhere(['ilike', 'diagnostico', $this->diagnostico])
+            ->andFilterWhere(['ilike', 'ubicacion', $this->ubicacion])
+            ->andFilterWhere(['ilike', 'observacion', $this->observacion]);            $query->andFilterWhere(['=', 'fecharealizacion', $this->fecharealizacion]);
+            $query->andFilterWhere(['>=', 'fecharealizacion', $this->fecha_desde]);
+            $query->andFilterWhere(['<=', 'fecharealizacion', $this->fecha_hasta]);
+        return $dataProvider;
+    }
+}

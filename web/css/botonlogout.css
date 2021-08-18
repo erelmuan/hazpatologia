@@ -1,0 +1,68 @@
+.boton_2{
+  text-decoration: none;
+  padding: 11px;
+  font-family: "Helvetica Neue", Roboto, Arial, "Droid Sans", sans-serif;
+  width: 213px;
+  font-weight: normal;
+  font-size: 12px;
+  color: #5A738E;
+  background-color: white;
+  margin-bottom: 0px;
+
+  border-bottom-width: 0px;
+  border-bottom-style: solid;
+  border-right-width: 0px;
+  border-right-style: solid;
+  border-top-width: 0px;
+  border-top-style: solid;
+  position: relative;
+  padding-right: 140px;
+  float: right;
+}
+.boton_2:hover{
+  color:black;
+  background-color: #f9f8f7;
+  text-decoration: none;
+}
+.boton_3{
+  text-decoration: none;
+  padding: 7px;
+  font-family: "Helvetica Neue", Roboto, Arial, "Droid Sans", sans-serif;
+  width: 25%;
+  font-weight: normal;
+  font-size: 12px;
+  color: #5A738E;
+  background-color: #191C1F;
+  margin-bottom: 0px;
+  margin-right: 0px;
+  margin-left: 0px;
+  border-bottom-width: 0px;
+  border-bottom-style: solid;
+  border-right-width: 0px;
+  border-right-style: solid;
+  border-top-width: 0px;
+  border-top-style: solid;
+  position: relative;
+  border-left-width: 0px;
+  /*padding-right: 140px;*/
+color: #888080;
+  float: right;
+}
+.boton_3:hover{
+  color:black;
+  background-color: #5A738E;
+  text-decoration: none
+
+}
+.glyphicon-off::before {
+    content: "\e017";
+    position: relative;
+    top: 1px;
+  display: inline-block;
+  font-family: 'Glyphicons Halflings';
+  font-style: normal;
+  font-weight: normal;
+  line-height: 1;
+  font-size: 17px;
+
+}
