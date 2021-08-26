@@ -36,7 +36,7 @@ function Header()
       }
     /////////////////////////////////////////////////////
   $this->SetTextColor(245,245,245);
-  $this->Image('http://localhost/patologiahaz/web/img/hospitalzatti.png',18,18,15);
+  $this->Image(  Yii::$app->basePath .'/web/img/hospitalzatti.png',18,18,15);
   $this->SetFont('Arial','',6);
   $this->SetTextColor(0,0,0);
   $this->Cell(0,5,'Documento Generado el '.date("d/m/Y - H:i"),0,0,'R');
