@@ -39,9 +39,14 @@ class PlantilladiagnosticoSearch extends Plantilladiagnostico
      *
      * @return ActiveDataProvider
      */
-    public function search($params)
+    public function search($params,$id_estudio)
     {
-        $query = Plantilladiagnostico::find();
+      if($id_estudio !==NULL){
+        $query = Plantilladiagnostico::find()->where(["id_estudio"=>$id_estudio]);
+      }
+      else {
+          $query = Plantilladiagnostico::find();
+      }
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,

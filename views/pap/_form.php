@@ -268,13 +268,11 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
         ]);
       echo "</br>";
       echo (Html::label('Código diagnostico', 'codigo diagnostico', ['class' => 'form-group field-pap-diagnostico has-success']));
-
-        ?>
+      if($model->estado->descripcion!=="LISTO"){
+      ?>
           <button type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target=".bs-diagnostico-modal-lg" style="margin-left: 10px;"><i class="glyphicon glyphicon-plus" ></i></button>
           <button type="button" class="btn btn-danger btn-xs" onclick="quitarDiagnostico()"><i class="glyphicon glyphicon-minus"></i></button>
-       <?
-       //el codigo 1 es del estudio pap
-        // $mapdiagnostico = ArrayHelper::map(Plantilladiagnostico::find()->where(['id_estudio' => 1])->all() , 'id',  'codigo'  );
+     <?}
         $mapdiagnostico = ArrayHelper::map($array['arraydiagnostico'] , 'id',  'codigo'  );
 
         echo Select2::widget( [
@@ -285,7 +283,9 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
                 'options' => [
                         'onchange' => 'onEnviarDiag (this.value)',
                         'placeholder' => 'Seleccionar codigo..',
-                        'multiple' => false
+                        'multiple' => false,
+                        'disabled'=>($model->estado->descripcion=="LISTO")?true:false,
+
                         ],
                         'pluginOptions' => [
                         'allowClear' => true
@@ -318,8 +318,12 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
 
           ?>
 
-    <?= $form->field($model, 'id_estado')->dropDownList($model->estados())->label('Estado') ;?>
+          <? if ($model->estado->descripcion=="LISTO") {
+            echo  $form->field($model, 'estado')->input("text",['readonly' => true , "value"=>$model->estado->descripcion])->label('Estado');
 
+          }else {
+              echo $form->field($model, 'id_estado')->dropDownList($model->estados())->label('Estado') ;
+          }?>
     <?= $form->field($model, 'observacion')->textarea(['rows' => 7]) ?>
     </div>
 
@@ -336,7 +340,12 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
       <?= $form->field($model, 'glandulares')->textarea(['rows' => 3]) ?>
     </div>
     <div class="col-md-8 col-sm-12 col-xs-12 form-group">
-     <?= $form->field($model, 'diagnostico')->textarea(['rows' => 3]) ?>
+      <? if ($model->estado->descripcion=="LISTO") {
+          echo $form->field($model, 'diagnostico')->textarea(['rows' => 4, 'readonly' => true]);
+        } else {
+          echo $form->field($model, 'diagnostico')->textarea(['rows' => 4 ]);
+        }
+          ?>
    </div>
    <div class="col-md-8 col-sm-12 col-xs-12 form-group">
     <?= $form->field($model, 'frase')->textarea(['rows' => 3]) ?>

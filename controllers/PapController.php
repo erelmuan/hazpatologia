@@ -79,7 +79,7 @@ class PapController extends Controller
             ]);
         }
     }
-    public function cargarEstructuras(&$search,&$array,&$provider){
+    public function cargarEstructuras(&$search,&$array,&$provider,$id_estudio){
       //Tendrian que acceder a los modelos por medio de sus controller!!!
       ////////////Flora/////////////////
       $searchModelFlora = new PlantillafloraSearch();
@@ -117,8 +117,8 @@ class PapController extends Controller
       ////////////Diagnostico/////////////////
       $searchModelDiag = new PlantilladiagnosticoSearch();
       //id_estudio=1 es del estudio de pap
-      $arraydiagnostico= $searchModelDiag::find()->where(['id_estudio' => 1])->all();
-      $dataProviderDiag = $searchModelDiag->search(Yii::$app->request->queryParams);
+      $arraydiagnostico= $searchModelDiag::find()->where(['id_estudio' => $id_estudio])->all();
+      $dataProviderDiag = $searchModelDiag->search(Yii::$app->request->queryParams,$id_estudio);
       $dataProviderDiag->pagination->pageSize=7;
       $search['searchModelDiag']=$searchModelDiag;
       $array['arraydiagnostico']=$arraydiagnostico;
@@ -126,8 +126,8 @@ class PapController extends Controller
       ////////////Frase/////////////////
       $searchModelFra = new PlantillafraseSearch();
       //id_estudio=1 es del estudio de pap
-      $arrayfrase= $searchModelFra::find()->where(['id_estudio' => 1])->all();
-      $dataProviderFra= $searchModelFra->search(Yii::$app->request->queryParams);
+      $arrayfrase= $searchModelFra::find()->where(['id_estudio' =>$id_estudio])->all();
+      $dataProviderFra= $searchModelFra->search(Yii::$app->request->queryParams,$id_estudio);
       $dataProviderFra->pagination->pageSize=7;
       $search['searchModelFra']=$searchModelFra;
       $array['arrayfrase']=$arrayfrase;
@@ -146,12 +146,12 @@ class PapController extends Controller
         $search=[];
         $array=[];
         $provider=[];
-        $this->cargarEstructuras($search,$array,$provider);
         if (isset($_GET['idsol']) && $_GET['idsol'] !='') {
             $Solicitud =  Solicitud::findOne($_GET['idsol']);
             $_SESSION['solicitudp']=$Solicitud;
 
            }
+        $this->cargarEstructuras($search,$array,$provider,$_SESSION['solicitudp']->id_estudio);
 
               /*
             *   Process for non-ajax request
@@ -221,7 +221,7 @@ class PapController extends Controller
       $search=[];
       $array=[];
       $provider=[];
-      $this->cargarEstructuras($search,$array,$provider);
+      $this->cargarEstructuras($search,$array,$provider ,$model->solicitudpap->id_estudio);
           // if ($model->load($request->post()) && $model->save()) {
           if ($model->load($request->post()) ) {
                 if ($model->estado->descripcion=='LISTO' || $model->estado->descripcion == 'ENTREGADO')
@@ -240,10 +240,6 @@ class PapController extends Controller
 
             return $this->redirect(['view', 'id' => $model->id]);
           } else {
-            if ($model->estado->descripcion=='LISTO'){
-                \Yii::$app->getSession()->setFlash('error', 'No se puede modificar un informe con estado listo.');
-                return $this->redirect(['index', 'listo' => false]);
-            }
 
             if (isset($_GET['idsol']) && $_GET['idsol'] !='')
               $Solicitud =  Solicitud::findOne($_GET['idsol']);
@@ -303,7 +299,7 @@ class PapController extends Controller
 
     }
 
-   
+
         public function actionSelect()
         {
             $request = Yii::$app->request;

@@ -197,14 +197,12 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
       echo ( $form->field($model, 'ihq')->textarea(['rows' => 3]));
 
       echo (Html::label('Código diagnostico', 'codigo diagnostico', ['class' => 'form-group field-biopsias-diagnostico has-success']));
-
+      if($model->estado->descripcion!=="LISTO"){
       ?>
         <button type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target=".bs-diagnostico-modal-lg" style="margin-left: 10px;"><i class="glyphicon glyphicon-plus" ></i></button>
         <button type="button" class="btn btn-danger btn-xs" onclick="quitarDiagnostico()"><i class="glyphicon glyphicon-minus"></i></button>
-     <?
+     <?}
      $mapdiagnostico = ArrayHelper::map($array['arraydiagnostico'] , 'id',  'codigo'  );
-     //el codigo 2 es del estudio biopsia
-      // $mapdiagnostico = ArrayHelper::map(Plantilladiagnostico::find()->where(['id_estudio' => 2])->all() , 'id',  'codigo'  );
 
      echo Select2::widget( [
              'name' => 'diagnostico',
@@ -214,10 +212,12 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
              'options' => [
                      'onchange' => 'onEnviarDiag (this.value)',
                      'placeholder' => 'Seleccionar código..',
-                     'multiple' => false
+                     'multiple' => false,
+                      'disabled'=>($model->estado->descripcion=="LISTO")?true:false,
+
                      ],
                      'pluginOptions' => [
-                     'allowClear' => true
+                     'allowClear' => true,
                        ],
                ]);
 
@@ -245,7 +245,13 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
                   ]);
 
           ?>
-        <?= $form->field($model, 'id_estado')->dropDownList($model->estados())->label('Estado') ;?>
+
+        <? if ($model->estado->descripcion=="LISTO") {
+          echo  $form->field($model, 'estado')->input("text",['readonly' => true , "value"=>$model->estado->descripcion])->label('Estado');
+
+        }else {
+            echo $form->field($model, 'id_estado')->dropDownList($model->estados())->label('Estado') ;
+        }?>
 
         <?= $form->field($model, 'observacion')->textarea(['rows' => 6]) ?>
 
@@ -262,7 +268,12 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
         <?= $form->field($model, 'microscopia')->textarea(['rows' => 4]) ?>
       </div>
       <div class="col-md-8 col-sm-12 col-xs-12 form-group">
-       <?= $form->field($model, 'diagnostico')->textarea(['rows' => 4]) ?>
+        <? if ($model->estado->descripcion=="LISTO") {
+            echo $form->field($model, 'diagnostico')->textarea(['rows' => 4, 'readonly' => true]);
+          } else {
+            echo $form->field($model, 'diagnostico')->textarea(['rows' => 4 ]);
+          }
+            ?>
      </div>
      <div class="col-md-8 col-sm-12 col-xs-12 form-group">
       <?= $form->field($model, 'frase')->textarea(['rows' => 4]) ?>
@@ -367,8 +378,8 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
 
     function agregarFormularioFra (){
       $("span#select2-w7-container.select2-selection__rendered")[0].innerText =$("tr.success").find("td:eq(1)").text();
-      var textArea = document.getElementById('biopsia-diagnostico');
-      $("textarea#biopsia-diagnostico.form-control").val(textArea.value +"\r\n"+ $("tr.success").find("td:eq(2)").text());
+      var textArea = document.getElementById('biopsia-frase');
+      $("textarea#biopsia-frase.form-control").val(textArea.value +"\r\n"+ $("tr.success").find("td:eq(2)").text());
       //vacias el contenido de la variable para que no se anexe con otra eleccion de otro campo
       $('button.close.kv-clear-radio').click();
       alert("Se agrego al formulario");

@@ -39,9 +39,14 @@ class PlantillafraseSearch extends Plantillafrase
      *
      * @return ActiveDataProvider
      */
-    public function search($params)
+    public function search($params,$id_estudio)
     {
-        $query = Plantillafrase::find();
+        if($id_estudio !==NULL){
+          $query = Plantillafrase::find()->where(["id_estudio"=>$id_estudio]);
+
+        }else {
+          $query = Plantillafrase::find();
+        }
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,

@@ -99,12 +99,9 @@ $columns[]=
             'delete'=> ['delete']
             ]
     ];
-    if (Yii::$app->session->hasFlash('error')) {
-      echo AlertBlock::widget([
-                      'useSessionFlash' => true,
-                      'type' => AlertBlock::TYPE_ALERT
-                  ]); 
-    }?>
+
+
+?>
 
 
 <div id="w0" class="x_panel">
@@ -156,4 +153,3 @@ $columns[]=
     "footer"=>"",// always need it for jquery plugin
 ])?>
 <?php Modal::end(); ?>
-

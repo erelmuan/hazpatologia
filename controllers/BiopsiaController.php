@@ -82,7 +82,7 @@ class BiopsiaController extends Controller
             ]);
         }
     }
-    public function cargarEstructuras(&$search,&$array,&$provider){
+    public function cargarEstructuras(&$search,&$array,&$provider ,$id_estudio){
       //Tendrian que acceder a los modelos por medio de sus controller!!!
       ////////////Material/////////////////
       $searchModelMat = new PlantillamaterialSearch();
@@ -120,8 +120,8 @@ class BiopsiaController extends Controller
       ////////////Diagnostico/////////////////
       $searchModelDiag = new PlantilladiagnosticoSearch();
       //id_estudio=2 es del estudio biopsia
-      $arraydiagnostico= $searchModelDiag::find()->where(['id_estudio' => 2])->all();
-      $dataProviderDiag = $searchModelDiag->search(Yii::$app->request->queryParams);
+      $arraydiagnostico= $searchModelDiag::find()->where(['id_estudio' => $id_estudio])->all();
+      $dataProviderDiag = $searchModelDiag->search(Yii::$app->request->queryParams,$id_estudio);
       $dataProviderDiag->pagination->pageSize=7;
       $search['searchModelDiag']=$searchModelDiag;
       $array['arraydiagnostico']=$arraydiagnostico;
@@ -129,8 +129,8 @@ class BiopsiaController extends Controller
       ////////////Frase/////////////////
       $searchModelFra = new PlantillafraseSearch();
       //id_estudio=2 es del estudio biopsia
-      $arrayfrase= $searchModelFra::find()->where(['id_estudio' => 2])->all();
-      $dataProviderFra= $searchModelFra->search(Yii::$app->request->queryParams);
+      $arrayfrase= $searchModelFra::find()->where(['id_estudio' => $id_estudio])->all();
+      $dataProviderFra= $searchModelFra->search(Yii::$app->request->queryParams,$id_estudio);
       $dataProviderFra->pagination->pageSize=7;
       $search['searchModelFra']=$searchModelFra;
       $array['arrayfrase']=$arrayfrase;
@@ -155,7 +155,7 @@ class BiopsiaController extends Controller
            $search=[];
            $array=[];
            $provider=[];
-           $this->cargarEstructuras($search,$array,$provider);
+           $this->cargarEstructuras($search,$array,$provider,$_SESSION['solicitudb']->id_estudio);
             if ($model->load($request->post()) ) {
 
                 // if ($model->estado->descripcion=='LISTO' || $model->estado->descripcion == 'ENTREGADO')
@@ -228,7 +228,7 @@ class BiopsiaController extends Controller
         $search=[];
         $array=[];
         $provider=[];
-        $this->cargarEstructuras($search,$array,$provider);
+        $this->cargarEstructuras($search,$array,$provider,$model->solicitudbiopsia->estudio->id);
             // if ($model->load($request->post()) && $model->save()) {
             if ($model->load($request->post()) ) {
 
@@ -249,10 +249,6 @@ class BiopsiaController extends Controller
 
               return $this->redirect(['view', 'id' =>$model->id]);
             } else {
-              if ($model->estado->descripcion=='LISTO'){
-              \Yii::$app->getSession()->setFlash('error', 'No se puede modificar un informe con estado listo.');
-              return $this->redirect(['index', 'listo' => false]);
-              }
 
               if (isset($_GET['idsol']) && $_GET['idsol'] !='')
                 $Solicitud =  Solicitud::findOne($_GET['idsol']);
@@ -312,7 +308,7 @@ class BiopsiaController extends Controller
 
     }
 
-   
+
     /**
      * Finds the Biopsia model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.

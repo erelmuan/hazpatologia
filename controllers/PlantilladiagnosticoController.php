@@ -39,7 +39,7 @@ class PlantilladiagnosticoController extends Controller
     public function actionIndex()
     {
         $searchModel = new PlantilladiagnosticoSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams, null);
         $dataProvider->pagination->pageSize=7;
 
         return $this->render('index', [
