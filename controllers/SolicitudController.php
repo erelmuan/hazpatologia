@@ -27,7 +27,7 @@ use yii\data\ActiveDataProvider;
  */
 class SolicitudController extends Controller
 {
-   
+
 
     public function actionIndex()
     {
@@ -82,7 +82,7 @@ class SolicitudController extends Controller
         return $this->render('/solicitud/seleccionar', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
-      
+
         ]);
 
     }
@@ -205,6 +205,8 @@ class SolicitudController extends Controller
       }
         $request = Yii::$app->request;
         $model = $this->returnModel();
+        // $model = new Solicitud();
+
         ////////////PACIENTE/////////////////
         $modelPac= new Paciente();
         $searchModelPac = new PacienteSearch();
@@ -298,7 +300,7 @@ class SolicitudController extends Controller
         $request = Yii::$app->request;
 
         $model = $this->findModel($id);
-       
+
         $modelestudio= $model->estudio->modelo;
         if (isset($model->$modelestudio) && $model->$modelestudio->estado->descripcion=='LISTO'){
            \Yii::$app->getSession()->setFlash('error', 'No se puede modificar una solicitud con informe listo.');
@@ -360,7 +362,7 @@ class SolicitudController extends Controller
         Yii::$app->response->format = Response::FORMAT_JSON;
         $model = $this->findModel($id);
         $modelestudio= $model->estudio->modelo;
-       
+
         if (isset($model->$modelestudio)){
           return [
             'title'=> "Eliminar solicitud  #".$id,
@@ -455,7 +457,7 @@ class SolicitudController extends Controller
 
         }
     }
-    
+
     /**
      * Finds the Solicitud model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.

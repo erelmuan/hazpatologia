@@ -488,8 +488,6 @@ class UsuarioController extends Controller
         $request = Yii::$app->request;
         $id=Yii::$app->user->identity->getId();
         $model = $this->findModel($id);
-
-
         if($request->isAjax) {    // modal para cambiar contraseña
 
             Yii::$app->response->format = Response::FORMAT_JSON;
@@ -541,7 +539,7 @@ class UsuarioController extends Controller
             ];
 
         } else {
-            if ($model->load($request->post())) {
+            if ($model->load($request->post()) && $model->save()) {
                     try {
                       // Imagen
                       $image = UploadedFile::getInstance($model, 'imagen');

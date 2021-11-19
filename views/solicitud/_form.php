@@ -69,10 +69,10 @@ CrudAsset::register($this);
       <div class='col-sm-3'>
 
       <label> Paciente </label></br>
-      <input id="solicitud-paciente"  style="width:250px;" value='<?=$model->paciente->apellido.", ".$model->paciente->nombre ?>' type="text" readonly>
+      <input id="solicitud-paciente"  style="width:250px;" value='<?=($model->paciente)?$model->paciente->apellido.", ".$model->paciente->nombre:''; ?>' type="text" readonly>
       <?=$form->field($model, 'id_paciente')->hiddenInput()->label(false); ?>
       <label> Medico </label> </br>
-      <input id="solicitud-medico" style="width:250px;" value='<?=$model->medico->apellido.", ".$model->medico->nombre ?>' type="text" readonly>
+      <input id="solicitud-medico" style="width:250px;" value='<?=($model->medico)?$model->medico->apellido.", ".$model->medico->nombre:'' ?>' type="text" readonly>
       <?=$form->field($model, 'id_medico')->hiddenInput()->label(false); ?>
         <?
           echo Form::widget([ // continuation fields to row above without labels

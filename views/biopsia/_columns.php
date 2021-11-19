@@ -72,11 +72,11 @@ return [
             'class'=>'\kartik\grid\DataColumn',
             'label'=> 'Medico',
             'width' => '170px',
-            'value' => function($dataProvider, $key, $index, $widget) {
+            'value' => function($model, $key, $index, $widget) {
                 $key = str_replace("[","",$key);
                 $key = str_replace("]","",$key);
                 //var_dump ($key);
-              return Html::a( $dataProvider->solicitudbiopsia->medico->nombre .' '.$dataProvider->solicitudbiopsia->medico->apellido,['paciente/view',"id"=> $dataProvider->solicitudbiopsia->medico->id]
+              return Html::a( $model->solicitudbiopsia->medico->nombre .' '.$model->solicitudbiopsia->medico->apellido,['paciente/view',"id"=> $model->solicitudbiopsia->medico->id]
 
                 ,[    'class' => 'text-success','role'=>'modal-remote','title'=>'Datos del paciente','data-toggle'=>'tooltip']
                );
@@ -127,7 +127,8 @@ return [
 
     [
         'class'=>'\kartik\grid\DataColumn',
-        'attribute'=>'estado.decripcion',
+        'attribute'=>'id_estado',
+        'value' => 'estado.descripcion',
         'label'=> 'Estado',
 
     ],
