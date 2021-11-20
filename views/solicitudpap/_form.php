@@ -30,6 +30,8 @@ CrudAsset::register($this);
 </div>
   </div>
       </br>
+      <div class="x_panel" >
+        <legend class="text-info"><small>CABECERA DE LA SOLICITUD</small></legend>
       <div class='row'>
       <div class='col-sm-3'>
       <label >Paciente: <span id='paciente'> </span>
@@ -151,55 +153,67 @@ CrudAsset::register($this);
                 <?=$form->field($model, "observacion")->textarea(["rows" => 4]) ; ?>
 
               </div>
-              <div class='col-sm-3'>
-                <?= $form->field($model, 'id_tipo_muestra')->dropDownList($model->getTipomuestras())->label('Tipo de muestra') ;?>
-                <?= $form->field($model, 'pap_previo')->checkbox() ?>
-                <?= $form->field($model, 'resultado_pap_previo')->textInput() ?>
-                <?= $form->field($model, 'biopsia_previa')->checkbox() ?>
-                <?= $form->field($model, 'resultado_biopsia_previo')->textInput() ?>
-              </div>
-              <div class='col-sm-3'>
-                <?= $form->field($model, 'fum')->textInput() ?>
-                <?= $form->field($model, 'embarazo_actual')->checkbox() ?>
-                <?= $form->field($model, 'menopausia')->checkbox() ?>
-                <?
-              echo $form->field($model, 'fecha_ult_parto')->widget(DatePicker::className(), [
-                     'options' => ['placeholder' => 'Debe agregar una fecha',
-                     'value'=> ($model->fecha_ult_parto)?date('d/m/Y',strtotime($model->fecha_ult_parto)):"" ,
-                       'type' => DatePicker::TYPE_COMPONENT_APPEND,
+          </div>
+
+
+
+          <div class="x_panel" >
+                <ul class="nav navbar-right panel_toolbox">
+                    <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                    </li>
+                </ul>
+                  <legend class="text-info"><small>INFORMACIÓN ADICIONAL</small></legend>
+                  <div class="x_content" style="display: none;">
+                  <div class='col-sm-3'>
+                    <?= $form->field($model, 'id_tipo_muestra')->dropDownList($model->getTipomuestras())->label('Tipo de muestra') ;?>
+                    <?= $form->field($model, 'pap_previo')->checkbox() ?>
+                    <?= $form->field($model, 'resultado_pap_previo')->textInput() ?>
+                    <?= $form->field($model, 'biopsia_previa')->checkbox() ?>
+                    <?= $form->field($model, 'resultado_biopsia_previo')->textInput() ?>
+                  </div>
+                  <div class='col-sm-3'>
+                    <?= $form->field($model, 'fum')->textInput() ?>
+                    <?= $form->field($model, 'embarazo_actual')->checkbox() ?>
+                    <?= $form->field($model, 'menopausia')->checkbox() ?>
+                    <?
+                  echo $form->field($model, 'fecha_ult_parto')->widget(DatePicker::className(), [
+                         'options' => ['placeholder' => 'Debe agregar una fecha',
+                         'value'=> ($model->fecha_ult_parto)?date('d/m/Y',strtotime($model->fecha_ult_parto)):"" ,
+                           'type' => DatePicker::TYPE_COMPONENT_APPEND,
+                                 ],
+                            'pluginOptions' => [
+                            'format' => 'dd/mm/yyyy',
+                            'todayHighlight' => true,
+                            'allowClear' => false
                              ],
-                        'pluginOptions' => [
-                        'format' => 'dd/mm/yyyy',
-                        'todayHighlight' => true,
-                        'allowClear' => false
-                         ],
-                        'pluginEvents' => [
-                             "changeDate" => "function(e){
-                               cambiarFechaNac();
-                             }",
-                             ],
-                         ])->label('Fecha del ultimo parto');;
+                            'pluginEvents' => [
+                                 "changeDate" => "function(e){
+                                   cambiarFechaNac();
+                                 }",
+                                 ],
+                             ])->label('Fecha del ultimo parto');;
 
-            ?>
-                <?= $form->field($model, 'id_metodo_anticonceptivo')->dropDownList($model->getMetodoAnticonceptivos())->label('Metodo anticonceptivo') ;?>
+                ?>
+                    <?= $form->field($model, 'id_metodo_anticonceptivo')->dropDownList($model->getMetodoAnticonceptivos())->label('Metodo anticonceptivo') ;?>
 
 
-              </div>
-              <div class='col-sm-3'>
-                <?= $form->field($model, 'id_cirugia_previa')->dropDownList($model->getCirugiaPrevias())->label('Cirugia previa') ;?>
-                <?= $form->field($model, 'tratamiento_radiante')->checkbox() ?>
-                <?= $form->field($model, 'quimioterapia')->checkbox() ?>
-                <?= $form->field($model, 'datos_clinicos_de_interes')->textarea(['rows' => 6]) ?>
-              </div>
-              <div class='col-sm-3'>
-              <?= $form->field($model, 'id_materialsolicitud')->dropDownList($model->getMaterialsolicitudes())->label('Material') ;?>
-                <?= $form->field($model, 'colposcopia')->checkbox() ?>
-                <?= $form->field($model, 'conclusion')->textarea(['rows' => 6]) ?>
-              </div>
+                  </div>
+                  <div class='col-sm-3'>
+                    <?= $form->field($model, 'id_cirugia_previa')->dropDownList($model->getCirugiaPrevias())->label('Cirugia previa') ;?>
+                    <?= $form->field($model, 'tratamiento_radiante')->checkbox() ?>
+                    <?= $form->field($model, 'quimioterapia')->checkbox() ?>
+                    <?= $form->field($model, 'datos_clinicos_de_interes')->textarea(['rows' => 6]) ?>
+                  </div>
+                  <div class='col-sm-3'>
+                  <?= $form->field($model, 'id_materialsolicitud')->dropDownList($model->getMaterialsolicitudes())->label('Material') ;?>
+                    <?= $form->field($model, 'colposcopia')->checkbox() ?>
+                    <?= $form->field($model, 'conclusion')->textarea(['rows' => 6]) ?>
+                  </div>
 
-         </div>
-
-         </div>
+             </div>
+             </div>
+      </div>
+       </div>
          <div class="x_content">
                <div class="modal fade bs-paciente-modal-lg" tabindex="-1" role="dialog" aria-hidden="true">
                  <div class="modal-dialog modal-lg">

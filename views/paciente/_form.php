@@ -49,20 +49,10 @@ use kartik\select2\Select2;
     <div class="row">
     <div class="form-row mt-4">
       <div class="col-sm-5 pb-3">
-          <? if($model->estudios()){
-              echo  $form->field($model, 'nombre')->input("text",['readonly' => true])->label('Nombre');
-            }else {
-              echo  $form->field($model, 'nombre')->input("text",['style'=> 'width:100%; text-transform:uppercase;'])->label('Nombre');
-            }
-          ?>
+          <?= $form->field($model, 'nombre')->input("text",['style'=> 'width:100%; text-transform:uppercase;'])->label('Nombre');?>
       </div>
       <div class="col-sm-5 pb-3">
-        <? if($model->estudios()){
-            echo  $form->field($model, 'apellido')->input("text",['readonly' => true])->label('Apellido');
-          }else {
-            echo  $form->field($model, 'apellido')->input("text",['style'=> 'width:100%; text-transform:uppercase;'])->label('Apellido');
-          }
-        ?>
+        <?= $form->field($model, 'apellido')->input("text",['style'=> 'width:100%; text-transform:uppercase;'])->label('Apellido');?>
       </div>
      </div>
   </div>
@@ -70,50 +60,22 @@ use kartik\select2\Select2;
 
     <div class="form-row mt-4">
         <div class="col-sm-3 pb-5">
-          <? if($model->estudios()){
-
-              echo  $form->field($model, 'id_tipodoc')->dropDownList($model->getTipodocs(), ['disabled' => 'disabled'])->label('Tipo Doc.') ;
-            }else {
-
-              echo  $form->field($model, 'id_tipodoc')->dropDownList($model->getTipodocs())->label('Tipo Doc.') ;
-            }
-            ?>
+          <?=$form->field($model, 'id_tipodoc')->dropDownList($model->getTipodocs())->label('Tipo Doc.') ;  ?>
         </div>
 
         <div class="col-sm-3 pb-5">
-          <? if($model->estudios()){
-              echo  $form->field($model, 'num_documento')->input("text",['readonly' => true])->label('N° doc.');
-            }else {
-              echo  $form->field($model, 'num_documento')->input("text",['style'=>'width:100%'])->label('N° doc.');
-            }
-          ?>
+          <?=$form->field($model, 'num_documento')->input("text",['style'=>'width:100%'])->label('N° doc.');  ?>
         </div>
 
         <div class="col-sm-2 pb-5">
-          <? if($model->estudios()){
-            echo $form->field($model, 'sexo')->dropDownList(
-            ['F' => 'F ', 'M' => 'M'], ['disabled' => 'disabled']
-            );            }else {
-              echo $form->field($model, 'sexo')->dropDownList(
+          <? echo $form->field($model, 'sexo')->dropDownList(
               ['F' => 'F ', 'M' => 'M']
-              );            }
+              );
           ?>
 
        </div>
        <div class="col-dm-2 pb-5">
-         <? if($model->estudios()){
-           echo $form->field($model, 'fecha_nacimiento')->widget(DatePicker::classname(), [
-               'options' => ['placeholder' => 'Ingrese fecha',
-               'format' => 'dd/mm/yyyy',
-               'readonly' => true,
-               'autoclose'=>false,
-             ],
-             'disabled'=> true,
-
-
-           ]);
-          }else {
-             echo $form->field($model, 'fecha_nacimiento')->widget(MaskedInput::classname(),['name' => 'input-31',
+         <?  echo $form->field($model, 'fecha_nacimiento')->widget(MaskedInput::classname(),['name' => 'input-31',
                  'clientOptions' => ['alias' =>  'dd/mm/yyyy']])->widget(DatePicker::classname(), [
                  'options' => ['placeholder' => 'Ingrese fecha',
                  'format' => 'dd/mm/yyyy',
@@ -123,7 +85,7 @@ use kartik\select2\Select2;
 
                  ]
              ]);
-            }
+
          ?>
       </div>
 

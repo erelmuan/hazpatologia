@@ -83,13 +83,6 @@ use yii\helpers\Html;
               'title'=>'Se abrirá el archivo PDF generado en una nueva ventana'
           ]);
           }
-          echo Html::a('<i class="fa fa-file-pdf-o"></i> Documento de la solicitud', ['/solicitudbiopsia/documento', 'id' => $model->solicitudbiopsia->id], [
-            'class'=>'btn btn-info',
-            'target'=>'_blank',
-            'data-toggle'=>'tooltip',
-            'title'=>'Se abrirá el archivo PDF generado en una nueva pestaña'
-        ]);
-
 
     ?>
 

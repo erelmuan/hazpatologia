@@ -45,11 +45,6 @@ use yii\helpers\Html;
             'label' => 'Estado'
           ],
             'observacion:ntext',
-            'sitio_prec_toma',
-            'datos_clin_interes',
-            'diagnostico_presuntivo:ntext',
-            'biopsia_anterior_resultado',
-            'id_materialginecologico',
         ],
     ]) ?>
     <?
@@ -66,12 +61,6 @@ use yii\helpers\Html;
     else {
       echo "<b>LA SOLICITUD AÚN NO POSEE EL INFORME DE ".$model->estudio->descripcion." </b>";
     }
-    echo Html::a('<i class="fa fa-file-pdf-o"></i> Documento de la solicitud', ['/solicitudbiopsia/documento', 'id' => $model->id], [
-      'class'=>'btn btn-info',
-      'target'=>'_blank',
-      'data-toggle'=>'tooltip',
-      'title'=>'Se abrirá el archivo PDF generado en una nueva pestaña'
-  ]);
      ?>
 
 </div>

@@ -100,12 +100,7 @@ use yii\helpers\Html;
               'title'=>'Se abrirá el archivo PDF generado en una nueva pestaña'
           ]);
           }
-          echo Html::a('<i class="fa fa-file-pdf-o"></i> Documento de la solicitud', ['/solicitudpap/documento', 'id' => $model->solicitudpap->id], [
-            'class'=>'btn btn-info',
-            'target'=>'_blank',
-            'data-toggle'=>'tooltip',
-            'title'=>'Se abrirá el archivo PDF generado en una nueva pestaña'
-        ]);
+
     ?>
 
 </div>

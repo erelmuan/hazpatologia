@@ -43,35 +43,9 @@ use yii\helpers\Html;
             [
               'value'=> 'estado.descripcion',
               'label' => 'Estado'
-            ],            'observacion:ntext',
-            [
-              'value'=> ($model->tipoMuestra)?$model->tipoMuestra->descripcion:"(No definido)",
-              'label'=> 'Tipo de muestra',
             ],
-            'pap_previo:boolean',
-            'resultado_pap_previo',
-            'biopsia_previa:boolean',
-            'resultado_biopsia_previo',
-            'fum',
-            'embarazo_actual:boolean',
-            'menopausia:boolean',
-            [
-              'value'=>  date('d/m/Y',strtotime($model->fecha_ult_parto)),
-              'label' => 'Fecha de ult. parto'
-            ],
-            [
-              'value'=> ($model->metodoAnticonceptivo)?$model->metodoAnticonceptivo->descripcion:"(No definido)",
-              'label'=> 'Metodo Anticonceptivo',
-            ],
-            [
-              'value'=> ($model->cirugiaPrevia)?$model->cirugiaPrevia->descripcion:"(No definido)",
-              'label'=> 'Cirugia previa',
-            ],
-            'tratamiento_radiante:boolean',
-            'quimioterapia:boolean',
-            'datos_clinicos_de_interes:ntext',
-            'colposcopia:boolean',
-            'conclusion:ntext',
+             'observacion:ntext',
+
         ],
     ]) ?>
 <?
@@ -88,12 +62,7 @@ use yii\helpers\Html;
     else {
       echo "<b>LA SOLICITUD AÚN NO POSEE EL INFORME DE ".$model->estudio->descripcion." </b>";
     }
-    echo Html::a('<i class="fa fa-file-pdf-o"></i> Documento de la solicitud', ['/solicitudpap/documento', 'id' => $model->id], [
-      'class'=>'btn btn-info',
-      'target'=>'_blank',
-      'data-toggle'=>'tooltip',
-      'title'=>'Se abrirá el archivo PDF generado en una nueva pestaña'
-  ]);
+
      ?>
 </div>
 <script language="JavaScript" type="text/javascript">

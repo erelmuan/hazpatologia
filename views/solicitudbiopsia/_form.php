@@ -30,147 +30,149 @@ CrudAsset::register($this);
 </div>
   </div>
       </br>
-      <div class='row'>
-      <div class='col-sm-3'>
-      <label >Paciente: <span id='paciente'> </span>
-        <button title="Busqueda avanzada de paciente" type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target=".bs-paciente-modal-lg" style="margin-left: 10px;"><i class="glyphicon glyphicon-search" ></i></button>
-        <?   echo  Html::a('<i class="glyphicon glyphicon-plus"> Crear paciente</i>', ['paciente/create'],
-         ['role'=>'modal-remote','title'=> 'Crear nuevo paciente','class'=>'btn btn-primary btn-xs']); ?>
-      </label>
-      <input type="text" id="pacientebuscar" name="PacienteSearch[num_documento]"  placeholder="Ingresar DNI del paciente" >
-      <button type="button" class ="btn btn-primary btn-xs" onclick='pacienteba();'>Buscar y añadir</button>
-
-      </br>
-      </br>
-
-      <label>Medico:<span id='medico'> </span>
-
-        <button title="Busqueda avanzada de medico" type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target=".bs-medico-modal-lg" style="margin-left: 10px;"><i class="glyphicon glyphicon-search" ></i></button>
-          <?   echo  Html::a('<i class="glyphicon glyphicon-plus"> Crear medico</i>', ['medico/create'],
-           ['role'=>'modal-remote','title'=> 'Crear nuevo medico','class'=>'btn btn-primary btn-xs']); ?>
-      </label>
-      <input type="text" id="medicobuscar" name="MedicoSearch[num_documento]" placeholder="Ingresar DNI del medico" >
-      <button type="button" class ="btn btn-primary btn-xs" onclick='medicoba();'>Buscar y añadir</button>
-      </div>
-      <?
-
-      // $form = ActiveForm::begin([
-      //       'id' => 'my-form-id-sol',
-      //       'action' => '?r=solicitudbiopsia/create',
-      //       'enableAjaxValidation' => true,
-      //       'method' => 'post',
-      //       'validationUrl' => '?r=solicitudbiopsia/create',
-      //   ]);
-        $form = ActiveForm::begin();
-
-      $mapprocedencia = ArrayHelper::map(Procedencia::find()->all() , 'id',  'nombre'  );
-      $mapmaterial = ArrayHelper::map(Plantillamaterial::find()->all() , 'id',  'material'  );
-      ?>
 
 
+    <div class='row'>
+      <div class="x_panel" >
+        <legend class="text-info"><small>CABECERA DE LA SOLICITUD</small></legend>
+        <div class="x_content" style="display: block;">
 
-      <div class='col-sm-3'>
+          <div class='col-sm-3'>
+          <label >Paciente: <span id='paciente'> </span>
+            <button title="Busqueda avanzada de paciente" type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target=".bs-paciente-modal-lg" style="margin-left: 10px;"><i class="glyphicon glyphicon-search" ></i></button>
+            <?   echo  Html::a('<i class="glyphicon glyphicon-plus"> Crear paciente</i>', ['paciente/create'],
+             ['role'=>'modal-remote','title'=> 'Crear nuevo paciente','class'=>'btn btn-primary btn-xs']); ?>
+          </label>
+          <input type="text" id="pacientebuscar" name="PacienteSearch[num_documento]"  placeholder="Ingresar DNI del paciente" >
+          <button type="button" class ="btn btn-primary btn-xs" onclick='pacienteba();'>Buscar y añadir</button>
 
-      <label> Paciente </label></br>
-      <input id="solicitud-paciente"  style="width:250px;" value='<?=($model->paciente)?$model->paciente->apellido.", ".$model->paciente->nombre:''; ?>' type="text" readonly>
-      <?=$form->field($model, 'id_paciente')->hiddenInput()->label(false); ?>
-      <label> Medico </label> </br>
-      <input id="solicitud-medico" style="width:250px;" value='<?=($model->medico)?$model->medico->apellido.", ".$model->medico->nombre:'' ?>' type="text" readonly>
-      <?=$form->field($model, 'id_medico')->hiddenInput()->label(false); ?>
-        <?
-          echo Form::widget([ // continuation fields to row above without labels
-            'id' => 'login-form-horizontal',
-              'model'=>$model,
-              'form'=>$form,
-              'columns'=>4,
-              'attributes'=>[
-                  'id_procedencia'=>['type'=> Form::INPUT_WIDGET,
-                  'widgetClass'=>'kartik\select2\Select2',
-                  'options'=>[
-                    'data' => $mapprocedencia,
-                        'language' => 'es',
-                        ],
-                    'pluginOptions' => [
-                          'allowClear' => true
-                          ],
-                    'placeholder' => 'Seleccionar codigo..',
-                          'label'=>'Procedencia'
-                    ],
+          </br>
+          </br>
 
-              ]]);
-      ?>
+          <label>Medico:<span id='medico'> </span>
 
+            <button title="Busqueda avanzada de medico" type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target=".bs-medico-modal-lg" style="margin-left: 10px;"><i class="glyphicon glyphicon-search" ></i></button>
+              <?   echo  Html::a('<i class="glyphicon glyphicon-plus"> Crear medico</i>', ['medico/create'],
+               ['role'=>'modal-remote','title'=> 'Crear nuevo medico','class'=>'btn btn-primary btn-xs']); ?>
+          </label>
+          <input type="text" id="medicobuscar" name="MedicoSearch[num_documento]" placeholder="Ingresar DNI del medico" >
+          <button type="button" class ="btn btn-primary btn-xs" onclick='medicoba();'>Buscar y añadir</button>
           </div>
+          <?
+            $form = ActiveForm::begin();
+
+          $mapprocedencia = ArrayHelper::map(Procedencia::find()->all() , 'id',  'nombre'  );
+          $mapmaterial = ArrayHelper::map(Plantillamaterial::find()->all() , 'id',  'material'  );
+          ?>
 
 
-            <div class='col-sm-3'>
+
+          <div class='col-sm-3'>
+
+          <label> Paciente </label></br>
+          <input id="solicitud-paciente"  style="width:250px;" value='<?=($model->paciente)?$model->paciente->apellido.", ".$model->paciente->nombre:''; ?>' type="text" readonly>
+          <?=$form->field($model, 'id_paciente')->hiddenInput()->label(false); ?>
+          <label> Medico </label> </br>
+          <input id="solicitud-medico" style="width:250px;" value='<?=($model->medico)?$model->medico->apellido.", ".$model->medico->nombre:'' ?>' type="text" readonly>
+          <?=$form->field($model, 'id_medico')->hiddenInput()->label(false); ?>
             <?
-              echo $form->field($model, 'fecharealizacion')->widget(DatePicker::className(), [
-                     'options' => ['placeholder' => 'Debe agregar una fecha',
-                       'value'=> ($model->fecharealizacion)?date('d/m/Y',strtotime($model->fecharealizacion)):date('d/m/Y') ,
-                       'type' => DatePicker::TYPE_COMPONENT_APPEND,
-                             ],
+              echo Form::widget([ // continuation fields to row above without labels
+                'id' => 'login-form-horizontal',
+                  'model'=>$model,
+                  'form'=>$form,
+                  'columns'=>4,
+                  'attributes'=>[
+                      'id_procedencia'=>['type'=> Form::INPUT_WIDGET,
+                      'widgetClass'=>'kartik\select2\Select2',
+                      'options'=>[
+                        'data' => $mapprocedencia,
+                            'language' => 'es',
+                            ],
                         'pluginOptions' => [
-                        'format' => 'dd/mm/yyyy',
-                        'todayHighlight' => true,
-                        'allowClear' => false
-                         ],
-                        'pluginEvents' => [
-                             "changeDate" => "function(e){
-                               cambiarFechaNac();
-                             }",
-                             ],
-                         ])->label('Fecha de realizacion');
+                              'allowClear' => true
+                              ],
+                        'placeholder' => 'Seleccionar codigo..',
+                              'label'=>'Procedencia'
+                        ],
 
-            ?>
+                  ]]);
+          ?>
 
-              <?=$form->field($model, 'id_estudio')->hiddenInput(['value'=> $model->idEstudio()])->label(false); //BIOPSIA ID 2  CORREGIR?>
-
-              <?= $form->field($model, 'id_estado')->dropDownList($model->estados())->label('Estado') ;?>
-              <?= $form->field($model, 'id_materialsolicitud')->dropDownList($model->getMaterialsolicitudes())->label('Material') ;?>
-
-             </div>
-             <div class='col-sm-3'>
-                  <?
-                  echo $form->field($model, 'fechadeingreso')->widget(DatePicker::className(), [
-                            'options' => ['placeholder' => 'Debe agregar una fecha',
-                           'value'=> ($model->fechadeingreso)?date('d/m/Y',strtotime($model->fechadeingreso)):date('d/m/Y') ,
-                            'type' => DatePicker::TYPE_COMPONENT_APPEND,
-                                    ],
+              </div>
+                <div class='col-sm-3'>
+                <?
+                  echo $form->field($model, 'fecharealizacion')->widget(DatePicker::className(), [
+                         'options' => ['placeholder' => 'Debe agregar una fecha',
+                           'value'=> ($model->fecharealizacion)?date('d/m/Y',strtotime($model->fecharealizacion)):date('d/m/Y') ,
+                           'type' => DatePicker::TYPE_COMPONENT_APPEND,
+                                 ],
                             'pluginOptions' => [
                             'format' => 'dd/mm/yyyy',
-                            'allowClear' => false,
-                            'todayHighlight' => true,],
+                            'todayHighlight' => true,
+                            'allowClear' => false
+                             ],
                             'pluginEvents' => [
-                              "changeDate" => "function(e){
-                                  cambiarFechaNac();
-                                  }",
-                                ],
-                              ])->label('Fecha de ingreso');
+                                 "changeDate" => "function(e){
+                                   cambiarFechaNac();
+                                 }",
+                                 ],
+                             ])->label('Fecha de realizacion');
 
                 ?>
-                <?=$form->field($model, "observacion")->textarea(["rows" => 4]) ; ?>
 
+                  <?=$form->field($model, 'id_estudio')->hiddenInput(['value'=> $model->idEstudio()])->label(false); //BIOPSIA ID 2  CORREGIR?>
+
+                  <?= $form->field($model, 'id_estado')->dropDownList($model->estados())->label('Estado') ;?>
+                  <?= $form->field($model, 'id_materialsolicitud')->dropDownList($model->getMaterialsolicitudes())->label('Material') ;?>
+
+                 </div>
+                 <div class='col-sm-3'>
+                      <?
+                      echo $form->field($model, 'fechadeingreso')->widget(DatePicker::className(), [
+                                'options' => ['placeholder' => 'Debe agregar una fecha',
+                               'value'=> ($model->fechadeingreso)?date('d/m/Y',strtotime($model->fechadeingreso)):date('d/m/Y') ,
+                                'type' => DatePicker::TYPE_COMPONENT_APPEND,
+                                        ],
+                                'pluginOptions' => [
+                                'format' => 'dd/mm/yyyy',
+                                'allowClear' => false,
+                                'todayHighlight' => true,],
+                                'pluginEvents' => [
+                                  "changeDate" => "function(e){
+                                      cambiarFechaNac();
+                                      }",
+                                    ],
+                                  ])->label('Fecha de ingreso');
+
+                    ?>
+                    <?=$form->field($model, "observacion")->textarea(["rows" => 4]) ; ?>
+                  </div>
               </div>
-              <div class='col-sm-6'>
-                <?= $form->field($model, 'sitio_prec_toma')->textInput() ?>
-                <?= $form->field($model, 'datos_clin_interes')->textInput() ?>
-              </div>
-              <div class='col-sm-6'>
-                <?= $form->field($model, 'diagnostico_presuntivo')->textInput() ?>
-                <?= $form->field($model, 'biopsia_anterior_resultado')->textInput() ?>
+          </div>
+          <div class="x_panel" >
+            <ul class="nav navbar-right panel_toolbox">
+                <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                </li>
+            </ul>
+              <legend class="text-info"><small>INFORMACIÓN ADICIONAL</small></legend>
+              <div class="x_content" style="display: none;">
+                <div class='col-sm-6'>
+                  <?= $form->field($model, 'sitio_prec_toma')->textInput() ?>
+                  <?= $form->field($model, 'datos_clin_interes')->textInput() ?>
+                </div>
+                <div class='col-sm-6'>
+                  <?= $form->field($model, 'diagnostico_presuntivo')->textInput() ?>
+                  <?= $form->field($model, 'biopsia_anterior_resultado')->textInput() ?>
+
+                </div>
+             </div>
 
 
-              </div>
 
-         </div>
-              <div class="x_panel" >
-                <ul class="nav navbar-right panel_toolbox">
-                                    <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-                                    </li>
-                </ul>
+          <div class="x_panel" >
+
                 <legend class="text-info"><center>PARA MATERIAL GINECOLOGICO</center></legend>
-                <div class="x_content" style="display: block;">
+                <div class="x_content" style="display: none;">
               <div class='col-sm-6'>
               <?= $form->field($model, 'materialginecologico')->textInput(['value'=>($model->materialginecologico)?$model->materialginecologico->pap_previo:''])->label('Pap previo') ?>
               <?= $form->field($model, 'materialginecologico')->textInput(['value'=>($model->materialginecologico)?$model->materialginecologico->fecha_ult_mestruacion:''])->label('Última fecha mestruación') ?>
@@ -274,8 +276,8 @@ CrudAsset::register($this);
           $form = ActiveForm::end();
       ?>
 
-</div>
-
+    </div>
+   </div>
 
 <?php Modal::begin([
     "id"=>"ajaxCrudModal",
