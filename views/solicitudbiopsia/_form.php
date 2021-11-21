@@ -270,7 +270,7 @@ CrudAsset::register($this);
 
       <?  if (!Yii::$app->request->isAjax){ ?>
          <div class='pull-right'>
-            <?=Html::submitButton($model->isNewRecord ? 'Guardar' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']); ?>
+            <?=Html::submitButton($model->isNewRecord ? 'Guardar' : 'Actualizar', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']); ?>
          </div>
       <? }
           $form = ActiveForm::end();

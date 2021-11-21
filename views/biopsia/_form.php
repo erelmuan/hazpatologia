@@ -283,8 +283,12 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
      </div>
     <div class="col-md-12 col-sm-12 col-xs-12 form-group">
         <?= Html::submitButton($model->isNewRecord ? 'Guardar' : 'Actualizar', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+        <button type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target=".bs-frases-modal-lg" style="margin-left: 10px;">Vista previa</button>
     </div>
-
+    <div class="col-md-8 col-sm-12 col-xs-12 form-group">
+      <label class="control-label" for="biopsia-observacion">Contraseña</label>
+      <input type="password" id="paciente-nombre" class="form-control" name="Paciente[nombre]" style="width:50%; " aria-required="true" aria-invalid="false">
+    </div>
   <?= $this->render('modals', [
         'model' => $model,
         'search' => $search,
