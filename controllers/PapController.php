@@ -257,7 +257,7 @@ class PapController extends Controller
                         'search' => $search,
                         'array' => $array,
                         'provider' => $provider,
-                        'edadDelPaciente'=>$this->calcular_edad($_SESSION['solicitudb']->id),
+                        'edadDelPaciente'=>$this->calcular_edad($_SESSION['solicitudp']->id),
 
 
                     ]);
@@ -293,7 +293,7 @@ class PapController extends Controller
                   'search' => $search,
                   'array' => $array,
                   'provider' => $provider,
-                  'edadDelPaciente'=>$this->calcular_edad($_SESSION['solicitudb']->id),
+                  'edadDelPaciente'=>$this->calcular_edad($_SESSION['solicitudp']->id),
 
               ]);
           }

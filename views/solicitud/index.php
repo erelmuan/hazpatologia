@@ -67,6 +67,7 @@ $columns[]=
         'class' => 'kartik\grid\ActionColumn',
         'dropdown' => false,
         'vAlign'=>'middle',
+        'template' => '{view}{update}',
         // 'urlCreator' => function($action, $model, $key, $index) {
         //     return Url::to([$action,'id'=>$key]);
         // },
@@ -100,22 +101,6 @@ $columns[]=
 
               );
               }
-              ,
-                 'delete' => function ($url, $model, $key) {
-                $url = Url::to([$model::tableName().$model->estudio->modelo.'/delete', 'id' => $key]);
-                return Html::a('<span class="glyphicon glyphicon-trash"></span>', $url, [
-                    'role'=>'modal-remote','title'=>'Borrar',
-                    'data-confirm'=>false, 'data-method'=>false,// for overide yii data api
-                    'data-request-method'=>'post',
-                    'data-toggle'=>'tooltip',
-                    'data-confirm-title'=>'Solicitud',
-                    'data-confirm-message'=>'¿ Desea borrar este registro ?'
-
-                ]);
-            },
-
-
-
           ],
 
     ];
@@ -125,7 +110,7 @@ $columns[]=
     echo AlertBlock::widget([
                     'useSessionFlash' => true,
                     'type' => AlertBlock::TYPE_ALERT
-                ]); 
+                ]);
   }?>
 <div id="w0s" class="x_panel">
   <div class="x_title"><h2><i class="fa fa-table"></i> SOLICITUDES  </h2>
@@ -177,4 +162,3 @@ $columns[]=
     "footer"=>"",// always need it for jquery plugin
 ])?>
 <?php Modal::end(); ?>
-

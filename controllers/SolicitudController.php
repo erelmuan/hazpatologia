@@ -364,42 +364,7 @@ class SolicitudController extends Controller
              return false;
          }
      }
-    public function actionDelete($id)
-    {
-        $request = Yii::$app->request;
-        Yii::$app->response->format = Response::FORMAT_JSON;
-        $model = $this->findModel($id);
-        $modelestudio= $model->estudio->modelo;
-
-        if (isset($model->$modelestudio)){
-          return [
-            'title'=> "Eliminar solicitud  #".$id,
-            'content'=>"No se puede eliminar la solicitud porque tiene un informe asociado",
-            'footer'=> Html::button('Cerrar',['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"])
-        ];
-        }
-
-        if($request->isAjax){
-            /*
-            *   Process for ajax request
-            */
-            try {
-                if ($this->findModel($id)->delete()){
-                    return ['forceClose'=>true,'forceReload'=>'#crud-datatable-pjax'];
-                }
-              } catch (yii\db\Exception $e ) {
-                    Yii::$app->response->format = Response::FORMAT_HTML;
-                    throw new NotFoundHttpException('Error en la base de datos.', 500);
-              }
-        }else{
-            /*
-            *   Process for non-ajax request
-            */
-            return $this->redirect(['index']);
-        }
-
-
-    }
+  
     public function actionSelect()
     {
         $request = Yii::$app->request;

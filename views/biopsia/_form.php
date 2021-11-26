@@ -101,11 +101,7 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
     <div class="col-md-4 col-sm-12 col-xs-12 form-group">
 
         <?  echo (Html::label('Código material', 'username', ['class' => 'form-group field-biopsias-material has-success'])); ?>
-
-        <?
-        // echo  Html::a('<i class="glyphicon glyphicon-plus"></i>', ['/plantillamaterialb/plantillamb'],
-        //  ['data-toggle'=>'modal', 'data-target'=>'.bs-material-modal-lg' ,'title'=> 'Ver material','class'=>'btn btn-primary btn-xs']); ?>
-        <button type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target=".bs-material-modal-lg" style="margin-left: 10px;"><i class="glyphicon glyphicon-plus" ></i></button>
+        <button type="button" class="btn btn-primary btn-xs" onclick="quitarSeleccion()" data-toggle="modal" data-target=".bs-material-modal-lg" style="margin-left: 10px;"><i class="glyphicon glyphicon-plus" ></i></button>
         <button type="button" class="btn btn-danger btn-xs" onclick="quitarMaterial()"><i class="glyphicon glyphicon-minus"></i></button>
         <?
         $mapMaterial= ArrayHelper::map($array['arraymaterial'], 'id',  'codigo' );
@@ -125,7 +121,7 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
                               ],
                     ]);
              echo (Html::label('Código topografia', 'username', ['class' => 'form-group field-biopsias-material has-success'])); ?>
-            <button type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target=".bs-topografia-modal-lg" style="margin-left: 10px;"><i class="glyphicon glyphicon-plus" ></i></button>
+            <button type="button" class="btn btn-primary btn-xs" onclick="quitarSeleccion()"data-toggle="modal" data-target=".bs-topografia-modal-lg" style="margin-left: 10px;"><i class="glyphicon glyphicon-plus" ></i></button>
             <button type="button" class="btn btn-danger btn-xs" onclick="quitarTopografia()"><i class="glyphicon glyphicon-minus"></i></button>
           <?
 
@@ -151,7 +147,7 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
                echo ( Html::label('Código macroscopia', 'macro', ['class' => 'form-group field-biopsias-macroscopia has-success']));
 
               ?>
-                <button type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target=".bs-macroscopia-modal-lg" style="margin-left: 10px;"><i class="glyphicon glyphicon-plus" ></i></button>
+                <button type="button" class="btn btn-primary btn-xs"onclick="quitarSeleccion()"  data-toggle="modal" data-target=".bs-macroscopia-modal-lg" style="margin-left: 10px;"><i class="glyphicon glyphicon-plus" ></i></button>
                 <button type="button" class="btn btn-danger btn-xs" onclick="quitarMacroscopia()"><i class="glyphicon glyphicon-minus"></i></button>
              <?
                $mapMacroscopia= ArrayHelper::map($array['arraymacroscopia'] , 'id',  'codigo' );
@@ -174,7 +170,7 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
 
               echo (Html::label('Código microscopia', 'username', ['class' => 'form-group field-biopsias-microscopia has-success']));
               ?>
-                <button type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target=".bs-microscopia-modal-lg" style="margin-left: 10px;"><i class="glyphicon glyphicon-plus" ></i></button>
+                <button type="button" class="btn btn-primary btn-xs" onclick="quitarSeleccion()" data-toggle="modal" data-target=".bs-microscopia-modal-lg" style="margin-left: 10px;"><i class="glyphicon glyphicon-plus" ></i></button>
                 <button type="button" class="btn btn-danger btn-xs" onclick="quitarMicroscopia()"><i class="glyphicon glyphicon-minus"></i></button>
              <?
              $mapMicroscopia= ArrayHelper::map($array['arraymicroscopia'] , 'id',  'codigo' );
@@ -199,7 +195,7 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
       echo (Html::label('Código diagnostico', 'codigo diagnostico', ['class' => 'form-group field-biopsias-diagnostico has-success']));
       if( !isset($model->estado) || $model->estado->descripcion!=="LISTO"){
       ?>
-        <button type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target=".bs-diagnostico-modal-lg" style="margin-left: 10px;"><i class="glyphicon glyphicon-plus" ></i></button>
+        <button type="button" class="btn btn-primary btn-xs" onclick="quitarSeleccion()" data-toggle="modal" data-target=".bs-diagnostico-modal-lg" style="margin-left: 10px;"><i class="glyphicon glyphicon-plus" ></i></button>
         <button type="button" class="btn btn-danger btn-xs" onclick="quitarDiagnostico()"><i class="glyphicon glyphicon-minus"></i></button>
      <?}
      $mapdiagnostico = ArrayHelper::map($array['arraydiagnostico'] , 'id',  'codigo'  );
@@ -224,7 +220,7 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
 
       echo (Html::label('Código frase', 'frase', ['class' => 'form-group field-biopsias-frase has-success'])) ;
       ?>
-        <button type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target=".bs-frases-modal-lg" style="margin-left: 10px;"><i class="glyphicon glyphicon-plus" ></i></button>
+        <button type="button" class="btn btn-primary btn-xs"onclick="quitarSeleccion()" data-toggle="modal" data-target=".bs-frases-modal-lg" style="margin-left: 10px;"><i class="glyphicon glyphicon-plus" ></i></button>
         <button type="button" class="btn btn-danger btn-xs" onclick="quitarFrase()"><i class="glyphicon glyphicon-minus"></i></button>
      <?
       $mapFrases= ArrayHelper::map($array['arrayfrase'] , 'id',  'codigo' );
@@ -309,17 +305,30 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
 <?php Modal::end(); ?>
 
 <script type="text/javascript">
+function quitarSeleccion (){
+  $('span.kv-clear-radio').click();
+
+}
 // Hay que tener en cuenta cuando se modifican los div se modifican
 //tambien el path con el atrubuto W--- puede que vaya de W4 a W5
 
     function agregarFormularioMat (){
-      $("span#select2-w2-container.select2-selection__rendered")[0].innerText =$("tr.success").find("td:eq(1)").text();
-      $("textarea#biopsia-topografia.form-control").val($("tr.success").find("td:eq(2)").text());
-      $("textarea#biopsia-diagnostico.form-control").val($("tr.success").find("td:eq(3)").text());
-      //vacias el contenido de la variable para que no se anexe con otra eleccion de otro campo
-      $('span.kv-clear-radio').click();
-      alert("Se agrego al formulario");
-      $('button.btn.btn-default').click();
+      if ($("tr.success").find("td:eq(1)").text() != ""){
+          $("span#select2-w2-container.select2-selection__rendered")[0].innerText =$("tr.success").find("td:eq(1)").text();
+          $("textarea#biopsia-topografia.form-control").val($("tr.success").find("td:eq(2)").text());
+          $("textarea#biopsia-diagnostico.form-control").val($("tr.success").find("td:eq(3)").text());
+          //vacias el contenido de la variable para que no se anexe con otra eleccion de otro campo
+          $('span.kv-clear-radio').click();
+          $('button.btn.btn-default').click();
+
+        }
+        else {
+          swal(
+          'No se ha seleccionado a ningún registro' ,
+          'PRESIONAR OK',
+          'error'
+        );
+        }
 
   }
     function quitarMaterial (){
@@ -329,14 +338,23 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
     }
 
     function agregarFormularioTop (){
-      $("span#select2-w3-container.select2-selection__rendered")[0].innerText =$("tr.success").find("td:eq(1)").text();
-      //$("textarea#biopsias-topografia.form-control").val($("tr.success").find("td:eq(2)").text());
-      var textArea = document.getElementById('biopsia-topografia');
-      $("textarea#biopsia-topografia.form-control").val(textArea.value +"\r\n"+ $("tr.success").find("td:eq(2)").text());
-      //vacias el contenido de la variable para que no se anexe con otra eleccion de otro campo
-      $('span.kv-clear-radio').click();
-      alert("Se agrego al formulario");
-      $('button.btn.btn-default').click();
+      if ($("tr.success").find("td:eq(1)").text() != ""){
+        $("span#select2-w3-container.select2-selection__rendered")[0].innerText =$("tr.success").find("td:eq(1)").text();
+        //$("textarea#biopsias-topografia.form-control").val($("tr.success").find("td:eq(2)").text());
+        var textArea = document.getElementById('biopsia-topografia');
+        $("textarea#biopsia-topografia.form-control").val(textArea.value +"\r\n"+ $("tr.success").find("td:eq(2)").text());
+        //vacias el contenido de la variable para que no se anexe con otra eleccion de otro campo
+        $('span.kv-clear-radio').click();
+        $('button.btn.btn-default').click();
+
+      }
+      else {
+        swal(
+        'No se ha seleccionado a ningún registro' ,
+        'PRESIONAR OK',
+        'error'
+      );
+      }
   }
     function quitarTopografia (){
       $("span#select2-w3-container.select2-selection__rendered")[0].innerText ="";
@@ -345,12 +363,22 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
 
 
     function agregarFormularioMac (){
-      $("span#select2-w4-container.select2-selection__rendered")[0].innerText =$("tr.success").find("td:eq(1)").text();
-      $("textarea#biopsia-macroscopia.form-control").val($("tr.success").find("td:eq(2)").text());
-      //vacias el contenido de la variable para que no se anexe con otra eleccion de otro campo
-      $('span.kv-clear-radio').click();
-      alert("Se agrego al formulario");
-      $('button.btn.btn-default').click();
+      if ($("tr.success").find("td:eq(1)").text() != ""){
+        $("span#select2-w4-container.select2-selection__rendered")[0].innerText =$("tr.success").find("td:eq(1)").text();
+        $("textarea#biopsia-macroscopia.form-control").val($("tr.success").find("td:eq(2)").text());
+        //vacias el contenido de la variable para que no se anexe con otra eleccion de otro campo
+        $('span.kv-clear-radio').click();
+        $('button.btn.btn-default').click();
+
+      }
+      else {
+        swal(
+        'No se ha seleccionado a ningún registro' ,
+        'PRESIONAR OK',
+        'error'
+      );
+      }
+
       }
     function quitarMacroscopia(){
       $("span#select2-w4-container.select2-selection__rendered")[0].innerText ="";
@@ -358,13 +386,21 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
     }
 
     function agregarFormularioMic (){
-      $("span#select2-w5-container.select2-selection__rendered")[0].innerText =$("tr.success").find("td:eq(1)").text();
-      $("textarea#biopsia-microscopia.form-control").val($("tr.success").find("td:eq(2)").text());
-      //vacias el contenido de la variable para que no se anexe con otra eleccion de otro campo
-      $('span.kv-clear-radio').click();
-      alert("Se agrego al formulario");
-      $('button.btn.btn-default').click();
+      if ($("tr.success").find("td:eq(1)").text() != ""){
+        $("span#select2-w5-container.select2-selection__rendered")[0].innerText =$("tr.success").find("td:eq(1)").text();
+        $("textarea#biopsia-microscopia.form-control").val($("tr.success").find("td:eq(2)").text());
+        //vacias el contenido de la variable para que no se anexe con otra eleccion de otro campo
+        $('span.kv-clear-radio').click();
+        $('button.btn.btn-default').click();
 
+      }
+      else {
+        swal(
+        'No se ha seleccionado a ningún registro' ,
+        'PRESIONAR OK',
+        'error'
+      );
+      }
     }
       function quitarMicroscopia (){
         $("span#select2-w5-container.select2-selection__rendered")[0].innerText ="";
@@ -372,12 +408,21 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
       }
 
     function agregarFormularioDiag (){
-      $("span#select2-w6-container.select2-selection__rendered")[0].innerText =$("tr.success").find("td:eq(1)").text();
-      $("textarea#biopsia-diagnostico.form-control").val($("tr.success").find("td:eq(2)").text());
-      //vacias el contenido de la variable para que no se anexe con otra eleccion de otro campo
-      $('span.kv-clear-radio').click();
-      alert("Se agrego al formulario");
-      $('button.btn.btn-default').click();
+      if ($("tr.success").find("td:eq(1)").text() != ""){
+        $("span#select2-w6-container.select2-selection__rendered")[0].innerText =$("tr.success").find("td:eq(1)").text();
+        $("textarea#biopsia-diagnostico.form-control").val($("tr.success").find("td:eq(2)").text());
+        //vacias el contenido de la variable para que no se anexe con otra eleccion de otro campo
+        $('span.kv-clear-radio').click();
+        $('button.btn.btn-default').click();
+
+      }
+      else {
+          swal(
+          'No se ha seleccionado a ningún registro' ,
+          'PRESIONAR OK',
+          'error'
+        );
+      }
       }
     function quitarDiagnostico (){
       $("span#select2-w6-container.select2-selection__rendered")[0].innerText ="";
@@ -387,13 +432,22 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
 
 
     function agregarFormularioFra (){
-      $("span#select2-w7-container.select2-selection__rendered")[0].innerText =$("tr.success").find("td:eq(1)").text();
-      var textArea = document.getElementById('biopsia-frase');
-      $("textarea#biopsia-frase.form-control").val(textArea.value +"\r\n"+ $("tr.success").find("td:eq(2)").text());
-      //vacias el contenido de la variable para que no se anexe con otra eleccion de otro campo
-      $('span.kv-clear-radio').click();
-      alert("Se agrego al formulario");
-      $('button.btn.btn-default').click();
+      if ($("tr.success").find("td:eq(1)").text() != ""){
+        $("span#select2-w7-container.select2-selection__rendered")[0].innerText =$("tr.success").find("td:eq(1)").text();
+        var textArea = document.getElementById('biopsia-frase');
+        $("textarea#biopsia-frase.form-control").val(textArea.value +"\r\n"+ $("tr.success").find("td:eq(2)").text());
+        //vacias el contenido de la variable para que no se anexe con otra eleccion de otro campo
+        $('span.kv-clear-radio').click();
+        $('button.btn.btn-default').click();
+
+      }
+      else {
+          swal(
+          'No se ha seleccionado a ningún registro' ,
+          'PRESIONAR OK',
+          'error'
+        );
+      }
 
       }
     function quitarFrase (){

@@ -28,9 +28,6 @@ class Seguridad {
        if(Yii::$app->user->isGuest)
           return false;
 
-      //  if(Yii::$app->user->identity->administrador) return true;
-       //
-         // var_dump($accion);
 
        if (empty($accion)){
            $accion=$_GET['r'];
@@ -91,31 +88,7 @@ class Seguridad {
        }
        return false;
 
-      //  $rol=\app\models\Rol::findOne(['idusuario'=> $id_usuario]);
-      //$permiso=\app\models\Permiso::findOne(['idusuario'=>$controller.'/'.$accion]);
-      //  $permiso2=\app\models\Permiso::findOne(['nombre'=>$controller.'/*']);
-       //
-      //  if ($permiso1)
-      //      $grupos1=$permiso1->getGrupos()->all();
-       //
-      //  if ($permiso2)
-      //       $grupos2=$permiso2->getGrupos()->all();
-       //
-      //  $grupos = array_merge($grupos1, $grupos2);
-      //  $lreturn=false;
-      //  foreach($grupos as $grp) {
-       //
-      //       $user = $grp->hasMany(\app\models\Usuario::className(), ['id' => 'id_usuario'])->viaTable('usuarioGrupo', ['id_grupo' => 'id'])->select(['id'])->where(['id' => $id_usuario])->all();
-      //       if ($user)
-      //           $lreturn = true;
-      //  }
 
-    //   return ($lreturn);
-
-    // if ($accion =='update')
-    //  return false;
-    //  else
-    // return (true);
     }
 
 }

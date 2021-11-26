@@ -66,6 +66,7 @@ $columns[]=
         'class' => 'kartik\grid\ActionColumn',
         'dropdown' => false,
         'vAlign'=>'middle',
+        'template' => '{view}{update}',
         'urlCreator' => function($action, $model, $key, $index) {
             return Url::to([$action,'id'=>$key]);
         },
@@ -79,8 +80,7 @@ $columns[]=
             'data-confirm-message'=>'¿ Desea borrar este registro ?'],
         'visibleButtons'=>[
             'view'=> ['view'],
-            'update'=> ['update'],
-            'delete'=> ['delete']
+            'update'=> ['update']
             ]
     ];
 
@@ -132,5 +132,3 @@ $columns[]=
     "footer"=>"",// always need it for jquery plugin
 ])?>
 <?php Modal::end(); ?>
-
-

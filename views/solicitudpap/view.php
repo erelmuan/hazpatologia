@@ -65,11 +65,3 @@ use yii\helpers\Html;
 
      ?>
 </div>
-<script language="JavaScript" type="text/javascript">
-    // protocolo=document.getElementById("w0").rows[0].cells[1].innerHTML;
-    // swal(
-    // 'N° de protocolo: '+ protocolo ,
-    // 'PRESIONAR OK',
-    // 'success'
-    // )
-  </script>

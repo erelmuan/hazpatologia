@@ -177,7 +177,7 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
     <div class="col-md-4 col-sm-12 col-xs-12 form-group">
         <?  echo (Html::label('Código flora', 'flora', ['class' => 'form-group field-pap-material has-success']));
         ?>
-          <button type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target=".bs-flora-modal-lg" style="margin-left: 10px;"><i class="glyphicon glyphicon-plus" ></i></button>
+          <button type="button" class="btn btn-primary btn-xs"onclick="quitarSeleccion()"  data-toggle="modal" data-target=".bs-flora-modal-lg" style="margin-left: 10px;"><i class="glyphicon glyphicon-plus" ></i></button>
           <button type="button" class="btn btn-danger btn-xs" onclick="quitarFlora()"><i class="glyphicon glyphicon-minus"></i></button>
        <?
 
@@ -200,7 +200,7 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
        echo "</br>";
        echo ( Html::label('Código aspecto', 'aspecto', ['class' => 'form-group field-pap-aspecto has-success']));
        ?>
-         <button type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target=".bs-aspecto-modal-lg" style="margin-left: 10px;"><i class="glyphicon glyphicon-plus" ></i></button>
+         <button type="button" class="btn btn-primary btn-xs"onclick="quitarSeleccion()"  data-toggle="modal" data-target=".bs-aspecto-modal-lg" style="margin-left: 10px;"><i class="glyphicon glyphicon-plus" ></i></button>
          <button type="button" class="btn btn-danger btn-xs" onclick="quitarAspecto()"><i class="glyphicon glyphicon-minus"></i></button>
       <?
        $mapAspecto= ArrayHelper::map(Plantillaaspecto::find()->all() , 'id',  'codigo' );
@@ -223,7 +223,7 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
       echo "</br>";
       echo (Html::label('Código pavimentosa', 'pavimentosa', ['class' => 'form-group field-pap-pavimentosa has-success']));
       ?>
-        <button type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target=".bs-pavimentosa-modal-lg" style="margin-left: 10px;"><i class="glyphicon glyphicon-plus" ></i></button>
+        <button type="button" class="btn btn-primary btn-xs"onclick="quitarSeleccion()"  data-toggle="modal" data-target=".bs-pavimentosa-modal-lg" style="margin-left: 10px;"><i class="glyphicon glyphicon-plus" ></i></button>
         <button type="button" class="btn btn-danger btn-xs" onclick="quitarPavimentosas()"><i class="glyphicon glyphicon-minus"></i></button>
      <?
      $mapPavimentosa= ArrayHelper::map(Plantillapavimentosa::find()->all() , 'id',  'codigo' );
@@ -247,7 +247,7 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
    echo "</br>";
    echo (Html::label('Código glandular', 'glandular', ['class' => 'form-group field-pap-glandular has-success']));
    ?>
-     <button type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target=".bs-glandular-modal-lg" style="margin-left: 10px;"><i class="glyphicon glyphicon-plus" ></i></button>
+     <button type="button" class="btn btn-primary btn-xs" onclick="quitarSeleccion()"  data-toggle="modal" data-target=".bs-glandular-modal-lg" style="margin-left: 10px;"><i class="glyphicon glyphicon-plus" ></i></button>
      <button type="button" class="btn btn-danger btn-xs" onclick="quitarGlandular()"><i class="glyphicon glyphicon-minus"></i></button>
   <?
   $mapglandular = ArrayHelper::map(Plantillaglandular::find()->all() , 'id',  'codigo'  );
@@ -271,7 +271,7 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
       if( !isset($model->estado) || $model->estado->descripcion!=="LISTO"){
 
       ?>
-          <button type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target=".bs-diagnostico-modal-lg" style="margin-left: 10px;"><i class="glyphicon glyphicon-plus" ></i></button>
+          <button type="button" class="btn btn-primary btn-xs"onclick="quitarSeleccion()"  data-toggle="modal" data-target=".bs-diagnostico-modal-lg" style="margin-left: 10px;"><i class="glyphicon glyphicon-plus" ></i></button>
           <button type="button" class="btn btn-danger btn-xs" onclick="quitarDiagnostico()"><i class="glyphicon glyphicon-minus"></i></button>
      <?}
         $mapdiagnostico = ArrayHelper::map($array['arraydiagnostico'] , 'id',  'codigo'  );
@@ -296,7 +296,7 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
     echo (Html::label('Código frase', 'frase', ['class' => 'form-group field-pap-frase has-success'])) ;
 
     ?>
-      <button type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target=".bs-frase-modal-lg" style="margin-left: 10px;"><i class="glyphicon glyphicon-plus" ></i></button>
+      <button type="button" class="btn btn-primary btn-xs"onclick="quitarSeleccion()"  data-toggle="modal" data-target=".bs-frase-modal-lg" style="margin-left: 10px;"><i class="glyphicon glyphicon-plus" ></i></button>
       <button type="button" class="btn btn-danger btn-xs" onclick="quitarFrase()"><i class="glyphicon glyphicon-minus"></i></button>
    <?
     // $mapFrases= ArrayHelper::map(Plantillafrase::find()->all() , 'id',  'codigo' );
@@ -377,77 +377,140 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
 
 
 <script type="text/javascript">
+  function quitarSeleccion (){
+    $('span.kv-clear-radio').click();
 
-    function agregarFormularioFlo (){
-      $("span#select2-w3-container.select2-selection__rendered")[0].innerText =$("tr.success").find("td:eq(1)").text();
-      $("textarea#pap-flora.form-control").val($("tr.success").find("td:eq(2)").text());
-      //vacias el contenido de la variable para que no se anexe con otra eleccion de otro campo
-      $('span.kv-clear-radio').click();
-      $('button.btn.btn-default').click();
   }
+    function agregarFormularioFlo (){
+      if ($("tr.success").find("td:eq(1)").text() != ""){
+
+        $("span#select2-w4-container.select2-selection__rendered")[0].innerText =$("tr.success").find("td:eq(1)").text();
+        $("textarea#pap-flora.form-control").val($("tr.success").find("td:eq(2)").text());
+        //vacias el contenido de la variable para que no se anexe con otra eleccion de otro campo
+        $('span.kv-clear-radio').click();
+        $('button.btn.btn-default').click();
+      }
+      else {
+          swal(
+          'No se ha seleccionado a ningún registro' ,
+          'PRESIONAR OK',
+          'error'
+        );
+      }
+    }
     function quitarFlora (){
-      $("span#select2-w3-container.select2-selection__rendered")[0].innerText ="";
+      $("span#select2-w4-container.select2-selection__rendered")[0].innerText ="";
       $("textarea#pap-flora.form-control").val('') ;
     }
     function agregarFormularioAsp (){
-      $("span#select2-w4-container.select2-selection__rendered")[0].innerText =$("tr.success").find("td:eq(1)").text();
-      $("textarea#pap-aspecto.form-control").val($("tr.success").find("td:eq(2)").text());
-      //vacias el contenido de la variable para que no se anexe con otra eleccion de otro campo
-      $('span.kv-clear-radio').click();
-      $('button.btn.btn-default').click();
+      if ($("tr.success").find("td:eq(1)").text() != ""){
+        $("span#select2-w5-container.select2-selection__rendered")[0].innerText =$("tr.success").find("td:eq(1)").text();
+        $("textarea#pap-aspecto.form-control").val($("tr.success").find("td:eq(2)").text());
+        //vacias el contenido de la variable para que no se anexe con otra eleccion de otro campo
+        $('span.kv-clear-radio').click();
+        $('button.btn.btn-default').click();
+
+      }
+      else {
+        swal(
+        'No se ha seleccionado a ningún registro' ,
+        'PRESIONAR OK',
+        'error'
+      );
+      }
   }
     function quitarAspecto (){
-      $("span#select2-w4-container.select2-selection__rendered")[0].innerText ="";
+      $("span#select2-w5-container.select2-selection__rendered")[0].innerText ="";
       $("textarea#pap-aspecto.form-control").val('') ;
     }
 
     function agregarFormularioPav (){
-      $("span#select2-w5-container.select2-selection__rendered")[0].innerText =$("tr.success").find("td:eq(1)").text();
-      $("textarea#pap-pavimentosas.form-control").val($("tr.success").find("td:eq(2)").text());
-      //vacias el contenido de la variable para que no se anexe con otra eleccion de otro campo
-      $('span.kv-clear-radio').click();
-      $('button.btn.btn-default').click();
+      if ($("tr.success").find("td:eq(1)").text() != ""){
+        $("span#select2-w6-container.select2-selection__rendered")[0].innerText =$("tr.success").find("td:eq(1)").text();
+        $("textarea#pap-pavimentosas.form-control").val($("tr.success").find("td:eq(2)").text());
+        //vacias el contenido de la variable para que no se anexe con otra eleccion de otro campo
+        $('span.kv-clear-radio').click();
+        $('button.btn.btn-default').click();
+
+      }
+      else {
+        swal(
+        'No se ha seleccionado a ningún registro' ,
+        'PRESIONAR OK',
+        'error'
+      );
+      }
   }
     function quitarPavimentosas (){
-      $("span#select2-w5-container.select2-selection__rendered")[0].innerText ="";
+      $("span#select2-w6-container.select2-selection__rendered")[0].innerText ="";
       $("textarea#pap-pavimentosas.form-control").val('') ;
     }
     function agregarFormularioGland (){
-      $("span#select2-w6-container.select2-selection__rendered")[0].innerText =$("tr.success").find("td:eq(1)").text();
-      $("textarea#pap-glandulares.form-control").val($("tr.success").find("td:eq(2)").text());
-      //vacias el contenido de la variable para que no se anexe con otra eleccion de otro campo
-      $('span.kv-clear-radio').click();
-      $('button.btn.btn-default').click();
+      if ($("tr.success").find("td:eq(1)").text() != ""){
+        $("span#select2-w7-container.select2-selection__rendered")[0].innerText =$("tr.success").find("td:eq(1)").text();
+        $("textarea#pap-glandulares.form-control").val($("tr.success").find("td:eq(2)").text());
+        //vacias el contenido de la variable para que no se anexe con otra eleccion de otro campo
+        $('span.kv-clear-radio').click();
+        $('button.btn.btn-default').click();
+
+      }
+      else {
+        swal(
+        'No se ha seleccionado a ningún registro' ,
+        'PRESIONAR OK',
+        'error'
+      );
+      }
   }
     function quitarGlandular (){
-      $("span#select2-w6-container.select2-selection__rendered")[0].innerText ="";
+      $("span#select2-w7-container.select2-selection__rendered")[0].innerText ="";
       $("textarea#pap-glandulares.form-control").val('') ;
     }
     function agregarFormularioDiag (){
-      $("span#select2-w7-container.select2-selection__rendered")[0].innerText =$("tr.success").find("td:eq(1)").text();
-      $("textarea#pap-diagnostico.form-control").val($("tr.success").find("td:eq(2)").text());
-      //vacias el contenido de la variable para que no se anexe con otra eleccion de otro campo
-      $('span.kv-clear-radio').click();
-      $('button.btn.btn-default').click();
+      if ($("tr.success").find("td:eq(1)").text() != ""){
+        $("span#select2-w8-container.select2-selection__rendered")[0].innerText =$("tr.success").find("td:eq(1)").text();
+        $("textarea#pap-diagnostico.form-control").val($("tr.success").find("td:eq(2)").text());
+        //vacias el contenido de la variable para que no se anexe con otra eleccion de otro campo
+        $('span.kv-clear-radio').click();
+        $('button.btn.btn-default').click();
+
+      }
+      else {
+        swal(
+        'No se ha seleccionado a ningún registro' ,
+        'PRESIONAR OK',
+        'error'
+      );
+      }
   }
     function quitarDiagnostico (){
-      $("span#select2-w7-container.select2-selection__rendered")[0].innerText ="";
+      $("span#select2-w8-container.select2-selection__rendered")[0].innerText ="";
       $("textarea#pap-diagnostico.form-control").val('') ;
     }
 
     function agregarFormularioFra (){
-      $("span#select2-w7-container.select2-selection__rendered")[0].innerText =$("tr.success").find("td:eq(1)").text();
-      var textArea = document.getElementById('pap-frase');
-      $("textarea#pap-frase.form-control").val(textArea.value +"\r\n"+ $("tr.success").find("td:eq(2)").text());
-      //vacias el contenido de la variable para que no se anexe con otra eleccion de otro campo
-      $('span.kv-clear-radio').click();
-      $('button.btn.btn-default').click();
+      if ($("tr.success").find("td:eq(1)").text() != ""){
+        $("span#select2-w9-container.select2-selection__rendered")[0].innerText =$("tr.success").find("td:eq(1)").text();
+        var textArea = document.getElementById('pap-frase');
+        $("textarea#pap-frase.form-control").val(textArea.value +"\r\n"+ $("tr.success").find("td:eq(2)").text());
+        //vacias el contenido de la variable para que no se anexe con otra eleccion de otro campo
+        $('span.kv-clear-radio').click();
+        $('button.btn.btn-default').click();
+
+      }
+      else {
+        swal(
+        'No se ha seleccionado a ningún registro' ,
+        'PRESIONAR OK',
+        'error'
+      );
+      }
 
       }
 
     function quitarFrase (){
 
-      $("span#select2-w7-container.select2-selection__rendered")[0].innerText ="";
+      $("span#select2-w9-container.select2-selection__rendered")[0].innerText ="";
       $("textarea#pap-frase.form-control").val('') ;
 
         }

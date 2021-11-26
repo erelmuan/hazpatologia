@@ -302,6 +302,8 @@ class PacienteController extends Controller
                         'carnet'=>$carnet,
                         'provincias'=> $provincias,
                         'localidades'=> $localidades,
+                        'valorObrasocial'=>$valorObrasocial,
+                        'afiliado'=>$afiliado,
                         'obrasociales'=> $obrasociales,
 
                     ]),
@@ -315,6 +317,8 @@ class PacienteController extends Controller
                         'model' => $model,
                         'provincias'=> $provincias,
                         'localidades'=> $localidades,
+                        'valorObrasocial'=>$valorObrasocial,
+                        'afiliado'=>$afiliado,
                         'obrasociales'=> $obrasociales,
 
                     ]),
