@@ -46,6 +46,7 @@ class Medico extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
+            [['apellido', 'nombre'], 'required'], 
             [['matricula'], 'string'],
             [['id_tipodoc','tipodoc', 'id_tipoprofesional'], 'default', 'value' => null],
             [['id_tipodoc', 'id_tipoprofesional'], 'integer'],
