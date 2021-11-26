@@ -35,7 +35,7 @@ CrudAsset::register($this);
       <div class='row'>
       <div class='col-sm-3'>
       <label >Paciente: <span id='paciente'> </span>
-        <button title="Busqueda avanzada de paciente" type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target=".bs-paciente-modal-lg" style="margin-left: 10px;"><i class="glyphicon glyphicon-search" ></i></button>
+        <button onclick="quitarSeleccion()"  title="Busqueda avanzada de paciente" type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target=".bs-paciente-modal-lg" style="margin-left: 10px;"><i class="glyphicon glyphicon-search" ></i></button>
         <?   echo  Html::a('<i class="glyphicon glyphicon-plus"> Crear paciente</i>', ['paciente/create'],
          ['role'=>'modal-remote','title'=> 'Crear nuevo paciente','class'=>'btn btn-primary btn-xs']); ?>
       </label>
@@ -46,7 +46,7 @@ CrudAsset::register($this);
       </br>
 
       <label>Medico:<span id='medico'> </span>
-        <button title="Busqueda avanzada de medico" type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target=".bs-medico-modal-lg" style="margin-left: 10px;"><i class="glyphicon glyphicon-search" ></i></button>
+        <button onclick="quitarSeleccion()" title="Busqueda avanzada de medico" type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target=".bs-medico-modal-lg" style="margin-left: 10px;"><i class="glyphicon glyphicon-search" ></i></button>
           <?   echo  Html::a('<i class="glyphicon glyphicon-plus"> Crear medico</i>', ['medico/create'],
            ['role'=>'modal-remote','title'=> 'Crear nuevo medico','class'=>'btn btn-primary btn-xs']); ?>
       </label>
@@ -363,31 +363,56 @@ function medicoba(){
 
 function agregarFormularioPac (){
 
-console.log($("tr.success").find("td:eq(1)").text());
+  if ($("tr.success").find("td:eq(1)").text() != ""){
+
   document.getElementById("solicitud-paciente").value= $("tr.success").find("td:eq(3)").text() +", "+ $("tr.success").find("td:eq(2)").text() ;
   document.getElementById("solicitudpap-id_paciente").value=$("tr.success").find("td:eq(1)").text();
   //vacias el contenido de la variable para que no se anexe con otra eleccion de otro campo
-  $('button.close.kv-clear-radio').click();
-  swal(
-  'Se agrego el paciente' ,
-  'PRESIONAR OK',
-  'success'
-  )
-  $('button.btn.btn-default').click();
+    $('span.kv-clear-radio').click();
+    $('button.btn.btn-default').click();
+
+    swal(
+    'Se agrego el paciente' ,
+    'PRESIONAR OK',
+    'success'
+    )
+  }
+  else {
+      swal(
+      'No se ha seleccionado a ningún paciente' ,
+      'PRESIONAR OK',
+      'error'
+    );
+  }
+
+}
+function quitarSeleccion (){
+  $('span.kv-clear-radio').click();
 
 }
 
 function agregarFormularioMed (){
-  document.getElementById("solicitud-medico").value= $("tr.success").find("td:eq(3)").text() +", "+ $("tr.success").find("td:eq(2)").text() ;
-  document.getElementById("solicitudpap-id_medico").value=$("tr.success").find("td:eq(1)").text();
-  //vacias el contenido de la variable para que no se anexe con otra eleccion de otro campo
-  $('button.close.kv-clear-radio').click();
-  swal(
-  'Se agrego el medico' ,
-  'PRESIONAR OK',
-  'success'
-  )
-  $('button.btn.btn-default').click();
+
+  if ($("tr.success").find("td:eq(1)").text() != ""){
+    document.getElementById("solicitud-medico").value= $("tr.success").find("td:eq(3)").text() +", "+ $("tr.success").find("td:eq(2)").text() ;
+    document.getElementById("solicitudpap-id_medico").value=$("tr.success").find("td:eq(1)").text();
+    //vacias el contenido de la variable para que no se anexe con otra eleccion de otro campo
+    $('span.kv-clear-radio').click();
+    $('button.btn.btn-default').click();
+
+    swal(
+    'Se agrego el medico' ,
+    'PRESIONAR OK',
+    'success'
+    )
+  }
+  else {
+    swal(
+    'No se ha seleccionado a ningún medico' ,
+    'PRESIONAR OK',
+    'error'
+  );
+  }
 
 }
 

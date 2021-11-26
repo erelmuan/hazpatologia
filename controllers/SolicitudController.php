@@ -56,7 +56,15 @@ class SolicitudController extends Controller
 
         if (isset($_POST['idsol']) ) {
           if ($_POST['idsol'] =='' ){
-            \Yii::$app->getSession()->setFlash('error', 'DEBE SELECCIONAR UNA SOLICITUD Y AGREGARLA AL FORMULARIO');
+            Yii::$app->getSession()->setFlash('warning', [
+                'type' => 'danger',
+                'duration' => 5000,
+                'icon' => 'fa fa-warning',
+                'message' => "DEBE ELEGIR UNA OPCION",
+                'title' => 'NOTIFICACIÓN',
+                'positonY' => 'top',
+                'positonX' => 'right'
+            ]);
             return $this->redirect(['/'.$searchModel->tableName().'/seleccionar']);
           }else
           {

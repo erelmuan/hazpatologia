@@ -31,12 +31,7 @@ CrudAsset::register($this);
 }
 
 </style>
-<?if (Yii::$app->session->hasFlash('error')) {
-    echo AlertBlock::widget([
-                    'useSessionFlash' => true,
-                    'type' => AlertBlock::TYPE_ALERT
-                ]); 
-  }?>
+
 <div id="w0sel" class="x_panel">
 
   <div class="x_title"><h2><i class="fa fa-table"></i> <?=$searchModel::labelName() ?> </h2>

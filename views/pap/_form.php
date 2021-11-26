@@ -356,7 +356,10 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
     <div class="col-md-12 col-sm-12 col-xs-12 form-group">
       <?= Html::submitButton($model->isNewRecord ? 'Guardar' : 'Actualizar', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
     </div>
-
+    <div class="col-md-8 col-sm-12 col-xs-12 form-group">
+      <label class="control-label" for="pap-contrseña">Contraseña</label>
+      <input type="password" id="contraseña" class="form-control" name="contrasenia" style="width:50%; " aria-required="true" aria-invalid="false">
+    </div>
     <?= $this->render('modals', [
         'model' => $model,
         'search' => $search,
@@ -379,7 +382,7 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
       $("span#select2-w3-container.select2-selection__rendered")[0].innerText =$("tr.success").find("td:eq(1)").text();
       $("textarea#pap-flora.form-control").val($("tr.success").find("td:eq(2)").text());
       //vacias el contenido de la variable para que no se anexe con otra eleccion de otro campo
-      $('button.close.kv-clear-radio').click();
+      $('span.kv-clear-radio').click();
       $('button.btn.btn-default').click();
   }
     function quitarFlora (){
@@ -390,7 +393,7 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
       $("span#select2-w4-container.select2-selection__rendered")[0].innerText =$("tr.success").find("td:eq(1)").text();
       $("textarea#pap-aspecto.form-control").val($("tr.success").find("td:eq(2)").text());
       //vacias el contenido de la variable para que no se anexe con otra eleccion de otro campo
-      $('button.close.kv-clear-radio').click();
+      $('span.kv-clear-radio').click();
       $('button.btn.btn-default').click();
   }
     function quitarAspecto (){
@@ -402,7 +405,7 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
       $("span#select2-w5-container.select2-selection__rendered")[0].innerText =$("tr.success").find("td:eq(1)").text();
       $("textarea#pap-pavimentosas.form-control").val($("tr.success").find("td:eq(2)").text());
       //vacias el contenido de la variable para que no se anexe con otra eleccion de otro campo
-      $('button.close.kv-clear-radio').click();
+      $('span.kv-clear-radio').click();
       $('button.btn.btn-default').click();
   }
     function quitarPavimentosas (){
@@ -413,7 +416,7 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
       $("span#select2-w6-container.select2-selection__rendered")[0].innerText =$("tr.success").find("td:eq(1)").text();
       $("textarea#pap-glandulares.form-control").val($("tr.success").find("td:eq(2)").text());
       //vacias el contenido de la variable para que no se anexe con otra eleccion de otro campo
-      $('button.close.kv-clear-radio').click();
+      $('span.kv-clear-radio').click();
       $('button.btn.btn-default').click();
   }
     function quitarGlandular (){
@@ -424,7 +427,7 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
       $("span#select2-w7-container.select2-selection__rendered")[0].innerText =$("tr.success").find("td:eq(1)").text();
       $("textarea#pap-diagnostico.form-control").val($("tr.success").find("td:eq(2)").text());
       //vacias el contenido de la variable para que no se anexe con otra eleccion de otro campo
-      $('button.close.kv-clear-radio').click();
+      $('span.kv-clear-radio').click();
       $('button.btn.btn-default').click();
   }
     function quitarDiagnostico (){
@@ -437,7 +440,7 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
       var textArea = document.getElementById('pap-frase');
       $("textarea#pap-frase.form-control").val(textArea.value +"\r\n"+ $("tr.success").find("td:eq(2)").text());
       //vacias el contenido de la variable para que no se anexe con otra eleccion de otro campo
-      $('button.close.kv-clear-radio').click();
+      $('span.kv-clear-radio').click();
       $('button.btn.btn-default').click();
 
       }

@@ -283,11 +283,13 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
      </div>
     <div class="col-md-12 col-sm-12 col-xs-12 form-group">
         <?= Html::submitButton($model->isNewRecord ? 'Guardar' : 'Actualizar', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
-        <button type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target=".bs-frases-modal-lg" style="margin-left: 10px;">Vista previa</button>
+        <!-- <button type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target=".bs-frases-modal-lg" style="margin-left: 10px;">Vista previa</button> -->
+
+
     </div>
     <div class="col-md-8 col-sm-12 col-xs-12 form-group">
-      <label class="control-label" for="biopsia-observacion">Contraseña</label>
-      <input type="password" id="paciente-nombre" class="form-control" name="Paciente[nombre]" style="width:50%; " aria-required="true" aria-invalid="false">
+      <label class="control-label" for="biopsia-contrseña">Contraseña</label>
+      <input type="password" id="contraseña" class="form-control" name="contrasenia" style="width:50%; " aria-required="true" aria-invalid="false">
     </div>
   <?= $this->render('modals', [
         'model' => $model,
@@ -298,11 +300,12 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
 
     <?php ActiveForm::end(); ?>
 </div>
-
 <?php Modal::begin([
-    "id"=>"ajaxCrudModal",
-    "footer"=>"",// always need it for jquery plugin
-])?>
+     "id"=>"ajaxCrudModal",
+]);
+
+?>
+
 <?php Modal::end(); ?>
 
 <script type="text/javascript">
@@ -314,7 +317,7 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
       $("textarea#biopsia-topografia.form-control").val($("tr.success").find("td:eq(2)").text());
       $("textarea#biopsia-diagnostico.form-control").val($("tr.success").find("td:eq(3)").text());
       //vacias el contenido de la variable para que no se anexe con otra eleccion de otro campo
-      $('button.close.kv-clear-radio').click();
+      $('span.kv-clear-radio').click();
       alert("Se agrego al formulario");
       $('button.btn.btn-default').click();
 
@@ -331,7 +334,7 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
       var textArea = document.getElementById('biopsia-topografia');
       $("textarea#biopsia-topografia.form-control").val(textArea.value +"\r\n"+ $("tr.success").find("td:eq(2)").text());
       //vacias el contenido de la variable para que no se anexe con otra eleccion de otro campo
-      $('button.close.kv-clear-radio').click();
+      $('span.kv-clear-radio').click();
       alert("Se agrego al formulario");
       $('button.btn.btn-default').click();
   }
@@ -345,7 +348,7 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
       $("span#select2-w4-container.select2-selection__rendered")[0].innerText =$("tr.success").find("td:eq(1)").text();
       $("textarea#biopsia-macroscopia.form-control").val($("tr.success").find("td:eq(2)").text());
       //vacias el contenido de la variable para que no se anexe con otra eleccion de otro campo
-      $('button.close.kv-clear-radio').click();
+      $('span.kv-clear-radio').click();
       alert("Se agrego al formulario");
       $('button.btn.btn-default').click();
       }
@@ -358,7 +361,7 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
       $("span#select2-w5-container.select2-selection__rendered")[0].innerText =$("tr.success").find("td:eq(1)").text();
       $("textarea#biopsia-microscopia.form-control").val($("tr.success").find("td:eq(2)").text());
       //vacias el contenido de la variable para que no se anexe con otra eleccion de otro campo
-      $('button.close.kv-clear-radio').click();
+      $('span.kv-clear-radio').click();
       alert("Se agrego al formulario");
       $('button.btn.btn-default').click();
 
@@ -372,7 +375,7 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
       $("span#select2-w6-container.select2-selection__rendered")[0].innerText =$("tr.success").find("td:eq(1)").text();
       $("textarea#biopsia-diagnostico.form-control").val($("tr.success").find("td:eq(2)").text());
       //vacias el contenido de la variable para que no se anexe con otra eleccion de otro campo
-      $('button.close.kv-clear-radio').click();
+      $('span.kv-clear-radio').click();
       alert("Se agrego al formulario");
       $('button.btn.btn-default').click();
       }
@@ -388,7 +391,7 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
       var textArea = document.getElementById('biopsia-frase');
       $("textarea#biopsia-frase.form-control").val(textArea.value +"\r\n"+ $("tr.success").find("td:eq(2)").text());
       //vacias el contenido de la variable para que no se anexe con otra eleccion de otro campo
-      $('button.close.kv-clear-radio').click();
+      $('span.kv-clear-radio').click();
       alert("Se agrego al formulario");
       $('button.btn.btn-default').click();
 

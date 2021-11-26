@@ -39,7 +39,7 @@ CrudAsset::register($this);
 
           <div class='col-sm-3'>
           <label >Paciente: <span id='paciente'> </span>
-            <button title="Busqueda avanzada de paciente" type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target=".bs-paciente-modal-lg" style="margin-left: 10px;"><i class="glyphicon glyphicon-search" ></i></button>
+            <button onclick="quitarSeleccion()"  title="Busqueda avanzada de paciente" type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target=".bs-paciente-modal-lg" style="margin-left: 10px;"><i class="glyphicon glyphicon-search" ></i></button>
             <?   echo  Html::a('<i class="glyphicon glyphicon-plus"> Crear paciente</i>', ['paciente/create'],
              ['role'=>'modal-remote','title'=> 'Crear nuevo paciente','class'=>'btn btn-primary btn-xs']); ?>
           </label>
@@ -51,7 +51,7 @@ CrudAsset::register($this);
 
           <label>Medico:<span id='medico'> </span>
 
-            <button title="Busqueda avanzada de medico" type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target=".bs-medico-modal-lg" style="margin-left: 10px;"><i class="glyphicon glyphicon-search" ></i></button>
+            <button onclick="quitarSeleccion()"  title="Busqueda avanzada de medico" type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target=".bs-medico-modal-lg" style="margin-left: 10px;"><i class="glyphicon glyphicon-search" ></i></button>
               <?   echo  Html::a('<i class="glyphicon glyphicon-plus"> Crear medico</i>', ['medico/create'],
                ['role'=>'modal-remote','title'=> 'Crear nuevo medico','class'=>'btn btn-primary btn-xs']); ?>
           </label>
@@ -357,11 +357,12 @@ function medicoba(){
 ///script agregar y quitar paciente desde la busqueda avanzada
 
 function agregarFormularioPac (){
+
 if ($("tr.success").find("td:eq(1)").text() != ""){
   document.getElementById("solicitud-paciente").value= $("tr.success").find("td:eq(3)").text() +", "+ $("tr.success").find("td:eq(2)").text() ;
   document.getElementById("solicitudbiopsia-id_paciente").value=$("tr.success").find("td:eq(1)").text();
   //vacias el contenido de la variable para que no se anexe con otra eleccion de otro campo
-  $('button.close.kv-clear-radio').click();
+  $('span.kv-clear-radio').click();
   $('button.btn.btn-default').click();
 
   swal({
@@ -380,12 +381,17 @@ if ($("tr.success").find("td:eq(1)").text() != ""){
      }
 
 }
+function quitarSeleccion (){
+  $('span.kv-clear-radio').click();
 
+}
 function agregarFormularioMed (){
+if ($("tr.success").find("td:eq(1)").text() != ""){
   document.getElementById("solicitud-medico").value= $("tr.success").find("td:eq(3)").text() +", "+ $("tr.success").find("td:eq(2)").text() ;
   document.getElementById("solicitudbiopsia-id_medico").value=$("tr.success").find("td:eq(1)").text();
   //vacias el contenido de la variable para que no se anexe con otra eleccion de otro campo
-  $('button.close.kv-clear-radio').click();
+  $('span.kv-clear-radio').click();
+  $('button.btn.btn-default').click();
 
   swal({
        title: "Confirmado!",
@@ -394,7 +400,14 @@ function agregarFormularioMed (){
        timer: 1800
        })
 
-  $('button.btn.btn-default').click();
+}
+else {
+  swal(
+  'No se ha seleccionado a ningún medico' ,
+  'PRESIONAR OK',
+  'error'
+);
+}
 
 }
 

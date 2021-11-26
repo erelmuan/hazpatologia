@@ -13,6 +13,7 @@ use app\models\PlantilladiagnosticoSearch;
 use app\models\PlantillafraseSearch;
 
 
+use app\models\Usuario;
 
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -206,6 +207,26 @@ class PapController extends Controller
         }
         return $ano_diferencia;
       }
+
+      public  function  validarContraseña($contrasenia){
+
+          $modelUsuario = Usuario::find()->where(["id"=>Yii::$app->user->identity->getId()])->one();
+          if ($modelUsuario->contrasenia<> md5($contrasenia)) {
+            Yii::$app->getSession()->setFlash('warning', [
+                'type' => 'danger',
+                'duration' => 5000,
+                'icon' => 'fa fa-warning',
+                'message' => "CONTRASEÑA INCORRECTA",
+                'title' => 'NOTIFICACIÓN',
+                'positonY' => 'top',
+                'positonX' => 'right'
+            ]);
+            return false;
+          }else {
+            return true;
+          }
+
+        }
     /**
      * Updates an existing Pap model.
      * For ajax request will return json object
@@ -221,11 +242,28 @@ class PapController extends Controller
       $search=[];
       $array=[];
       $provider=[];
+      $model_estado_resguardo= $model->estado->descripcion;
+
       $this->cargarEstructuras($search,$array,$provider ,$model->solicitudpap->id_estudio);
           // if ($model->load($request->post()) && $model->save()) {
           if ($model->load($request->post()) ) {
-                if ($model->estado->descripcion=='LISTO' || $model->estado->descripcion == 'ENTREGADO')
-                {
+                if (Usuario::isPatologo() && $model->estado->descripcion=='LISTO' || $model->estado->descripcion == 'ENTREGADO'){
+                  //validar contraseñar
+                  if (!$this->validarContraseña($_POST["contrasenia"])){
+                    $model->estado->descripcion = $model_estado_resguardo;
+                    return $this->render('_form', [
+                        'model' => $model,
+                        'dataSol' => $_SESSION['solicitudp'],
+                        'search' => $search,
+                        'array' => $array,
+                        'provider' => $provider,
+                        'edadDelPaciente'=>$this->calcular_edad($_SESSION['solicitudb']->id),
+
+
+                    ]);
+
+                  }
+
                   $Solicitud =  Solicitud::findOne($model->id_solicitudpap);
                   //puede pasar a estado en proceso
                   $Solicitud->id_estado=$model->id_estado;
@@ -255,8 +293,7 @@ class PapController extends Controller
                   'search' => $search,
                   'array' => $array,
                   'provider' => $provider,
-                  'edadDelPaciente'=>$edad,
-
+                  'edadDelPaciente'=>$this->calcular_edad($_SESSION['solicitudb']->id),
 
               ]);
           }

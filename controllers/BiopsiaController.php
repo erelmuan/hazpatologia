@@ -11,6 +11,7 @@ use app\models\PlantillamacroscopiaSearch;
 use app\models\PlantillamicroscopiaSearch;
 use app\models\PlantilladiagnosticoSearch;
 use app\models\PlantillafraseSearch;
+use app\models\Usuario;
 
 
 
@@ -195,24 +196,44 @@ class BiopsiaController extends Controller
     //la fecha tiene que estar en formato d-m-y
     function calcular_edad($id){
 
-      $Solicitud =  Solicitud::findOne($id);
-      list($ano,$mes,$dia) = explode("-",$Solicitud->paciente->fecha_nacimiento);
-      list($anoR,$mesR,$diaR) = explode("-",$Solicitud->fecharealizacion);
+        $Solicitud =  Solicitud::findOne($id);
+        list($ano,$mes,$dia) = explode("-",$Solicitud->paciente->fecha_nacimiento);
+        list($anoR,$mesR,$diaR) = explode("-",$Solicitud->fecharealizacion);
 
 
-      $ano_diferencia  = $anoR - $ano;
-      $mes_diferencia = $mesR - $mes;
-      $dia_diferencia   = $diaR - $dia;
-      if ( $mes_diferencia < 0)
-      {
-        $ano_diferencia--;
-      }
-      elseif ( $mes_diferencia == 0){
-        if ( $dia_diferencia < 0)
-            $ano_diferencia--;
+        $ano_diferencia  = $anoR - $ano;
+        $mes_diferencia = $mesR - $mes;
+        $dia_diferencia   = $diaR - $dia;
+        if ( $mes_diferencia < 0)
+        {
+          $ano_diferencia--;
         }
-        return $ano_diferencia;
+        elseif ( $mes_diferencia == 0){
+          if ( $dia_diferencia < 0)
+              $ano_diferencia--;
+          }
+          return $ano_diferencia;
       }
+
+  public  function  validarContraseña($contrasenia){
+
+      $modelUsuario = Usuario::find()->where(["id"=>Yii::$app->user->identity->getId()])->one();
+      if ($modelUsuario->contrasenia<> md5($contrasenia)) {
+        Yii::$app->getSession()->setFlash('warning', [
+            'type' => 'danger',
+            'duration' => 5000,
+            'icon' => 'fa fa-warning',
+            'message' => "CONTRASEÑA INCORRECTA",
+            'title' => 'NOTIFICACIÓN',
+            'positonY' => 'top',
+            'positonX' => 'right'
+        ]);
+        return false;
+      }else {
+        return true;
+      }
+
+    }
     /**
      * Updates an existing Biopsia model.
      * For ajax request will return json object
@@ -228,13 +249,29 @@ class BiopsiaController extends Controller
         $search=[];
         $array=[];
         $provider=[];
+        $modelUsuario = Usuario::find()->where(["id"=>Yii::$app->user->identity->getId()])->one();
+
+        $model_estado_resguardo= $model->estado->descripcion;
         $this->cargarEstructuras($search,$array,$provider,$model->solicitudbiopsia->estudio->id);
             // if ($model->load($request->post()) && $model->save()) {
             if ($model->load($request->post()) ) {
+                  if (Usuario::isPatologo() && ($model->estado->descripcion=='LISTO' || $model->estado->descripcion == 'ENTREGADO')){
+                    //validar contraseñar
+                    if (!$this->validarContraseña($_POST["contrasenia"])){
+                      $model->estado->descripcion = $model_estado_resguardo;
+                      return $this->render('_form', [
+                          'model' => $model,
+                          'dataSol' => $_SESSION['solicitudb'],
+                          'search' => $search,
+                          'array' => $array,
+                          'provider' => $provider,
+                          'edadDelPaciente'=>$this->calcular_edad($_SESSION['solicitudb']->id),
 
 
-                  if ($model->estado->descripcion=='LISTO' || $model->estado->descripcion == 'ENTREGADO')
-                  {
+                      ]);
+
+                    }
+
                     $Solicitud =  Solicitud::findOne($model->id_solicitudbiopsia);
                     //puede pasar a estado en proceso
                     $Solicitud->id_estado= $model->id_estado;
@@ -256,7 +293,6 @@ class BiopsiaController extends Controller
                 $Solicitud =  Solicitud::findOne($model->id_solicitudbiopsia);
 
               $_SESSION['solicitudb']=$Solicitud;
-              $edad = $this->calcular_edad($_SESSION['solicitudb']->id);
 
                 return $this->render('_form', [
                     'model' => $model,
@@ -264,7 +300,7 @@ class BiopsiaController extends Controller
                     'search' => $search,
                     'array' => $array,
                     'provider' => $provider,
-                    'edadDelPaciente'=>$edad,
+                    'edadDelPaciente'=>$this->calcular_edad($_SESSION['solicitudb']->id),
 
 
                 ]);

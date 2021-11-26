@@ -120,6 +120,9 @@ $config = [
 
       'modules' => [
           'gridview' => ['class' => 'kartik\grid\Module'],
+          'pdfjs' => [
+             'class' => '\yii2assets\pdfjs\Module',
+         ],
           'i18n' => [    'class' => 'yii\i18n\PhpMessageSource',
     'basePath' => '@kvgrid/messages/es',
     'forceTranslation' => false]
