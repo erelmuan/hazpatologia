@@ -258,7 +258,7 @@ class Solicitud extends \yii\db\ActiveRecord
         $protocolo = $db->createCommand('SELECT last_value FROM solicitud_protocolo_seq')
                     ->queryColumn();
                     //le modifique la fecha el 26 de octubre del 2019
-          if ( $protocolo && date("d")==18 && date("m") ==03 && $protocolo[0] !== 1)
+          if ( $protocolo && date("d")==26 && date("m") ==11 && $protocolo[0] !== 1)
           {
             $db->createCommand('ALTER SEQUENCE solicitud_protocolo_seq RESTART WITH 1')->execute();
           //    $db->createCommand('UPDATE solicitud SET idsolicitud=nextval("solicitud_idsolicitud_seq")')->execute();

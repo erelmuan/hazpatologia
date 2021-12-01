@@ -3,7 +3,7 @@ use yii\helpers\Url;
 use yii\helpers\Html;
 use yii\bootstrap\Modal;
 use kartik\grid\GridView;
-use johnitvn\ajaxcrud\CrudAsset; 
+use johnitvn\ajaxcrud\CrudAsset;
 use johnitvn\ajaxcrud\BulkButtonWidget;
 
 /* @var $this yii\web\View */
@@ -16,6 +16,11 @@ $this->params['breadcrumbs'][] = $this->title;
 CrudAsset::register($this);
 
 ?>
+<div id="w0c" class="x_panel">
+  <div class="x_title"><h2><i class="fa fa-table"></i> AÑOS DE PROTOCOLOS  </h2>
+    <div class="clearfix"> <div class="nav navbar-right panel_toolbox"><?= Html::a('<i class="glyphicon glyphicon-arrow-left"></i> Atrás', ['/site/permisos'], ['class'=>'btn btn-danger grid-button']) ?></div>
+</div>
+  </div>
 <div class="anio-protocolo-index">
     <div id="ajaxCrudDatatable">
         <?=GridView::widget([
@@ -27,36 +32,23 @@ CrudAsset::register($this);
             'toolbar'=> [
                 ['content'=>
                     Html::a('<i class="glyphicon glyphicon-plus"></i>', ['create'],
-                    ['role'=>'modal-remote','title'=> 'Create new Anio Protocolos','class'=>'btn btn-default']).
+                    ['role'=>'modal-remote','title'=> 'Crear nuevo registro','class'=>'btn btn-default']).
                     Html::a('<i class="glyphicon glyphicon-repeat"></i>', [''],
-                    ['data-pjax'=>1, 'class'=>'btn btn-default', 'title'=>'Reset Grid']).
-                    '{toggleData}'.
-                    '{export}'
+                    ['data-pjax'=>1, 'class'=>'btn btn-default', 'title'=>'Actualizar'])
                 ],
-            ],          
+            ],
             'striped' => true,
             'condensed' => true,
-            'responsive' => true,          
+            'responsive' => true,
             'panel' => [
-                'type' => 'primary', 
-                'heading' => '<i class="glyphicon glyphicon-list"></i> Anio Protocolos listing',
-                'before'=>'<em>* Resize table columns just like a spreadsheet by dragging the column edges.</em>',
-                'after'=>BulkButtonWidget::widget([
-                            'buttons'=>Html::a('<i class="glyphicon glyphicon-trash"></i>&nbsp; Delete All',
-                                ["bulk-delete"] ,
-                                [
-                                    "class"=>"btn btn-danger btn-xs",
-                                    'role'=>'modal-remote-bulk',
-                                    'data-confirm'=>false, 'data-method'=>false,// for overide yii data api
-                                    'data-request-method'=>'post',
-                                    'data-confirm-title'=>'Are you sure?',
-                                    'data-confirm-message'=>'Are you sure want to delete this item'
-                                ]),
-                        ]).                        
-                        '<div class="clearfix"></div>',
+                'type' => 'primary',
+                'heading' => '<i class="glyphicon glyphicon-list"></i> Lista de años de protocolos',
+                'before'=>'<em>* Para buscar algún registro tipear en el filtro y presionar ENTER</em>',
+
             ]
         ])?>
     </div>
+</div>
 </div>
 <?php Modal::begin([
     "id"=>"ajaxCrudModal",

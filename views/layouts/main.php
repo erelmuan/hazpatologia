@@ -10,6 +10,8 @@ use yii\helpers\Url;
 use kartik\widgets\Alert;
 use kartik\icons\Icon;
 use kartik\widgets\SwitchInput;
+use app\models\AnioProtocolo;
+
 Icon::map($this, Icon::WHHG);
 $bundle = yiister\gentelella\assets\Asset::register($this);
 
@@ -315,19 +317,9 @@ $bundle = yiister\gentelella\assets\Asset::register($this);
                         </li>
                         <div id="fecha">
                           <!-- <h2> -->
-                      <input type="text" id="username-rad" class="form-control is-invalid" name="Demo[username]" aria-required="true" aria-invalid="true">
-                        <? //setlocale(LC_ALL,"es_ES");
-                        // echo strftime("%A %d de %B del %Y");
-                        // Adjust handle width for longer labels
-                        echo SwitchInput::widget([
-                        'name' => 'status_11',
-                        'pluginOptions' => [
-                            'size' => 'small',
-                            'onColor' => 'success',
-                            'offColor' => 'danger',
-                          ]
-                      ]);
-                      ?>
+                      <input type="text" class="form-control is-invalid" value = <?=AnioProtocolo::find()->where(['activo'=>true])->one()->anio  ?>  aria-required="true" aria-invalid="true" readonly>
+
+                      <?= Html::a('<i class="glyphicon glyphicon-pencil"></i> Modificar Año', ['/anio-protocolo/index'], ['class'=>'btn btn-success grid-button']) ?>
 
                          <!-- <p id="demo"></p> -->
                        <!-- </h2> -->

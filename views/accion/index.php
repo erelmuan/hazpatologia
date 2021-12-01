@@ -45,7 +45,7 @@ CrudAsset::register($this);
             'panel' => [
                 'type' => 'primary',
                 'heading' => '<i class="glyphicon glyphicon-list"></i> Lista de acciones',
-                'before'=>'<em>* Para buscar alguna acción tipear en el filtro y presionar ENTER o el boton <i class="glyphicon glyphicon-search"></i></em>',
+                'before'=>'<em>* Para buscar algún registro tipear en el filtro y presionar ENTER o el boton <i class="glyphicon glyphicon-search"></i></em>',
 
                         '<div class="clearfix"></div>',
             ]

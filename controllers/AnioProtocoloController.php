@@ -37,7 +37,7 @@ class AnioProtocoloController extends Controller
      * @return mixed
      */
     public function actionIndex()
-    {    
+    {
         $searchModel = new AnioProtocoloSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
@@ -54,7 +54,7 @@ class AnioProtocoloController extends Controller
      * @return mixed
      */
     public function actionView($id)
-    {   
+    {
         $request = Yii::$app->request;
         if($request->isAjax){
             Yii::$app->response->format = Response::FORMAT_JSON;
@@ -63,9 +63,9 @@ class AnioProtocoloController extends Controller
                     'content'=>$this->renderAjax('view', [
                         'model' => $this->findModel($id),
                     ]),
-                    'footer'=> Html::button('Close',['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
-                            Html::a('Edit',['update','id'=>$id],['class'=>'btn btn-primary','role'=>'modal-remote'])
-                ];    
+                    'footer'=> Html::button('Cerrar',['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
+                            Html::a('Editar',['update','id'=>$id],['class'=>'btn btn-primary','role'=>'modal-remote'])
+                ];
         }else{
             return $this->render('view', [
                 'model' => $this->findModel($id),
@@ -82,7 +82,7 @@ class AnioProtocoloController extends Controller
     public function actionCreate()
     {
         $request = Yii::$app->request;
-        $model = new AnioProtocolo();  
+        $model = new AnioProtocolo();
 
         if($request->isAjax){
             /*
@@ -95,29 +95,29 @@ class AnioProtocoloController extends Controller
                     'content'=>$this->renderAjax('create', [
                         'model' => $model,
                     ]),
-                    'footer'=> Html::button('Close',['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
-                                Html::button('Save',['class'=>'btn btn-primary','type'=>"submit"])
-        
-                ];         
+                    'footer'=> Html::button('Cerrar',['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
+                                Html::button('Guardar',['class'=>'btn btn-primary','type'=>"submit"])
+
+                ];
             }else if($model->load($request->post()) && $model->save()){
                 return [
                     'forceReload'=>'#crud-datatable-pjax',
                     'title'=> "Create new AnioProtocolo",
                     'content'=>'<span class="text-success">Create AnioProtocolo success</span>',
-                    'footer'=> Html::button('Close',['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
+                    'footer'=> Html::button('Cerrar',['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
                             Html::a('Create More',['create'],['class'=>'btn btn-primary','role'=>'modal-remote'])
-        
-                ];         
-            }else{           
+
+                ];
+            }else{
                 return [
                     'title'=> "Create new AnioProtocolo",
                     'content'=>$this->renderAjax('create', [
                         'model' => $model,
                     ]),
-                    'footer'=> Html::button('Close',['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
-                                Html::button('Save',['class'=>'btn btn-primary','type'=>"submit"])
-        
-                ];         
+                    'footer'=> Html::button('Cerrar',['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
+                                Html::button('Guardar',['class'=>'btn btn-primary','type'=>"submit"])
+
+                ];
             }
         }else{
             /*
@@ -131,9 +131,35 @@ class AnioProtocoloController extends Controller
                 ]);
             }
         }
-       
+
+    }
+    public function setearMensaje($mensaje){
+      Yii::$app->getSession()->setFlash('warning', [
+          'type' => 'danger',
+          'duration' => 5000,
+          'icon' => 'fa fa-warning',
+          'message' => $mensaje,
+          'title' => 'NOTIFICACIÓN',
+          'positonY' => 'top',
+          'positonX' => 'right'
+      ]);
+
     }
 
+ public function validar ($valor_enviado , $model){
+
+    if($valor_enviado["activo"] == false && $model->activo ==true ){
+        $this->setearMensaje('NO SE PUEDE DESELECCIONAR DIRECTAMENTE EL ACTIVO, DEBE SELECCIONAR ACTIVO OTRA AÑO ');
+        return false;
+      }
+
+    if($valor_enviado["activo"] == true && $model->activo ==false ){
+        $model->actualizarEstado();
+      }
+      return true;
+      //si tiene solicitudes no se podra modificar el año
+
+ }
     /**
      * Updates an existing AnioProtocolo model.
      * For ajax request will return json object
@@ -141,58 +167,34 @@ class AnioProtocoloController extends Controller
      * @param integer $id
      * @return mixed
      */
-    public function actionUpdate($id)
-    {
-        $request = Yii::$app->request;
-        $model = $this->findModel($id);       
+     public function actionUpdate($id)
+     {
+         $request = Yii::$app->request;
+         $model = $this->findModel($id);
 
-        if($request->isAjax){
-            /*
-            *   Process for ajax request
-            */
-            Yii::$app->response->format = Response::FORMAT_JSON;
-            if($request->isGet){
-                return [
-                    'title'=> "Update AnioProtocolo #".$id,
-                    'content'=>$this->renderAjax('update', [
-                        'model' => $model,
-                    ]),
-                    'footer'=> Html::button('Close',['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
-                                Html::button('Save',['class'=>'btn btn-primary','type'=>"submit"])
-                ];         
-            }else if($model->load($request->post()) && $model->save()){
-                return [
-                    'forceReload'=>'#crud-datatable-pjax',
-                    'title'=> "AnioProtocolo #".$id,
-                    'content'=>$this->renderAjax('view', [
-                        'model' => $model,
-                    ]),
-                    'footer'=> Html::button('Close',['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
-                            Html::a('Edit',['update','id'=>$id],['class'=>'btn btn-primary','role'=>'modal-remote'])
-                ];    
-            }else{
-                 return [
-                    'title'=> "Update AnioProtocolo #".$id,
-                    'content'=>$this->renderAjax('update', [
-                        'model' => $model,
-                    ]),
-                    'footer'=> Html::button('Close',['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
-                                Html::button('Save',['class'=>'btn btn-primary','type'=>"submit"])
-                ];        
-            }
-        }else{
-            /*
-            *   Process for non-ajax request
-            */
-            if ($model->load($request->post()) && $model->save()) {
-                return $this->redirect(['view', 'id' => $model->id]);
-            } else {
-                return $this->render('update', [
-                    'model' => $model,
-                ]);
-            }
-        }
-    }
+         if($this->request->isPost ){
+           //Si no se valida entonces mostrar $mensaje
+           if (!$this->validar($_POST["AnioProtocolo"] , $model))
+           {
+             return $this->render('update', [
+                 'model' => $model,
+             ]);
+
+           }
+
+
+             if ($model->load($request->post()) && $model->save()) {
+                 return $this->redirect(['view', 'id' => $model->id]);
+             }
+           }
+              else {
+                 return $this->render('update', [
+                     'model' => $model,
+                 ]);
+             }
+
+
+     }
 
     /**
      * Delete an existing AnioProtocolo model.
@@ -230,7 +232,7 @@ class AnioProtocoloController extends Controller
      * @return mixed
      */
     public function actionBulkDelete()
-    {        
+    {
         $request = Yii::$app->request;
         $pks = explode(',', $request->post( 'pks' )); // Array or selected records primary keys
         foreach ( $pks as $pk ) {
@@ -250,7 +252,7 @@ class AnioProtocoloController extends Controller
             */
             return $this->redirect(['index']);
         }
-       
+
     }
 
     /**

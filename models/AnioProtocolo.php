@@ -27,10 +27,14 @@ class AnioProtocolo extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['anio', 'activo'], 'required'],
+            [['anio'], 'required'],
             [['anio'], 'default', 'value' => null],
             [['anio'], 'integer'],
             [['activo'], 'boolean'],
+            [['anio'], 'unique'],
+            ['anio', 'compare', 'compareValue' => 2017, 'operator' => '>=','message' => 'El numero debe ser mayor a 2017'],
+            ['anio', 'compare', 'compareValue' => 2035, 'operator' => '<=','message' => 'El numero debe ser menor a 2035'],
+
         ];
     }
 
@@ -44,5 +48,12 @@ class AnioProtocolo extends \yii\db\ActiveRecord
             'activo' => 'Activo',
             'id' => 'ID',
         ];
+    }
+
+
+    public function actualizarEstado()  {
+        $db = Yii::$app->db;
+        $db->createCommand('UPDATE anio_protocolo SET activo = false')->execute();;
+
     }
 }
