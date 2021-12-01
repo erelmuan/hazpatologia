@@ -10,7 +10,7 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use \yii\web\Response;
 use yii\helpers\Html;
-
+use app\models\Solicitud;
 /**
  * AnioProtocoloController implements the CRUD actions for AnioProtocolo model.
  */
@@ -77,7 +77,7 @@ class AnioProtocoloController extends Controller
             Yii::$app->response->format = Response::FORMAT_JSON;
             if($request->isGet){
                 return [
-                    'title'=> "Create new AnioProtocolo",
+                    'title'=> "Crear nuevo Protocolo Año",
                     'content'=>$this->renderAjax('create', [
                         'model' => $model,
                     ]),
@@ -88,7 +88,7 @@ class AnioProtocoloController extends Controller
             }else if($model->load($request->post()) && $model->save()){
                 return [
                     'forceReload'=>'#crud-datatable-pjax',
-                    'title'=> "Create new AnioProtocolo",
+                    'title'=> "Crear nuevo Protocolo Año",
                     'content'=>'<span class="text-success">Create AnioProtocolo success</span>',
                     'footer'=> Html::button('Cerrar',['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
                             Html::a('Create More',['create'],['class'=>'btn btn-primary','role'=>'modal-remote'])
@@ -96,7 +96,7 @@ class AnioProtocoloController extends Controller
                 ];
             }else{
                 return [
-                    'title'=> "Create new AnioProtocolo",
+                    'title'=> "Crear nuevo Protocolo Año",
                     'content'=>$this->renderAjax('create', [
                         'model' => $model,
                     ]),
@@ -119,23 +119,11 @@ class AnioProtocoloController extends Controller
         }
 
     }
-    public function setearMensaje($mensaje){
-      Yii::$app->getSession()->setFlash('warning', [
-          'type' => 'danger',
-          'duration' => 5000,
-          'icon' => 'fa fa-warning',
-          'message' => $mensaje,
-          'title' => 'NOTIFICACIÓN',
-          'positonY' => 'top',
-          'positonX' => 'right'
-      ]);
-
-    }
 
  public function validar ($valor_enviado , $model){
 
     if($valor_enviado["activo"] == false && $model->activo ==true ){
-        $this->setearMensaje('NO SE PUEDE DESELECCIONAR DIRECTAMENTE EL ACTIVO, DEBE SELECCIONAR ACTIVO OTRA AÑO ');
+        $this->setearMensajeError('NO SE PUEDE DESELECCIONAR DIRECTAMENTE EL ACTIVO, DEBE SELECCIONAR ACTIVO OTRA AÑO ');
         return false;
       }
 
@@ -192,19 +180,16 @@ class AnioProtocoloController extends Controller
     public function actionDelete($id)
     {
         $request = Yii::$app->request;
-        $this->findModel($id)->delete();
+        $model = $this->findModel($id);
+        if(Solicitud::getSolicitudesAnio($model->anio)){
+          $this->setearMensajeError('NO SE PUEDE ELIMINAR PORQUE HAY SOLICITUDES DE ESE AÑO');
+          return $this->redirect(['index']);
+        }
+        else {
+          $this->findModel($id)->delete();
+          Yii::$app->response->format = Response::FORMAT_JSON;
+          return ['forceClose'=>true,'forceReload'=>'#crud-datatable-pjax'];
 
-        if($request->isAjax){
-            /*
-            *   Process for ajax request
-            */
-            Yii::$app->response->format = Response::FORMAT_JSON;
-            return ['forceClose'=>true,'forceReload'=>'#crud-datatable-pjax'];
-        }else{
-            /*
-            *   Process for non-ajax request
-            */
-            return $this->redirect(['index']);
         }
 
 

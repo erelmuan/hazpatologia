@@ -18,6 +18,8 @@ use app\models\Paciente;
 use app\models\MedicoSearch;
 use app\models\Medico;
 use app\models\Pap;
+use app\models\AnioProtocolo;
+
 
 use app\components\Metodos\Metodos;
 use yii\data\ActiveDataProvider;
@@ -56,15 +58,7 @@ class SolicitudController extends Controller
 
         if (isset($_POST['idsol']) ) {
           if ($_POST['idsol'] =='' ){
-            Yii::$app->getSession()->setFlash('warning', [
-                'type' => 'danger',
-                'duration' => 5000,
-                'icon' => 'fa fa-warning',
-                'message' => "DEBE ELEGIR UNA OPCION",
-                'title' => 'NOTIFICACIÓN',
-                'positonY' => 'top',
-                'positonX' => 'right'
-            ]);
+            $this->setearMensajeError('DEBE ELEGIR UNA OPCION');
             return $this->redirect(['/'.$searchModel->tableName().'/seleccionar']);
           }else
           {
@@ -77,7 +71,7 @@ class SolicitudController extends Controller
             //En caso que esten trabajando en forma concurrente, valida la apropiacin de la solicitud
             //es decir si alguien hizo uso de la misma, otro no pueda reutilizarla
             if ($model->$modelestudio !==null ){
-                \Yii::$app->getSession()->setFlash('error', 'La solicitud que eligio ya fue agregada a un formulario de un informe');
+              $this->setearMensajeError('La solicitud que eligio ya fue agregada a un formulario de un informe');
                 return $this->redirect(['/'.$searchModel->tableName().'/seleccionar']);
 
             }else {
@@ -200,6 +194,15 @@ class SolicitudController extends Controller
 
     }
 
+    public function validar ($fecha){
+      //Si no encuentra protocolo año vigente para la fecha
+       if(!AnioProtocolo::getAnioProtocoloActivo($fecha)){
+           $this->setearMensajeError('NO SE PUEDE CREAR LA SOLICITUD SI FECHA DE REALIZACION NO COINCIDE CON EL AÑO DE PROTOCOLO ACTIVO ');
+           return false;
+         }
+         return true;
+    }
+
     /**
      * Creates a new Solicitud model.
      * For ajax request will return json object
@@ -278,9 +281,17 @@ class SolicitudController extends Controller
             */
           //  $pacientemodel= new Paciente();
           //  $dataProviderPac = $searchModelPac->search(Yii::$app->request->queryParams);
-        if ($model->load($request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        } else {
+        if($this->request->isPost ){
+          //Si no valida
+          if (!$this->validar($_POST[$model->classNameM()]["fechadeingreso"]))  {
+              return $this->redirect([$model->tableName()."/create" ]);
+
+          }
+            if ($model->load($request->post()) && $model->save()) {
+                return $this->redirect(['view', 'id' => $model->id]);
+            }
+      }
+         else {
             return $this->render('_form', [
               'model' => $model,
               'searchModelPac' => $searchModelPac,
@@ -311,7 +322,7 @@ class SolicitudController extends Controller
 
         $modelestudio= $model->estudio->modelo;
         if (isset($model->$modelestudio) && $model->$modelestudio->estado->descripcion=='LISTO'){
-           \Yii::$app->getSession()->setFlash('error', 'No se puede modificar una solicitud con informe listo.');
+          $this->setearMensajeError('No se puede modificar una solicitud con informe listo.');
            return $this->redirect(['solicitud/index', 'listo' => false]);
         }
 
@@ -364,7 +375,7 @@ class SolicitudController extends Controller
              return false;
          }
      }
-  
+
     public function actionSelect()
     {
         $request = Yii::$app->request;

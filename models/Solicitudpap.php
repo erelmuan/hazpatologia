@@ -30,7 +30,7 @@ use Yii;
  * @property int $id_cirugia_previa
  * @property bool $tratamiento_radiante
  * @property bool $quimioterapia
- * @property string $datos_clinicos_de_interes  
+ * @property string $datos_clinicos_de_interes
  * @property bool $colposcopia
  * @property string $conclusion
  * @property int $id_estudio
@@ -43,7 +43,7 @@ use Yii;
  */
 class Solicitudpap extends Solicitud
 {
-    
+
     /**
      * {@inheritdoc}
      */
@@ -59,6 +59,10 @@ class Solicitudpap extends Solicitud
     {
         return 'pap';
     }
+    public static function classNameM()
+    {
+        return 'Solicitudpap';
+    }
     /**
      * {@inheritdoc}
      */
@@ -68,7 +72,7 @@ class Solicitudpap extends Solicitud
             ///////
             [['id_paciente'], 'required',  'message' => 'El campo paciente no puede estar vacío.'],
             [['id_medico'], 'required',  'message' => 'El campo medico no puede estar vacío.'],
-            [['id_paciente', 'id_procedencia', 'id_medico', 'fecharealizacion', 'fechadeingreso', 'id_estudio', 'id_estado'], 'required'], 
+            [['id_paciente', 'id_procedencia', 'id_medico', 'fecharealizacion', 'fechadeingreso', 'id_estudio', 'id_estado'], 'required'],
 
             ///////
             [['id_paciente', 'id_procedencia', 'id_medico', 'id_materialsolicitud', 'id_tipo_muestra', 'id_metodo_anticonceptivo', 'id_cirugia_previa', 'id_estudio', 'id_estado'], 'integer'],

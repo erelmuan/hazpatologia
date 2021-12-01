@@ -67,4 +67,15 @@ class AnioProtocolo extends \yii\db\ActiveRecord
         $db->createCommand('UPDATE anio_protocolo SET activo = false')->execute();;
 
     }
+
+    public function getAnioProtocoloActivo($fecha) {
+        $fechaEntera = strtotime($fecha);
+        $anio = date("Y", $fechaEntera);
+        $cantidad= AnioProtocolo::find()->andWhere(['and' ,"anio =" .$anio ." and activo=true" ])->count();
+        if ($cantidad == 1){
+          return true;
+        }else {
+          return false;
+         }
+    }
 }

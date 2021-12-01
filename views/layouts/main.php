@@ -317,9 +317,9 @@ $bundle = yiister\gentelella\assets\Asset::register($this);
                         </li>
                         <div id="fecha">
                           <!-- <h2> -->
-                      <input type="text" class="form-control is-invalid" value = <?= (AnioProtocolo::find()->where(['activo'=>true])->one()!== NULL)? AnioProtocolo::find()->where(['activo'=>true])->one()->anio:'INACTIVOS'  ?> readonly>
+                     <b>   <input type="text" class="form-control is-invalid" value = <?= (AnioProtocolo::find()->where(['activo'=>true])->one()!== NULL)? AnioProtocolo::find()->where(['activo'=>true])->one()->anio:'INACTIVOS'  ?> readonly>  </b> 
 
-                      <?= Html::a('<i class="glyphicon glyphicon-pencil"></i> Modificar Año', ['/anio-protocolo/index'], ['class'=>'btn btn-success grid-button']) ?>
+                      <?= Html::a('<i class="glyphicon glyphicon-pencil"></i> Modificar Año-Protocolo', ['/anio-protocolo/index'], ['class'=>'btn btn-success grid-button']) ?>
 
                          <!-- <p id="demo"></p> -->
                        <!-- </h2> -->

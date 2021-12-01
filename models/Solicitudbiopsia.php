@@ -44,6 +44,10 @@ class Solicitudbiopsia extends Solicitud
     {
         return 'biopsia';
     }
+    public static function classNameM()
+    {
+        return 'Solicitudbiopsia';
+    }
      /**
      * {@inheritdoc}
      */
@@ -62,7 +66,7 @@ class Solicitudbiopsia extends Solicitud
             [['fechadeingreso'], 'required'],
             [['observacion', 'sitio_prec_toma', 'datos_clin_interes', 'diagnostico_presuntivo', 'biopsia_anterior_resultado'], 'string'],
             [['id_materialginecologico'], 'exist', 'skipOnError' => true, 'targetClass' => Paramaterialginecologico::className(), 'targetAttribute' => ['id_materialginecologico' => 'id']],
-            [['id_paciente'], 'exist', 'skipOnError' => true, 'targetClass' => Paciente::className(), 'targetAttribute' => ['id_paciente' => 'id']], 
+            [['id_paciente'], 'exist', 'skipOnError' => true, 'targetClass' => Paciente::className(), 'targetAttribute' => ['id_paciente' => 'id']],
         ];
     }
 

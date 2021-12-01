@@ -292,4 +292,12 @@ class Solicitud extends \yii\db\ActiveRecord
         return ArrayHelper::map(Materialsolicitud::find()->where(['id_estudio' => $id_estudio])->all(), 'id','descripcion');
 
     }
+    public function getSolicitudesAnio($nio) {
+        $cantidad= Solicitud::find()->andWhere(['and' ,' "fechadeingreso"::text  like '. "'%".$nio."%'"])->count();
+        if ($cantidad >0){
+          return true;
+        }else {
+          return false;
+         }
+    }
 }
