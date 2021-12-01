@@ -45,6 +45,8 @@ use yii\web\JsExpression;
 //////////////
 use kartik\builder\Form;
 use kartik\widgets\ActiveForm;
+use app\models\Usuario;
+
 /* @var $this yii\web\View */
 /* @var $model app\models\Biopsias */
 /* @var $form yii\widgets\ActiveForm */
@@ -356,10 +358,12 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
     <div class="col-md-12 col-sm-12 col-xs-12 form-group">
       <?= Html::submitButton($model->isNewRecord ? 'Guardar' : 'Actualizar', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
     </div>
+    <? if (Usuario::isPatologo()) { ?>
     <div class="col-md-8 col-sm-12 col-xs-12 form-group">
       <label class="control-label" for="pap-contrseña">Contraseña</label>
       <input type="password" id="contraseña" class="form-control" name="contrasenia" style="width:50%; " aria-required="true" aria-invalid="false">
     </div>
+    <? } ?>
     <?= $this->render('modals', [
         'model' => $model,
         'search' => $search,

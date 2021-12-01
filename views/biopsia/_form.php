@@ -23,6 +23,7 @@ use kartik\widgets\ActiveForm;
 /* @var $model app\models\Biopsias */
 /* @var $form yii\widgets\ActiveForm */
 use kartik\datecontrol\DateControl;
+use app\models\Usuario;
 
 ?>
 <div id="w0" class="x_panel">
@@ -283,10 +284,12 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
 
 
     </div>
+    <? if (Usuario::isPatologo()) { ?>
     <div class="col-md-8 col-sm-12 col-xs-12 form-group">
       <label class="control-label" for="biopsia-contrseña">Contraseña</label>
       <input type="password" id="contraseña" class="form-control" name="contrasenia" style="width:50%; " aria-required="true" aria-invalid="false">
     </div>
+  <? } ?>
   <?= $this->render('modals', [
         'model' => $model,
         'search' => $search,
