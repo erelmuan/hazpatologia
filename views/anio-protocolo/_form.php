@@ -7,6 +7,7 @@ use yii\widgets\ActiveForm;
 /* @var $form yii\widgets\ActiveForm */
 ?>
 <div id="w0" class="x_panel">
+  <div class="clearfix"> <div class="nav navbar-right panel_toolbox"><?= Html::a('<i class="glyphicon glyphicon-arrow-left"></i> Atrás', ['/anio-protocolo/index'], ['class'=>'btn btn-danger grid-button']) ?></div>
 
 <div class="anio-protocolo-form">
 
