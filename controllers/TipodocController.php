@@ -16,28 +16,14 @@ use yii\helpers\Html;
  */
 class TipodocController extends Controller
 {
-    /**
-     * @inheritdoc
-     */
-    public function behaviors()
-    {
-        return [
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['post'],
-                    'bulk-delete' => ['post'],
-                ],
-            ],
-        ];
-    }
+  
 
     /**
      * Lists all Tipodoc models.
      * @return mixed
      */
     public function actionIndex()
-    {    
+    {
         $searchModel = new TipodocSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
@@ -54,7 +40,7 @@ class TipodocController extends Controller
      * @return mixed
      */
     public function actionView($id)
-    {   
+    {
         $request = Yii::$app->request;
         if($request->isAjax){
             Yii::$app->response->format = Response::FORMAT_JSON;
@@ -65,7 +51,7 @@ class TipodocController extends Controller
                     ]),
                     'footer'=> Html::button('Close',['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
                             Html::a('Edit',['update','id'=>$id],['class'=>'btn btn-primary','role'=>'modal-remote'])
-                ];    
+                ];
         }else{
             return $this->render('view', [
                 'model' => $this->findModel($id),
@@ -82,7 +68,7 @@ class TipodocController extends Controller
     public function actionCreate()
     {
         $request = Yii::$app->request;
-        $model = new Tipodoc();  
+        $model = new Tipodoc();
 
         if($request->isAjax){
             /*
@@ -97,8 +83,8 @@ class TipodocController extends Controller
                     ]),
                     'footer'=> Html::button('Close',['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
                                 Html::button('Save',['class'=>'btn btn-primary','type'=>"submit"])
-        
-                ];         
+
+                ];
             }else if($model->load($request->post()) && $model->save()){
                 return [
                     'forceReload'=>'#crud-datatable-pjax',
@@ -106,9 +92,9 @@ class TipodocController extends Controller
                     'content'=>'<span class="text-success">Create Tipodoc success</span>',
                     'footer'=> Html::button('Close',['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
                             Html::a('Create More',['create'],['class'=>'btn btn-primary','role'=>'modal-remote'])
-        
-                ];         
-            }else{           
+
+                ];
+            }else{
                 return [
                     'title'=> "Create new Tipodoc",
                     'content'=>$this->renderAjax('create', [
@@ -116,8 +102,8 @@ class TipodocController extends Controller
                     ]),
                     'footer'=> Html::button('Close',['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
                                 Html::button('Save',['class'=>'btn btn-primary','type'=>"submit"])
-        
-                ];         
+
+                ];
             }
         }else{
             /*
@@ -131,7 +117,7 @@ class TipodocController extends Controller
                 ]);
             }
         }
-       
+
     }
 
     /**
@@ -144,7 +130,7 @@ class TipodocController extends Controller
     public function actionUpdate($id)
     {
         $request = Yii::$app->request;
-        $model = $this->findModel($id);       
+        $model = $this->findModel($id);
 
         if($request->isAjax){
             /*
@@ -159,7 +145,7 @@ class TipodocController extends Controller
                     ]),
                     'footer'=> Html::button('Close',['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
                                 Html::button('Save',['class'=>'btn btn-primary','type'=>"submit"])
-                ];         
+                ];
             }else if($model->load($request->post()) && $model->save()){
                 return [
                     'forceReload'=>'#crud-datatable-pjax',
@@ -169,7 +155,7 @@ class TipodocController extends Controller
                     ]),
                     'footer'=> Html::button('Close',['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
                             Html::a('Edit',['update','id'=>$id],['class'=>'btn btn-primary','role'=>'modal-remote'])
-                ];    
+                ];
             }else{
                  return [
                     'title'=> "Update Tipodoc #".$id,
@@ -178,7 +164,7 @@ class TipodocController extends Controller
                     ]),
                     'footer'=> Html::button('Close',['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
                                 Html::button('Save',['class'=>'btn btn-primary','type'=>"submit"])
-                ];        
+                ];
             }
         }else{
             /*
@@ -230,7 +216,7 @@ class TipodocController extends Controller
      * @return mixed
      */
     public function actionBulkDelete()
-    {        
+    {
         $request = Yii::$app->request;
         $pks = explode(',', $request->post( 'pks' )); // Array or selected records primary keys
         foreach ( $pks as $pk ) {
@@ -250,7 +236,7 @@ class TipodocController extends Controller
             */
             return $this->redirect(['index']);
         }
-       
+
     }
 
     /**

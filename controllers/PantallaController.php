@@ -14,20 +14,7 @@ use yii\filters\VerbFilter;
  */
 class PantallaController extends Controller
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function behaviors()
-    {
-        return [
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['POST'],
-                ],
-            ],
-        ];
-    }
+  
 
     /**
      * Lists all Pantalla models.

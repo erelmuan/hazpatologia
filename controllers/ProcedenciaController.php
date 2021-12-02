@@ -18,37 +18,7 @@ use yii\helpers\Html;
  */
 class ProcedenciaController extends Controller
 {
-    /**
-     * @inheritdoc
-     */
-    // public function behaviors()
-    // {
-    //     return [
-    //         'verbs' => [
-    //             'class' => VerbFilter::className(),
-    //             'actions' => [
-    //                 'delete' => ['post'],
-    //                 'bulk-delete' => ['post'],
-    //             ],
-    //         ],
-    //     ];
-    // }
-    // public function behaviors()
-    // {
-    //     return [
-    //           // Classname => path to Class
-    //                       'AuditoriaBehaviors' => AuditoriaBehaviors::className(),
-    //
-    //         //  'AuditoriaBehaviors' =>'\app\components\behaviors\AuditoriaBehaviors'
-    //           'verbs' => [
-    //               'class' => VerbFilter::className(),
-    //               'actions' => [
-    //                   'delete' => ['post'],
-    //                   'bulk-delete' => ['post'],
-    //               ],
-    //           ],
-    //       ];
-    // }
+    
     /**
      * Lists all Procedencia models.
      * @return mixed

@@ -16,22 +16,7 @@ use yii\helpers\Json;
  */
 class PlantillaglandularController extends Controller
 {
-    /**
-     * @inheritdoc
-     */
-    public function behaviors()
-    {
-        return [
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['post'],
-                    'bulk-delete' => ['post'],
-                ],
-            ],
-        ];
-    }
-
+  
     /**
      * Lists all Plantillaglandular models.
      * @return mixed

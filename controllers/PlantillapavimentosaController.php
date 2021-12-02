@@ -17,22 +17,7 @@ use yii\helpers\Json;
  */
 class PlantillapavimentosaController extends Controller
 {
-    /**
-     * @inheritdoc
-     */
-    // public function behaviors()
-    // {
-    //     return [
-    //         'verbs' => [
-    //             'class' => VerbFilter::className(),
-    //             'actions' => [
-    //                 'delete' => ['post'],
-    //                 'bulk-delete' => ['post'],
-    //             ],
-    //         ],
-    //     ];
-    // }
-
+  
     /**
      * Lists all Plantillapavimentosa models.
      * @return mixed

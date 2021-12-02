@@ -14,21 +14,7 @@ use yii\filters\VerbFilter;
  */
 class UsuariorolController extends Controller
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function behaviors()
-    {
-        return [
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['POST'],
-                ],
-            ],
-        ];
-    }
-
+  
     /**
      * Lists all Usuariorol models.
      * @return mixed

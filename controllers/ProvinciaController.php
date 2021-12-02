@@ -16,21 +16,7 @@ use yii\helpers\Html;
  */
 class ProvinciaController extends Controller
 {
-    /**
-     * @inheritdoc
-     */
-    public function behaviors()
-    {
-        return [
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['post'],
-                    'bulk-delete' => ['post'],
-                ],
-            ],
-        ];
-    }
+  
 
     /**
      * Lists all Provincia models.
