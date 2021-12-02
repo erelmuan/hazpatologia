@@ -287,6 +287,7 @@ class SolicitudController extends Controller
               return $this->redirect([$model->tableName()."/create" ]);
 
           }
+            $model->protocolo = Solicitud::obtenerProtocolo();
             if ($model->load($request->post()) && $model->save()) {
                 return $this->redirect(['view', 'id' => $model->id]);
             }

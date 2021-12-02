@@ -246,29 +246,27 @@ class Solicitud extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getProcedencia()
-    {
+    public function getProcedencia(){
         return $this->hasOne(Procedencia::className(), ['id' => 'id_procedencia']);
     }
 
 
-    public function save($runValidation = true, $attributeNames = null)
-    {
-        $db = Yii::$app->db;
-        $protocolo = $db->createCommand('SELECT last_value FROM solicitud_protocolo_seq')
-                    ->queryColumn();
-                    //le modifique la fecha el 26 de octubre del 2019
-          if ( $protocolo && date("d")==26 && date("m") ==11 && $protocolo[0] !== 1)
-          {
-            $db->createCommand('ALTER SEQUENCE solicitud_protocolo_seq RESTART WITH 1')->execute();
-          //    $db->createCommand('UPDATE solicitud SET idsolicitud=nextval("solicitud_idsolicitud_seq")')->execute();
+    public function obtenerProtocolo()  {
+        $anioprotocolo= AnioProtocolo::find()->andWhere(['and' ,"activo=true" ])->one();
+        if ($anioprotocolo!== NULL){
+          $solicitud= Solicitud::find()
+          ->andWhere(['and' ,' "fechadeingreso"::text  like '. "'%".$anioprotocolo->anio."%'"])
+          ->orderBy(['protocolo' => SORT_DESC])->one();
 
-          }
-        if ($this->getIsNewRecord()) {
-            return $this->insert($runValidation, $attributeNames);
         }
+        if ($solicitud == NULL){
+          $protocolo=0;
+        }else {
+          $protocolo=$solicitud->protocolo;
 
-        return $this->update($runValidation, $attributeNames) !== false;
+        }
+        return $protocolo+ 1;
+
     }
     public function estados() {
         //PATRON STATE;
