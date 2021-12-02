@@ -8,6 +8,7 @@ use app\components\behaviors\AuditoriaBehaviors;
 /**
  * This is the model class for table "anio_protocolo".
  *
+ * @property Solicitud[] $solicituds
  * @property int $anio
  * @property bool $activo
  * @property int $id
@@ -78,4 +79,11 @@ class AnioProtocolo extends \yii\db\ActiveRecord
           return false;
          }
     }
+    /**
+		    * @return \yii\db\ActiveQuery
+		    */
+		   public function getSolicituds()
+		   {
+		       return $this->hasMany(Solicitud::className(), ['id_anio_protocolo' => 'id']);
+		   }
 }

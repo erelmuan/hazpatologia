@@ -57,7 +57,7 @@ class Solicitudbiopsia extends Solicitud
                ///////
                [['id_paciente'], 'required',  'message' => 'El campo paciente no puede estar vacío.'],
                [['id_medico'], 'required',  'message' => 'El campo medico no puede estar vacío.'],
-               [['id_paciente', 'id_procedencia', 'id_medico', 'fecharealizacion', 'fechadeingreso', 'id_estudio', 'id_estado'], 'required'],
+               [['id_paciente', 'id_procedencia', 'id_medico',  'fechadeingreso', 'id_estudio', 'id_estado'], 'required'],
 
                ///////
             //[['id_paciente', 'id_procedencia', 'id_medico', 'id_plantillamaterial', 'id_materialginecologico', 'id_estudio', 'id_estado'], 'default', 'value' => null],

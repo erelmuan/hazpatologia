@@ -19,7 +19,10 @@ use Yii;
  * @property int $protocolo
  * @property int $id_estudio
  * @property int $id_estado
- *
+ * @property int $id_anio_protocolo
+ * @property bool $protocolo_automatico Esto para tener un checkeo, dado que se prodra cargar el protocolo tambien de manera manual
+   *
+ * @property AnioProtocolo $anioProtocolo
  * @property Estado $estado
  * @property Estudio $estudio
  * @property Medico $medico
@@ -46,17 +49,19 @@ class Solicitud extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id_paciente', 'id_procedencia', 'id_medico', 'fecharealizacion', 'fechadeingreso', 'id_estudio', 'id_estado'], 'required'],
+            [['id_paciente', 'id_procedencia', 'id_medico',  'fechadeingreso', 'id_estudio', 'id_estado'], 'required'],
             [['id_paciente', 'id_procedencia', 'id_medico', 'id_materialsolicitud', 'id_estudio', 'id_estado'], 'integer'],
             [['fecharealizacion', 'fechadeingreso'], 'safe'],
             [['fechadeingreso'], 'required'],
             [['observacion'], 'string'],
+            [['protocolo_automatico'], 'boolean'],
             [['id_estado'], 'exist', 'skipOnError' => true, 'targetClass' => Estado::className(), 'targetAttribute' => ['id_estado' => 'id']],
             [['id_estudio'], 'exist', 'skipOnError' => true, 'targetClass' => Estudio::className(), 'targetAttribute' => ['id_estudio' => 'id']],
             [['id_medico'], 'exist', 'skipOnError' => true, 'targetClass' => Medico::className(), 'targetAttribute' => ['id_medico' => 'id']],
             [['id_paciente'], 'exist', 'skipOnError' => true, 'targetClass' => Paciente::className(), 'targetAttribute' => ['id_paciente' => 'id']],
             [['id_materialsolicitud'], 'exist', 'skipOnError' => true, 'targetClass' => Materialsolicitud::className(), 'targetAttribute' => ['id_materialsolicitud' => 'id']],
             [['id_procedencia'], 'exist', 'skipOnError' => true, 'targetClass' => Procedencia::className(), 'targetAttribute' => ['id_procedencia' => 'id']],
+ 	          [['id_anio_protocolo'], 'exist', 'skipOnError' => true, 'targetClass' => AnioProtocolo::className(), 'targetAttribute' => ['id_anio_protocolo' => 'id']],
         ];
     }
 
@@ -77,6 +82,8 @@ class Solicitud extends \yii\db\ActiveRecord
             'protocolo' => 'Protocolo',
             'id_estudio' => 'Estudio',
             'id_estado' => 'Estado',
+            'id_anio_protocolo' => 'Id Anio Protocolo',
+             'protocolo_automatico' => 'Protocolo Automatico',
         ];
     }
     public function attributeColumns()
@@ -249,7 +256,13 @@ class Solicitud extends \yii\db\ActiveRecord
     public function getProcedencia(){
         return $this->hasOne(Procedencia::className(), ['id' => 'id_procedencia']);
     }
-
+    /**
+   		    * @return \yii\db\ActiveQuery
+   		    */
+   		   public function getAnioProtocolo()
+   		   {
+   		       return $this->hasOne(AnioProtocolo::className(), ['id' => 'id_anio_protocolo']);
+   		   }
 
     public function obtenerProtocolo()  {
         $anioprotocolo= AnioProtocolo::find()->andWhere(['and' ,"activo=true" ])->one();
@@ -287,7 +300,7 @@ class Solicitud extends \yii\db\ActiveRecord
     }
     public function getMaterialsolicitudes() {
         $id_estudio= $this->idEstudio();
-        return ArrayHelper::map(Materialsolicitud::find()->where(['id_estudio' => $id_estudio])->all(), 'id','descripcion');
+        return ArrayHelper::map(Materialsolicitud::find()->where(['id_estudio' => $id_estudio])->orderBy(['id' => SORT_ASC])->all(), 'id','descripcion');
 
     }
     public function getSolicitudesAnio($nio) {

@@ -72,7 +72,7 @@ class Solicitudpap extends Solicitud
             ///////
             [['id_paciente'], 'required',  'message' => 'El campo paciente no puede estar vacío.'],
             [['id_medico'], 'required',  'message' => 'El campo medico no puede estar vacío.'],
-            [['id_paciente', 'id_procedencia', 'id_medico', 'fecharealizacion', 'fechadeingreso', 'id_estudio', 'id_estado'], 'required'],
+            [['id_paciente', 'id_procedencia', 'id_medico',  'fechadeingreso', 'id_estudio', 'id_estado'], 'required'],
 
             ///////
             [['id_paciente', 'id_procedencia', 'id_medico', 'id_materialsolicitud', 'id_tipo_muestra', 'id_metodo_anticonceptivo', 'id_cirugia_previa', 'id_estudio', 'id_estado'], 'integer'],
@@ -160,7 +160,7 @@ class Solicitudpap extends Solicitud
         return $this->hasOne(Tipomuestra::className(), ['id' => 'id_tipo_muestra']);
     }
     public function getTipoMuestras() {
-        return ArrayHelper::map(Tipomuestra::find()->all(), 'id','descripcion');
+        return ArrayHelper::map(Tipomuestra::find()->orderBy(['id' => SORT_ASC])->all(), 'id','descripcion');
 
     }
 

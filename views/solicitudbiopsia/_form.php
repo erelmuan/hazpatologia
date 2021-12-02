@@ -123,7 +123,6 @@ CrudAsset::register($this);
                   <?=$form->field($model, 'id_estudio')->hiddenInput(['value'=> $model->idEstudio()])->label(false); //BIOPSIA ID 2  CORREGIR?>
 
                   <?= $form->field($model, 'id_estado')->dropDownList($model->estados())->label('Estado') ;?>
-                  <?= $form->field($model, 'id_materialsolicitud')->dropDownList($model->getMaterialsolicitudes())->label('Material') ;?>
 
                  </div>
                  <div class='col-sm-3'>
@@ -157,6 +156,8 @@ CrudAsset::register($this);
               <legend class="text-info"><small>INFORMACIÓN ADICIONAL</small></legend>
               <div class="x_content" style="display: none;">
                 <div class='col-sm-6'>
+                  <?= $form->field($model, 'id_materialsolicitud')->dropDownList($model->getMaterialsolicitudes())->label('Material') ;?>
+
                   <?= $form->field($model, 'sitio_prec_toma')->textInput() ?>
                   <?= $form->field($model, 'datos_clin_interes')->textInput() ?>
                 </div>
