@@ -144,26 +144,38 @@ class PapController extends Controller
     {
         $request = Yii::$app->request;
         $model = new Pap();
-        $search=[];
-        $array=[];
-        $provider=[];
+
         if (isset($_GET['idsol']) && $_GET['idsol'] !='') {
             $Solicitud =  Solicitud::findOne($_GET['idsol']);
             $_SESSION['solicitudp']=$Solicitud;
 
            }
+           $search=[];
+           $array=[];
+           $provider=[];
         $this->cargarEstructuras($search,$array,$provider,$_SESSION['solicitudp']->id_estudio);
-
-              /*
-            *   Process for non-ajax request
-            */
             if ($model->load($request->post()) ) {
-                    $Solicitud =  Solicitud::findOne($model->id_solicitudpap);
-                    $Solicitud->id_estado=$model->id_estado;
-                    $Solicitud->save();
-                    if ($model->estado=='LISTO' || $model->estado == 'ENTREGADO')
-                    {
+
+              if (Usuario::isPatologo() && ($model->estado->descripcion=='LISTO' || $model->estado->descripcion == 'ENTREGADO')){
+                    //validar contraseñar
+                    if (!$this->validarContraseña($_POST["contrasenia"])){
+                      $model->estado->descripcion ='PENDIENTE';
+                      return $this->render('_form', [
+                          'model' => $model,
+                          'dataSol' => $_SESSION['solicitudp'],
+                          'search' => $search,
+                          'array' => $array,
+                          'provider' => $provider,
+                          'edadDelPaciente'=>$this->calcular_edad($_SESSION['solicitudp']->id),
+
+
+                      ]);
+
+                    }
                       $model->fechalisto=date("d/m/Y");
+                      $Solicitud =  Solicitud::findOne($model->id_solicitudpap);
+                      $Solicitud->id_estado=$model->id_estado;
+                      $Solicitud->save();
                     }
                     else {
                       $model->fechalisto='';

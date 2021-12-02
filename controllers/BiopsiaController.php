@@ -159,15 +159,30 @@ class BiopsiaController extends Controller
            $this->cargarEstructuras($search,$array,$provider,$_SESSION['solicitudb']->id_estudio);
             if ($model->load($request->post()) ) {
 
-                // if ($model->estado->descripcion=='LISTO' || $model->estado->descripcion == 'ENTREGADO')
                 // { DEBERIA HABER UN TRY CATCH PARA VOLVER TODO PARA ATRAS EN CASO DE ERROR
-                  $Solicitud =  Solicitud::findOne($model->id_solicitudbiopsia);
-                  $Solicitud->id_estado=$model->id_estado;
-                  $Solicitud->save();
-                  if ($model->estado=='LISTO' || $model->estado == 'ENTREGADO')
-                  {
+
+                if (Usuario::isPatologo() && ($model->estado->descripcion=='LISTO' || $model->estado->descripcion == 'ENTREGADO')){
+
+                    //validar contraseñar
+                    if (!$this->validarContraseña($_POST["contrasenia"])){
+                      $model->estado->descripcion ='PENDIENTE';
+                      return $this->render('_form', [
+                          'model' => $model,
+                          'dataSol' => $_SESSION['solicitudb'],
+                          'search' => $search,
+                          'array' => $array,
+                          'provider' => $provider,
+                          'edadDelPaciente'=>$this->calcular_edad($_SESSION['solicitudb']->id),
+
+
+                      ]);
+
+                    }
                     //fecha cuando esta listo el informe de la biopsia
                     $model->fechalisto=date("d/m/Y");
+                    $Solicitud =  Solicitud::findOne($model->id_solicitudbiopsia);
+                    $Solicitud->id_estado=$model->id_estado;
+                    $Solicitud->save();
                   }
                   else {
                     $model->fechalisto='';

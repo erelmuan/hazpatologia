@@ -22,7 +22,7 @@ class BiopsiaSearch extends Biopsia
   public $procedencia;
   public $fecha_desde;
   public $fecha_hasta;
- 
+
     /**
      * @inheritdoc
      */
@@ -90,14 +90,14 @@ class BiopsiaSearch extends Biopsia
             'fechalisto' => $this->fechalisto,
         ]);
         if (is_numeric($this->paciente)){
-            $query->orFilterWhere(["paciente.dni"=>$this->paciente]);
+            $query->orFilterWhere(["paciente.num_documento"=>$this->paciente]);
              }
         else {
             $query->andFilterWhere(['ilike', '("paciente"."apellido")',strtolower($this->paciente)]);
 
         }
         if (is_numeric($this->medico)){
-            $query->orFilterWhere(["medico.dni"=>$this->medico]);
+            $query->orFilterWhere(["medico.num_documento"=>$this->medico]);
              }
         else {
             $query->andFilterWhere(['ilike', '("medico"."apellido")',strtolower($this->medico)]);
