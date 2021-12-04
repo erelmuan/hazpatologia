@@ -107,7 +107,6 @@ class SolicitudSearch extends Solicitud
           $query->andFilterWhere(['=', 'fecharealizacion', $this->fecharealizacion]);
           $query->andFilterWhere(['=', 'fechadeingreso', $this->fechadeingreso]);
 
-        $query->andFilterWhere(['ilike', 'observacion', $this->observacion]);
         if (is_numeric($this->paciente)){
             $query->orFilterWhere(["paciente.num_documento"=>$this->paciente]);
              }
@@ -123,8 +122,8 @@ class SolicitudSearch extends Solicitud
 
         }
 
-        $query->andFilterWhere(['like', 'observacion', $this->observacion]);
-        
+        $query->andFilterWhere(['ilike', 'observacion', $this->observacion]);
+
         return $dataProvider;
     }
 }

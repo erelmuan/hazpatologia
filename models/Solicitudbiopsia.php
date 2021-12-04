@@ -58,12 +58,14 @@ class Solicitudbiopsia extends Solicitud
                [['id_paciente'], 'required',  'message' => 'El campo paciente no puede estar vacío.'],
                [['id_medico'], 'required',  'message' => 'El campo medico no puede estar vacío.'],
                [['id_paciente', 'id_procedencia', 'id_medico',  'fechadeingreso', 'id_estudio', 'id_estado'], 'required'],
-
+               [['protocolo'], 'required',  'whenClient' => "function (attribute, value) {
+               return $('#solicitudbiopsia-protocolo_automatico').val() == 0;
+           }"],
                ///////
             //[['id_paciente', 'id_procedencia', 'id_medico', 'id_plantillamaterial', 'id_materialginecologico', 'id_estudio', 'id_estado'], 'default', 'value' => null],
             [['id_paciente', 'id_procedencia', 'id_medico', 'id_materialsolicitud', 'id_materialginecologico', 'id_estudio', 'id_estado'], 'integer'],
             [['fecharealizacion', 'fechadeingreso'], 'safe'],
-            [['fechadeingreso'], 'required'],
+            [['fechadeingreso','protocolo_automatico'], 'required'],
             [['observacion', 'sitio_prec_toma', 'datos_clin_interes', 'diagnostico_presuntivo', 'biopsia_anterior_resultado'], 'string'],
             [['id_materialginecologico'], 'exist', 'skipOnError' => true, 'targetClass' => Paramaterialginecologico::className(), 'targetAttribute' => ['id_materialginecologico' => 'id']],
             [['id_paciente'], 'exist', 'skipOnError' => true, 'targetClass' => Paciente::className(), 'targetAttribute' => ['id_paciente' => 'id']],

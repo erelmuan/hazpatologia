@@ -13,6 +13,7 @@ use yii\widgets\Pjax;
 use yii\helpers\ArrayHelper;
 use app\models\Procedencia;
 use app\models\Plantillamaterial;
+use yii\widgets\MaskedInput;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\SolicitudSearch */
@@ -70,80 +71,77 @@ CrudAsset::register($this);
           <div class='col-sm-3'>
 
           <label> Paciente </label></br>
-          <input id="solicitud-paciente"  style="width:250px;" value='<?=($model->paciente)?$model->paciente->apellido.", ".$model->paciente->nombre:''; ?>' type="text" readonly>
+          <input id="solicitud-paciente" class="form-control"  style="width:250px;" value='<?=($model->paciente)?$model->paciente->apellido.", ".$model->paciente->nombre:''; ?>' type="text" readonly>
           <?=$form->field($model, 'id_paciente')->hiddenInput()->label(false); ?>
           <label> Medico </label> </br>
-          <input id="solicitud-medico" style="width:250px;" value='<?=($model->medico)?$model->medico->apellido.", ".$model->medico->nombre:'' ?>' type="text" readonly>
+          <input id="solicitud-medico" class="form-control" style="width:250px;" value='<?=($model->medico)?$model->medico->apellido.", ".$model->medico->nombre:'' ?>' type="text" readonly>
           <?=$form->field($model, 'id_medico')->hiddenInput()->label(false); ?>
-            <?
-              echo Form::widget([ // continuation fields to row above without labels
-                'id' => 'login-form-horizontal',
-                  'model'=>$model,
-                  'form'=>$form,
-                  'columns'=>4,
-                  'attributes'=>[
-                      'id_procedencia'=>['type'=> Form::INPUT_WIDGET,
-                      'widgetClass'=>'kartik\select2\Select2',
-                      'options'=>[
-                        'data' => $mapprocedencia,
-                            'language' => 'es',
-                            ],
-                        'pluginOptions' => [
-                              'allowClear' => true
-                              ],
-                        'placeholder' => 'Seleccionar codigo..',
-                              'label'=>'Procedencia'
-                        ],
-
-                  ]]);
-          ?>
+          <?=$form->field($model, 'protocolo')->textInput(['readonly'=> true , 'value'=>$protocolo_insertar]) ;  ?>
 
               </div>
                 <div class='col-sm-3'>
-                <?
-                  echo $form->field($model, 'fecharealizacion')->widget(DatePicker::className(), [
-                         'options' => ['placeholder' => 'Debe agregar una fecha',
-                           'value'=> ($model->fecharealizacion)?date('d/m/Y',strtotime($model->fecharealizacion)):date('d/m/Y') ,
-                           'type' => DatePicker::TYPE_COMPONENT_APPEND,
-                                 ],
-                            'pluginOptions' => [
-                            'format' => 'dd/mm/yyyy',
-                            'todayHighlight' => true,
-                            'allowClear' => false
-                             ],
-                            'pluginEvents' => [
-                                 "changeDate" => "function(e){
-                                   cambiarFechaNac();
-                                 }",
-                                 ],
-                             ])->label('Fecha de realizacion');
+                  <?  echo $form->field($model, 'fecharealizacion')->widget(MaskedInput::classname(),['name' => 'input-31',
+                          'clientOptions' => ['alias' =>  'dd/mm/yyyy']])->widget(DatePicker::classname(), [
+                          'options' => ['placeholder' => 'Ingrese fecha (opcional)',
+                          'value'=> ($model->fecharealizacion)?date('d/m/Y',strtotime($model->fecharealizacion)):'',
 
-                ?>
+                          'format' => 'dd/mm/yyyy',
+                        ],
+                          'pluginOptions' => [
+                              'autoclose'=>true,
+
+                          ]
+                      ]);
+
+                  ?>
 
                   <?=$form->field($model, 'id_estudio')->hiddenInput(['value'=> $model->idEstudio()])->label(false); //BIOPSIA ID 2  CORREGIR?>
 
                   <?= $form->field($model, 'id_estado')->dropDownList($model->estados())->label('Estado') ;?>
+                  <?
+                    echo Form::widget([ // continuation fields to row above without labels
+                      'id' => 'login-form-horizontal',
+                        'model'=>$model,
+                        'form'=>$form,
+                        'columns'=>4,
+                        'attributes'=>[
+                            'id_procedencia'=>['type'=> Form::INPUT_WIDGET,
+                            'widgetClass'=>'kartik\select2\Select2',
+                            'options'=>[
+                              'data' => $mapprocedencia,
+                                  'language' => 'es',
+                                  ],
+                              'pluginOptions' => [
+                                    'allowClear' => true
+                                    ],
+                              'placeholder' => 'Seleccionar codigo..',
+                                    'label'=>'Procedencia'
+                              ],
 
+                        ]]);
+                ?>
+
+
+
+                  <?= $form->field($model, 'protocolo_automatico')->checkBox(['label' => 'Protocolo automatico',
+       'onclick' => 'cambioProtocoloAutomatico();', 'checked' => '1','value' => '1']); ?>
                  </div>
                  <div class='col-sm-3'>
-                      <?
-                      echo $form->field($model, 'fechadeingreso')->widget(DatePicker::className(), [
-                                'options' => ['placeholder' => 'Debe agregar una fecha',
-                               'value'=> ($model->fechadeingreso)?date('d/m/Y',strtotime($model->fechadeingreso)):date('d/m/Y') ,
-                                'type' => DatePicker::TYPE_COMPONENT_APPEND,
-                                        ],
-                                'pluginOptions' => [
-                                'format' => 'dd/mm/yyyy',
-                                'allowClear' => false,
-                                'todayHighlight' => true,],
-                                'pluginEvents' => [
-                                  "changeDate" => "function(e){
-                                      cambiarFechaNac();
-                                      }",
-                                    ],
-                                  ])->label('Fecha de ingreso');
+                   <?  echo $form->field($model, 'fechadeingreso')->widget(MaskedInput::classname(),['name' => 'input-31',
+                           'clientOptions' => ['alias' =>  'dd/mm/yyyy']])->widget(DatePicker::classname(), [
+                           'options' => ['placeholder' => 'Ingrese fecha (opcional)',
+                           'value'=> ($model->fechadeingreso)?date('d/m/Y',strtotime($model->fechadeingreso)):date('d/m/Y') ,
 
-                    ?>
+                           'format' => 'dd/mm/yyyy',
+                         ],
+                           'pluginOptions' => [
+                               'autoclose'=>true,
+
+                           ]
+                       ]);
+
+                   ?>
+
                     <?=$form->field($model, "observacion")->textarea(["rows" => 4]) ; ?>
                   </div>
               </div>
@@ -287,7 +285,28 @@ CrudAsset::register($this);
 <?php Modal::end(); ?>
 
 <script>
+function cambioProtocoloAutomatico(){
+    if(document.getElementById("solicitudbiopsia-protocolo_automatico").value==1 ){
+      document.getElementById("solicitudbiopsia-protocolo").readOnly = false;
+      document.getElementById("solicitudbiopsia-protocolo_automatico").value =0;
 
+    }else {
+      $.ajax({
+          url: '<?php echo Url::to(['/solicitud/buscarprotocolo']) ?>',
+         type: 'get',
+         data: {
+               _csrf : '<?=Yii::$app->request->getCsrfToken()?>'
+               },
+         success: function (data) {
+             var content = JSON.parse(data);
+            document.getElementById("solicitudbiopsia-protocolo").value=  content.protocolo;
+         }
+
+    });
+      document.getElementById("solicitudbiopsia-protocolo_automatico").value =1;
+      document.getElementById("solicitudbiopsia-protocolo").readOnly = true;
+    }
+}
 function pacienteba(){
 
   $.ajax({

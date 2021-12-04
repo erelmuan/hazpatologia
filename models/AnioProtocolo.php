@@ -79,6 +79,11 @@ class AnioProtocolo extends \yii\db\ActiveRecord
           return false;
          }
     }
+
+    public function anioprotocoloActivo(){
+      $anioProtocolo = AnioProtocolo::find()->andWhere(['and' ,"activo=true" ])->one();
+      return $anioProtocolo ;
+    }
     /**
 		    * @return \yii\db\ActiveQuery
 		    */

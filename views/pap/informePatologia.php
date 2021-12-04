@@ -119,7 +119,7 @@ $pdf->Text(35,$Inicio,$model->solicitudpap->paciente->nombre.' '.$model->solicit
 $pdf->SetFont('Times','B',10);
 $pdf->Text(120,$Inicio,"FECHA:");
 $pdf->SetFont('Times','',10);
-$pdf->Text(135,$Inicio,date("d/m/Y", strtotime($model->solicitudpap->fecharealizacion)));
+$pdf->Text(135,$Inicio,date("d/m/Y", strtotime($model->solicitudpap->fechadeingreso)));
 
 $Inicio=$Inicio +8;
 $pdf->SetFont('Times','B',10);

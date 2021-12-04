@@ -23,7 +23,7 @@ use app\models\AnioProtocolo;
 
 use app\components\Metodos\Metodos;
 use yii\data\ActiveDataProvider;
-
+use yii\helpers\Json;
 /**
  * SolicitudController implements the CRUD actions for Solicitud model.
  */
@@ -131,7 +131,7 @@ class SolicitudController extends Controller
 
       $Solicitud =  Solicitud::findOne($id);
       list($ano,$mes,$dia) = explode("-",$Solicitud->paciente->fecha_nacimiento);
-      list($anoR,$mesR,$diaR) = explode("-",$Solicitud->fecharealizacion);
+      list($anoR,$mesR,$diaR) = explode("-",$Solicitud->fechadeingreso);
 
 
       $ano_diferencia  = $anoR - $ano;
@@ -202,7 +202,13 @@ class SolicitudController extends Controller
          }
          return true;
     }
-
+    public function actionBuscarprotocolo()
+    {
+        $request = Yii::$app->request;
+      if ($request->isAjax) {
+         return Json::encode(["protocolo"=>Solicitud::obtenerProtocolo()]);
+        }
+    }
     /**
      * Creates a new Solicitud model.
      * For ajax request will return json object
@@ -230,52 +236,7 @@ class SolicitudController extends Controller
         $dataProviderMed = $searchModelMed->search(Yii::$app->request->queryParams);
         $dataProviderMed->pagination->pageSize=7;
 
-        if(Yii::$app->request->isAjax){
-            /*
-            *   Process for ajax request
-            */
-            Yii::$app->response->format = Response::FORMAT_JSON;
-            // if($request->isGet){
-            //     return [
-            //         'title'=> "Crear nueva Solicitud",
-            //         'content'=>$this->renderAjax('create', [
-            //             'model' => $model,
-            //         ]),
-            //         'footer'=> Html::button('Cerrar',['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
-            //                     Html::button('Guardar',['class'=>'btn btn-primary','type'=>"submit"])
-            //
-            //     ];
-            // }else
 
-          //  if($model->load($request->post()) && $model->save()){
-          //Esto lo agregue el dia 22 de octubre a raiz que me insertaba el registro 2 veces
-            if (false){
-                return [
-                    'forceReload'=>'#crud-datatable-pjax',
-                    'title'=> "Crear nueva Solicitud",
-                    'content'=>'<span class="text-success">Create Solicitud success</span>',
-                    'footer'=> Html::button('Cerrar',['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
-                            Html::a('Crear más',['create'],['class'=>'btn btn-primary','role'=>'modal-remote'])
-
-                ];
-            }else{
-                return [
-                    'title'=> "Crear nueva Solicitud",
-                    'content'=>$this->renderAjax('_form', [
-                        'model' => $model,
-                        'searchModelPac' => $searchModelPac,
-                        'dataProviderPac' => $dataProviderPac,
-                        'modelPac' => $modelPac,
-                        'searchModelMed' => $searchModelMed,
-                        'dataProviderMed' => $dataProviderMed,
-                        'modelMed' => $modelMed,
-                    ]),
-                    'footer'=> Html::button('Cerrar',['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
-                                Html::button('Guardar',['class'=>'btn btn-primary','type'=>"submit"])
-
-                ];
-            }
-        }
             /*
             *   Process for non-ajax request
             */
@@ -287,9 +248,22 @@ class SolicitudController extends Controller
               return $this->redirect([$model->tableName()."/create" ]);
 
           }
-            $model->protocolo = Solicitud::obtenerProtocolo();
+          $anioprotocolo= AnioProtocolo::anioprotocoloActivo();
+          $model->id_anio_protocolo=$anioprotocolo->id;
             if ($model->load($request->post()) && $model->save()) {
+              //si protocolo automatico esta activado si o si va insertar el valor que obtiene de la base
+              // con esto me aseguro que por mas que se edite el campo va editar
+              //SE PUEDE MEJORAR CAMBIANDO EL VALOR DE REQUEST POST
+                if ($_POST[$model->classNameM()]["protocolo_automatico"] ==	"1"){
+                  $model->protocolo=Solicitud::obtenerProtocolo();
+                  $model->save();
+
+                }
+
                 return $this->redirect(['view', 'id' => $model->id]);
+            }else{
+              return $this->redirect([$model->tableName()."/create" ]);
+
             }
       }
          else {
@@ -301,6 +275,7 @@ class SolicitudController extends Controller
               'searchModelMed' => $searchModelMed,
               'dataProviderMed' => $dataProviderMed,
               'modelMed' => $modelMed,
+              'protocolo_insertar'=> Solicitud::obtenerProtocolo(),
               ]);
           }
     }
@@ -459,34 +434,34 @@ class SolicitudController extends Controller
         }
     }
 
-    public function save($runValidation = true, $attributeNames = null)
-    {
-      $transaction = Solicitud::getDb()->beginTransaction();
-      try {
-        $db = Yii::$app->db;
-        $protocolo = $db->createCommand('SELECT last_value FROM solicitud_protocolo_seq')
-                    ->queryColumn();
+    // public function save($runValidation = true, $attributeNames = null)
+    // {
+    //   $transaction = Solicitud::getDb()->beginTransaction();
+    //   try {
+    //     $db = Yii::$app->db;
+    //     $protocolo = $db->createCommand('SELECT last_value FROM solicitud_protocolo_seq')
+    //                 ->queryColumn();
+    //
+    //       if ( $protocolo && date("d")==26 && date("m") ==11 && $protocolo[0] !== 1)
+    //       {
+    //         $db->createCommand('ALTER SEQUENCE solicitud_protocolo_seq RESTART WITH 1')->execute();
+    //       //    $db->createCommand('UPDATE solicitud SET idsolicitud=nextval("solicitud_idsolicitud_seq")')->execute();
+    //
+    //       }
+    //     if ($this->getIsNewRecord()) {
+    //         return $this->insert($runValidation, $attributeNames);
+    //
+    //     }
+    //     $transaction->commit();
+    //     return $this->update($runValidation, $attributeNames) !== false;
+    //   }
+    //
+    // catch(\Exception $e) {
+    //     $transaction->rollBack();
+    //     throw $e;
+    // }
 
-          if ( $protocolo && date("d")==26 && date("m") ==11 && $protocolo[0] !== 1)
-          {
-            $db->createCommand('ALTER SEQUENCE solicitud_protocolo_seq RESTART WITH 1')->execute();
-          //    $db->createCommand('UPDATE solicitud SET idsolicitud=nextval("solicitud_idsolicitud_seq")')->execute();
-
-          }
-        if ($this->getIsNewRecord()) {
-            return $this->insert($runValidation, $attributeNames);
-
-        }
-        $transaction->commit();
-        return $this->update($runValidation, $attributeNames) !== false;
-      }
-
-    catch(\Exception $e) {
-        $transaction->rollBack();
-        throw $e;
-    }
-
-}
+// }
     function returnModel()
 
     {

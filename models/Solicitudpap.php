@@ -72,10 +72,13 @@ class Solicitudpap extends Solicitud
             ///////
             [['id_paciente'], 'required',  'message' => 'El campo paciente no puede estar vacío.'],
             [['id_medico'], 'required',  'message' => 'El campo medico no puede estar vacío.'],
-            [['id_paciente', 'id_procedencia', 'id_medico',  'fechadeingreso', 'id_estudio', 'id_estado'], 'required'],
+            [['protocolo'], 'required',  'whenClient' => "function (attribute, value) {
+            return $('#solicitudpap-protocolo_automatico').val() == 0;
+        }"],
+            [['id_paciente', 'id_procedencia', 'id_medico',  'fechadeingreso', 'id_estudio', 'id_estado','protocolo_automatico'], 'required'],
 
             ///////
-            [['id_paciente', 'id_procedencia', 'id_medico', 'id_materialsolicitud', 'id_tipo_muestra', 'id_metodo_anticonceptivo', 'id_cirugia_previa', 'id_estudio', 'id_estado'], 'integer'],
+            [['id_paciente', 'id_procedencia', 'id_medico', 'id_materialsolicitud', 'id_tipo_muestra', 'id_metodo_anticonceptivo', 'id_cirugia_previa', 'id_estudio', 'id_estado','protocolo'], 'integer'],
             [['fecharealizacion', 'fechadeingreso', 'fecha_ult_parto'], 'safe'],
             [['observacion', 'resultado_pap_previo', 'resultado_biopsia_previo', 'fum', 'datos_clinicos_de_interes', 'conclusion'], 'string'],
             [['pap_previo', 'biopsia_previa', 'embarazo_actual', 'menopausia', 'tratamiento_radiante', 'quimioterapia', 'colposcopia'], 'boolean'],

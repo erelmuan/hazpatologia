@@ -31,8 +31,8 @@ use yii\helpers\Html;
             'label'=> 'Medico',
          ],
          [
-           'value'=> $model->solicitudpap->fecharealizacion ,
-           'label'=> 'Fecha de realizacion',
+           'value'=> $model->solicitudpap->fechadeingreso ,
+           'label'=> 'Fecha de ingreso',
            'format' => ['date', 'd/M/Y'],
 
         ],

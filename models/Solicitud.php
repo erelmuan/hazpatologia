@@ -52,8 +52,9 @@ class Solicitud extends \yii\db\ActiveRecord
             [['id_paciente', 'id_procedencia', 'id_medico',  'fechadeingreso', 'id_estudio', 'id_estado'], 'required'],
             [['id_paciente', 'id_procedencia', 'id_medico', 'id_materialsolicitud', 'id_estudio', 'id_estado'], 'integer'],
             [['fecharealizacion', 'fechadeingreso'], 'safe'],
-            [['fechadeingreso'], 'required'],
+            [['fechadeingreso', 'protocolo','protocolo_automatico'], 'required'],
             [['observacion'], 'string'],
+            [['protocolo', 'id_anio_protocolo'], 'unique', 'targetAttribute' => ['protocolo', 'id_anio_protocolo']],
             [['protocolo_automatico'], 'boolean'],
             [['id_estado'], 'exist', 'skipOnError' => true, 'targetClass' => Estado::className(), 'targetAttribute' => ['id_estado' => 'id']],
             [['id_estudio'], 'exist', 'skipOnError' => true, 'targetClass' => Estudio::className(), 'targetAttribute' => ['id_estudio' => 'id']],
@@ -265,7 +266,7 @@ class Solicitud extends \yii\db\ActiveRecord
    		   }
 
     public function obtenerProtocolo()  {
-        $anioprotocolo= AnioProtocolo::find()->andWhere(['and' ,"activo=true" ])->one();
+        $anioprotocolo= AnioProtocolo::anioprotocoloActivo();
         if ($anioprotocolo!== NULL){
           $solicitud= Solicitud::find()
           ->andWhere(['and' ,' "fechadeingreso"::text  like '. "'%".$anioprotocolo->anio."%'"])

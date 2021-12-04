@@ -5,6 +5,9 @@ use yii\helpers\Html;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Solicitudbiopsia */
+if (isset($parametros)){
+  var_dump($parametros)  ;
+}
 ?>
 <div class="solicitudbiopsia-view">
     <?= DetailView::widget([

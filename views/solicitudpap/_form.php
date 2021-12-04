@@ -53,6 +53,8 @@ CrudAsset::register($this);
       <input type="text" id="medicobuscar" name="MedicoSearch[num_documento]" placeholder="Ingresar DNI del medico" >
       <button type="button" class ="btn btn-primary btn-xs" onclick='medicoba();'>Buscar y añadir</button>
       </div>
+
+
       <?
 
       // $form = ActiveForm::begin([
@@ -63,7 +65,6 @@ CrudAsset::register($this);
       //       'validationUrl' => '?r=solicitudpap/create',
       //   ]);
      $form = ActiveForm::begin();
-
       $mapprocedencia = ArrayHelper::map(Procedencia::find()->all() , 'id',  'nombre'  );
       //$mapmaterial = ArrayHelper::map(Plantillamaterial::find()->all() , 'id',  'material'  );
       ?>
@@ -78,28 +79,8 @@ CrudAsset::register($this);
       <label> Medico </label> </br>
       <input id="solicitud-medico" style="width:250px;" value='<?=($model->medico)?$model->medico->apellido.", ".$model->medico->nombre:'' ?>' type="text" readonly>
       <?=$form->field($model, 'id_medico')->hiddenInput()->label(false); ?>
-        <?
-          echo Form::widget([ // continuation fields to row above without labels
-            'id' => 'login-form-horizontal',
-              'model'=>$model,
-              'form'=>$form,
-              'columns'=>4,
-              'attributes'=>[
-                  'id_procedencia'=>['type'=> Form::INPUT_WIDGET,
-                  'widgetClass'=>'kartik\select2\Select2',
-                  'options'=>[
-                    'data' => $mapprocedencia,
-                        'language' => 'es',
-                        ],
-                    'pluginOptions' => [
-                          'allowClear' => true
-                          ],
-                    'placeholder' => 'Seleccionar codigo..',
-                          'label'=>'Procedencia'
-                    ],
 
-              ]]);
-      ?>
+      <?=$form->field($model, 'protocolo')->textInput(['readonly'=> true , 'value'=>$protocolo_insertar]) ;  ?>
 
         </div>
 
@@ -130,6 +111,31 @@ CrudAsset::register($this);
              <?= $form->field($model, 'id_estado')->dropDownList($model->estados())->label('Estado') ;?>
 
 
+             <?
+               echo Form::widget([ // continuation fields to row above without labels
+                 'id' => 'login-form-horizontal',
+                   'model'=>$model,
+                   'form'=>$form,
+                   'columns'=>4,
+                   'attributes'=>[
+                       'id_procedencia'=>['type'=> Form::INPUT_WIDGET,
+                       'widgetClass'=>'kartik\select2\Select2',
+                       'options'=>[
+                         'data' => $mapprocedencia,
+                             'language' => 'es',
+                             ],
+                         'pluginOptions' => [
+                               'allowClear' => true
+                               ],
+                         'placeholder' => 'Seleccionar codigo..',
+                               'label'=>'Procedencia'
+                         ],
+
+                   ]]);
+           ?>
+
+           <?= $form->field($model, 'protocolo_automatico')->checkBox(['label' => 'Protocolo automatico',
+'onclick' => 'cambioProtocoloAutomatico();', 'checked' => '1','value' => '1']); ?>
              </div>
              <div class='col-sm-3'>
                   <?
@@ -297,6 +303,28 @@ CrudAsset::register($this);
 <?php Modal::end(); ?>
 
 <script>
+function cambioProtocoloAutomatico(){
+    if(document.getElementById("solicitudpap-protocolo_automatico").value==1 ){
+      document.getElementById("solicitudpap-protocolo").readOnly = false;
+      document.getElementById("solicitudpap-protocolo_automatico").value =0;
+
+    }else {
+        $.ajax({
+            url: '<?php echo Url::to(['/solicitud/buscarprotocolo']) ?>',
+           type: 'get',
+           data: {
+                 _csrf : '<?=Yii::$app->request->getCsrfToken()?>'
+                 },
+           success: function (data) {
+               var content = JSON.parse(data);
+              document.getElementById("solicitudpap-protocolo").value=  content.protocolo;
+           }
+
+      });
+      document.getElementById("solicitudpap-protocolo_automatico").value =1;
+      document.getElementById("solicitudpap-protocolo").readOnly = true;
+    }
+}
 
 function pacienteba(){
 

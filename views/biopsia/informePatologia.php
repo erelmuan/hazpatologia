@@ -119,7 +119,7 @@ $pdf->Text(35,$Inicio,$model->solicitudbiopsia->paciente->nombre.' '.$model->sol
 $pdf->SetFont('Times','B',10);
 $pdf->Text(120,$Inicio,"FECHA:");
 $pdf->SetFont('Times','',10);
-$pdf->Text(135,$Inicio,date("d/m/Y", strtotime($model->solicitudbiopsia->fecharealizacion)));
+$pdf->Text(135,$Inicio,date("d/m/Y", strtotime($model->solicitudbiopsia->fechadeingreso)));
 
 $Inicio=$Inicio +8;
 $pdf->SetFont('Times','B',10);

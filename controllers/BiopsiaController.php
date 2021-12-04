@@ -213,7 +213,7 @@ class BiopsiaController extends Controller
 
         $Solicitud =  Solicitud::findOne($id);
         list($ano,$mes,$dia) = explode("-",$Solicitud->paciente->fecha_nacimiento);
-        list($anoR,$mesR,$diaR) = explode("-",$Solicitud->fecharealizacion);
+        list($anoR,$mesR,$diaR) = explode("-",$Solicitud->fechadeingreso);
 
 
         $ano_diferencia  = $anoR - $ano;
