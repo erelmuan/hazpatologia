@@ -488,6 +488,8 @@ class UsuarioController extends Controller
         $request = Yii::$app->request;
         $id=Yii::$app->user->identity->getId();
         $model = $this->findModel($id);
+
+
         if($request->isAjax) {    // modal para cambiar contraseña
 
             Yii::$app->response->format = Response::FORMAT_JSON;
@@ -539,11 +541,19 @@ class UsuarioController extends Controller
             ];
 
         } else {
-            if ($model->load($request->post()) && $model->save()) {
-                    try {
-                      // Imagen
-                      $image = UploadedFile::getInstance($model, 'imagen');
-                   if (!is_null($image)) {
+            if(!$request->post()){
+              return $this->render('perfil', [
+                  'model' => $model,
+              ]);
+            }
+            $post=$request->post();
+            $image = UploadedFile::getInstance($model, 'imagen');
+
+            unset($post['Usuario']['imagen']);
+
+          if ($model->load($post) && $model->save() ) {
+
+             if (!is_null($image) && $image !=="") {
 
                      // save with image
                       // store the source file name
@@ -568,16 +578,22 @@ class UsuarioController extends Controller
                               ->save(Yii::$app->params['uploadPath'].'sm_'.$nombreEncriptadoImagen, ['quality' => 100]);
 
                     if ($model->save()) {
-                        Yii::$app->session->setFlash('misDatosSubmitted');
-                        return $this->refresh();
+                      Yii::$app->getSession()->setFlash('success', [
+                          'type' => 'success',
+                          'duration' => 5000,
+                          'icon' => 'fa fa-success',
+                          'message' => "Datos guardados correctamente",
+                          'title' => 'NOTIFICACIÓN',
+                          'positonY' => 'top',
+                          'positonX' => 'right'
+                      ]);
+
                     }
 
                 }
-                } catch (yii\db\Exception $e) {
 
-                    Yii::$app->response->format = Response::FORMAT_HTML;
-                    throw new NotFoundHttpException('Error en la base de datos.', 500);
-                }
+                return $this->refresh();
+
             }
 
             return $this->render('perfil', [

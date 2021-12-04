@@ -12,19 +12,10 @@ CrudAsset::register($this);
 
 ?>
 <div id="w0" class="x_panel">
-  <div class="x_title"><h2><i class="fa fa-table"></i> PERFIL  </h2>
-    <div class="clearfix"> <div class="nav navbar-right panel_toolbox"><?echo Html::button('<i class="glyphicon glyphicon-arrow-left"></i> Atrás',array('name' => 'btnBack','onclick'=>'js:history.go(-1);returnFalse;','id'=>'botonAtras')); ?></div>
-</div>
+  <h2><i class="fa fa-table"></i> PERFIL  </h2>
+
   </div>
 <div class="usuario-misdatos">
-
-    <?php if (Yii::$app->session->hasFlash('misDatosSubmitted')): ?>
-
-        <div class="alert alert-success">
-            Datos Guardados correctamente.
-        </div>
-
-    <?php else: ?>
 
       <!-- Nav tabs -->
       <ul class="nav nav-tabs" role="tablist">
@@ -36,8 +27,7 @@ CrudAsset::register($this);
 
 
         <div class="perfil-form">
-          <?php $form = ActiveForm::begin([
-        'options'=>['enctype'=>'multipart/form-data']]); ?>
+          <?php $form = ActiveForm::begin(); ?>
 
           <div class="tab-content">
             <div class="tab-pane active vertical-pad" id="general">
@@ -51,6 +41,9 @@ CrudAsset::register($this);
                         <?php echo $form->field($model, 'email')->textInput(['maxlength' => true, 'style'=>'width:50%']);?>
 
                         <?php echo $form->field($model, 'descripcion')->textInput(['maxlength' => true, 'style'=>'width:50%']);?>
+                        <?= $form->field($model, 'contrasenia')->hiddenInput()->label(false) ?>
+                        <?//= $form->field($model, 'activo'); ?>
+                        <?= $form->field($model, 'id_pantalla')->hiddenInput()->label(false) ;?>
                     </div>
                 </div>
                 <div class="col-md-4">
@@ -74,7 +67,7 @@ CrudAsset::register($this);
                 <? echo $form->field($model, 'imagen')->widget(FileInput::classname(), [
                     'options' => ['accept' => 'imagen/*'],
                      'pluginOptions'=>['allowedFileExtensions'=>['jpg','gif','png']],
-                ]);   ?>
+                ])   ?>
               </div> <!-- end of upload photo tab -->
 
           </div>
@@ -83,9 +76,6 @@ CrudAsset::register($this);
 
         </div>
 
-
-
-    <?php endif; ?>
 
 </div>
 </div>

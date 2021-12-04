@@ -35,7 +35,7 @@ background: #D5ECF4;
   use derekisbusy\panel\PanelWidget;
   ?>
   <div id="w0" class="x_panel">
-  <div class="x_title"><h2><i class="fa fa-gears"></i> ADMINISTRACIÓN  </h2> 
+  <div class="x_title"><h2><i class="fa fa-gears"></i> ADMINISTRACIÓN  </h2>
     <div class="clearfix"> <div class="nav navbar-right panel_toolbox"><?= Html::a('<i class="glyphicon glyphicon-arrow-left"></i> Atrás', ['/site'], ['class'=>'btn btn-danger grid-button']) ?></div>
     </div>
   </div>
@@ -85,7 +85,19 @@ background: #D5ECF4;
       </div>
     </div>
     </a>
+    <a href=<?=Yii::$app->homeUrl."?r=firma"; ?>>
+    <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
+      <div class="tile-stats">
+          <div class="icon"><i class="fa fa-edit"></i>
+          </div>
+          <div class="count"><?=$cantidadAuditorias?></div>
+          <h3>FIRMAS</h3>
+          <p>Firmas escaneadas.</p>
 
+
+      </div>
+    </div>
+    </a>
 
     </div>
 

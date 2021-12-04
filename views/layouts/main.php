@@ -8,11 +8,13 @@
 use yii\helpers\Html;
 use yii\helpers\Url;
 use kartik\widgets\Alert;
+use kartik\widgets\Growl;
 use kartik\icons\Icon;
 use kartik\widgets\SwitchInput;
+
 use app\models\AnioProtocolo;
 
-Icon::map($this, Icon::WHHG);
+
 $bundle = yiister\gentelella\assets\Asset::register($this);
 
 ?>
@@ -317,7 +319,7 @@ $bundle = yiister\gentelella\assets\Asset::register($this);
                         </li>
                         <div id="fecha">
                           <!-- <h2> -->
-                     <b>   <input type="text" class="form-control is-invalid" value = <?= (AnioProtocolo::find()->where(['activo'=>true])->one()!== NULL)? AnioProtocolo::find()->where(['activo'=>true])->one()->anio:'INACTIVOS'  ?> readonly>  </b> 
+                     <b>   <input type="text" class="form-control is-invalid" value = <?= (AnioProtocolo::find()->where(['activo'=>true])->one()!== NULL)? AnioProtocolo::find()->where(['activo'=>true])->one()->anio:'INACTIVOS'  ?> readonly>  </b>
 
                       <?= Html::a('<i class="glyphicon glyphicon-pencil"></i> Modificar Año-Protocolo', ['/anio-protocolo/index'], ['class'=>'btn btn-success grid-button']) ?>
 

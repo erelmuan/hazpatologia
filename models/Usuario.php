@@ -57,7 +57,7 @@ class Usuario extends \yii\db\ActiveRecord
         return [
             [['usuario', 'contrasenia', 'nombre'], 'required'],
             [['activo'], 'default', 'value' => null],
-            [['activo'], 'integer'],
+            // [['activo'], 'integer'],
             [['descripcion', 'imagen'], 'string'],
             [['id_pantalla'], 'default', 'value' => null],
             [['id_pantalla'], 'integer'],
