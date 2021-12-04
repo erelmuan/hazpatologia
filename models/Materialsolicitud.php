@@ -10,11 +10,22 @@ use Yii;
  * @property int $id
  * @property string $descripcion
  * @property int $id_estudio
-* @property Solicitud[] $solicituds 
+* @property Solicitud[] $solicituds
  * @property Estudio $estudio
  */
+ use app\components\behaviors\AuditoriaBehaviors;
+
 class Materialsolicitud extends \yii\db\ActiveRecord
 {
+  public function behaviors()
+  {
+
+    return array(
+           'AuditoriaBehaviors'=>array(
+                  'class'=>AuditoriaBehaviors::className(),
+                  ),
+      );
+ }
     /**
      * {@inheritdoc}
      */
@@ -55,16 +66,16 @@ class Materialsolicitud extends \yii\db\ActiveRecord
     {
         return $this->hasOne(Estudio::className(), ['id' => 'id_estudio']);
     }
-    
+
     public function getestudios() {
         return ArrayHelper::map(Estudio::find()->all(), 'id','descripcion');
 
     }
-     /** 
-	 * @return \yii\db\ActiveQuery 
-    */ 
-     public function getSolicituds() 
-     { 
-       return $this->hasMany(Solicitud::className(), ['id_materialsolicitud' => 'id']); 
+     /**
+	 * @return \yii\db\ActiveQuery
+    */
+     public function getSolicituds()
+     {
+       return $this->hasMany(Solicitud::className(), ['id_materialsolicitud' => 'id']);
       }
 }

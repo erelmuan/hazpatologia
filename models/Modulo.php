@@ -10,8 +10,20 @@ use Yii;
  * @property int $id
  * @property string $nombre
  */
+ use app\components\behaviors\AuditoriaBehaviors;
+
 class Modulo extends \yii\db\ActiveRecord
 {
+
+  public function behaviors()
+  {
+
+    return array(
+           'AuditoriaBehaviors'=>array(
+                  'class'=>AuditoriaBehaviors::className(),
+                  ),
+      );
+ }
     /**
      * {@inheritdoc}
      */

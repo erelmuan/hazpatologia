@@ -14,8 +14,20 @@ use Yii;
  		* @property Permiso[] $permisos
  		* @property Usuariorol[] $usuariorols
  */
+ use app\components\behaviors\AuditoriaBehaviors;
+
+
 class Rol extends \yii\db\ActiveRecord
 {
+  public function behaviors()
+  {
+
+    return array(
+           'AuditoriaBehaviors'=>array(
+                  'class'=>AuditoriaBehaviors::className(),
+                  ),
+      );
+ }
     /**
      * {@inheritdoc}
      */

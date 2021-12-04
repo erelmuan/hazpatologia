@@ -12,8 +12,19 @@ use Yii;
  *
  * @property Usuario[] $usuarios
  */
+ use app\components\behaviors\AuditoriaBehaviors;
+
 class Pantalla extends \yii\db\ActiveRecord
 {
+  public function behaviors()
+  {
+
+    return array(
+           'AuditoriaBehaviors'=>array(
+                  'class'=>AuditoriaBehaviors::className(),
+                  ),
+      );
+ }
     /**
      * {@inheritdoc}
      */

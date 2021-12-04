@@ -13,8 +13,19 @@ use Yii;
  *
  * @property Estudio $estudio
  */
+ use app\components\behaviors\AuditoriaBehaviors;
+
 class Muestrasolicitud extends \yii\db\ActiveRecord
 {
+  public function behaviors()
+  {
+
+    return array(
+           'AuditoriaBehaviors'=>array(
+                  'class'=>AuditoriaBehaviors::className(),
+                  ),
+      );
+ }
     /**
      * {@inheritdoc}
      */
@@ -55,5 +66,5 @@ class Muestrasolicitud extends \yii\db\ActiveRecord
     {
         return $this->hasOne(Estudio::className(), ['id' => 'id_estudio']);
     }
-  
+
 }

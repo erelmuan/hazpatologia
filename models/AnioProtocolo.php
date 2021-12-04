@@ -3,7 +3,6 @@
 namespace app\models;
 
 use Yii;
-use app\components\behaviors\AuditoriaBehaviors;
 
 /**
  * This is the model class for table "anio_protocolo".
@@ -13,6 +12,8 @@ use app\components\behaviors\AuditoriaBehaviors;
  * @property bool $activo
  * @property int $id
  */
+ use app\components\behaviors\AuditoriaBehaviors;
+
 class AnioProtocolo extends \yii\db\ActiveRecord
 {
   public function behaviors()

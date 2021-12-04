@@ -49,8 +49,19 @@ use Yii;
  * @property Solicitudpap $solicitudpap
  * @property Solicitudpap $solicitudpap0
  */
+ use app\components\behaviors\AuditoriaBehaviors;
+
 class Pap extends \yii\db\ActiveRecord
 {
+  public function behaviors()
+  {
+
+    return array(
+           'AuditoriaBehaviors'=>array(
+                  'class'=>AuditoriaBehaviors::className(),
+                  ),
+      );
+ }
     /**
      * {@inheritdoc}
      */

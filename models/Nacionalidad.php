@@ -12,8 +12,19 @@ use Yii;
  *
  * @property Paciente[] $pacientes
  */
+ use app\components\behaviors\AuditoriaBehaviors;
+
 class Nacionalidad extends \yii\db\ActiveRecord
 {
+  public function behaviors()
+  {
+
+    return array(
+           'AuditoriaBehaviors'=>array(
+                  'class'=>AuditoriaBehaviors::className(),
+                  ),
+      );
+ }
     /**
      * {@inheritdoc}
      */

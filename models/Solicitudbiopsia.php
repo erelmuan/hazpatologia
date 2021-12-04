@@ -27,8 +27,19 @@ use Yii;
  * @property Biopsia $biopsia
  * @property Paramaterialginecologico $materialginecologico
  */
+ use app\components\behaviors\AuditoriaBehaviors;
+
 class Solicitudbiopsia extends Solicitud
 {
+  public function behaviors()
+  {
+
+    return array(
+           'AuditoriaBehaviors'=>array(
+                  'class'=>AuditoriaBehaviors::className(),
+                  ),
+      );
+ }
     /**
      * {@inheritdoc}
      */

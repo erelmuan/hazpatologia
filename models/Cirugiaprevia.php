@@ -12,8 +12,19 @@ use Yii;
  *
  * @property Solicitudpap[] $solicitudpaps
  */
+ use app\components\behaviors\AuditoriaBehaviors;
+
 class Cirugiaprevia extends \yii\db\ActiveRecord
 {
+  public function behaviors()
+  {
+
+    return array(
+           'AuditoriaBehaviors'=>array(
+                  'class'=>AuditoriaBehaviors::className(),
+                  ),
+      );
+    }
     /**
      * {@inheritdoc}
      */

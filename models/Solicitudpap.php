@@ -41,8 +41,19 @@ use Yii;
  * @property Metodoanticonceptivo $metodoAnticonceptivo
  * @property Tipomuestra $tipoMuestra
  */
+ use app\components\behaviors\AuditoriaBehaviors;
+
 class Solicitudpap extends Solicitud
 {
+  public function behaviors()
+  {
+
+    return array(
+           'AuditoriaBehaviors'=>array(
+                  'class'=>AuditoriaBehaviors::className(),
+                  ),
+      );
+ }
 
     /**
      * {@inheritdoc}

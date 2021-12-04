@@ -16,8 +16,19 @@ use Yii;
  * @property Plantillafrase[] $plantillafrases
  * @property Plantillamaterial[] $plantillamaterials
  */
+ use app\components\behaviors\AuditoriaBehaviors;
+
 class Estudio extends \yii\db\ActiveRecord
 {
+  public function behaviors()
+  {
+
+    return array(
+           'AuditoriaBehaviors'=>array(
+                  'class'=>AuditoriaBehaviors::className(),
+                  ),
+      );
+    }
     /**
      * {@inheritdoc}
      */

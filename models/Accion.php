@@ -16,8 +16,20 @@ use Yii;
  *
  * @property Permiso[] $permisos
  */
+ use app\components\behaviors\AuditoriaBehaviors;
+
 class Accion extends \yii\db\ActiveRecord
 {
+
+  public function behaviors()
+  {
+
+    return array(
+           'AuditoriaBehaviors'=>array(
+                  'class'=>AuditoriaBehaviors::className(),
+                  ),
+      );
+ }
     /**
      * {@inheritdoc}
      */
@@ -66,7 +78,7 @@ class Accion extends \yii\db\ActiveRecord
               'label'=>'Index/Ver',
               'attribute'=>'index',
           ],
-          [   
+          [
               'class' => 'kartik\grid\BooleanColumn',
               'label'=>'Alta',
               'attribute'=>'create',
