@@ -50,7 +50,7 @@ CrudAsset::register($this);
           <?   echo  Html::a('<i class="glyphicon glyphicon-plus"> Crear medico</i>', ['medico/create'],
            ['role'=>'modal-remote','title'=> 'Crear nuevo medico','class'=>'btn btn-primary btn-xs']); ?>
       </label>
-      <input type="text" id="medicobuscar" name="MedicoSearch[num_documento]" placeholder="Ingresar DNI del medico" >
+      <input type="text" id="medicobuscar" name="MedicoSearch[matricula]" placeholder="Ingresar matricula del medico" >
       <button type="button" class ="btn btn-primary btn-xs" onclick='medicoba();'>Buscar y añadir</button>
       </div>
 
@@ -363,7 +363,7 @@ function medicoba(){
         url: '<?php echo Yii::$app->request->baseUrl. '/index.php?r=medico/search' ?>',
         type: 'get',
         data: {
-              "MedicoSearch[num_documento]":$("#medicobuscar").val() ,
+              "MedicoSearch[matricula]":$("#medicobuscar").val() ,
               _csrf : '<?=Yii::$app->request->getCsrfToken()?>'
               },
         success: function (data) {

@@ -35,7 +35,7 @@ class MedicoController extends Controller
               return Json::encode(['nombre'=>$dataProviderMed->getModels()[0]['nombre'],'apellido'=>$dataProviderMed->getModels()[0]['apellido'],'id'=>$dataProviderMed->getModels()[0]['id']]);
         } else {
             $errors = $searchModelMed->getErrors();
-            return Json::encode(['status' => 'error' ,'mensaje'=>$errors['num_documento'][0]]);
+            return Json::encode(['status' => 'error' ,'mensaje'=>$errors['matricula'][0]]);
         }
       }
 

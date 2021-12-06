@@ -45,7 +45,7 @@ CrudAsset::register($this);
              ['role'=>'modal-remote','title'=> 'Crear nuevo paciente','class'=>'btn btn-primary btn-xs']); ?>
           </label>
           <input type="text" id="pacientebuscar" name="PacienteSearch[num_documento]"  placeholder="Ingresar DNI del paciente" >
-          <button type="button" class ="btn btn-primary btn-xs" onclick='pacienteba();'>Buscar y añadir</button>
+          <button id="button_paciente" type="button" class ="btn btn-primary btn-xs" onclick='pacienteba();'>Buscar y añadir</button>
 
           </br>
           </br>
@@ -56,8 +56,8 @@ CrudAsset::register($this);
               <?   echo  Html::a('<i class="glyphicon glyphicon-plus"> Crear medico</i>', ['medico/create'],
                ['role'=>'modal-remote','title'=> 'Crear nuevo medico','class'=>'btn btn-primary btn-xs']); ?>
           </label>
-          <input type="text" id="medicobuscar" name="MedicoSearch[num_documento]" placeholder="Ingresar DNI del medico" >
-          <button type="button" class ="btn btn-primary btn-xs" onclick='medicoba();'>Buscar y añadir</button>
+          <input type="text" id="medicobuscar" name="MedicoSearch[matricula]" placeholder="Ingresar matricula del medico" >
+          <button id="button_medico"  type="button" class ="btn btn-primary btn-xs" onclick='medicoba();'>Buscar y añadir</button>
           </div>
           <?
             $form = ActiveForm::begin();
@@ -285,6 +285,21 @@ CrudAsset::register($this);
 <?php Modal::end(); ?>
 
 <script>
+var input = document.getElementById("pacientebuscar");
+input.addEventListener("keyup", function(event) {
+  if (event.keyCode === 13) {
+   event.preventDefault();
+   document.getElementById("button_paciente").click();
+  }
+});
+var input = document.getElementById("medicobuscar");
+input.addEventListener("keyup", function(event) {
+  if (event.keyCode === 13) {
+   event.preventDefault();
+   document.getElementById("button_medico").click();
+  }
+});
+
 function cambioProtocoloAutomatico(){
     if(document.getElementById("solicitudbiopsia-protocolo_automatico").value==1 ){
       document.getElementById("solicitudbiopsia-protocolo").readOnly = false;
@@ -344,7 +359,7 @@ function medicoba(){
         url: '<?php echo Yii::$app->request->baseUrl. '/index.php?r=medico/search' ?>',
         type: 'get',
         data: {
-              "MedicoSearch[num_documento]":$("#medicobuscar").val() ,
+              "MedicoSearch[matricula]":$("#medicobuscar").val() ,
               _csrf : '<?=Yii::$app->request->getCsrfToken()?>'
               },
         success: function (data) {

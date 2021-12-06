@@ -193,8 +193,14 @@ $pdf->SetFont('Times','B',10);
 $pdf->SetFont('Times','',10);
    // Imprimimos el texto justificado
 $pdf->SetXY(30, $Inicio +1 );
-$pdf->MultiCell(0,5, utf8_decode($model->frase));
 
+// $modelo= new Firma(); ACA DEBERIA OBTENER LA FIRMA DE ACUERDO AL USUARIO QUE FIRMO POR ESO HAY QUE AGREGAR UN ID DE USUARIO A LOS ESTUDIOS
+// $firma= $modelo::findOne(1);
+//
+// // $pdf->Image($firma->path,148,$Inicio - 8,34 );
+// $carpeta = Yii::getAlias("@app/");
+$pdf->MultiCell(0,5, utf8_decode($model->frase));
+$pdf->Image(Yii::$app->basePath .'/web/img/hospitalzatti.png', 80, 80, 20,20, 'SEEEEEEEEEEEE', 'http://www.tcpdf.org', '', true, 150);
 
 
 $pdf->Ln();

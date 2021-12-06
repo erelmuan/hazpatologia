@@ -22,8 +22,8 @@ class MedicoSearch extends Medico
         return [
             [['tipodoc','apellido', 'nombre', 'num_documento', 'matricula'], 'safe'],
           // SCESNARIO //
-          [['num_documento',],'integer','on'=>'search'],
-          [['num_documento',],'required','on'=>'search'],
+          [['matricula',],'integer','on'=>'search'],
+          [['matricula',],'required','on'=>'search'],
           // SCESNARIO //
             [['id', 'id_tipodoc', 'id_tipoprofesional'], 'integer'],
         ];
@@ -40,7 +40,7 @@ class MedicoSearch extends Medico
 
     /**
      * Creates data provider instance with search query applied
-     * 
+     *
      * @param array $params
      *
      * @return ActiveDataProvider
