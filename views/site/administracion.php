@@ -90,7 +90,7 @@ background: #D5ECF4;
       <div class="tile-stats">
           <div class="icon"><i class="fa fa-edit"></i>
           </div>
-          <div class="count"><?=$cantidadAuditorias?></div>
+          <div class="count"><?=$cantidadFirmas?></div>
           <h3>FIRMAS</h3>
           <p>Firmas escaneadas.</p>
 

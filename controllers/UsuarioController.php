@@ -549,7 +549,7 @@ class UsuarioController extends Controller
             $post=$request->post();
             $image = UploadedFile::getInstance($model, 'imagen');
 
-            unset($post['Usuario']['imagen']);
+           // unset($post[s'Usuario']['imagen']);
 
           if ($model->load($post) && $model->save() ) {
 

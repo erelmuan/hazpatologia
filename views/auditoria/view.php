@@ -1,6 +1,7 @@
 <?php
 
 use yii\widgets\DetailView;
+use yii\helpers\Html;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Auditoria */
@@ -11,7 +12,23 @@ use yii\widgets\DetailView;
         'model' => $model,
         'attributes' => [
             'id',
-            'id_usuario',
+            [
+                'class'=>'\kartik\grid\DataColumn',
+                'attribute'=>'usuario.usuario',
+                'width' => '170px',
+                'value' => function($model) {
+
+                  return Html::a( $model->usuario->usuario, ['usuario/view',"id"=> $model->usuario->id]
+
+                    ,[    'class' => 'text-success','role'=>'modal-remote','title'=>'Datos del paciente','data-toggle'=>'tooltip']
+                   );
+
+                 }
+                 ,
+
+                 'filterInputOptions' => ['placeholder' => 'Ingrese Dni,HC o nombre'],
+                 'format' => 'raw',
+            ],
             'accion',
             'tabla',
             'fecha',

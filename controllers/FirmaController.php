@@ -12,6 +12,11 @@ use \yii\web\Response;
 use yii\helpers\Html;
 use app\models\Usuario;
 use app\models\UsuarioSearch;
+use yii\web\UploadedFile;
+use yii\imagine\Image;
+use app\components\Metodos\Metodos;
+
+
 /**
  * FirmaController implements the CRUD actions for Firma model.
  */
@@ -64,8 +69,7 @@ class FirmaController extends Controller
                     'content'=>$this->renderAjax('view', [
                         'model' => $this->findModel($id),
                     ]),
-                    'footer'=> Html::button('Close',['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
-                            Html::a('Edit',['update','id'=>$id],['class'=>'btn btn-primary','role'=>'modal-remote'])
+                    'footer'=> Html::button('Cerrar',['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"])
                 ];
         }else{
             return $this->render('view', [
@@ -91,13 +95,70 @@ class FirmaController extends Controller
             /*
             *   Process for non-ajax request
             */
-            if ($model->load($request->post()) && $model->save()) {
-                return $this->redirect(['view', 'id' => $model->id]);
-            } else {
+            if($this->request->isPost ){
+                $post=$request->post();
+                //verificar porque hay que agregar el indice [0] a diferencia cuando se sube una imagen de perfil
+                $image = UploadedFile::getInstances($model, 'imagen')[0];
+                unset($post['Firma']['imagen']);
+
+                if ($model->load($request->post()) && $model->save()) {
+
+                  if (!is_null($image) && $image !=="") {
+
+                          // save with image
+                           // store the source file name
+                         //  $model->imagen = $image->name;
+                          $ext = (explode(".", $image->name));
+                          $ext= end($ext);
+                          // generate a unique file name to prevent duplicate filenames
+                         //  $model->avatar = Yii::$app->security->generateRandomString().".{$ext}";
+                          // the path to save file, you can set an uploadPath
+                          // in Yii::$app->params (as used in example below)
+                          Yii::$app->params['uploadPath'] = Yii::$app->basePath . '/web/uploads/avatar/';
+                          $nombreEncriptadoImagen=Yii::$app->security->generateRandomString().".{$ext}";
+                         // $path = Yii::$app->params['uploadPath'] . $nombreEncriptadoImagen;
+                          $path = Yii::$app->params['uploadPath'] . $nombreEncriptadoImagen;
+                          // $model->id = Yii::$app->user->getId();
+                          $model->imagen= $nombreEncriptadoImagen;
+                            $image->saveAs($path);
+                            //Redimensionar
+                            Image::thumbnail(Yii::$app->params['uploadPath'].$nombreEncriptadoImagen, 120, 120)
+                            ->save(Yii::$app->params['uploadPath'].'sqr_'.$nombreEncriptadoImagen, ['quality' => 100]);
+                            Image::thumbnail(Yii::$app->params['uploadPath'].$nombreEncriptadoImagen, 30, 30)
+                                   ->save(Yii::$app->params['uploadPath'].'sm_'.$nombreEncriptadoImagen, ['quality' => 100]);
+
+                         if ($model->save()) {
+                           Yii::$app->getSession()->setFlash('success', [
+                               'type' => 'success',
+                               'duration' => 5000,
+                               'icon' => 'fa fa-success',
+                               'message' => "Datos guardados correctamente",
+                               'title' => 'NOTIFICACIÓN',
+                               'positonY' => 'top',
+                               'positonX' => 'right'
+                           ]);
+
+                         }
+
+                     }
+
+                    return $this->redirect(['view', 'id' => $model->id]);
+                }
+                else {
+                     return $this->render('create', [
+                       'searchModelUsu' => $searchModelUsu,
+                       'dataProviderUsu' => $dataProviderUsu,
+                         'model' => $model,
+                         'imagen'=> $image,
+                     ]);
+                 }
+
+           }else {
                 return $this->render('create', [
                   'searchModelUsu' => $searchModelUsu,
                   'dataProviderUsu' => $dataProviderUsu,
                     'model' => $model,
+                    'imagen'=> null
                 ]);
             }
 
@@ -114,53 +175,78 @@ class FirmaController extends Controller
     {
         $request = Yii::$app->request;
         $model = $this->findModel($id);
-
-        if($request->isAjax){
-            /*
-            *   Process for ajax request
-            */
-            Yii::$app->response->format = Response::FORMAT_JSON;
-            if($request->isGet){
-                return [
-                    'title'=> "Update Firma #".$id,
-                    'content'=>$this->renderAjax('update', [
-                        'model' => $model,
-                    ]),
-                    'footer'=> Html::button('Close',['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
-                                Html::button('Save',['class'=>'btn btn-primary','type'=>"submit"])
-                ];
-            }else if($model->load($request->post()) && $model->save()){
-                return [
-                    'forceReload'=>'#crud-datatable-pjax',
-                    'title'=> "Firma #".$id,
-                    'content'=>$this->renderAjax('view', [
-                        'model' => $model,
-                    ]),
-                    'footer'=> Html::button('Close',['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
-                            Html::a('Edit',['update','id'=>$id],['class'=>'btn btn-primary','role'=>'modal-remote'])
-                ];
-            }else{
-                 return [
-                    'title'=> "Update Firma #".$id,
-                    'content'=>$this->renderAjax('update', [
-                        'model' => $model,
-                    ]),
-                    'footer'=> Html::button('Close',['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
-                                Html::button('Save',['class'=>'btn btn-primary','type'=>"submit"])
-                ];
-            }
-        }else{
+        $modelUsu= new Usuario();
+        $searchModelUsu = new UsuarioSearch();
+        $dataProviderUsu = $searchModelUsu->search(Yii::$app->request->queryParams);
+        $dataProviderUsu->pagination->pageSize=7;
             /*
             *   Process for non-ajax request
             */
-            if ($model->load($request->post()) && $model->save()) {
-                return $this->redirect(['view', 'id' => $model->id]);
-            } else {
+            if($this->request->isPost ){
+                $post=$request->post();
+                //verificar porque hay que agregar el indice [0] a diferencia cuando se sube una imagen de perfil
+                $image = UploadedFile::getInstances($model, 'imagen')[0];
+                unset($post['Firma']['imagen']);
+
+                if ($model->load($request->post()) && $model->save()) {
+
+                  if (!is_null($image) && $image !=="") {
+
+                          // save with image
+                           // store the source file name
+                         //  $model->imagen = $image->name;
+                          $ext = (explode(".", $image->name));
+                          $ext= end($ext);
+                          // generate a unique file name to prevent duplicate filenames
+                         //  $model->avatar = Yii::$app->security->generateRandomString().".{$ext}";
+                          // the path to save file, you can set an uploadPath
+                          // in Yii::$app->params (as used in example below)
+                          Yii::$app->params['uploadPath'] = Yii::$app->basePath . '/web/uploads/avatar/';
+                          $nombreEncriptadoImagen=Yii::$app->security->generateRandomString().".{$ext}";
+                         // $path = Yii::$app->params['uploadPath'] . $nombreEncriptadoImagen;
+                          $path = Yii::$app->params['uploadPath'] . $nombreEncriptadoImagen;
+                          // $model->id = Yii::$app->user->getId();
+                          $model->imagen= $nombreEncriptadoImagen;
+                            $image->saveAs($path);
+                            //Redimensionar
+                            Image::thumbnail(Yii::$app->params['uploadPath'].$nombreEncriptadoImagen, 120, 120)
+                            ->save(Yii::$app->params['uploadPath'].'sqr_'.$nombreEncriptadoImagen, ['quality' => 100]);
+                            Image::thumbnail(Yii::$app->params['uploadPath'].$nombreEncriptadoImagen, 30, 30)
+                                   ->save(Yii::$app->params['uploadPath'].'sm_'.$nombreEncriptadoImagen, ['quality' => 100]);
+
+                         if ($model->save()) {
+                           Yii::$app->getSession()->setFlash('success', [
+                               'type' => 'success',
+                               'duration' => 5000,
+                               'icon' => 'fa fa-success',
+                               'message' => "Datos guardados correctamente",
+                               'title' => 'NOTIFICACIÓN',
+                               'positonY' => 'top',
+                               'positonX' => 'right'
+                           ]);
+
+                         }
+
+                     }
+
+                    return $this->redirect(['view', 'id' => $model->id]);
+                }
+                else {
+                     return $this->render('update', [
+                       'searchModelUsu' => $searchModelUsu,
+                       'dataProviderUsu' => $dataProviderUsu,
+                         'model' => $model,
+                         'imagen'=> $image,
+                     ]);
+                 }
+
+           } else {
                 return $this->render('update', [
+                  'searchModelUsu' => $searchModelUsu,
+                  'dataProviderUsu' => $dataProviderUsu,
                     'model' => $model,
                 ]);
             }
-        }
     }
 
     /**
@@ -191,36 +277,7 @@ class FirmaController extends Controller
 
     }
 
-     /**
-     * Delete multiple existing Firma model.
-     * For ajax request will return json object
-     * and for non-ajax request if deletion is successful, the browser will be redirected to the 'index' page.
-     * @param integer $id
-     * @return mixed
-     */
-    public function actionBulkDelete()
-    {
-        $request = Yii::$app->request;
-        $pks = explode(',', $request->post( 'pks' )); // Array or selected records primary keys
-        foreach ( $pks as $pk ) {
-            $model = $this->findModel($pk);
-            $model->delete();
-        }
 
-        if($request->isAjax){
-            /*
-            *   Process for ajax request
-            */
-            Yii::$app->response->format = Response::FORMAT_JSON;
-            return ['forceClose'=>true,'forceReload'=>'#crud-datatable-pjax'];
-        }else{
-            /*
-            *   Process for non-ajax request
-            */
-            return $this->redirect(['index']);
-        }
-
-    }
 
     /**
      * Finds the Firma model based on its primary key value.

@@ -40,6 +40,8 @@ use app\models\Auditoria;
 use app\models\Rol;
 use app\models\Modulo;
 use app\models\Accion;
+use app\models\Firma;
+
 use app\components\Seguridad\Seguridad;
 
 class SiteController extends Controller
@@ -277,17 +279,19 @@ class SiteController extends Controller
     {
       $cantidadUsuarios = Usuario::find()->count();
       $cantidadAuditorias =Auditoria::find()->count();
+      $cantidadFirmas =Firma::find()->count();
 
         return $this->render('administracion',[
           'cantidadUsuarios'=>$cantidadUsuarios,
-          'cantidadAuditorias'=>$cantidadAuditorias
+          'cantidadAuditorias'=>$cantidadAuditorias,
+          'cantidadFirmas'=>$cantidadFirmas
          ]);
     }
     public function actionPermisos()
     {
         $cantidadRoles= Rol::find()->count();
         $cantidadModulos = Modulo::find()->count();
-        $cantidadAcciones = Accion::find()->count(); 
+        $cantidadAcciones = Accion::find()->count();
 
           return $this->render('permisos',[
             'cantidadRoles'=>$cantidadRoles,
@@ -299,11 +303,11 @@ class SiteController extends Controller
     {
       $cantidadSolicitudbiopsia =Solicitudbiopsia::find()->count();
       $cantidadSolicitudpap = Solicitudpap::find()->count();
-    
+
      return $this->render('solicitudes',[
        'cantidadSolicitudbiopsia'=>$cantidadSolicitudbiopsia,
        'cantidadSolicitudpap'=>$cantidadSolicitudpap,
-    
+
       ]);
     }
     public function actionConstruccion()

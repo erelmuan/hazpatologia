@@ -19,7 +19,7 @@ class FirmaSearch extends Firma
     {
         return [
             [['id', 'id_usuario'], 'integer'],
-            [['firma'], 'safe'],
+            [['imagen'], 'safe'],
         ];
     }
 
@@ -60,7 +60,7 @@ class FirmaSearch extends Firma
             'id_usuario' => $this->id_usuario,
         ]);
 
-        $query->andFilterWhere(['like', 'firma', $this->firma]);
+        $query->andFilterWhere(['like', 'imagen', $this->imagen]);
 
         return $dataProvider;
     }

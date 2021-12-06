@@ -12,5 +12,7 @@ use yii\helpers\Html;
         'model' => $model,
         'searchModelUsu' => $searchModelUsu,
         'dataProviderUsu' => $dataProviderUsu,
+        'imagen'=> $imagen,
+
     ]) ?>
 </div>

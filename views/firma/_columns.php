@@ -1,5 +1,6 @@
 <?php
 use yii\helpers\Url;
+use yii\helpers\Html;
 
 return [
 
@@ -12,12 +13,30 @@ return [
         // 'attribute'=>'id',
     // ],
     [
-        'class'=>'\kartik\grid\DataColumn',
-        'attribute'=>'firma',
-    ],
+      'attribute'=>'imagen',
+        'label'=>'Imagen',
+        'value' => function($model) {
+            return '<img src=uploads/avatar/'.$model->imagen.' width="90px" height="90px" style="margin-left: auto;margin-right: auto;;position:relative;" >';
+          },
+        'format'=>'raw',
+
+ ],
     [
         'class'=>'\kartik\grid\DataColumn',
-        'attribute'=>'id_usuario',
+        'attribute'=>'usuario.usuario',
+        'width' => '170px',
+        'value' => function($model) {
+
+          return Html::a( $model->usuario->usuario, ['usuario/view',"id"=> $model->usuario->id]
+
+            ,[    'class' => 'text-success','role'=>'modal-remote','title'=>'Datos del paciente','data-toggle'=>'tooltip']
+           );
+
+         }
+         ,
+
+         'filterInputOptions' => ['placeholder' => 'Ingrese Dni,HC o nombre'],
+         'format' => 'raw',
     ],
     [
         'class' => 'kartik\grid\ActionColumn',
@@ -27,7 +46,7 @@ return [
                 return Url::to([$action,'id'=>$key]);
         },
         'viewOptions'=>['role'=>'modal-remote','title'=>'Ver','data-toggle'=>'tooltip'],
-        'updateOptions'=>['role'=>'modal-remote','title'=>'Actualizar', 'data-toggle'=>'tooltip'],
+        'updateOptions'=>['title'=>'Actualizar', 'data-toggle'=>'tooltip'],
         'deleteOptions'=>['role'=>'modal-remote','title'=>'Delete',
                           'data-confirm'=>false, 'data-method'=>false,// for overide yii data api
                           'data-request-method'=>'post',

@@ -1,9 +1,11 @@
 <?php
 use yii\helpers\Html;
-use yii\widgets\ActiveForm;
+// use yii\widgets\ActiveForm;
+use yii\bootstrap\ActiveForm;
+
 use kartik\widgets\FileInput;
 use kartik\grid\GridView;
-
+use yii\helpers\Url;
 /* @var $this yii\web\View */
 /* @var $model app\models\Firma */
 /* @var $form yii\widgets\ActiveForm */
@@ -27,15 +29,13 @@ use kartik\grid\GridView;
         <!-- Nav tabs -->
         <ul class="nav nav-tabs" role="tablist">
           <li class="active"><a href="#general" role="tab" data-toggle="tab">Usuario</a></li>
-          <li><a href="#photo" role="tab" data-toggle="tab">Subir o actualizar firma</a></li>
         </ul>
 
 
 
 
           <div class="perfil-form">
-            <?php $form = ActiveForm::begin([
-          'options'=>['enctype'=>'multipart/form-data']]); ?>
+            <?php $form = ActiveForm::begin(); ?>
 
             <div class="tab-content">
               <div class="tab-pane active vertical-pad" id="general">
@@ -43,38 +43,74 @@ use kartik\grid\GridView;
                   <div class="col-sm-7">
                       <div class="x_panel">
                         <?php $form = ActiveForm::begin(); ?>
-                            <button title="Busqueda avanzada de usuarios" type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target=".bs-usuario-modal-lg" style="margin-left: 10px;">Buscar paciente <i class="glyphicon glyphicon-search" ></i></button>
+                            <button title="Busqueda avanzada de usuarios" type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target=".bs-usuario-modal-lg" style="margin-left: 10px;">Buscar usuario <i class="glyphicon glyphicon-search" ></i></button>
                            <div class="form-group field-medico-usuario">
                            <label class="control-label" for="medico-usuario">Usuario</label>
                            <input type="text" id="firma-usuario" class="form-control" value='<?=($model->usuario)?$model->usuario->usuario:'' ?>'  maxlength="45" style="width:50%" readonly/>
 
                            <div class="help-block"></div>
-                           </div>
+                         </div>
+                         <?=$form->field($model, 'id_usuario')->hiddenInput()->label(false); ?>
+                         <?     echo $form->field($model, 'imagen')->widget(FileInput::classname(), [
+                     'options' => ['multiple' => false, 'accept' => 'image/*',
+              'onchange' => 'setearValue()',
+              'hiddenOptions' => ['id' => "imagen-identificador"]
+
+                   ],
+                     'pluginOptions' => [
+                       'allowedFileExtensions'=>['jpg','gif','png'],
+                                'showPreview' => true,
+                                 'showCaption' => true,
+                                 'showRemove' => true,
+                                 'showUpload' => true,
+                                  'uploadLabel'=> "Guardar",
+                               ],
+                               'pluginEvents' => [
+                                 "fileclear" => 'clearValue()',
+                                ]
+
+                 ]);?>
                       </div>
 
-                       <?=$form->field($model, 'id_usuario')->hiddenInput()->label(false); ?>
+
                       </div>
                       <?php  if (!$model->isNewRecord ) { ?>
                       <div class="col-md-4">
                           <div class="x_panel">
-                            <?   echo '<img src=uploads/avatar/sqr_'.$model->firma.' class="img-circle profile_img"   alt="..." >'; ?>
+                            <?   echo '<img src=uploads/avatar/sqr_'.$model->imagen.' class="img-circle profile_img"   alt="..." >'; ?>
                           </div>
                       </div>
                         <?  }?>
                   </div>
 
                 </div>
-                <div class="tab-pane vertical-pad" id="photo">
 
                   <?
-                    echo $form->field($model, 'firma')->widget(FileInput::classname(), [
-                        'options' => ['accept' => 'firma/*'],
-                         'pluginOptions'=>['allowedFileExtensions'=>['jpg','gif','png']],
-                    ]);
+
+
+//                   echo $form->field($model, 'imagen')->widget(FileInput::classname(), [
+//     'options' => ['multiple' => true, 'accept' => 'image/*'],
+//     'pluginOptions' => [
+//                'showPreview' => false,
+//                 'showCaption' => true,
+//                 'showRemove' => true,
+//                 'showUpload' => false]
+// ]);
+    //               echo FileInput::widget([
+    //     'name' => 'Firma[imagen]',
+    //     'pluginOptions' => [
+    //         'showPreview' => false,
+    //         'showCaption' => true,
+    //         'showRemove' => true,
+    //         'showUpload' => false
+    //     ]
+    // ]);
                   ?>
-                </div> <!-- end of upload photo tab -->
+
+
 
             </div>
+
 
             <?php ActiveForm::end(); ?>
 
@@ -139,8 +175,16 @@ use kartik\grid\GridView;
      </div>
 </div>
 <script>
+function setearValue (){
+   document.getElementById('imagen-identificador').value='Hubo un error no se subio la imagen';
+}
+function clearValue (){
+   document.getElementById('imagen-identificador').value='';
+}
 function agregarFormularioUsu (){
   document.getElementById("firma-usuario").value=  $("tr.success").find("td:eq(2)").text() ;
+
+
   document.getElementById("firma-id_usuario").value=$("tr.success").find("td:eq(1)").text();
   //vacias el contenido de la variable para que no se anexe con otra eleccion de otro campo
   $('button.close.kv-clear-radio').click();

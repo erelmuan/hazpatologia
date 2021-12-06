@@ -8,7 +8,7 @@ use Yii;
  * This is the model class for table "firma".
  *
  * @property int $id
- * @property string $firma
+ * @property string $imagen
  * @property int $id_usuario
  *
  * @property Usuario $usuario
@@ -29,9 +29,12 @@ class Firma extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['firma'], 'string'],
-            [['id_usuario'], 'default', 'value' => null],
             [['id_usuario'], 'integer'],
+            [['id_usuario'], 'required',  'message' => 'El campo usuario no puede estar vacío.'],
+            [['imagen'], 'required',  'message' => 'El campo imagen no puede estar vacío.'],
+            [['id_usuario'], 'unique'],
+
+            [['imagen'], 'string', 'max' => 75],
             [['id_usuario'], 'exist', 'skipOnError' => true, 'targetClass' => Usuario::className(), 'targetAttribute' => ['id_usuario' => 'id']],
         ];
     }
@@ -43,7 +46,7 @@ class Firma extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'firma' => 'Firma',
+            'imagen' => 'Imagen',
             'id_usuario' => 'Id Usuario',
         ];
     }

@@ -8,6 +8,8 @@ use yii\helpers\Html;
 <div class="firma-update">
 
     <?= $this->render('_form', [
+      'searchModelUsu' => $searchModelUsu,
+      'dataProviderUsu' => $dataProviderUsu,
         'model' => $model,
     ]) ?>
 
