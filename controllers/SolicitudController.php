@@ -37,8 +37,6 @@ class SolicitudController extends Controller
       //   $this->layout = 'main3';
       // }
         $model= new Solicitud();
-        $model->fecharealizacion = date('d/m/Y',strtotime($model->fecharealizacion));
-        $model->fechadeingreso = date('d/m/Y',strtotime($model->fechadeingreso));
         $searchModel = new SolicitudSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams );
         $dataProvider->pagination->pageSize=7;
@@ -295,12 +293,14 @@ class SolicitudController extends Controller
         $request = Yii::$app->request;
 
         $model = $this->findModel($id);
+;
 
         $modelestudio= $model->estudio->modelo;
         if (isset($model->$modelestudio) && $model->$modelestudio->estado->descripcion=='LISTO'){
           $this->setearMensajeError('No se puede modificar una solicitud con informe listo.');
            return $this->redirect(['solicitud/index', 'listo' => false]);
         }
+
 
          ////////////PACIENTE/////////////////
         $modelPac= new Paciente();
@@ -317,9 +317,23 @@ class SolicitudController extends Controller
             /*
             *   Process for non-ajax request
             */
-            if ($model->load($request->post()) && $model->save()) {
-                return $this->redirect(['view', 'id' => $model->id]);
-            } else {
+            if($this->request->isPost ){
+                if (!$this->validar($_POST[$model->classNameM()]["fechadeingreso"]))  {
+                  return $this->render('_form', [
+                      'model' => $model,
+                      'searchModelPac' => $searchModelPac,
+                      'dataProviderPac' => $dataProviderPac,
+                      'modelPac' => $modelPac,
+                      'searchModelMed' => $searchModelMed,
+                      'dataProviderMed' => $dataProviderMed,
+                      'modelMed' => $modelMed,
+                  ]);
+
+                }
+                if ($model->load($request->post()) && $model->save()) {
+                    return $this->redirect(['view', 'id' => $model->id]);
+                }
+          } else {
                 return $this->render('_form', [
                     'model' => $model,
                     'searchModelPac' => $searchModelPac,
@@ -434,34 +448,34 @@ class SolicitudController extends Controller
         }
     }
 
-    // public function save($runValidation = true, $attributeNames = null)
-    // {
-    //   $transaction = Solicitud::getDb()->beginTransaction();
-    //   try {
-    //     $db = Yii::$app->db;
-    //     $protocolo = $db->createCommand('SELECT last_value FROM solicitud_protocolo_seq')
-    //                 ->queryColumn();
-    //
-    //       if ( $protocolo && date("d")==26 && date("m") ==11 && $protocolo[0] !== 1)
-    //       {
-    //         $db->createCommand('ALTER SEQUENCE solicitud_protocolo_seq RESTART WITH 1')->execute();
-    //       //    $db->createCommand('UPDATE solicitud SET idsolicitud=nextval("solicitud_idsolicitud_seq")')->execute();
-    //
-    //       }
-    //     if ($this->getIsNewRecord()) {
-    //         return $this->insert($runValidation, $attributeNames);
-    //
-    //     }
-    //     $transaction->commit();
-    //     return $this->update($runValidation, $attributeNames) !== false;
-    //   }
-    //
-    // catch(\Exception $e) {
-    //     $transaction->rollBack();
-    //     throw $e;
-    // }
+    public function save($runValidation = true, $attributeNames = null)
+    {
+      $transaction = Solicitud::getDb()->beginTransaction();
+      try {
+        $db = Yii::$app->db;
+        $protocolo = $db->createCommand('SELECT last_value FROM solicitud_protocolo_seq')
+                    ->queryColumn();
 
-// }
+          if ( $protocolo && date("d")==26 && date("m") ==11 && $protocolo[0] !== 1)
+          {
+            $db->createCommand('ALTER SEQUENCE solicitud_protocolo_seq RESTART WITH 1')->execute();
+          //    $db->createCommand('UPDATE solicitud SET idsolicitud=nextval("solicitud_idsolicitud_seq")')->execute();
+
+          }
+        if ($this->getIsNewRecord()) {
+            return $this->insert($runValidation, $attributeNames);
+
+        }
+        $transaction->commit();
+        return $this->update($runValidation, $attributeNames) !== false;
+      }
+
+    catch(\Exception $e) {
+        $transaction->rollBack();
+        throw $e;
+    }
+
+}
     function returnModel()
 
     {

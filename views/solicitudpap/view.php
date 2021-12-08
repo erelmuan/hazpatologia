@@ -41,7 +41,7 @@ use yii\helpers\Html;
               'label' => 'Fecha de ingreso'
             ],
             [
-              'value'=> 'estado.descripcion',
+              'value'=> $model->estado->descripcion,
               'label' => 'Estado'
             ],
              'observacion:ntext',

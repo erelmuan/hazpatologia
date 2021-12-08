@@ -22,6 +22,7 @@ use \yii\web\Response;
 use yii\helpers\Html;
 use yii\data\ActiveDataProvider;
 use yii\helpers\Json;
+use app\components\Metodos\Metodos;
 
 /**
  * PacienteController implements the CRUD actions for Paciente model.
@@ -131,7 +132,7 @@ class PacienteController extends Controller
     {
         $request = Yii::$app->request;
         $model = new Paciente();
-        $model->fecha_nacimiento = date('d/m/Y',strtotime($model->fecha_nacimiento));
+        // $model->fecha_nacimiento = date('d/m/Y',strtotime($model->fecha_nacimiento));
 
         $valorObrasocial=[];
         $afiliado=[];
@@ -255,8 +256,7 @@ class PacienteController extends Controller
       $request = Yii::$app->request;
       // $model = new Paciente();
       $model = $this->findModel($id);
-      $model->fecha_nacimiento = date('d/m/Y',strtotime($model->fecha_nacimiento));
-
+      // $model->fecha_nacimiento = date('d/m/Y',strtotime($model->fecha_nacimiento));
       $valorObrasocial=[];
       $afiliado=[];
       $provincias=[];
@@ -448,4 +448,5 @@ class PacienteController extends Controller
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
+
 }

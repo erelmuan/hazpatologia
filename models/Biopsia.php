@@ -16,7 +16,7 @@ use Yii;
  * @property string $frase
  * @property string $diagnostico
  * @property bool $Inmuno
- * @property bool $Informado
+ * @property bool $firmado
  * @property bool $Pagado
  * @property int $id
  * @property int $id_solicitudbiopsia
@@ -26,11 +26,12 @@ use Yii;
  * @property string $ubicacion
  * @property string $observacion
  * @property int $id_estado
- *
+ 	* @property int $id_usuario Se registra el usuario con rol de patologo, cuando el mismo pasa de estado pendiente a LISTO.
  * @property Estado $estado
  * @property Plantilladiagnostico $plantilladiagnostico
  * @property Plantillatopografia $plantillatopografia
  * @property Solicitudbiopsia $solicitudbiopsia
+ * @property Usuario $usuario
  */
 use app\components\behaviors\AuditoriaBehaviors;
 
@@ -62,9 +63,9 @@ class Biopsia extends \yii\db\ActiveRecord
     {
         return [
             [['topografia', 'macroscopia', 'microscopia', 'ihq', 'diagnostico', 'ubicacion', 'observacion', 'frase'], 'string'],
-            [['Inmuno', 'Informado', 'Pagado'], 'boolean'],
-            [['id_solicitudbiopsia', 'id_plantillatopografia', 'id_plantilladiagnostico', 'id_estado'], 'default', 'value' => null],
-            [['id_solicitudbiopsia', 'id_plantillatopografia', 'id_plantilladiagnostico', 'id_estado'], 'integer'],
+            [['Inmuno', 'firmado', 'Pagado'], 'boolean'],
+            [['id_solicitudbiopsia', 'id_plantillatopografia', 'id_plantilladiagnostico', 'id_estado', 'id_usuario'], 'default', 'value' => null],
+            [['id_solicitudbiopsia', 'id_plantillatopografia', 'id_plantilladiagnostico', 'id_estado', 'id_usuario'], 'integer'],
             [['fechalisto'], 'safe'],
             // [['ID_Diagnostico'], 'string', 'max' => 55],
             [['id_solicitudbiopsia'], 'unique'],
@@ -72,6 +73,7 @@ class Biopsia extends \yii\db\ActiveRecord
             [['id_plantilladiagnostico'], 'exist', 'skipOnError' => true, 'targetClass' => Plantilladiagnostico::className(), 'targetAttribute' => ['id_plantilladiagnostico' => 'id']],
             [['id_plantillatopografia'], 'exist', 'skipOnError' => true, 'targetClass' => Plantillatopografia::className(), 'targetAttribute' => ['id_plantillatopografia' => 'id']],
             [['id_solicitudbiopsia'], 'exist', 'skipOnError' => true, 'targetClass' => Solicitudbiopsia::className(), 'targetAttribute' => ['id_solicitudbiopsia' => 'id']],
+ [['id_usuario'], 'exist', 'skipOnError' => true, 'targetClass' => Usuario::className(), 'targetAttribute' => ['id_usuario' => 'id']],
         ];
     }
 
@@ -88,7 +90,7 @@ class Biopsia extends \yii\db\ActiveRecord
             // 'ID_Diagnostico' => 'Id  Diagnostico',
             'diagnostico' => 'Diagnostico',
             'Inmuno' => 'Inmuno',
-            'Informado' => 'Informado',
+            'firmado' => 'Firmado',
             'Pagado' => 'Pagado',
             'id' => 'ID',
             'id_solicitudbiopsia' => 'Id Solicitudbiopsia',
@@ -99,6 +101,7 @@ class Biopsia extends \yii\db\ActiveRecord
             'observacion' => 'Observacion',
             'id_estado' => 'Estado',
             'frase' => 'Frase',
+
         ];
     }
     public function attributeColumns()
@@ -235,4 +238,11 @@ class Biopsia extends \yii\db\ActiveRecord
         // $estado= new $e();
         return Estado::estadosEstudio();
     }
+    /**
+		    * @return \yii\db\ActiveQuery
+		    */
+		   public function getUsuario()
+		   {
+		       return $this->hasOne(Usuario::className(), ['id' => 'id_usuario']);
+		   }
 }

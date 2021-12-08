@@ -22,13 +22,13 @@ use app\components\Metodos\Metodos;
  */
 class SolicitudbiopsiaController extends SolicitudController
 {
-   
+
 
     public function actionIndex()
     {
         $model= new Solicitudbiopsia();
-        $model->fecharealizacion = date('d/m/Y',strtotime($model->fecharealizacion));
-        $model->fechadeingreso = date('d/m/Y',strtotime($model->fechadeingreso));
+        // $model->fecharealizacion = date('d/m/Y',strtotime($model->fecharealizacion));
+        // $model->fechadeingreso = date('d/m/Y',strtotime($model->fechadeingreso));
 
         $searchModel = new SolicitudbiopsiaSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams ,'');
@@ -42,7 +42,7 @@ class SolicitudbiopsiaController extends SolicitudController
         ]);
     }
 
-    
+
     /**
      * Finds the Solicitudbiopsia model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.

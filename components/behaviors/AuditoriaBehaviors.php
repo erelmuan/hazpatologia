@@ -18,7 +18,7 @@ class AuditoriaBehaviors extends Behavior
     public function beforeUpdate($event)
     {
       //NO ESTA FUNCIONANDO EN LAS BIOPSIAS CUANDO ACTUALIZO ME MUESTRA QUE SE MODIFICO LA MACROSCOPIA MICROSCOPIA AUN CUANDO NO SE HALLAN MODIFICADO
-$differences = array_diff($this->owner->getOldAttributes(), $this->owner->getAttributes());
+      $differences = array_diff($this->owner->getOldAttributes(), $this->owner->getAttributes());
       if (!empty($differences)){
           $log=new Auditoria();
           $log->id_usuario= Yii::$app->user->identity->id_user;

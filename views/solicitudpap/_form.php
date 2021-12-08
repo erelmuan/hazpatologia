@@ -12,7 +12,9 @@ use kartik\form\ActiveField;
 use yii\widgets\Pjax;
 use yii\helpers\ArrayHelper;
 use app\models\Procedencia;
-//use app\models\Plantillamaterial;
+use yii\widgets\MaskedInput;
+
+use kartik\datecontrol\DateControl;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\SolicitudSearch */
@@ -57,16 +59,8 @@ CrudAsset::register($this);
 
       <?
 
-      // $form = ActiveForm::begin([
-      //       'id' => 'my-form-id-sol',
-      //       'action' => '?r=solicitudpap/create',
-      //       'enableAjaxValidation' => true,
-      //       'method' => 'post',
-      //       'validationUrl' => '?r=solicitudpap/create',
-      //   ]);
      $form = ActiveForm::begin();
       $mapprocedencia = ArrayHelper::map(Procedencia::find()->all() , 'id',  'nombre'  );
-      //$mapmaterial = ArrayHelper::map(Plantillamaterial::find()->all() , 'id',  'material'  );
       ?>
 
 
@@ -80,29 +74,37 @@ CrudAsset::register($this);
       <input id="solicitud-medico" style="width:250px;" value='<?=($model->medico)?$model->medico->apellido.", ".$model->medico->nombre:'' ?>' type="text" readonly>
       <?=$form->field($model, 'id_medico')->hiddenInput()->label(false); ?>
 
-      <?=$form->field($model, 'protocolo')->textInput(['readonly'=> true , 'value'=>$protocolo_insertar]) ;  ?>
+      <? if( isset($protocolo_insertar)){
+      echo $form->field($model, 'protocolo')->textInput(['readonly'=> true , 'value'=>$protocolo_insertar]) ;
+     }else {
+       echo $form->field($model, 'protocolo')->textInput(['readonly'=> true ]) ;
 
+    } ?>
         </div>
 
 
             <div class='col-sm-3'>
             <?
-              echo $form->field($model, 'fecharealizacion')->widget(DatePicker::className(), [
-                     'options' => ['placeholder' => 'Debe agregar una fecha',
-                     'value'=> ($model->fecharealizacion)?date('d/m/Y',strtotime($model->fecharealizacion)):date('d/m/Y') ,
-                       'type' => DatePicker::TYPE_COMPONENT_APPEND,
-                             ],
-                        'pluginOptions' => [
-                        'format' => 'dd/mm/yyyy',
-                        'todayHighlight' => true,
-                        'allowClear' => false
-                         ],
-                        'pluginEvents' => [
-                             "changeDate" => "function(e){
-                               cambiarFechaNac();
-                             }",
-                             ],
-                         ])->label('Fecha de realizacion');
+            // echo $form->field($model, 'fecharealizacion')->widget(MaskedInput::classname(),['name' => 'input-31',
+            //         'clientOptions' => ['alias' =>  'dd/mm/yyyy']])->widget(DatePicker::classname(), [
+            //         'options' => ['placeholder' => 'Ingrese fecha',
+            //         'format' => 'dd/mm/yyyy',
+            //       ],
+            //         'pluginOptions' => [
+            //             'autoclose'=>true,
+            //
+            //         ]
+            //     ]);
+                echo $form->field($model, 'fecharealizacion')->widget(DateControl::classname(), [
+                          'options' => ['placeholder' => 'Debe agregar una fecha',
+                          'value'=> ($model->fecharealizacion)?$model->fecharealizacion:"" ,
+                                  ],
+                          'type'=>DateControl::FORMAT_DATE,
+                          'autoWidget'=>true,
+                          'displayFormat' => 'php:d/m/Y',
+                          'saveFormat' => 'php:Y-m-d',
+                        ])->label('Fecha de realización');
+
 
             ?>
 
@@ -134,28 +136,22 @@ CrudAsset::register($this);
                    ]]);
            ?>
 
-           <?= $form->field($model, 'protocolo_automatico')->checkBox(['label' => 'Protocolo automatico',
-'onclick' => 'cambioProtocoloAutomatico();', 'checked' => '1','value' => '1']); ?>
+           <? if( isset($protocolo_insertar)){
+             echo $form->field($model, 'protocolo_automatico')->checkBox(['label' => 'Protocolo automatico',
+        'onclick' => 'cambioProtocoloAutomatico();', 'checked' => '1','value' => '1']);} ?>
              </div>
              <div class='col-sm-3'>
                   <?
-                  echo $form->field($model, 'fechadeingreso')->widget(DatePicker::className(), [
+                  echo $form->field($model, 'fechadeingreso')->widget(DateControl::classname(), [
                             'options' => ['placeholder' => 'Debe agregar una fecha',
-                            'value'=> ($model->fechadeingreso)?date('d/m/Y',strtotime($model->fechadeingreso)):date('d/m/Y') ,
-                            'type' => DatePicker::TYPE_COMPONENT_APPEND,
+                            'value'=> ($model->fechadeingreso)?$model->fechadeingreso:"" ,
                                     ],
-                            'pluginOptions' => [
-                            'format' => 'dd/mm/yyyy',
-                            'allowClear' => false,
-                            'todayHighlight' => true,],
-                            'pluginEvents' => [
-                              "changeDate" => "function(e){
-                                  cambiarFechaNac();
-                                  }",
-                                ],
-                              ])->label('Fecha de ingreso');;
-
-                ?>
+                            'type'=>DateControl::FORMAT_DATE,
+                            'autoWidget'=>true,
+                            'displayFormat' => 'php:d/m/Y',
+                            'saveFormat' => 'php:Y-m-d',
+                          ])->label('Fecha de ingreso');
+                  ?>
                 <?=$form->field($model, "observacion")->textarea(["rows" => 4]) ; ?>
 
               </div>
@@ -182,22 +178,15 @@ CrudAsset::register($this);
                     <?= $form->field($model, 'embarazo_actual')->checkbox() ?>
                     <?= $form->field($model, 'menopausia')->checkbox() ?>
                     <?
-                  echo $form->field($model, 'fecha_ult_parto')->widget(DatePicker::className(), [
-                         'options' => ['placeholder' => 'Debe agregar una fecha',
-                         'value'=> ($model->fecha_ult_parto)?date('d/m/Y',strtotime($model->fecha_ult_parto)):"" ,
-                           'type' => DatePicker::TYPE_COMPONENT_APPEND,
-                                 ],
-                            'pluginOptions' => [
-                            'format' => 'dd/mm/yyyy',
-                            'todayHighlight' => true,
-                            'allowClear' => false
-                             ],
-                            'pluginEvents' => [
-                                 "changeDate" => "function(e){
-                                   cambiarFechaNac();
-                                 }",
-                                 ],
-                             ])->label('Fecha del ultimo parto');;
+                 echo $form->field($model, 'fecha_ult_parto')->widget(DateControl::classname(), [
+                           'options' => ['placeholder' => 'Debe agregar una fecha',
+                           'value'=> ($model->fecha_ult_parto)?$model->fecha_ult_parto:"" ,
+                                   ],
+                           'type'=>DateControl::FORMAT_DATE,
+                           'autoWidget'=>true,
+                           'displayFormat' => 'php:d/m/Y',
+                           'saveFormat' => 'php:Y-m-d',
+                         ])->label('Fecha del ultimo parto');
 
                 ?>
                     <?= $form->field($model, 'id_metodo_anticonceptivo')->dropDownList($model->getMetodoAnticonceptivos())->label('Metodo anticonceptivo') ;?>

@@ -43,16 +43,18 @@ use Yii;
  */
  use app\components\behaviors\AuditoriaBehaviors;
 
+
 class Solicitudpap extends Solicitud
 {
   public function behaviors()
   {
 
-    return array(
-           'AuditoriaBehaviors'=>array(
+    return [
+
+           'AuditoriaBehaviors'=>[
                   'class'=>AuditoriaBehaviors::className(),
-                  ),
-      );
+                ],
+      ];
  }
 
     /**

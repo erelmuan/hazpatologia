@@ -35,17 +35,19 @@ use yii\helpers\ArrayHelper;
  * @property Solicitudbiopsia[] $solicitudbiopsias
  * @property Solicitudpap[] $solicitudpaps
  */
+
 class Paciente extends \yii\db\ActiveRecord
 {
 
   public function behaviors()
  		 {
 
- 		   return array(
- 		          'AuditoriaBehaviors'=>array(
+ 		   return [
+
+ 		          'AuditoriaBehaviors'=>[
  		                 'class'=>AuditoriaBehaviors::className(),
- 		                 ),
- 		     );
+                   ],
+ 		     ];
  		}
 
 
@@ -170,6 +172,9 @@ class Paciente extends \yii\db\ActiveRecord
     }
       return parent::beforeSave($insert);
     }
+
+
+
     /**
     		    * @return \yii\db\ActiveQuery
     		    */

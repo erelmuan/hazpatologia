@@ -2,6 +2,8 @@
 
 use yii\helpers\Html;
 //use yii\widgets\ActiveForm;
+use kartik\grid\GridView;
+
 
 ///////////////////////////
 use yii\helpers\Url;
@@ -27,17 +29,18 @@ use app\models\Usuario;
 
 ?>
 <div id="w0" class="x_panel">
-  <div class="x_title"><h2> <?=$model->isNewRecord ? "<i class='glyphicon glyphicon-plus'></i> NUEVA BIOPSIA" : "<i class='glyphicon glyphicon-pencil'></i> ACTUALIZAR BIOPSIA" ; ?> </h2>
+  <div class="x_title"><h2> <?=$model->isNewRecord ? "<i class='glyphicon glyphicon-plus'></i> NUEVO PAP" : "<i class='glyphicon glyphicon-pencil'></i> ACTUALIZAR BIOPSIA" ; ?> </h2>
     <div class="clearfix"> <div class="nav navbar-right panel_toolbox"><?= Html::a('<i class="glyphicon glyphicon-arrow-left"></i> Atrás', $model->isNewRecord ? ['/solicitudbiopsia/seleccionar']:['/biopsia/index'], ['class'=>'btn btn-danger grid-button']) ?></div>
 </div>
   </div>
 
 <?
 CrudAsset::register($this);
+
 $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['labelSpan'=>4]]);
 ?>
-
 <div class="x_panel" >
+
     <ul class="nav navbar-right panel_toolbox">
                         <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                         </li>
@@ -49,18 +52,18 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
       //  'contentBefore'=>'<legend class="text-info"><small>Datos del paciente</small></legend>',
         'model'=>$model,
         'form'=>$form,
-         'columns'=>6,
+         'columns'=>5,
          'attributes'=>[
-         'Protocolo'=>['label'=>'Protocolo', 'options'=>['value'=>$dataSol->protocolo ,'readonly'=> true ],'columnOptions'=>['class'=>'col-sm-1',],],
-         'Procedencia'=>['label'=> Html::a('<i class="glyphicon glyphicon-eye-open"></i>'.' '.'Procedencia', ['procedencia/view' ,'id'=> $dataSol->id_procedencia],
-           ['role'=>'modal-remote','title'=> 'Ver procedencia']), 'options'=>['value'=>$dataSol->procedencia->nombre, 'readonly'=> true ,'url' => '#' ],'columnOptions'=>['class'=>'col-dm-1',],],
+         'Protocolo'=>['label'=>'Protocolo', 'options'=>['value'=>$dataSol->protocolo ,'readonly'=> true ],'columnOptions'=>['class'=>'col-dm-1',],],
+         'Procedencia'=>['label'=> Html::a('<i class="glyphicon glyphicon-eye-open"></i>'.' '.'Procedencia', ['procedencia/view' ,'id'=> $dataSol->id_procedencia,'columnOptions'=>['colspan'=>3,]],
+           ['role'=>'modal-remote','title'=> 'Ver procedencia']), 'options'=>['value'=>$dataSol->procedencia->nombre, 'readonly'=> true ,'url' => '#' ],'columnOptions'=>['class'=>'col-dm-2',],],
          'Paciente'=>['label'=> Html::a('<i class="glyphicon glyphicon-eye-open"></i>'.' '.'Paciente', ['paciente/view' ,'id'=> $dataSol->id_paciente],
-           ['role'=>'modal-remote','title'=> 'Ver paciente']), 'options'=>['value'=>$dataSol->paciente->apellido.' '.$dataSol->paciente->nombre, 'readonly'=> true ,'url' => '#' ],'columnOptions'=>['class'=>'col-lg-3',],],
+           ['role'=>'modal-remote','title'=> 'Ver paciente']), 'options'=>['value'=>$dataSol->paciente->apellido." ". $dataSol->paciente->nombre ,'readonly'=> true ,'url' => '#' ],'columnOptions'=>['class'=>'col-lg-3',],],
          'Medico'=>['label'=> Html::a('<i class="glyphicon glyphicon-eye-open"></i>'.' '.'Medico', ['medico/view' ,'id'=> $dataSol->id_medico],
-          ['role'=>'modal-remote','title'=> 'Ver medico']), 'options'=>['value'=>$dataSol->medico->apellido.' '.$dataSol->medico->nombre, 'readonly'=> true ,'url' => '#' ],'columnOptions'=>['class'=>'col-lg-3',],],
-         //'Sexo'=>['label'=>'Sexo',  'options'=>['value'=>$dataSol->paciente->sexo, 'readonly'=> true],'columnOptions'=>['class'=>'col-sm-1',]],
-         //'Estudio'=>['label'=>'Estudio', 'options'=>['value'=>$dataSol->estudio, 'readonly'=> true],'columnOptions'=>['class'=>'col-sm-2']],
-         'Edad'=>['label'=>'Edad', 'options'=>['value'=>$edadDelPaciente, 'placeholder'=>'Edad...','readonly'=> true],'columnOptions'=>['class'=>'col-sm-1']],
+          ['role'=>'modal-remote','title'=> 'Ver medico']), 'options'=>['value'=>$dataSol->medico->apellido ." ". $dataSol->medico->nombre, 'readonly'=> true ,'url' => '#' ],'columnOptions'=>['class'=>'col-lg-3',],],
+      // 'Sexo'=>['label'=>'Sexo',  'options'=>['value'=>$dataSol->paciente->sexo, 'readonly'=> true],'columnOptions'=>['class'=>'col-sm-1',]],
+       //  'Estudio'=>['label'=>'Estudio', 'options'=>['value'=>$dataSol->estudio, 'placeholder'=>'Edad...','readonly'=> true],'columnOptions'=>['class'=>'col-sm-1']],
+         'Edad'=>['label'=>'Edad', 'options'=>['value'=>$edadDelPaciente, 'placeholder'=>'Edad...','readonly'=> true],'columnOptions'=>['class'=>'col-dm-1']],
 
         // Esto es de solicitud 'Estado'=>['label'=>'Estado', 'options'=>['value'=>$dataSol->estado ,'readonly'=> true],'columnOptions'=>['class'=>'col-sm-2']],
       // Esto es de solicitud   'Observación'=>['label'=>'Observación', 'options'=>['value'=>$dataSol->observacion ,'readonly'=> true],'columnOptions'=>['class'=>'col-sm-2']],
@@ -70,28 +73,7 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
         ]
     ]);
 
-      echo" <div class='col-sm-3'>";
-
-      // echo $form->field($model, 'Fecha')->widget(DatePicker::className(), [
-      //        'options' => ['placeholder' => 'Debe agregar una fecha',
-      //          'value' =>  date('d/m/Y'),
-      //          'type' => DatePicker::TYPE_COMPONENT_APPEND,
-      //                ],
-      //         'pluginOptions' => [
-      //           'format' => 'dd/mm/yyyy',
-      //           'todayHighlight' => true,
-      //          ],
-      //          'pluginEvents' => [
-      //                "changeDate" => "function(e){
-      //                  cambiarFechaNac();
-      //                }",
-      //
-      //        ],
-      //        ]);
-      echo"</div>";
-      echo"</br>";
-
-      echo '<div class="text-right" style="margin-right: 100px;">' . Html::resetButton('Limpiar', ['class'=>'btn btn-warning']) . '</div>';
+      // echo '<div class="text-right" style="margin-right: 100px;">' . Html::resetButton('Limpiar', ['class'=>'btn btn-warning']) . '</div>';
 
 ?>
 </div>
@@ -286,10 +268,15 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
     </div>
     <? if (Usuario::isPatologo()) { ?>
     <div class="col-md-8 col-sm-12 col-xs-12 form-group">
-      <label class="control-label" for="biopsia-contrseña">Contraseña</label>
-      <input type="password" id="contraseña" class="form-control" name="contrasenia" style="width:50%; " aria-required="true" aria-invalid="false">
+      <div class='col-sm-5'>
+        <label class="control-label" for="pap-contrseña">Contraseña</label>
+        <input type="password" id="contraseña" class="form-control" name="contrasenia" style="width:50%; " aria-required="true" aria-invalid="false">
+     </div>
+     <div class='col-sm-3'>
+          <?= $form->field($model, 'firmado')->checkBox(['label' => 'Firmar','onclick' => 'cambioFirma();']); ?>
     </div>
-  <? } ?>
+     </div>
+    <? } ?>
   <?= $this->render('modals', [
         'model' => $model,
         'search' => $search,
@@ -301,6 +288,8 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
 </div>
 <?php Modal::begin([
      "id"=>"ajaxCrudModal",
+     "footer"=>"",// always need it for jquery plugin
+
 ]);
 
 ?>
@@ -308,6 +297,15 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
 <?php Modal::end(); ?>
 
 <script type="text/javascript">
+
+function cambioFirma(){
+    if(document.getElementById("biopsia-firmado").value==1 ){
+      document.getElementById("biopsia-firmado").value =0;
+
+    }else {
+      document.getElementById("biopsia-firmado").value =1;
+    }
+}
 function quitarSeleccion (){
   $('span.kv-clear-radio').click();
 

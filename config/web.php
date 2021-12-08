@@ -5,7 +5,7 @@ $db = require __DIR__ . '/db.php';
 
 $config = [
     'id' => 'basic',
-    'name' => 'HAZ PATOLOGIA',
+    'name' => 'HAZ QUIROFANO',
     'language' => 'es-ES',
     'timeZone'  => 'America/Buenos_Aires',
     'basePath' => dirname(__DIR__),
@@ -19,7 +19,7 @@ $config = [
 
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
-            'cookieValidationKey' => 'dfsdfsdfsdfsdfsdfssdfsd4353443534s',
+            'cookieValidationKey' => 'dfsdfsdfsdfsdfsdfssdfsd4353443534se',
         ],
         'cache' => [
             'class' => 'yii\caching\FileCache',
@@ -119,10 +119,10 @@ $config = [
       ],
 
       'modules' => [
+        'datecontrol' =>  [
+           'class' => '\kartik\datecontrol\Module'
+       ],
           'gridview' => ['class' => 'kartik\grid\Module'],
-          'pdfjs' => [
-             'class' => '\yii2assets\pdfjs\Module',
-         ],
           'i18n' => [    'class' => 'yii\i18n\PhpMessageSource',
     'basePath' => '@kvgrid/messages/es',
     'forceTranslation' => false]

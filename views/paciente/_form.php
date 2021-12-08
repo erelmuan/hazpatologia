@@ -9,6 +9,7 @@ use yii\helpers\Url;
 use app\models\Provincia;
 use yii\helpers\ArrayHelper;
 use kartik\select2\Select2;
+use kartik\datecontrol\DateControl;
 
 ?>
 
@@ -75,16 +76,26 @@ use kartik\select2\Select2;
 
        </div>
        <div class="col-dm-2 pb-5">
-         <?  echo $form->field($model, 'fecha_nacimiento')->widget(MaskedInput::classname(),['name' => 'input-31',
-                 'clientOptions' => ['alias' =>  'dd/mm/yyyy']])->widget(DatePicker::classname(), [
-                 'options' => ['placeholder' => 'Ingrese fecha',
-                 'format' => 'dd/mm/yyyy',
-               ],
-                 'pluginOptions' => [
-                     'autoclose'=>true,
-
-                 ]
-             ]);
+         <?
+         // echo $form->field($model, 'fecha_nacimiento')->widget(MaskedInput::classname(),['name' => 'input-31',
+         //         'clientOptions' => ['alias' =>  'dd/mm/yyyy']])->widget(DatePicker::classname(), [
+         //         'options' => ['placeholder' => 'Ingrese fecha',
+         //
+         //       ],
+         //         'pluginOptions' => [
+         //             'autoclose'=>true,
+         //
+         //         ]
+         //     ]);
+         echo $form->field($model, 'fecha_nacimiento')->widget(DateControl::classname(), [
+           'options' => ['placeholder' => 'Debe agregar una fecha',
+             'value'=> ($model->fecha_nacimiento )?$model->fecha_nacimiento:'' ,
+                   ],
+           'type'=>DateControl::FORMAT_DATE,
+           'autoWidget'=>true,
+           'displayFormat' => 'php:d/m/Y',
+           'saveFormat' => 'php:Y-m-d',
+         ])->label('Fecha de nacimiento')
 
          ?>
       </div>

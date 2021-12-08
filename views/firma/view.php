@@ -11,9 +11,9 @@ use yii\helpers\Html;
       <div id="w0s" class="x_panel">
         <div class="x_title"><h2><i class="fa fa-table"></i> FIRMA  </h2>
 
-          <? if(Yii::$app->request->isAjaxRequest) {?>
+
           <div class="clearfix"> <div class="nav navbar-right panel_toolbox"><?= Html::a('<i class="glyphicon glyphicon-arrow-left"></i> Ir a firmas', ['/firma/index'], ['class'=>'btn btn-danger grid-button']) ?></div>
-          <?} ?>
+
       </div>
         </div>
     <?= DetailView::widget([

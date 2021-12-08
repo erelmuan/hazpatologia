@@ -23,7 +23,7 @@ use app\components\Metodos\Metodos;
  */
 class SolicitudpapController extends SolicitudController
 {
-   
+
     /**
      * Lists all Solicitudpap models.
      * @return mixed
@@ -31,8 +31,8 @@ class SolicitudpapController extends SolicitudController
      public function actionIndex()
     {
         $model= new Solicitudpap();
-        $model->fecharealizacion = date('d/m/Y',strtotime($model->fecharealizacion));
-        $model->fechadeingreso = date('d/m/Y',strtotime($model->fechadeingreso));
+        // $model->fecharealizacion = date('d/m/Y',strtotime($model->fecharealizacion));
+        // $model->fechadeingreso = date('d/m/Y',strtotime($model->fechadeingreso));
 
         $searchModel = new SolicitudpapSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams ,'');
@@ -45,8 +45,8 @@ class SolicitudpapController extends SolicitudController
 
         ]);
     }
-   
-   
+
+
     /**
      * Finds the Solicitudpap model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.

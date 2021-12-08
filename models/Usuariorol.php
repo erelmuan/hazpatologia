@@ -14,8 +14,20 @@ use Yii;
  * @property Rol $rol
  * @property Usuario $usuario
  */
+ use app\components\behaviors\AuditoriaBehaviors;
+
 class Usuariorol extends \yii\db\ActiveRecord
 {
+
+  public function behaviors()
+  {
+
+    return array(
+           'AuditoriaBehaviors'=>array(
+                  'class'=>AuditoriaBehaviors::className(),
+                  ),
+      );
+ }
     /**
      * {@inheritdoc}
      */

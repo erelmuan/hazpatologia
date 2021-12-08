@@ -14,6 +14,7 @@ use yii\helpers\ArrayHelper;
 use app\models\Procedencia;
 use app\models\Plantillamaterial;
 use yii\widgets\MaskedInput;
+use kartik\datecontrol\DateControl;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\SolicitudSearch */
@@ -76,22 +77,24 @@ CrudAsset::register($this);
           <label> Medico </label> </br>
           <input id="solicitud-medico" class="form-control" style="width:250px;" value='<?=($model->medico)?$model->medico->apellido.", ".$model->medico->nombre:'' ?>' type="text" readonly>
           <?=$form->field($model, 'id_medico')->hiddenInput()->label(false); ?>
-          <?=$form->field($model, 'protocolo')->textInput(['readonly'=> true , 'value'=>$protocolo_insertar]) ;  ?>
+          <? if( isset($protocolo_insertar)){
+          echo $form->field($model, 'protocolo')->textInput(['readonly'=> true , 'value'=>$protocolo_insertar]) ;
+         }else {
+           echo $form->field($model, 'protocolo')->textInput(['readonly'=> true ]) ;
 
+        } ?>
               </div>
                 <div class='col-sm-3'>
-                  <?  echo $form->field($model, 'fecharealizacion')->widget(MaskedInput::classname(),['name' => 'input-31',
-                          'clientOptions' => ['alias' =>  'dd/mm/yyyy']])->widget(DatePicker::classname(), [
-                          'options' => ['placeholder' => 'Ingrese fecha (opcional)',
-                          'value'=> ($model->fecharealizacion)?date('d/m/Y',strtotime($model->fecharealizacion)):'',
-
-                          'format' => 'dd/mm/yyyy',
-                        ],
-                          'pluginOptions' => [
-                              'autoclose'=>true,
-
-                          ]
-                      ]);
+                  <?
+                  echo $form->field($model, 'fecharealizacion')->widget(DateControl::classname(), [
+                            'options' => ['placeholder' => 'Ingrese fecha (opcional)',
+                            'value'=> ($model->fecharealizacion)?$model->fecharealizacion:"" ,
+                                    ],
+                            'type'=>DateControl::FORMAT_DATE,
+                            'autoWidget'=>true,
+                            'displayFormat' => 'php:d/m/Y',
+                            'saveFormat' => 'php:Y-m-d',
+                          ])->label('Fecha de realización');
 
                   ?>
 
@@ -122,23 +125,21 @@ CrudAsset::register($this);
                 ?>
 
 
-
-                  <?= $form->field($model, 'protocolo_automatico')->checkBox(['label' => 'Protocolo automatico',
-       'onclick' => 'cambioProtocoloAutomatico();', 'checked' => '1','value' => '1']); ?>
+          <? if( isset($protocolo_insertar)){
+            echo $form->field($model, 'protocolo_automatico')->checkBox(['label' => 'Protocolo automatico',
+       'onclick' => 'cambioProtocoloAutomatico();', 'checked' => '1','value' => '1']);} ?>
                  </div>
+
                  <div class='col-sm-3'>
-                   <?  echo $form->field($model, 'fechadeingreso')->widget(MaskedInput::classname(),['name' => 'input-31',
-                           'clientOptions' => ['alias' =>  'dd/mm/yyyy']])->widget(DatePicker::classname(), [
-                           'options' => ['placeholder' => 'Ingrese fecha (opcional)',
-                           'value'=> ($model->fechadeingreso)?date('d/m/Y',strtotime($model->fechadeingreso)):date('d/m/Y') ,
-
-                           'format' => 'dd/mm/yyyy',
-                         ],
-                           'pluginOptions' => [
-                               'autoclose'=>true,
-
-                           ]
-                       ]);
+                   <?          echo $form->field($model, 'fechadeingreso')->widget(DateControl::classname(), [
+                                     'options' => ['placeholder' => 'Debe agregar una fecha',
+                                     'value'=> ($model->fechadeingreso)?$model->fechadeingreso:"" ,
+                                             ],
+                                     'type'=>DateControl::FORMAT_DATE,
+                                     'autoWidget'=>true,
+                                     'displayFormat' => 'php:d/m/Y',
+                                     'saveFormat' => 'php:Y-m-d',
+                                   ])->label('Fecha de ingreso');
 
                    ?>
 

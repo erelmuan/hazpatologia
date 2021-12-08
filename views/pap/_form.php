@@ -69,7 +69,7 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
                         <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                         </li>
     </ul>
-    <legend class="text-info"><small>Datos del paciente</small></legend>
+    <legend class="text-info"><small>Datos de la solicitud</small></legend>
     <div class="x_content" style="display: block;">
           <?
           echo Form::widget([ // fields with labels
@@ -360,9 +360,14 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
     </div>
     <? if (Usuario::isPatologo()) { ?>
     <div class="col-md-8 col-sm-12 col-xs-12 form-group">
-      <label class="control-label" for="pap-contrseña">Contraseña</label>
-      <input type="password" id="contraseña" class="form-control" name="contrasenia" style="width:50%; " aria-required="true" aria-invalid="false">
+      <div class='col-sm-5'>
+        <label class="control-label" for="pap-contrseña">Contraseña</label>
+        <input type="password" id="contraseña" class="form-control" name="contrasenia" style="width:50%; " aria-required="true" aria-invalid="false">
+     </div>
+     <div class='col-sm-3'>
+          <?= $form->field($model, 'firmado')->checkBox(['label' => 'Firmar']); ?>
     </div>
+     </div>
     <? } ?>
     <?= $this->render('modals', [
         'model' => $model,
