@@ -31,9 +31,8 @@ use yii\helpers\Html;
             'value'=> $model->procedencia->nombre ,
             'label'=> 'Procedencia',
             ],
-            'id_materialsolicitud',
             [
-              'value'=>  date('d/m/Y',strtotime($model->fecharealizacion)),
+              'value'=> ($model->fecharealizacion)? date('d/m/Y',strtotime($model->fecharealizacion)):$model->fecharealizacion,
               'label' => 'Fecha de realización'
             ],
             [
