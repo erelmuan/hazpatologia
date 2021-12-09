@@ -292,7 +292,8 @@ class BiopsiaController extends Controller
                     $Solicitud->id_estado= $model->id_estado;
                     $Solicitud->save();
                     //fecha cuando esta listo el informe de la biopsia
-                    $model->fechalisto=date("d/m/Y");
+                    $model->fechalisto=date("Y-m-d");
+                    $model->id_usuario=$modelUsuario->id;
                   }
                   else {
                     $model->fechalisto='';

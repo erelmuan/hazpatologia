@@ -3,19 +3,21 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\Plantillaflora */
+/* @var $model app\models\Permiso */
 /* @var $form yii\widgets\ActiveForm */
 ?>
-<div id="w0" class="x_panel">
-<div class="plantillaflora-form">
+
+<div class="permiso-form">
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'codigo')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'id_rol')->textInput() ?>
 
-    <?= $form->field($model, 'flora')->textarea(['rows' => 6]) ?>
+    <?= $form->field($model, 'id_modulo')->textInput() ?>
 
+    <?= $form->field($model, 'id_accion')->textInput() ?>
 
+  
 	<?php if (!Yii::$app->request->isAjax){ ?>
 	  	<div class="form-group">
 	        <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
@@ -23,6 +25,5 @@ use yii\widgets\ActiveForm;
 	<?php } ?>
 
     <?php ActiveForm::end(); ?>
-
-</div>
+    
 </div>

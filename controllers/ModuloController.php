@@ -16,7 +16,7 @@ use app\components\Metodos\Metodos;
  */
 class ModuloController extends Controller
 {
-    
+
 
     /**
      * Lists all Modulo models.
@@ -52,9 +52,7 @@ class ModuloController extends Controller
                     'content'=>$this->renderAjax('view', [
                         'model' => $this->findModel($id),
                     ]),
-                    'footer'=> Html::button('Cerrar',['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
-                            Html::a('Editar',['update','id'=>$id],['class'=>'btn btn-primary','role'=>'modal-remote'])
-                ];
+                    'footer'=> Html::button('Cerrar',['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"])                ];
         }else{
             return $this->render('view', [
                 'model' => $this->findModel($id),
@@ -174,7 +172,7 @@ class ModuloController extends Controller
             *   Process for non-ajax request
             */
             if ($model->load($request->post()) && $model->save()) {
-                return $this->redirect(['view', 'id' => $model->idmodulo]);
+                return $this->redirect(['view', 'id' => $model->id]);
             } else {
                 return $this->render('update', [
                     'model' => $model,

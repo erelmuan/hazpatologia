@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use app\components\behaviors\AuditoriaBehaviors;
 
 /**
  * This is the model class for table "solicitudbiopsia".
@@ -27,18 +28,18 @@ use Yii;
  * @property Biopsia $biopsia
  * @property Paramaterialginecologico $materialginecologico
  */
- use app\components\behaviors\AuditoriaBehaviors;
 
 class Solicitudbiopsia extends Solicitud
 {
   public function behaviors()
   {
 
-    return array(
-           'AuditoriaBehaviors'=>array(
+    return [
+
+           'AuditoriaBehaviors'=>[
                   'class'=>AuditoriaBehaviors::className(),
-                  ),
-      );
+                ],
+      ];
  }
     /**
      * {@inheritdoc}

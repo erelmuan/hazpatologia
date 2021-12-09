@@ -187,6 +187,14 @@ $pdf->SetFont('Times','',10);
 $pdf->SetXY(30, $Inicio +1 );
 $pdf->MultiCell(0,5, utf8_decode($model->diagnostico));
 
+// 				$pdf->Image($Fir->firma,151,$Inicio - 18,49 ); 250
+$Inicio = $pdf->GetY() + 2;
+
+if($model->firmado){
+  $pdf->Image( Yii::$app->basePath .'/web/uploads/avatar/'.$model->usuario->firma->imagen,151,$Inicio ,49 ,45 ,'PNG' );
+
+}
+
 $Inicio = $pdf->GetY() + 10;
 $pdf->SetFont('Times','B',10);
 // $pdf->Text(14,$Inicio ,"FRASE:");
@@ -200,7 +208,6 @@ $pdf->SetXY(30, $Inicio +1 );
 // // $pdf->Image($firma->path,148,$Inicio - 8,34 );
 // $carpeta = Yii::getAlias("@app/");
 $pdf->MultiCell(0,5, utf8_decode($model->frase));
-$pdf->Image(Yii::$app->basePath .'/web/img/hospitalzatti.png', 80, 80, 20,20, 'SEEEEEEEEEEEE', 'http://www.tcpdf.org', '', true, 150);
 
 
 $pdf->Ln();

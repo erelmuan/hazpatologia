@@ -8,7 +8,7 @@ use yii\helpers\ArrayHelper;
 
 /**
  * This is the model class for table "paciente".
- *
+ * 
  * @property int $id
  * @property string $nombre
  * @property string $num_documento

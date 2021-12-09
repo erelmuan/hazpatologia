@@ -6,7 +6,7 @@ use Yii;
 
 /**
  * This is the model class for table "modulo".
- *
+* @property Permiso[] $permisos
  * @property int $id
  * @property string $nombre
  */
@@ -90,6 +90,14 @@ class Modulo extends \yii\db\ActiveRecord
     }
       return parent::beforeSave($insert);
     }
+
+    /**
+  		    * @return \yii\db\ActiveQuery
+  		    */
+  		 public function getPermisos()
+  		 {
+         return $this->hasMany(Permiso::className(), ['id_modulo' => 'id']);
+       }
 
 
 

@@ -8,13 +8,14 @@ use app\models\PermisoSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-
+use \yii\web\Response;
+  use yii\helpers\Html;
 /**
  * PermisoController implements the CRUD actions for Permiso model.
  */
 class PermisoController extends Controller
 {
-    
+
     /**
      * Lists all Permiso models.
      * @return mixed
@@ -38,9 +39,22 @@ class PermisoController extends Controller
      */
     public function actionView($id)
     {
+      $request = Yii::$app->request;
+    if($request->isAjax){
+        Yii::$app->response->format = Response::FORMAT_JSON;
+        return [
+                'title'=> "Permiso #".$id,
+                'content'=>$this->renderAjax('view', [
+                    'model' => $this->findModel($id),
+                ]),
+                'footer'=> Html::button('Cerrar',['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"])
+
+            ];
+    }else{
         return $this->render('view', [
             'model' => $this->findModel($id),
         ]);
+    }
     }
 
     /**

@@ -9,7 +9,7 @@ use Yii;
  *
  * @property string $nombre
  		* @property string $descripcion
- 		*
+ 	* @property int $id
  		* @property Modulo[] $modulos
  		* @property Permiso[] $permisos
  		* @property Usuariorol[] $usuariorols
@@ -86,6 +86,7 @@ class Rol extends \yii\db\ActiveRecord
       */
      public function getPermisos()
      {
-         return $this->hasMany(Permiso::className(), ['id' => 'id_permiso']);
-     }
+       return $this->hasMany(Permiso::className(), ['id_rol' => 'id']);     }
+
+
 }

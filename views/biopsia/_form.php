@@ -273,7 +273,10 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
         <input type="password" id="contraseña" class="form-control" name="contrasenia" style="width:50%; " aria-required="true" aria-invalid="false">
      </div>
      <div class='col-sm-3'>
-          <?= $form->field($model, 'firmado')->checkBox(['label' => 'Firmar','onclick' => 'cambioFirma();']); ?>
+          <?//= $form->field($model, 'firmado')->checkBox(['label' => 'Firmar','onclick' => 'cambioFirma();' ,'checked' => $model->firmado]); ?>
+          <?= $form->field($model, 'firmado')->checkbox()->label('Firmar');
+          // checkBox(['label' => 'Firmar','onclick' => 'cambioFirma();']); ?>
+
     </div>
      </div>
     <? } ?>

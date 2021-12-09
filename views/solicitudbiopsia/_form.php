@@ -26,7 +26,7 @@ CrudAsset::register($this);
 
 ?>
 
-<div id="w0s" class="x_panel">
+<div id="w0" class="x_panel">
   <div class="x_title"><h2><i class="glyphicon glyphicon-plus"></i> Nueva solicitud de biopsia </h2>
     <div class="clearfix"> <div class="nav navbar-right panel_toolbox"><?echo Html::button('<i class="glyphicon glyphicon-arrow-left"></i> Atrás',array('name' => 'btnBack','onclick'=>'js:history.go(-1);returnFalse;','id'=>'botonAtras')); ?></div>
 </div>

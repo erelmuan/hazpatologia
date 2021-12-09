@@ -17,10 +17,13 @@ use Yii;
  * @property string $descripcion
  * @property string $imagen
  * @property int $id_pantalla
- *
+ * @property Biopsia[] $biopsias
+   * @property Firma $firma
+   * @property Pap[] $paps
  * @property Auditoria[] $auditorias
  * @property Pantalla $pantalla
  * @property Usuariorol[] $usuariorols
+ * @property Vista[] $vistas
  */
  use yii\filters\AccessControl;
  use app\components\behaviors\AuditoriaBehaviors;
@@ -156,6 +159,29 @@ class Usuario extends \yii\db\ActiveRecord
            return ArrayHelper::map(Pantalla::find()->all(), 'id','descripcion');
 
            }
+           /**
+  * @return \yii\db\ActiveQuery
+  */
+     public function getBiopsias()
+     {
+         return $this->hasMany(Biopsia::className(), ['id_usuario' => 'id']);
+     }
+     /**
+      * @return \yii\db\ActiveQuery
+      */
+     public function getPaps()
+     {
+         return $this->hasMany(Pap::className(), ['id_usuario' => 'id']);
+     }
+
+     
+     /**
+     * @return \yii\db\ActiveQuery
+      */
+     public function getFirma()
+     {
+         return $this->hasOne(Firma::className(), ['id_usuario' => 'id']);
+     }
        public function isPatologo() {
          $id= Yii::$app->user->identity->id;
          $rol_patologo = Usuariorol::find()
