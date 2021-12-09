@@ -30,21 +30,11 @@ use Yii;
  * @property Materialsolicitud $materialsolicitud
  * @property Procedencia $procedencia
  */
- use app\components\behaviors\AuditoriaBehaviors;
 
 class Solicitud extends \yii\db\ActiveRecord
 {
 
-  public function behaviors()
-  {
 
-    return [
-
-           'AuditoriaBehaviors'=>[
-                  'class'=>AuditoriaBehaviors::className(),
-                ],
-      ];
- }
     /**
      * {@inheritdoc}
      */

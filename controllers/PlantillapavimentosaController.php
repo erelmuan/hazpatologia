@@ -17,7 +17,7 @@ use yii\helpers\Json;
  */
 class PlantillapavimentosaController extends Controller
 {
-  
+
     /**
      * Lists all Plantillapavimentosa models.
      * @return mixed
@@ -110,7 +110,7 @@ class PlantillapavimentosaController extends Controller
             *   Process for non-ajax request
             */
             if ($model->load($request->post()) && $model->save()) {
-                return $this->redirect(['view', 'id' => $model->idplantillapavimentosa]);
+                return $this->redirect(['view', 'id' => $model->id]);
             } else {
                 return $this->render('create', [
                     'model' => $model,
@@ -171,7 +171,7 @@ class PlantillapavimentosaController extends Controller
             *   Process for non-ajax request
             */
             if ($model->load($request->post()) && $model->save()) {
-                return $this->redirect(['view', 'id' => $model->idplantillapavimentosa]);
+                return $this->redirect(['view', 'id' => $model->id]);
             } else {
                 return $this->render('update', [
                     'model' => $model,

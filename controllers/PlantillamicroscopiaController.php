@@ -16,7 +16,7 @@ use yii\helpers\Json;
  */
 class PlantillamicroscopiaController extends Controller
 {
-    
+
     /**
      * Lists all Plantillamicroscopia models.
      * @return mixed
@@ -110,7 +110,7 @@ class PlantillamicroscopiaController extends Controller
             *   Process for non-ajax request
             */
             if ($model->load($request->post()) && $model->save()) {
-                return $this->redirect(['view', 'id' => $model->idplantillamicroscopia]);
+                return $this->redirect(['view', 'id' => $model->id]);
             } else {
                 return $this->render('create', [
                     'model' => $model,
@@ -171,7 +171,7 @@ class PlantillamicroscopiaController extends Controller
             *   Process for non-ajax request
             */
             if ($model->load($request->post()) && $model->save()) {
-                return $this->redirect(['view', 'id' => $model->idplantillamicroscopia]);
+                return $this->redirect(['view', 'id' => $model->id]);
             } else {
                 return $this->render('update', [
                     'model' => $model,

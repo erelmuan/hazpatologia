@@ -16,7 +16,7 @@ use yii\helpers\Json;
  */
 class PlantillaglandularController extends Controller
 {
-  
+
     /**
      * Lists all Plantillaglandular models.
      * @return mixed
@@ -109,7 +109,7 @@ class PlantillaglandularController extends Controller
             *   Process for non-ajax request
             */
             if ($model->load($request->post()) && $model->save()) {
-                return $this->redirect(['view', 'id' => $model->idplantillaglandular]);
+                return $this->redirect(['view', 'id' => $model->id]);
             } else {
                 return $this->render('create', [
                     'model' => $model,
@@ -170,7 +170,7 @@ class PlantillaglandularController extends Controller
             *   Process for non-ajax request
             */
             if ($model->load($request->post()) && $model->save()) {
-                return $this->redirect(['view', 'id' => $model->idplantillaglandular]);
+                return $this->redirect(['view', 'id' => $model->id]);
             } else {
                 return $this->render('update', [
                     'model' => $model,

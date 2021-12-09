@@ -355,16 +355,16 @@ class SolicitudController extends Controller
      * @return mixed
      */
 
-     public function beforeSave($insert)
-     {
-         // tareas antes de encontrar el objeto
-         if (parent::beforeSave($insert)) {
-             // Place your custom code here
-             return true;
-         } else {
-             return false;
-         }
-     }
+     // public function beforeSave($insert)
+     // {
+     //     // tareas antes de encontrar el objeto
+     //     if (parent::beforeSave($insert)) {
+     //         // Place your custom code here
+     //         return true;
+     //     } else {
+     //         return false;
+     //     }
+     // }
 
     public function actionSelect()
     {
@@ -448,34 +448,34 @@ class SolicitudController extends Controller
         }
     }
 
-    public function save($runValidation = true, $attributeNames = null)
-    {
-      $transaction = Solicitud::getDb()->beginTransaction();
-      try {
-        $db = Yii::$app->db;
-        $protocolo = $db->createCommand('SELECT last_value FROM solicitud_protocolo_seq')
-                    ->queryColumn();
-
-          if ( $protocolo && date("d")==26 && date("m") ==11 && $protocolo[0] !== 1)
-          {
-            $db->createCommand('ALTER SEQUENCE solicitud_protocolo_seq RESTART WITH 1')->execute();
-          //    $db->createCommand('UPDATE solicitud SET idsolicitud=nextval("solicitud_idsolicitud_seq")')->execute();
-
-          }
-        if ($this->getIsNewRecord()) {
-            return $this->insert($runValidation, $attributeNames);
-
-        }
-        $transaction->commit();
-        return $this->update($runValidation, $attributeNames) !== false;
-      }
-
-    catch(\Exception $e) {
-        $transaction->rollBack();
-        throw $e;
-    }
-
-}
+//     public function save($runValidation = true, $attributeNames = null)
+//     {
+//       $transaction = Solicitud::getDb()->beginTransaction();
+//       try {
+//         $db = Yii::$app->db;
+//         $protocolo = $db->createCommand('SELECT last_value FROM solicitud_protocolo_seq')
+//                     ->queryColumn();
+//
+//           if ( $protocolo && date("d")==26 && date("m") ==11 && $protocolo[0] !== 1)
+//           {
+//             $db->createCommand('ALTER SEQUENCE solicitud_protocolo_seq RESTART WITH 1')->execute();
+//           //    $db->createCommand('UPDATE solicitud SET idsolicitud=nextval("solicitud_idsolicitud_seq")')->execute();
+//
+//           }
+//         if ($this->getIsNewRecord()) {
+//             return $this->insert($runValidation, $attributeNames);
+//
+//         }
+//         $transaction->commit();
+//         return $this->update($runValidation, $attributeNames) !== false;
+//       }
+//
+//     catch(\Exception $e) {
+//         $transaction->rollBack();
+//         throw $e;
+//     }
+//
+// }
     function returnModel()
 
     {
