@@ -101,7 +101,8 @@ class Biopsia extends \yii\db\ActiveRecord
             'observacion' => 'Observacion',
             'id_estado' => 'Estado',
             'frase' => 'Frase',
-            'Fecharealizacion' => 'Fecha de realizacion',
+            'fecharealizacion' => 'Fecha de realizacion',
+            'fechadeingreso' => 'Fecha de ingreso',
 
 
         ];
@@ -153,6 +154,24 @@ class Biopsia extends \yii\db\ActiveRecord
 
           ],
           [
+              //nombre
+              'class'=>'\kartik\grid\DataColumn',
+              'attribute'=>'fechadeingreso',
+              'label'=> 'Fecha de ingreso',
+              'value'=>'solicitudbiopsia.fechadeingreso',
+              'format' => ['date', 'd/M/Y'],
+              'filterInputOptions' => [
+                  'id' => 'fecha1',
+                  'class' => 'form-control',
+                  'autoclose'=>true,
+                  'format' => 'dd/mm/yyyy',
+                  'startView' => 'year',
+                  'placeholder' => 'd/m/aaaa'
+
+              ]
+
+          ],
+          [
               'class'=>'\kartik\grid\DataColumn',
               'attribute'=>'sexo',
               'label'=> 'Sexo',
@@ -164,10 +183,7 @@ class Biopsia extends \yii\db\ActiveRecord
               'label'=> 'Procedencia',
               'value'=>'solicitudbiopsia.procedencia.nombre'
           ],
-          [
-              'class'=>'\kartik\grid\DataColumn',
-              'attribute'=>'id_plantillatopografia',
-          ],
+
           [
               'class'=>'\kartik\grid\DataColumn',
               'attribute'=>'topografia',
@@ -176,10 +192,10 @@ class Biopsia extends \yii\db\ActiveRecord
               'class'=>'\kartik\grid\DataColumn',
               'attribute'=>'macroscopia',
           ],
-          [
-              'class'=>'\kartik\grid\DataColumn',
-              'attribute'=>'id_plantilladiagnostico',
-          ],
+          // [
+          //     'class'=>'\kartik\grid\DataColumn',
+          //     'attribute'=>'id_plantilladiagnostico',
+          // ],
           [
               'class'=>'\kartik\grid\DataColumn',
               'attribute'=>'diagnostico',

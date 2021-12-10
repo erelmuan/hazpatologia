@@ -18,6 +18,7 @@ class PapSearch extends Pap
     public $paciente;
     public $medico;
     public $fecharealizacion;
+    public $fechadeingreso;
     public $sexo;
     public $procedencia;
     public $fecha_desde;
@@ -34,6 +35,7 @@ class PapSearch extends Pap
             //Se agrego para permitir la habilitacion del filtro en la grilla
             [['paciente','medico','procedencia'], 'safe'],
             ['fecharealizacion', 'date', 'format' => 'dd/MM/yyyy'],
+            ['fechadeingreso', 'date', 'format' => 'dd/MM/yyyy'],
 
         ];
     }
@@ -118,6 +120,9 @@ class PapSearch extends Pap
             $query->andFilterWhere(['=', 'fecharealizacion', $this->fecharealizacion]);
             $query->andFilterWhere(['>=', 'fecharealizacion', $this->fecha_desde]);
             $query->andFilterWhere(['<=', 'fecharealizacion', $this->fecha_hasta]);
+            $query->andFilterWhere(['=', 'fechadeingreso', $this->fechadeingreso]);
+            $query->andFilterWhere(['>=', 'fechadeingreso', $this->fecha_desde]);
+            $query->andFilterWhere(['<=', 'fechadeingreso', $this->fecha_hasta]);
         return $dataProvider;
     }
 }

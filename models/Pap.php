@@ -134,6 +134,7 @@ class Pap extends \yii\db\ActiveRecord
             'id_estado' => 'Estado',
             'frase' => 'Frase',
             'fecharealizacion' => 'Fecha de realizacion',
+            'fechadeingreso' => 'Fecha de ingreso',
 
 
         ];
@@ -171,8 +172,35 @@ class Pap extends \yii\db\ActiveRecord
               'class'=>'\kartik\grid\DataColumn',
               'attribute'=>'fecharealizacion',
               'label'=> 'Fecha de realización',
-              'value'=>'solicitudpap.fecharealizacion',
+              'value'=>'solicitudbiopsia.fecharealizacion',
               'format' => ['date', 'd/M/Y'],
+              'filterInputOptions' => [
+                  'id' => 'fecha1',
+                  'class' => 'form-control',
+                  'autoclose'=>true,
+                  'format' => 'dd/mm/yyyy',
+                  'startView' => 'year',
+                  'placeholder' => 'd/m/aaaa'
+
+              ]
+
+          ],
+          [
+              //nombre
+              'class'=>'\kartik\grid\DataColumn',
+              'attribute'=>'fechadeingreso',
+              'label'=> 'Fecha de ingreso',
+              'value'=>'solicitudbiopsia.fechadeingreso',
+              'format' => ['date', 'd/M/Y'],
+              'filterInputOptions' => [
+                  'id' => 'fecha1',
+                  'class' => 'form-control',
+                  'autoclose'=>true,
+                  'format' => 'dd/mm/yyyy',
+                  'startView' => 'year',
+                  'placeholder' => 'd/m/aaaa'
+
+              ]
 
           ],
           [

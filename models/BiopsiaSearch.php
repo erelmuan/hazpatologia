@@ -18,6 +18,7 @@ class BiopsiaSearch extends Biopsia
   public $paciente;
   public $medico;
   public $fecharealizacion;
+  public $fechadeingreso;
   public $sexo;
   public $procedencia;
   public $fecha_desde;
@@ -32,6 +33,7 @@ class BiopsiaSearch extends Biopsia
             [['id', 'id_solicitudbiopsia', 'protocolo','id_plantillatopografia', 'id_plantilladiagnostico', 'id_estado'], 'integer'],
             [['fecha_desde','fecha_hasta','sexo','topografia','macroscopia', 'microscopia', 'ihq', 'diagnostico', 'ubicacion', 'observacion','fechalisto'], 'safe'],
             ['fecharealizacion', 'date', 'format' => 'dd/MM/yyyy'],
+            ['fechadeingreso', 'date', 'format' => 'dd/MM/yyyy'],
 
             //Se agrego para permitir la habilitacion del filtro en la grilla
             [['paciente','medico','procedencia'], 'safe'],
@@ -112,9 +114,13 @@ class BiopsiaSearch extends Biopsia
             ->andFilterWhere(['ilike', 'procedencia.nombre', $this->procedencia])
             ->andFilterWhere(['ilike', 'diagnostico', $this->diagnostico])
             ->andFilterWhere(['ilike', 'ubicacion', $this->ubicacion])
-            ->andFilterWhere(['ilike', 'observacion', $this->observacion]);            $query->andFilterWhere(['=', 'fecharealizacion', $this->fecharealizacion]);
+            ->andFilterWhere(['ilike', 'observacion', $this->observacion]);
+            $query->andFilterWhere(['=', 'fecharealizacion', $this->fecharealizacion]);
             $query->andFilterWhere(['>=', 'fecharealizacion', $this->fecha_desde]);
             $query->andFilterWhere(['<=', 'fecharealizacion', $this->fecha_hasta]);
+            $query->andFilterWhere(['=', 'fechadeingreso', $this->fechadeingreso]);
+            $query->andFilterWhere(['>=', 'fechadeingreso', $this->fecha_desde]);
+            $query->andFilterWhere(['<=', 'fechadeingreso', $this->fecha_hasta]);
         return $dataProvider;
     }
 }
