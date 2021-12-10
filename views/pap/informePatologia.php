@@ -291,7 +291,15 @@ $pdf->SetFont('Times','',10);
    // Imprimimos el texto justificado
 $pdf->SetXY(30, $Inicio+2 );
 $pdf->MultiCell(0,5, utf8_decode($model->diagnostico));
-$pdf->Ln();
+
+$Inicio = $pdf->GetY() + 2;
+
+if($model->firmado){
+  $pdf->Image( Yii::$app->basePath .'/web/uploads/avatar/'.$model->usuario->firma->imagen,151,$Inicio ,49 ,45 ,'PNG' );
+
+}
+
+// $pdf->Ln();
 
 $Inicio = $pdf->GetY() + 10;
 $pdf->SetFont('Times','',10);

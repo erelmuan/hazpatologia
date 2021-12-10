@@ -29,7 +29,7 @@ use app\models\Usuario;
 
 ?>
 <div id="w0" class="x_panel">
-  <div class="x_title"><h2> <?=$model->isNewRecord ? "<i class='glyphicon glyphicon-plus'></i> NUEVO PAP" : "<i class='glyphicon glyphicon-pencil'></i> ACTUALIZAR BIOPSIA" ; ?> </h2>
+  <div class="x_title"><h2> <?=$model->isNewRecord ? "<i class='glyphicon glyphicon-plus'></i> NUEVA BIOPSIA" : "<i class='glyphicon glyphicon-pencil'></i> ACTUALIZAR BIOPSIA" ; ?> </h2>
     <div class="clearfix"> <div class="nav navbar-right panel_toolbox"><?= Html::a('<i class="glyphicon glyphicon-arrow-left"></i> Atrás', $model->isNewRecord ? ['/solicitudbiopsia/seleccionar']:['/biopsia/index'], ['class'=>'btn btn-danger grid-button']) ?></div>
 </div>
   </div>
@@ -274,7 +274,7 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
      </div>
      <div class='col-sm-3'>
           <?//= $form->field($model, 'firmado')->checkBox(['label' => 'Firmar','onclick' => 'cambioFirma();' ,'checked' => $model->firmado]); ?>
-          <?= $form->field($model, 'firmado')->checkbox()->label('Firmar');
+          <?= $form->field($model, 'firmado')->checkbox()->label('FIRMAR (si el estado del estudio es pendiente, se ignorara esta opción)');
           // checkBox(['label' => 'Firmar','onclick' => 'cambioFirma();']); ?>
 
     </div>

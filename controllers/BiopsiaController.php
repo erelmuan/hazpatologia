@@ -146,6 +146,9 @@ class BiopsiaController extends Controller
     public function actionCreate()
     {
         $request = Yii::$app->request;
+        $post=$request->post();
+        $modelUsuario = Usuario::find()->where(["id"=>Yii::$app->user->identity->getId()])->one();
+
         $model = new Biopsia();
         // Obtengo la solicitud para mostrar los datos en la creacion de la bipsia
         if (isset($_GET['idsol']) && $_GET['idsol'] !='') {
@@ -157,15 +160,15 @@ class BiopsiaController extends Controller
            $array=[];
            $provider=[];
            $this->cargarEstructuras($search,$array,$provider,$_SESSION['solicitudb']->id_estudio);
-            if ($model->load($request->post()) ) {
-
-                // { DEBERIA HABER UN TRY CATCH PARA VOLVER TODO PARA ATRAS EN CASO DE ERROR
-
-                if (Usuario::isPatologo() && ($model->estado->descripcion=='LISTO' || $model->estado->descripcion == 'ENTREGADO')){
-
+           if (isset($post['Biopsia']['id_estado']) && $post['Biopsia']['id_estado'] !=2){
+               unset($post['Biopsia']['firmado']);
+           }
+            if ( Usuario::isPatologo() && isset($post['Biopsia']['id_estado'] ) && $post['Biopsia']['id_estado'] ==2){
+                    $model->load($post);
                     //validar contraseñar
                     if (!$this->validarContraseña($_POST["contrasenia"])){
-                      $model->estado->descripcion ='PENDIENTE';
+
+                      $model->id_estado =5;
                       return $this->render('_form', [
                           'model' => $model,
                           'dataSol' => $_SESSION['solicitudb'],
@@ -179,21 +182,16 @@ class BiopsiaController extends Controller
 
                     }
                     //fecha cuando esta listo el informe de la biopsia
-                    $model->fechalisto=date("d/m/Y");
+                    $model->fechalisto=date("Y-m-d");
+                    $model->id_usuario=$modelUsuario->id;
                     $Solicitud =  Solicitud::findOne($model->id_solicitudbiopsia);
                     $Solicitud->id_estado=$model->id_estado;
                     $Solicitud->save();
-                  }
-                  else {
-                    $model->fechalisto='';
-                  }
-                  $model->save();
-              //  }
-                return $this->redirect(['view', 'id' => $model->id]);
-            } else {
-              // $searchModel = new BiopsiaSearch();
-              // $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-              // $dataProvider->pagination->pageSize=7;
+              }
+              if ($model->load($post) && $model->save()) {
+                     return $this->redirect(['view', 'id' =>$model->id]);
+              } else {
+
               $edad = $this->calcular_edad($_SESSION['solicitudb']->id);
 
                 return $this->render('_form', [
@@ -266,17 +264,20 @@ class BiopsiaController extends Controller
         $provider=[];
         $modelUsuario = Usuario::find()->where(["id"=>Yii::$app->user->identity->getId()])->one();
 
-        $model_estado_resguardo= $model->estado->descripcion;
         $this->cargarEstructuras($search,$array,$provider,$model->solicitudbiopsia->estudio->id);
         if ($model->estado->descripcion=='LISTO' ){
             unset($post['Biopsia']['diagnostico']);
+        }
+        if ( isset($post['Biopsia']['id_estado']) && $post['Biopsia']['id_estado'] !=2){
+            unset($post['Biopsia']['firmado']);
         }
           //si esta el estudio  en estado listo, ['Biopsia']['id_estado'] no estara definido por lo tanto no entra al if
             if ( Usuario::isPatologo() && isset($post['Biopsia']['id_estado'] ) && $post['Biopsia']['id_estado'] ==2){
 
 
               if (!$this->validarContraseña($_POST["contrasenia"])){
-                $model->estado->descripcion = $model_estado_resguardo;
+                unset($post['Biopsia']['id_estado']);
+                $model->load($post);
                 return $this->render('_form', [
                     'model' => $model,
                     'dataSol' => $_SESSION['solicitudb'],

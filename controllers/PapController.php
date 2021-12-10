@@ -143,6 +143,8 @@ class PapController extends Controller
     public function actionCreate()
     {
         $request = Yii::$app->request;
+        $post=$request->post();
+        $modelUsuario = Usuario::find()->where(["id"=>Yii::$app->user->identity->getId()])->one();
         $model = new Pap();
 
         if (isset($_GET['idsol']) && $_GET['idsol'] !='') {
@@ -154,12 +156,16 @@ class PapController extends Controller
            $array=[];
            $provider=[];
         $this->cargarEstructuras($search,$array,$provider,$_SESSION['solicitudp']->id_estudio);
-            if ($model->load($request->post()) ) {
+        if (isset($post['Pap']['id_estado']) && $post['Pap']['id_estado'] !=2){
+            unset($post['Pap']['firmado']);
+        }
 
-              if (Usuario::isPatologo() && ($model->estado->descripcion=='LISTO' || $model->estado->descripcion == 'ENTREGADO')){
+              if (Usuario::isPatologo() && isset($post['Pap']['id_estado'] ) && $post['Pap']['id_estado'] ==2){
                     //validar contraseñar
+                    $model->load($post);
+
                     if (!$this->validarContraseña($_POST["contrasenia"])){
-                      $model->estado->descripcion ='PENDIENTE';
+                      $model->id_estado =5;
                       return $this->render('_form', [
                           'model' => $model,
                           'dataSol' => $_SESSION['solicitudp'],
@@ -173,16 +179,16 @@ class PapController extends Controller
                     }
                       $model->fechalisto=date("Y-m-d");
                       $model->id_usuario=$modelUsuario->id;
-
                       $Solicitud =  Solicitud::findOne($model->id_solicitudpap);
                       $Solicitud->id_estado=$model->id_estado;
                       $Solicitud->save();
                     }
 
-                    $model->save();
 
-                return $this->redirect(['view', 'id' => $model->id]);
-            } else {
+              if ($model->load($post) && $model->save()) {
+                    return $this->redirect(['view', 'id' =>$model->id]);
+              } else {
+
               $edad = $this->calcular_edad($_SESSION['solicitudp']->id);
 
                 return $this->render('_form', [
@@ -249,23 +255,28 @@ class PapController extends Controller
     {
       $request = Yii::$app->request;
       $model = $this->findModel($id);
+      $post=$request->post();
 
       $search=[];
       $array=[];
       $provider=[];
-      $model_estado_resguardo= $model->estado->descripcion;
+      $modelUsuario = Usuario::find()->where(["id"=>Yii::$app->user->identity->getId()])->one();
 
       $this->cargarEstructuras($search,$array,$provider ,$model->solicitudpap->id_estudio);
-
       if ($model->estado->descripcion=='LISTO' ){
           unset($post['Pap']['diagnostico']);
       }
+      if ( isset($post['Pap']['id_estado']) && $post['Pap']['id_estado'] !=2){
+          unset($post['Pap']['firmado']);
+      }
+
         //si esta el estudio  en estado listo, ['Biopsia']['id_estado'] no estara definido por lo tanto no entra al if
           if ( Usuario::isPatologo() && isset($post['Pap']['id_estado'] ) && $post['Pap']['id_estado'] ==2){
 
 
             if (!$this->validarContraseña($_POST["contrasenia"])){
-              $model->estado->descripcion = $model_estado_resguardo;
+              unset($post['Biopsia']['id_estado']);
+              $model->load($post);
               return $this->render('_form', [
                   'model' => $model,
                   'dataSol' => $_SESSION['solicitudp'],
