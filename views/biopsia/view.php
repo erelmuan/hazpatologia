@@ -47,7 +47,7 @@ use yii\helpers\Html;
             'macroscopia:ntext',
             'microscopia:ntext',
             'ihq:ntext',
-            'id_plantilladiagnostico',
+            // 'id_plantilladiagnostico',
             'diagnostico:ntext',
             'ubicacion',
             'observacion:ntext',

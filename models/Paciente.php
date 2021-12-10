@@ -8,7 +8,7 @@ use yii\helpers\ArrayHelper;
 
 /**
  * This is the model class for table "paciente".
- * 
+ *
  * @property int $id
  * @property string $nombre
  * @property string $num_documento
@@ -98,7 +98,7 @@ class Paciente extends \yii\db\ActiveRecord
             'afiliado' => 'Afiliado',
             'id_provincia' => 'Id Provincia',
             'id_localidad' => 'Id Localidad',
-            'fecha_nacimiento' => 'Fecha Nacimiento',
+            'fecha_nacimiento' => 'Fecha de  Nacimiento',
             'apellido' => 'Apellido',
             'hc' => 'Hc',
             'id_nacionalidad' => 'Id Nacionalidad',

@@ -102,10 +102,23 @@ class Solicitud extends \yii\db\ActiveRecord
               'class'=>'\kartik\grid\DataColumn',
               'attribute'=>'protocolo',
           ],
-          [
+
+            [
+              //nombre
               'class'=>'\kartik\grid\DataColumn',
               'attribute'=>'fechadeingreso',
+              'label'=> 'Fecha de ingreso',
+              'value'=>'fechadeingreso',
               'format' => ['date', 'd/M/Y'],
+              'filterInputOptions' => [
+                  'id' => 'fecha1',
+                  'class' => 'form-control',
+                  'autoclose'=>true,
+                  'format' => 'dd/mm/yyyy',
+                  'startView' => 'year',
+                  'placeholder' => 'd/m/aaaa'
+
+              ]
             ],
             [
                 'class'=>'\kartik\grid\DataColumn',
@@ -193,7 +206,7 @@ class Solicitud extends \yii\db\ActiveRecord
             'value'=>'fecharealizacion',
             'format' => ['date', 'd/M/Y'],
             'filterInputOptions' => [
-                'id' => 'fecha1',
+                'id' => 'fecha2',
                 'class' => 'form-control',
                 'autoclose'=>true,
                 'format' => 'dd/mm/yyyy',

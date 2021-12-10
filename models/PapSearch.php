@@ -33,6 +33,8 @@ class PapSearch extends Pap
             [['descripcion', 'calificacion', 'indicedemaduracion', 'plegamiento', 'agrupamiento', 'leucocitos', 'hematies', 'histiocitos', 'detritus', 'citolisis', 'flora', 'aspecto', 'pavimentosas', 'glandulares', 'diagnostico',  'fechalisto', 'observacion','fecha_desde','fecha_hasta','fecharealizacion'], 'safe'],
             //Se agrego para permitir la habilitacion del filtro en la grilla
             [['paciente','medico','procedencia'], 'safe'],
+            ['fecharealizacion', 'date', 'format' => 'dd/MM/yyyy'],
+
         ];
     }
 

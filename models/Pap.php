@@ -133,6 +133,8 @@ class Pap extends \yii\db\ActiveRecord
             'observacion' => 'Observacion',
             'id_estado' => 'Estado',
             'frase' => 'Frase',
+            'fecharealizacion' => 'Fecha de realizacion',
+
 
         ];
     }
@@ -151,7 +153,7 @@ class Pap extends \yii\db\ActiveRecord
               'attribute'=>'paciente',
               'width' => '170px',
               'value' => 'getlink',
-               'filterInputOptions' => ['placeholder' => 'Ingrese DNI o apellido'],
+               'filterInputOptions' => [ 'class' => 'form-control','placeholder' => 'Ingrese DNI o apellido'],
                'format' => 'raw',
 
           ],
@@ -160,7 +162,7 @@ class Pap extends \yii\db\ActiveRecord
               'attribute'=>'medico',
               'width' => '170px',
               'value' => 'getLinkdos',
-               'filterInputOptions' => ['placeholder' => 'Ingrese DNI o apellido'],
+               'filterInputOptions' => ['class' => 'form-control' ,'placeholder' => 'Ingrese DNI o apellido'],
                'format' => 'raw',
 
           ],

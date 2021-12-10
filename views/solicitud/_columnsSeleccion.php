@@ -19,9 +19,24 @@ return [
         'attribute'=>'protocolo',
     ],
     [
+        //nombre
         'class'=>'\kartik\grid\DataColumn',
         'attribute'=>'fechadeingreso',
+        'label'=> 'Fecha de ingreso',
+        'value'=>'fechadeingreso',
+        'format' => ['date', 'd/M/Y'],
+        'filterInputOptions' => [
+            'id' => 'fecha1',
+            'class' => 'form-control',
+            'autoclose'=>true,
+            'format' => 'dd/mm/yyyy',
+            'startView' => 'year',
+            'placeholder' => 'd/m/aaaa'
+
+        ]
+
     ],
+
     [
         'class'=>'\kartik\grid\DataColumn',
         'value' => function($model) { return $model->paciente->apellido  . " " . $model->paciente->nombre ;},
@@ -67,6 +82,7 @@ return [
         'class' => 'kartik\grid\ActionColumn',
         'dropdown' => false,
         'vAlign'=>'middle',
+        'template' => '{view}',
         'urlCreator' => function($action, $model, $key, $index) {
                 return Url::to([$action,'id'=>$key]);
         },

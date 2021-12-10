@@ -101,6 +101,8 @@ class Biopsia extends \yii\db\ActiveRecord
             'observacion' => 'Observacion',
             'id_estado' => 'Estado',
             'frase' => 'Frase',
+            'Fecharealizacion' => 'Fecha de realizacion',
+
 
         ];
     }

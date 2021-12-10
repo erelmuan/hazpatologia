@@ -27,6 +27,8 @@ class PacienteSearch extends Paciente
           // SCESNARIO //
           [['num_documento',],'integer','on'=>'search'],
           [['num_documento',],'required','on'=>'search'],
+          ['fecha_nacimiento', 'date', 'format' => 'dd/MM/yyyy'],
+
           // SCESNARIO //
         [['nacionalidad','tipodoc','nombre', 'apellido',  'hc', 'sexo', 'fecha_nacimiento', 'direccion', 'cp', 'telefono', 'email', 'afiliado'], 'safe','except'=>'search'],
         ];

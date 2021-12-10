@@ -86,45 +86,45 @@ class SolicitudController extends Controller
         ]);
 
     }
-    public function actionSeleccionarmod()
-    {
-        $searchModel = new SolicitudSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-        $exibirEligir=false;
-        $exibirUsado=false;
-        if (isset($_POST['idsol']) ) {
-          if ($_POST['idsol'] =='' ){
-            $exibirEligir=true;
-            $exibirUsado=false;
-
-
-          }else
-          {
-
-              $data = Yii::$app->request->post();
-              $id= explode(":", $data['idsol']);
-              $id= $id[0];
-              $models = Biopsia::find()->where('id_solicitud = '.$id)->all();
-              if (count($models)==1 ){
-              $searchModel = new SolicitudSearch();
-              $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-              $exibirEligir=false;
-              $exibirUsado=true;
-            }else {
-
-              return $this->redirect(['biopsia/update', 'id' => 15,'idsol' => $_POST['idsol']]);
-            }
-          }
-        }
-
-        return $this->render('seleccionarmod', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-            'exibirEligir' =>$exibirEligir,
-            'exibirUsado' =>$exibirUsado,
-        ]);
-
-    }
+    // public function actionSeleccionarmod()
+    // {
+    //     $searchModel = new SolicitudSearch();
+    //     $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+    //     $exibirEligir=false;
+    //     $exibirUsado=false;
+    //     if (isset($_POST['idsol']) ) {
+    //       if ($_POST['idsol'] =='' ){
+    //         $exibirEligir=true;
+    //         $exibirUsado=false;
+    //
+    //
+    //       }else
+    //       {
+    //
+    //           $data = Yii::$app->request->post();
+    //           $id= explode(":", $data['idsol']);
+    //           $id= $id[0];
+    //           $models = Biopsia::find()->where('id_solicitud = '.$id)->all();
+    //           if (count($models)==1 ){
+    //           $searchModel = new SolicitudSearch();
+    //           $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+    //           $exibirEligir=false;
+    //           $exibirUsado=true;
+    //         }else {
+    //
+    //           return $this->redirect(['biopsia/update', 'id' => 15,'idsol' => $_POST['idsol']]);
+    //         }
+    //       }
+    //     }
+    //
+    //     return $this->render('seleccionarmod', [
+    //         'searchModel' => $searchModel,
+    //         'dataProvider' => $dataProvider,
+    //         'exibirEligir' =>$exibirEligir,
+    //         'exibirUsado' =>$exibirUsado,
+    //     ]);
+    //
+    // }
     function calcular_edad($id){
 
       $Solicitud =  Solicitud::findOne($id);
@@ -248,16 +248,14 @@ class SolicitudController extends Controller
           }
           $anioprotocolo= AnioProtocolo::anioprotocoloActivo();
           $model->id_anio_protocolo=$anioprotocolo->id;
+          //si protocolo automatico esta activado si o si va insertar el valor que obtiene de la base
+          // con esto me aseguro que por mas que se edite el campo va editar
+          if ($_POST[$model->classNameM()]["protocolo_automatico"] ==	"1"){
+              unset($_POST[$model->classNameM()]["protocolo"]);
+              $model->protocolo=Solicitud::obtenerProtocolo();
+
+          }
             if ($model->load($request->post()) && $model->save()) {
-              //si protocolo automatico esta activado si o si va insertar el valor que obtiene de la base
-              // con esto me aseguro que por mas que se edite el campo va editar
-              //SE PUEDE MEJORAR CAMBIANDO EL VALOR DE REQUEST POST
-                if ($_POST[$model->classNameM()]["protocolo_automatico"] ==	"1"){
-                  $model->protocolo=Solicitud::obtenerProtocolo();
-                  $model->save();
-
-                }
-
                 return $this->redirect(['view', 'id' => $model->id]);
             }else{
               return $this->redirect([$model->tableName()."/create" ]);

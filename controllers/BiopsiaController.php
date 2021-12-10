@@ -260,7 +260,7 @@ class BiopsiaController extends Controller
     {
         $request = Yii::$app->request;
         $model = $this->findModel($id);
-
+        $post=$request->post();
         $search=[];
         $array=[];
         $provider=[];
@@ -268,39 +268,39 @@ class BiopsiaController extends Controller
 
         $model_estado_resguardo= $model->estado->descripcion;
         $this->cargarEstructuras($search,$array,$provider,$model->solicitudbiopsia->estudio->id);
-            // if ($model->load($request->post()) && $model->save()) {
-            if ($model->load($request->post()) ) {
-                  if (Usuario::isPatologo() && ($model->estado->descripcion=='LISTO' || $model->estado->descripcion == 'ENTREGADO')){
-                    //validar contraseñar
-                    if (!$this->validarContraseña($_POST["contrasenia"])){
-                      $model->estado->descripcion = $model_estado_resguardo;
-                      return $this->render('_form', [
-                          'model' => $model,
-                          'dataSol' => $_SESSION['solicitudb'],
-                          'search' => $search,
-                          'array' => $array,
-                          'provider' => $provider,
-                          'edadDelPaciente'=>$this->calcular_edad($_SESSION['solicitudb']->id),
+        if ($model->estado->descripcion=='LISTO' ){
+            unset($post['Biopsia']['diagnostico']);
+        }
+          //si esta el estudio  en estado listo, ['Biopsia']['id_estado'] no estara definido por lo tanto no entra al if
+            if ( Usuario::isPatologo() && isset($post['Biopsia']['id_estado'] ) && $post['Biopsia']['id_estado'] ==2){
 
 
-                      ]);
+              if (!$this->validarContraseña($_POST["contrasenia"])){
+                $model->estado->descripcion = $model_estado_resguardo;
+                return $this->render('_form', [
+                    'model' => $model,
+                    'dataSol' => $_SESSION['solicitudb'],
+                    'search' => $search,
+                    'array' => $array,
+                    'provider' => $provider,
+                    'edadDelPaciente'=>$this->calcular_edad($_SESSION['solicitudb']->id),
 
-                    }
 
-                    $Solicitud =  Solicitud::findOne($model->id_solicitudbiopsia);
-                    //puede pasar a estado en proceso
-                    $Solicitud->id_estado= $model->id_estado;
-                    $Solicitud->save();
-                    //fecha cuando esta listo el informe de la biopsia
-                    $model->fechalisto=date("Y-m-d");
-                    $model->id_usuario=$modelUsuario->id;
-                  }
-                  else {
-                    $model->fechalisto='';
-                  }
-                  $model->save();
+                ]);
 
-              return $this->redirect(['view', 'id' =>$model->id]);
+              }
+
+              $Solicitud =  Solicitud::findOne($model->id_solicitudbiopsia);
+              //puede pasar a estado en proceso
+              $Solicitud->id_estado= $model->id_estado;
+              $Solicitud->save();
+              //fecha cuando esta listo el informe de la biopsia
+              $model->fechalisto=date("Y-m-d");
+              $model->id_usuario=$modelUsuario->id;
+            }
+
+             if ($model->load($post) && $model->save()) {
+                return $this->redirect(['view', 'id' =>$model->id]);
             } else {
 
               if (isset($_GET['idsol']) && $_GET['idsol'] !='')

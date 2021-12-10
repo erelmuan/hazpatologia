@@ -28,8 +28,21 @@ return [
         'attribute'=>'sexo',
     ],
     [
-        'class'=>'\kartik\grid\DataColumn',
-        'attribute'=>'fecha_nacimiento',
+      //nombre
+      'class'=>'\kartik\grid\DataColumn',
+      'attribute'=>'fecha_nacimiento',
+      'label'=> 'Fecha de nacimiento',
+      'value'=>'fecha_nacimiento',
+      'format' => ['date', 'd/M/Y'],
+      'filterInputOptions' => [
+          'id' => 'fecha1',
+          'class' => 'form-control',
+          'autoclose'=>true,
+          'format' => 'dd/mm/yyyy',
+          'startView' => 'year',
+          'placeholder' => 'd/m/aaaa'
+
+      ]
     ],
     // [
         // 'class'=>'\kartik\grid\DataColumn',

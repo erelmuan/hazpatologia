@@ -65,7 +65,7 @@ use yii\helpers\Html;
             'aspecto:ntext',
             'pavimentosas:ntext',
             'glandulares:ntext',
-            'id_plantilladiagnostico',
+            // 'id_plantilladiagnostico',
             'diagnostico:ntext',
             [
               'value'=> $model->estado->descripcion ,

@@ -168,18 +168,17 @@ class PapController extends Controller
                           'provider' => $provider,
                           'edadDelPaciente'=>$this->calcular_edad($_SESSION['solicitudp']->id),
 
-
                       ]);
 
                     }
-                      $model->fechalisto=date("d/m/Y");
+                      $model->fechalisto=date("Y-m-d");
+                      $model->id_usuario=$modelUsuario->id;
+
                       $Solicitud =  Solicitud::findOne($model->id_solicitudpap);
                       $Solicitud->id_estado=$model->id_estado;
                       $Solicitud->save();
                     }
-                    else {
-                      $model->fechalisto='';
-                    }
+
                     $model->save();
 
                 return $this->redirect(['view', 'id' => $model->id]);
@@ -257,38 +256,40 @@ class PapController extends Controller
       $model_estado_resguardo= $model->estado->descripcion;
 
       $this->cargarEstructuras($search,$array,$provider ,$model->solicitudpap->id_estudio);
-          // if ($model->load($request->post()) && $model->save()) {
-          if ($model->load($request->post()) ) {
-                if (Usuario::isPatologo() && $model->estado->descripcion=='LISTO' || $model->estado->descripcion == 'ENTREGADO'){
-                  //validar contraseñar
-                  if (!$this->validarContraseña($_POST["contrasenia"])){
-                    $model->estado->descripcion = $model_estado_resguardo;
-                    return $this->render('_form', [
-                        'model' => $model,
-                        'dataSol' => $_SESSION['solicitudp'],
-                        'search' => $search,
-                        'array' => $array,
-                        'provider' => $provider,
-                        'edadDelPaciente'=>$this->calcular_edad($_SESSION['solicitudp']->id),
+
+      if ($model->estado->descripcion=='LISTO' ){
+          unset($post['Pap']['diagnostico']);
+      }
+        //si esta el estudio  en estado listo, ['Biopsia']['id_estado'] no estara definido por lo tanto no entra al if
+          if ( Usuario::isPatologo() && isset($post['Pap']['id_estado'] ) && $post['Pap']['id_estado'] ==2){
 
 
-                    ]);
+            if (!$this->validarContraseña($_POST["contrasenia"])){
+              $model->estado->descripcion = $model_estado_resguardo;
+              return $this->render('_form', [
+                  'model' => $model,
+                  'dataSol' => $_SESSION['solicitudp'],
+                  'search' => $search,
+                  'array' => $array,
+                  'provider' => $provider,
+                  'edadDelPaciente'=>$this->calcular_edad($_SESSION['solicitudp']->id),
 
-                  }
 
-                  $Solicitud =  Solicitud::findOne($model->id_solicitudpap);
-                  //puede pasar a estado en proceso
-                  $Solicitud->id_estado=$model->id_estado;
-                  $Solicitud->save();
-                  //fecha cuando esta listo el informe de la biopsia
-                  $model->fechalisto=date("d/m/Y");
-                }
-                else {
-                  $model->fechalisto='';
-                }
-                $model->save();
+              ]);
 
-            return $this->redirect(['view', 'id' => $model->id]);
+            }
+
+            $Solicitud =  Solicitud::findOne($model->id_solicitudpap);
+            //puede pasar a estado en proceso
+            $Solicitud->id_estado= $model->id_estado;
+            $Solicitud->save();
+            //fecha cuando esta listo el informe de la biopsia
+            $model->fechalisto=date("Y-m-d");
+            $model->id_usuario=$modelUsuario->id;
+          }
+
+           if ($model->load($post) && $model->save()) {
+              return $this->redirect(['view', 'id' =>$model->id]);
           } else {
 
             if (isset($_GET['idsol']) && $_GET['idsol'] !='')

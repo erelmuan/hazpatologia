@@ -12,7 +12,7 @@ use app\models\Solicitudpap;
  */
 class SolicitudpapSearch extends Solicitudpap
 {
-    
+
      /**
      * {@inheritdoc}
      */
@@ -20,7 +20,7 @@ class SolicitudpapSearch extends Solicitudpap
     {
         return 'SolicitudpapSearch';
     }
-    
+
     /**
      * @inheritdoc
      */
@@ -30,6 +30,9 @@ class SolicitudpapSearch extends Solicitudpap
             [['id', 'id_paciente', 'id_procedencia', 'id_medico', 'id_materialsolicitud', 'protocolo', 'id_tipo_muestra', 'id_metodo_anticonceptivo', 'id_cirugia_previa','id_estudio','id_estado'], 'integer'],
             [['fecharealizacion', 'fechadeingreso',  'observacion', 'resultado_pap_previo', 'resultado_biopsia_previo', 'fum', 'fecha_ult_parto', 'datos_clinicos_de_interes', 'conclusion'], 'safe'],
             [['pap_previo', 'biopsia_previa', 'embarazo_actual', 'menopausia', 'tratamiento_radiante', 'quimioterapia', 'colposcopia'], 'boolean'],
+            ['fechadeingreso', 'date', 'format' => 'dd/MM/yyyy'],
+            ['fecharealizacion', 'date', 'format' => 'dd/MM/yyyy'],
+
         ];
     }
 

@@ -21,7 +21,7 @@ return [
         'value' => function($model) {
             return $model->tipodoc->documento;
         },
-   
+
         'filter'=>ArrayHelper::map(Tipodoc::find()->all(), 'id','documento'),
         'filterType' => GridView::FILTER_SELECT2,
         'filterWidgetOptions' => [
@@ -41,10 +41,24 @@ return [
         // 'class'=>'\kartik\grid\DataColumn',
         // 'attribute'=>'sexo',
     // ],
-    // [
-        // 'class'=>'\kartik\grid\DataColumn',
-        // 'attribute'=>'fecha_Nac',
-    // ],
+    [
+      //nombre
+      'class'=>'\kartik\grid\DataColumn',
+      'attribute'=>'fecha_nacimiento',
+      'label'=> 'Fecha de nacimiento',
+      'value'=>'fecha_nacimiento',
+      'format' => ['date', 'd/M/Y'],
+      'filterInputOptions' => [
+          'id' => 'fecha1',
+          'class' => 'form-control',
+          'autoclose'=>true,
+          'format' => 'dd/mm/yyyy',
+          'startView' => 'year',
+          'placeholder' => 'd/m/aaaa'
+
+      ]
+    ],
+
     // [
         // 'class'=>'\kartik\grid\DataColumn',
         // 'attribute'=>'idprovincia',

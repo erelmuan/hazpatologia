@@ -12,7 +12,7 @@ use app\models\Solicitudbiopsia;
  */
 class SolicitudbiopsiaSearch extends Solicitudbiopsia
 {
-    
+
        /**
      * {@inheritdoc}
      */
@@ -28,6 +28,9 @@ class SolicitudbiopsiaSearch extends Solicitudbiopsia
         return [
             [['id', 'id_paciente', 'id_procedencia', 'id_medico', 'id_materialsolicitud', 'protocolo', 'id_materialginecologico', 'id_estudio', 'id_estado'], 'integer'],
             [['fecharealizacion', 'fechadeingreso', 'observacion', 'sitio_prec_toma', 'datos_clin_interes', 'diagnostico_presuntivo', 'biopsia_anterior_resultado'], 'safe'],
+            ['fechadeingreso', 'date', 'format' => 'dd/MM/yyyy'],
+            ['fecharealizacion', 'date', 'format' => 'dd/MM/yyyy'],
+
         ];
     }
 
@@ -55,7 +58,7 @@ class SolicitudbiopsiaSearch extends Solicitudbiopsia
         ->leftJoin('biopsia', 'biopsia.id_solicitudbiopsia = solicitudbiopsia.id')
         ->where(['and','biopsia.id IS NULL ' ])
         ->andWhere(['and','solicitudbiopsia.id_estado <> 3 ' ]);
-        
+
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
