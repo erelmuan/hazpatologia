@@ -85,16 +85,6 @@ function Footer()
         $this->Cell(0,10,utf8_decode('Hospital "Artémides ZATTI" - Rivadavia 391 - (8500) Viedma - Río Negro'),0,0,'C');
         $this->Ln(3);
         $this->Cell(0,10,'Tel. 02920 - 427843 | Fax 02920 - 429916 / 423780',0,0,'C');
-      //  $this->Ln(5);
-      //  $this->SetTextColor(150,150,150);
-      //  $this->SetFont('Times','I','7');
-    //    $this->Cell(0,10,'Desarrollado por: ',0,0,'C');
-
-
-
-
-
-
 
 }
 }
@@ -150,112 +140,85 @@ $pdf->Text(43,$Inicio ,$model->solicitudpap->procedencia->nombre);
 //////////////////////////////
 
 
-// if ($model->eosinofilas != NULL or $model->eosinofilas !=""){
-$Inicio = $pdf->GetY() + 10;
-$pdf->SetFont('Times','B',10);
-$pdf->Text(80,$Inicio ,"EOSINOFILAS:");
-$pdf->SetFont('Times','',10);
-$pdf->Text(107,$Inicio ,$model->eosinofilas." %" );
-// }
+// $Inicio = $pdf->GetY() + 10;
+// $pdf->SetFont('Times','B',10);
+// $pdf->Text(80,$Inicio ,"EOSINOFILAS:");
+// $pdf->SetFont('Times','',10);
+// $pdf->Text(107,$Inicio ,$model->eosinofilas." %" );
 
-// if ($model->indicepicnotico != NULL or $model->indicepicnotico !=""){
 $Inicio = $pdf->GetY() + 10;
 $pdf->SetFont('Times','B',10);
 $pdf->Text(14,$Inicio ,"INDICE CEPICNOTICO:");
 $pdf->SetFont('Times','',10);
 $pdf->Text(56,$Inicio,$model->indicepicnotico);
 
- // }
- // if ($model->cianofilas != NULL or $model->cianofilas !=""){
- $Inicio = $pdf->GetY() + 10;
- $pdf->SetFont('Times','B',10);
- $pdf->Text(140,$Inicio ,"CIANOFILAS:");
- $pdf->SetFont('Times','',10);
- $pdf->Text(165,$Inicio,$model->cianofilas." %");
+ // $Inicio = $pdf->GetY() + 10;
+ // $pdf->SetFont('Times','B',10);
+ // $pdf->Text(140,$Inicio ,"CIANOFILAS:");
+ // $pdf->SetFont('Times','',10);
+ // $pdf->Text(165,$Inicio,$model->cianofilas." %");
 
- // }
-// if ($model->indicedemaduracion != NULL or $model->indicedemaduracion !=""){
+// $Inicio = $pdf->GetY() + 20;
+// $pdf->SetFont('Times','B',10);
+// $pdf->Text(14,$Inicio ,"INDICE DE MADURACION:");
+// $pdf->SetFont('Times','',10);
+// $pdf->Text(61,$Inicio,$model->indicepicnotico);
+
+// $Inicio = $pdf->GetY() + 20;
+// $pdf->SetFont('Times','B',10);
+// $pdf->Text(140,$Inicio ,"INTERMEDIAS:");
+// $pdf->SetFont('Times','',10);
+// $pdf->Text(168,$Inicio,$model->intermedias." %");
+
+// $Inicio = $pdf->GetY() + 20;
+// $pdf->SetFont('Times','B',10);
+// $pdf->Text(80,$Inicio ,"PARABASALES:");
+// $pdf->SetFont('Times','',10);
+// $pdf->Text(109,$Inicio,$model->parabasales." %");
+
+// $Inicio = $pdf->GetY() + 30;
+// $pdf->SetFont('Times','B',10);
+// $pdf->Text(14,$Inicio ,"PLEGAMIENTO:");
+// $pdf->SetFont('Times','',10);
+// $pdf->Text(45,$Inicio,$model->plegamiento);
+
+// $Inicio = $pdf->GetY() + 30;
+// $pdf->SetFont('Times','B',10);
+// $pdf->Text(60,$Inicio ,"AGRUPAMIENTO:");
+// $pdf->SetFont('Times','',10);
+// $pdf->Text(92,$Inicio,$model->agrupamiento);
+
+// $Inicio = $pdf->GetY() + 30;
+$pdf->SetFont('Times','B',10);
+$pdf->Text(82,$Inicio ,"LEUCOCITOS:");
+$pdf->SetFont('Times','',10);
+$pdf->Text(110,$Inicio,$model->leucocitos);
+
+// $Inicio = $pdf->GetY() + 30;
+$pdf->SetFont('Times','B',10);
+$pdf->Text(145,$Inicio ,"HEMATIES:");
+$pdf->SetFont('Times','',10);
+$pdf->Text(168,$Inicio,$model->hematies);
+
 $Inicio = $pdf->GetY() + 20;
-$pdf->SetFont('Times','B',10);
-$pdf->Text(14,$Inicio ,"INDICE DE MADURACION:");
-$pdf->SetFont('Times','',10);
-$pdf->Text(61,$Inicio,$model->indicepicnotico);
-
-// }
-// if ($model->intermedias != NULL or $model->intermedias !=""){
-$Inicio = $pdf->GetY() + 20;
-$pdf->SetFont('Times','B',10);
-$pdf->Text(140,$Inicio ,"INTERMEDIAS:");
-$pdf->SetFont('Times','',10);
-$pdf->Text(168,$Inicio,$model->intermedias." %");
-
-// }
-// if ($model->parabasales != NULL or $model->parabasales !=""){
-$Inicio = $pdf->GetY() + 20;
-$pdf->SetFont('Times','B',10);
-$pdf->Text(80,$Inicio ,"PARABASALES:");
-$pdf->SetFont('Times','',10);
-$pdf->Text(109,$Inicio,$model->parabasales." %");
-
-// }
-// if ($model->plegamiento != NULL or $model->plegamiento !=""){
-$Inicio = $pdf->GetY() + 30;
-$pdf->SetFont('Times','B',10);
-$pdf->Text(14,$Inicio ,"PLEGAMIENTO:");
-$pdf->SetFont('Times','',10);
-$pdf->Text(45,$Inicio,$model->plegamiento);
-
-// }
-// if ($model->agrupamiento != NULL or $model->agrupamiento !=""){
-$Inicio = $pdf->GetY() + 30;
-$pdf->SetFont('Times','B',10);
-$pdf->Text(60,$Inicio ,"AGRUPAMIENTO:");
-$pdf->SetFont('Times','',10);
-$pdf->Text(92,$Inicio,$model->agrupamiento);
-// }
-// if ($model->leucocitos != NULL or $model->leucocitos !=""){
-
-$Inicio = $pdf->GetY() + 30;
-$pdf->SetFont('Times','B',10);
-$pdf->Text(115,$Inicio ,"LEUCOCITOS:");
-$pdf->SetFont('Times','',10);
-$pdf->Text(145,$Inicio,$model->leucocitos);
-
-// }
-// if ($model->hematies != NULL or $model->hematies !=""){
-
-$Inicio = $pdf->GetY() + 30;
-$pdf->SetFont('Times','B',10);
-$pdf->Text(152,$Inicio ,"HEMATIES:");
-$pdf->SetFont('Times','',10);
-$pdf->Text(175,$Inicio,$model->hematies);
-
-// }
-// if ($model->histiocitos != NULL or $model->histiocitos !=""){
-$Inicio = $pdf->GetY() + 40;
 $pdf->SetFont('Times','B',10);
 $pdf->Text(14,$Inicio ,"HISTIOCITOS:");
 $pdf->SetFont('Times','',10);
 $pdf->Text(40,$Inicio,$model->histiocitos);
-// }
-// if ($model->detritus != NULL or $model->detritus !=""){
-$Inicio = $pdf->GetY() + 40;
-$pdf->SetFont('Times','B',10);
-$pdf->Text(80,$Inicio ,"DETRITUS:");
-$pdf->SetFont('Times','',10);
-$pdf->Text(100,$Inicio,$model->detritus);
 
-// }
-// if ($model->citolisis != NULL or $model->citolisis !=""){
-$Inicio = $pdf->GetY() + 40;
+$Inicio = $pdf->GetY() + 20;
+$pdf->SetFont('Times','B',10);
+$pdf->Text(82,$Inicio ,"DETRITUS:");
+$pdf->SetFont('Times','',10);
+$pdf->Text(105,$Inicio,$model->detritus);
+
+$Inicio = $pdf->GetY() + 20;
 $pdf->SetFont('Times','B',10);
 $pdf->Text(145,$Inicio ,"CITOLISIS:");
 $pdf->SetFont('Times','',10);
 $pdf->Text(166,$Inicio,$model->citolisis);
 
-// }
-
-$Inicio = $pdf->GetY() + 50;
+$Inicio = $pdf->GetY() + 40;
 $pdf->SetFont('Times','B',10);
 //En topografia va con el item de material - revisar!!!
 $pdf->Text(14,$Inicio ,"FLORA:");
@@ -300,7 +263,6 @@ if($model->firmado){
 }
 
 // $pdf->Ln();
-
 $Inicio = $pdf->GetY() + 10;
 $pdf->SetFont('Times','',10);
    // Imprimimos el texto justificado

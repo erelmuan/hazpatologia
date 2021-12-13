@@ -61,7 +61,6 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
 <legend class="text-info"><small style="margin-left: 18px;">Datos del estudio Inmunostoquimica</small></legend>
 
 <div class="inmunohistoquimica-form">
-
     <?= $form->field($model, 'microscopia')->textarea(['style'=>'width: 570px; height: 100px;'  ]) ?>
     <?= $form->field($model, 'diagnostico')->textarea(['style'=>'width: 570px; height: 100px;']) ?>
     <?= $form->field($model, 'observacion')->textarea(['style'=>'width: 570px; height: 100px;']) ?>
@@ -69,6 +68,8 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
     <?php if (!Yii::$app->request->isAjax){ ?>
         <div class="form-group">
             <?= Html::submitButton($model->isNewRecord ? 'Crear' : 'Actualizar', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+            <?= Html::a('<i class="glyphicon glyphicon-arrow-right"></i> Ir los informes',['/biopsia/view', 'id'=>$model->biopsia->id], ['class'=>'btn btn-success grid-button']) ?>
+
         </div>
     <?php } ?>
 

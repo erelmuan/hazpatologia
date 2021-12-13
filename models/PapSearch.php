@@ -30,7 +30,7 @@ class PapSearch extends Pap
     public function rules()
     {
         return [
-            [['id', 'id_solicitudpap','protocolo', 'sexo', 'id_calificacion', 'indicepicnotico', 'id_plantilladiagnostico', 'cantidad', 'id_estado'], 'integer'],
+            [['id', 'id_solicitudpap','protocolo', 'sexo',  'indicepicnotico', 'id_plantilladiagnostico', 'cantidad', 'id_estado'], 'integer'],
             [['descripcion', 'calificacion', 'indicedemaduracion', 'plegamiento', 'agrupamiento', 'leucocitos', 'hematies', 'histiocitos', 'detritus', 'citolisis', 'flora', 'aspecto', 'pavimentosas', 'glandulares', 'diagnostico',  'fechalisto', 'observacion','fecha_desde','fecha_hasta','fecharealizacion'], 'safe'],
             //Se agrego para permitir la habilitacion del filtro en la grilla
             [['paciente','medico','procedencia'], 'safe'],
@@ -79,7 +79,6 @@ class PapSearch extends Pap
         $query->andFilterWhere([
             'id' => $this->id,
             'id_solicitudpap' => $this->id_solicitudpap,
-            'id_calificacion' => $this->id_calificacion,
             'indicepicnotico' => $this->indicepicnotico,
             'id_plantilladiagnostico' => $this->id_plantilladiagnostico,
             'fechalisto' => $this->fechalisto,

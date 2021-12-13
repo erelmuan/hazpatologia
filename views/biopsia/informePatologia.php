@@ -89,12 +89,6 @@ function Footer()
       //  $this->SetFont('Times','I','7');
     //    $this->Cell(0,10,'Desarrollado por: ',0,0,'C');
 
-
-
-
-
-
-
 }
 }
 
@@ -197,16 +191,11 @@ if($model->firmado){
 
 $Inicio = $pdf->GetY() + 10;
 $pdf->SetFont('Times','B',10);
-// $pdf->Text(14,$Inicio ,"FRASE:");
 $pdf->SetFont('Times','',10);
    // Imprimimos el texto justificado
 $pdf->SetXY(30, $Inicio +1 );
 
-// $modelo= new Firma(); ACA DEBERIA OBTENER LA FIRMA DE ACUERDO AL USUARIO QUE FIRMO POR ESO HAY QUE AGREGAR UN ID DE USUARIO A LOS ESTUDIOS
-// $firma= $modelo::findOne(1);
-//
-// // $pdf->Image($firma->path,148,$Inicio - 8,34 );
-// $carpeta = Yii::getAlias("@app/");
+
 $pdf->MultiCell(0,5, utf8_decode($model->frase));
 
 
@@ -215,8 +204,7 @@ $pdf->Ln();
 $Inicio = 49;
 
 
-// $qrcode = new QRcode('PACIENTE: '.$model->paciente->nombre." ".
-// 'DIAGNOSTICO:'.$model->Diagnostico, 'L'); // error level : L, M, Q, H
+
 $x = 100;
 $y = 200;
 $s = 50;

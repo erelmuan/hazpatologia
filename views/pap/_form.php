@@ -78,31 +78,21 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
               'form'=>$form,
                'columns'=>5,
                'attributes'=>[
-               'Protocolo'=>['label'=>'Protocolo', 'options'=>['value'=>$dataSol->protocolo ,'readonly'=> true ],'columnOptions'=>['class'=>'col-dm-1',],],
-               'Procedencia'=>['label'=> Html::a('<i class="glyphicon glyphicon-eye-open"></i>'.' '.'Procedencia', ['procedencia/view' ,'id'=> $dataSol->id_procedencia,'columnOptions'=>['colspan'=>3,]],
-                 ['role'=>'modal-remote','title'=> 'Ver procedencia']), 'options'=>['value'=>$dataSol->procedencia->nombre, 'readonly'=> true ,'url' => '#' ],'columnOptions'=>['class'=>'col-dm-2',],],
+               'Protocolo'=>['label'=>'Protocolo', 'options'=>['value'=>$dataSol->protocolo ,'readonly'=> true ],'columnOptions'=>['class'=>'col-sm-1',],],
                'Paciente'=>['label'=> Html::a('<i class="glyphicon glyphicon-eye-open"></i>'.' '.'Paciente', ['paciente/view' ,'id'=> $dataSol->id_paciente],
                  ['role'=>'modal-remote','title'=> 'Ver paciente']), 'options'=>['value'=>$dataSol->paciente->apellido." ". $dataSol->paciente->nombre ,'readonly'=> true ,'url' => '#' ],'columnOptions'=>['class'=>'col-lg-3',],],
-               'Medico'=>['label'=> Html::a('<i class="glyphicon glyphicon-eye-open"></i>'.' '.'Medico', ['medico/view' ,'id'=> $dataSol->id_medico],
+                 'DNI'=>['label'=>'DNI', 'options'=>['value'=>$dataSol->paciente->num_documento, 'placeholder'=>'Edad...','readonly'=> true],'columnOptions'=>['class'=>'col-sm-2']],
+                 'Edad'=>['label'=>'Edad', 'options'=>['value'=>$edadDelPaciente, 'placeholder'=>'Edad...','readonly'=> true],'columnOptions'=>['class'=>'col-sm-1']],
+                 'Medico'=>['label'=> Html::a('<i class="glyphicon glyphicon-eye-open"></i>'.' '.'Medico', ['medico/view' ,'id'=> $dataSol->id_medico],
                 ['role'=>'modal-remote','title'=> 'Ver medico']), 'options'=>['value'=>$dataSol->medico->apellido ." ". $dataSol->medico->nombre, 'readonly'=> true ,'url' => '#' ],'columnOptions'=>['class'=>'col-lg-3',],],
-            // 'Sexo'=>['label'=>'Sexo',  'options'=>['value'=>$dataSol->paciente->sexo, 'readonly'=> true],'columnOptions'=>['class'=>'col-sm-1',]],
-             //  'Estudio'=>['label'=>'Estudio', 'options'=>['value'=>$dataSol->estudio, 'placeholder'=>'Edad...','readonly'=> true],'columnOptions'=>['class'=>'col-sm-1']],
-               'Edad'=>['label'=>'Edad', 'options'=>['value'=>$edadDelPaciente, 'placeholder'=>'Edad...','readonly'=> true],'columnOptions'=>['class'=>'col-dm-1']],
-              // Esto es de solicitud 'Estado'=>['label'=>'Estado', 'options'=>['value'=>$dataSol->estado ,'readonly'=> true],'columnOptions'=>['class'=>'col-sm-2']],
-            // Esto es de solicitud   'Observación'=>['label'=>'Observación', 'options'=>['value'=>$dataSol->observacion ,'readonly'=> true],'columnOptions'=>['class'=>'col-sm-2']],
-               'id_solicitudpap'=>['type'=>Form::INPUT_HIDDEN, 'columnOptions'=>['colspan'=>0], 'options'=>['value'=>$dataSol->id ]],
-
-                // 'Fecha'=>[ 'label'=>'Fecha de nacimiento', 'widgetClass'=>'\kartik\datecontrol\DateControl','columnOptions'=>['class'=>'col-sm-3'],],
+               'id_solicitudbiopsia'=>['type'=>Form::INPUT_HIDDEN, 'columnOptions'=>['colspan'=>0], 'options'=>['value'=>$dataSol->id ]],
               ]
           ]);
-
-            //echo '<div class="text-right" style="margin-right: 100px;">' . Html::resetButton('Resetear', ['class'=>'btn btn-warning']) . '</div>';
 
       ?>
 
 </div>
 </div>
-
 
 <div class="x_panel" >
 
@@ -120,24 +110,24 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
               <div class="col-md-2 col-sm-12 col-xs-12 form-group"style="padding-right: 10px;margin-right: 0px;margin-left: 0px;">
                 <?= $form->field($model, 'indicepicnotico')->input("text",['style'=>'width:70%'])->label('I.Picnótico') ?>
               </div>
-              <div class="col-md-2 col-sm-12 col-xs-12 form-group"style="padding-right: 10px;margin-right: 0px;margin-left: 0px;">
-                <?= $form->field($model, 'indicedemaduracion')->input("text",['style'=>'width:70%'])->label('I.maduración') ?>
-              </div>
-              <div class="col-md-2 col-sm-12 col-xs-12 form-group"style="padding-right: 10px;margin-right: 0px;margin-left: 0px;">
-                <?= $form->field($model, 'eosinofilas')->input("text",['style'=>'width:70%'])->label('Eosinofilas %') ?>
-              </div>
-              <div class="col-md-2 col-sm-12 col-xs-12 form-group"style="padding-right: 10px;margin-right: 0px;margin-left: 0px;">
-                <?= $form->field($model, 'cianofilas')->input("text",['style'=>'width:70%'])->label('Cianofilas %') ?>
-              </div>
-              <div class="col-md-2 col-sm-12 col-xs-12 form-group"style="padding-right: 10px;margin-right: 0px;margin-left: 0px;">
-                <?= $form->field($model, 'intermedias')->input("text",['style'=>'width:70%'])->label('Intermedias %') ?>
-              </div>
-              <div class="col-md-2 col-sm-12 col-xs-12 form-group"style="padding-right: 10px;margin-right: 0px;margin-left: 0px;">
-                <?= $form->field($model, 'parabasales')->input("text",['style'=>'width:70%'])->label('Parabasales %') ?>
-              </div>
+              <!-- <div class="col-md-2 col-sm-12 col-xs-12 form-group"style="padding-right: 10px;margin-right: 0px;margin-left: 0px;"> -->
+                <?//= $form->field($model, 'indicedemaduracion')->input("text",['style'=>'width:70%'])->label('I.maduración') ?>
+              <!-- </div> -->
+              <!-- <div class="col-md-2 col-sm-12 col-xs-12 form-group"style="padding-right: 10px;margin-right: 0px;margin-left: 0px;"> -->
+                <?//= $form->field($model, 'eosinofilas')->input("text",['style'=>'width:70%'])->label('Eosinofilas %') ?>
+              <!-- </div> -->
+              <!-- <div class="col-md-2 col-sm-12 col-xs-12 form-group"style="padding-right: 10px;margin-right: 0px;margin-left: 0px;"> -->
+                <?//= $form->field($model, 'cianofilas')->input("text",['style'=>'width:70%'])->label('Cianofilas %') ?>
+              <!-- </div> -->
+              <!-- <div class="col-md-2 col-sm-12 col-xs-12 form-group"style="padding-right: 10px;margin-right: 0px;margin-left: 0px;"> -->
+                <?//= $form->field($model, 'intermedias')->input("text",['style'=>'width:70%'])->label('Intermedias %') ?>
+              <!-- </div> -->
+              <!-- <div class="col-md-2 col-sm-12 col-xs-12 form-group"style="padding-right: 10px;margin-right: 0px;margin-left: 0px;"> -->
+                <?//= $form->field($model, 'parabasales')->input("text",['style'=>'width:70%'])->label('Parabasales %') ?>
+              <!-- </div> -->
             </center>
 
-          </div>
+
                 <?
                 echo Form::widget([ // fields with labels
                   //  'contentBefore'=>'<legend class="text-info"><small>Datos del paciente</small></legend>',
@@ -145,15 +135,17 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
                     'form'=>$form,
                      'columns'=>4,
                      'attributes'=>[
-                     'plegamiento'=>[ 'label'=>'Plegamiento', 'type'=>Form::INPUT_DROPDOWN_LIST, 'items'=>["" => "" , "+" => "+", "++" => "++" ,"+++"=>"+++","++++"=>"++++"] ],
-                     'agrupamiento'=>['label'=>'Agrupamiento', 'type'=>Form::INPUT_DROPDOWN_LIST, 'items'=>["" => "","+" => "+", "++" => "++" ,"+++"=>"+++","++++"=>"++++"]],
-                     'leucocitos'=>['label'=>'Leucocitos', 'type'=>Form::INPUT_DROPDOWN_LIST, 'items'=>["" => "","+" => "+", "++" => "++" ,"+++"=>"+++","++++"=>"++++"]],
-                     'hematies'=>['label'=>'Hematíes', 'type'=>Form::INPUT_DROPDOWN_LIST, 'items'=>["" => "","+" => "+", "++" => "++" ,"+++"=>"+++","++++"=>"++++"]],
+                     // 'plegamiento'=>[ 'label'=>'Plegamiento', 'type'=>Form::INPUT_DROPDOWN_LIST, 'items'=>["" => "" , "+" => "+", "++" => "++" ,"+++"=>"+++","++++"=>"++++","-"=>"-"] ],
+                     // 'agrupamiento'=>['label'=>'Agrupamiento', 'type'=>Form::INPUT_DROPDOWN_LIST, 'items'=>["" => "","+" => "+", "++" => "++" ,"+++"=>"+++","++++"=>"++++","-"=>"-"]],
+                     'leucocitos'=>['label'=>'Leucocitos', 'type'=>Form::INPUT_DROPDOWN_LIST, 'items'=>["" => "","+" => "+", "++" => "++" ,"+++"=>"+++","++++"=>"++++","-"=>"-"]],
+                     'hematies'=>['label'=>'Hematíes', 'type'=>Form::INPUT_DROPDOWN_LIST, 'items'=>["" => "","+" => "+", "++" => "++" ,"+++"=>"+++","++++"=>"++++","-"=>"-"]],
                      // 'histiocitos'=>['label'=>'Histiocitos', 'type'=>Form::INPUT_DROPDOWN_LIST, 'items'=>["" => "","+" => "+", "++" => "++" ,"+++"=>"+++","++++"=>"++++"]],
                      // 'detritus'=>['label'=>'Detritus', 'type'=>Form::INPUT_DROPDOWN_LIST, 'items'=>["" => "","+" => "+", "++" => "++" ,"+++"=>"+++","++++"=>"++++"]],
                      // 'citolisis'=>['label'=>'Citólisis', 'type'=>Form::INPUT_DROPDOWN_LIST, 'items'=>["" => "","+" => "+", "++" => "++" ,"+++"=>"+++","++++"=>"++++"],'columnOptions'=>['colspan'=>2]],
                     ]
-                ]);
+                ]);  ?>
+                </div>
+                <?
                 echo Form::widget([ // fields with labels
                   //  'contentBefore'=>'<legend class="text-info"><small>Datos del paciente</small></legend>',
                     'model'=>$model,
@@ -164,9 +156,9 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
                      // 'agrupamiento'=>['label'=>'Agrupamiento', 'type'=>Form::INPUT_DROPDOWN_LIST, 'items'=>["" => "","+" => "+", "++" => "++" ,"+++"=>"+++","++++"=>"++++"]],
                      // 'leucocitos'=>['label'=>'Leucocitos', 'type'=>Form::INPUT_DROPDOWN_LIST, 'items'=>["" => "","+" => "+", "++" => "++" ,"+++"=>"+++","++++"=>"++++"]],
                      // 'hematies'=>['label'=>'Hematíes', 'type'=>Form::INPUT_DROPDOWN_LIST, 'items'=>["" => "","+" => "+", "++" => "++" ,"+++"=>"+++","++++"=>"++++"]],
-                     'histiocitos'=>['label'=>'Histiocitos', 'type'=>Form::INPUT_DROPDOWN_LIST, 'items'=>["" => "","+" => "+", "++" => "++" ,"+++"=>"+++","++++"=>"++++"]],
-                     'detritus'=>['label'=>'Detritus', 'type'=>Form::INPUT_DROPDOWN_LIST, 'items'=>["" => "","+" => "+", "++" => "++" ,"+++"=>"+++","++++"=>"++++"]],
-                     'citolisis'=>['label'=>'Citólisis', 'type'=>Form::INPUT_DROPDOWN_LIST, 'items'=>["" => "","+" => "+", "++" => "++" ,"+++"=>"+++","++++"=>"++++"]],
+                     'histiocitos'=>['label'=>'Histiocitos', 'type'=>Form::INPUT_DROPDOWN_LIST, 'items'=>["" => "","+" => "+", "++" => "++" ,"+++"=>"+++","++++"=>"++++","-"=>"-"]],
+                     'detritus'=>['label'=>'Detritus', 'type'=>Form::INPUT_DROPDOWN_LIST, 'items'=>["" => "","+" => "+", "++" => "++" ,"+++"=>"+++","++++"=>"++++","-"=>"-"]],
+                     'citolisis'=>['label'=>'Citólisis', 'type'=>Form::INPUT_DROPDOWN_LIST, 'items'=>["" => "","+" => "+", "++" => "++" ,"+++"=>"+++","++++"=>"++++","-"=>"-"]],
                     ]
                 ]);
 

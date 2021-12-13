@@ -67,7 +67,6 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
         ]
     ]);
 
-      // echo '<div class="text-right" style="margin-right: 100px;">' . Html::resetButton('Limpiar', ['class'=>'btn btn-warning']) . '</div>';
 
 ?>
 </div>
@@ -260,7 +259,6 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
         <?= Html::submitButton($model->isNewRecord ? 'Guardar' : 'Actualizar', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']);
         if( !$model->isNewRecord &&  $model->ihq)
           echo Html::a('<i class="glyphicon glyphicon-arrow-right"></i> Ir inmunostoquimica',['/inmunohistoquimica/update', 'id'=>$model->inmunohistoquimica->id], ['class'=>'btn btn-success grid-button']) ?>
-
     </div>
     <? if (Usuario::isPatologo()) { ?>
     <div class="col-md-8 col-sm-12 col-xs-12 form-group">

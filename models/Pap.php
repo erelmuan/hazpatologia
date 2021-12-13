@@ -9,7 +9,6 @@ use Yii;
 /**
  * This is the model class for table "pap".
  *
- * @property string $id_calificacion
  * @property string $descripcion
  * @property string $calificacion
  * @property int $eosinofilas
@@ -82,7 +81,7 @@ class Pap extends \yii\db\ActiveRecord
             [['eosinofilas', 'cianofilas', 'intermedias', 'parabasales', 'indicepicnotico', 'cantidad', 'id_solicitudpap', 'id_plantilladiagnostico', 'id_estado', 'id_usuario'], 'integer'],
             [['firmado', 'Pagado'], 'boolean'],
             [['fechalisto'], 'safe'],
-            [['id_calificacion', 'indicedemaduracion'], 'string', 'max' => 8],
+            [[ 'indicedemaduracion'], 'string', 'max' => 8],
             [['plegamiento', 'agrupamiento', 'leucocitos', 'hematies', 'histiocitos', 'detritus', 'citolisis'], 'string', 'max' => 4],
             [['id_solicitudpap'], 'unique'],
             [['id_estado'], 'exist', 'skipOnError' => true, 'targetClass' => Estado::className(), 'targetAttribute' => ['id_estado' => 'id']],
@@ -99,7 +98,6 @@ class Pap extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id_calificacion' => 'Id Calificacion',
             'descripcion' => 'Descripcion',
             'calificacion' => 'Calificacion',
             'eosinofilas' => 'Eosinofilas',
