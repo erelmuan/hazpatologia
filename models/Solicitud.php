@@ -328,4 +328,26 @@ class Solicitud extends \yii\db\ActiveRecord
           return false;
          }
     }
+    //la fecha tiene que estar en formato d-m-y
+    function calcular_edad($id){
+
+        $solicitud =  Solicitud::findOne($id);
+        list($ano,$mes,$dia) = explode("-",$solicitud->paciente->fecha_nacimiento);
+        list($anoR,$mesR,$diaR) = explode("-",$solicitud->fechadeingreso);
+
+
+        $ano_diferencia  = $anoR - $ano;
+        $mes_diferencia = $mesR - $mes;
+        $dia_diferencia   = $diaR - $dia;
+        if ( $mes_diferencia < 0)
+        {
+          $ano_diferencia--;
+        }
+        elseif ( $mes_diferencia == 0){
+          if ( $dia_diferencia < 0)
+              $ano_diferencia--;
+          }
+          return $ano_diferencia;
+      }
+
 }

@@ -105,7 +105,7 @@ return [
         'attribute'=>'microscopia',
     ],
     [
-        'class'=>'\kartik\grid\DataColumn',
+        'class'=>'\kartik\grid\BooleanColumn',
         'attribute'=>'ihq',
     ],
     [
@@ -116,10 +116,7 @@ return [
         'class'=>'\kartik\grid\DataColumn',
         'attribute'=>'diagnostico',
     ],
-    [
-        'class'=>'\kartik\grid\DataColumn',
-        'attribute'=>'ubicacion',
-    ],
+
     [
         'class'=>'\kartik\grid\DataColumn',
         'attribute'=>'observacion',

@@ -71,13 +71,12 @@ use yii\helpers\Html;
               'value'=> $model->estado->descripcion ,
               'label'=> 'Estado',
            ],
-            // 'fechalisto',
-            [
-              'value'=> $model->fechalisto,
-              'label'=> 'Fecha Listo',
-              'format' => ['date', 'd/M/Y'],
-
-           ],
+           //  [
+           //    'value'=> $model->fechalisto,
+           //    'label'=> 'Fecha Listo',
+           //    'format' => ['date', 'd/M/Y'],
+           //
+           // ],
             'observacion:ntext',
             'cantidad',
             'frase',

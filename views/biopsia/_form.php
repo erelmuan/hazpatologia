@@ -26,9 +26,10 @@ use kartik\widgets\ActiveForm;
 /* @var $form yii\widgets\ActiveForm */
 use kartik\datecontrol\DateControl;
 use app\models\Usuario;
+use kartik\widgets\SwitchInput
 
 ?>
-<div id="w0" class="x_panel">
+<div id="w0sss" class="x_panel">
   <div class="x_title"><h2> <?=$model->isNewRecord ? "<i class='glyphicon glyphicon-plus'></i> NUEVA BIOPSIA" : "<i class='glyphicon glyphicon-pencil'></i> ACTUALIZAR BIOPSIA" ; ?> </h2>
     <div class="clearfix"> <div class="nav navbar-right panel_toolbox"><?= Html::a('<i class="glyphicon glyphicon-arrow-left"></i> Atrás', $model->isNewRecord ? ['/solicitudbiopsia/seleccionar']:['/biopsia/index'], ['class'=>'btn btn-danger grid-button']) ?></div>
 </div>
@@ -54,22 +55,15 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
         'form'=>$form,
          'columns'=>5,
          'attributes'=>[
-         'Protocolo'=>['label'=>'Protocolo', 'options'=>['value'=>$dataSol->protocolo ,'readonly'=> true ],'columnOptions'=>['class'=>'col-dm-1',],],
-         'Procedencia'=>['label'=> Html::a('<i class="glyphicon glyphicon-eye-open"></i>'.' '.'Procedencia', ['procedencia/view' ,'id'=> $dataSol->id_procedencia,'columnOptions'=>['colspan'=>3,]],
-           ['role'=>'modal-remote','title'=> 'Ver procedencia']), 'options'=>['value'=>$dataSol->procedencia->nombre, 'readonly'=> true ,'url' => '#' ],'columnOptions'=>['class'=>'col-dm-2',],],
+         'Protocolo'=>['label'=>'Protocolo', 'options'=>['value'=>$dataSol->protocolo ,'readonly'=> true ],'columnOptions'=>['class'=>'col-sm-1',],],
          'Paciente'=>['label'=> Html::a('<i class="glyphicon glyphicon-eye-open"></i>'.' '.'Paciente', ['paciente/view' ,'id'=> $dataSol->id_paciente],
            ['role'=>'modal-remote','title'=> 'Ver paciente']), 'options'=>['value'=>$dataSol->paciente->apellido." ". $dataSol->paciente->nombre ,'readonly'=> true ,'url' => '#' ],'columnOptions'=>['class'=>'col-lg-3',],],
-         'Medico'=>['label'=> Html::a('<i class="glyphicon glyphicon-eye-open"></i>'.' '.'Medico', ['medico/view' ,'id'=> $dataSol->id_medico],
+           'DNI'=>['label'=>'DNI', 'options'=>['value'=>$dataSol->paciente->num_documento, 'placeholder'=>'Edad...','readonly'=> true],'columnOptions'=>['class'=>'col-sm-2']],
+           'Edad'=>['label'=>'Edad', 'options'=>['value'=>$edadDelPaciente, 'placeholder'=>'Edad...','readonly'=> true],'columnOptions'=>['class'=>'col-sm-1']],
+           'Medico'=>['label'=> Html::a('<i class="glyphicon glyphicon-eye-open"></i>'.' '.'Medico', ['medico/view' ,'id'=> $dataSol->id_medico],
           ['role'=>'modal-remote','title'=> 'Ver medico']), 'options'=>['value'=>$dataSol->medico->apellido ." ". $dataSol->medico->nombre, 'readonly'=> true ,'url' => '#' ],'columnOptions'=>['class'=>'col-lg-3',],],
-      // 'Sexo'=>['label'=>'Sexo',  'options'=>['value'=>$dataSol->paciente->sexo, 'readonly'=> true],'columnOptions'=>['class'=>'col-sm-1',]],
-       //  'Estudio'=>['label'=>'Estudio', 'options'=>['value'=>$dataSol->estudio, 'placeholder'=>'Edad...','readonly'=> true],'columnOptions'=>['class'=>'col-sm-1']],
-         'Edad'=>['label'=>'Edad', 'options'=>['value'=>$edadDelPaciente, 'placeholder'=>'Edad...','readonly'=> true],'columnOptions'=>['class'=>'col-dm-1']],
-
-        // Esto es de solicitud 'Estado'=>['label'=>'Estado', 'options'=>['value'=>$dataSol->estado ,'readonly'=> true],'columnOptions'=>['class'=>'col-sm-2']],
-      // Esto es de solicitud   'Observación'=>['label'=>'Observación', 'options'=>['value'=>$dataSol->observacion ,'readonly'=> true],'columnOptions'=>['class'=>'col-sm-2']],
          'id_solicitudbiopsia'=>['type'=>Form::INPUT_HIDDEN, 'columnOptions'=>['colspan'=>0], 'options'=>['value'=>$dataSol->id ]],
 
-          // 'Fecha'=>[ 'label'=>'Fecha de nacimiento', 'widgetClass'=>'\kartik\datecontrol\DateControl','columnOptions'=>['class'=>'col-sm-3'],],
         ]
     ]);
 
@@ -97,10 +91,10 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
                             'options' => [
                             'onchange' => 'onEnviarMat (this.value)',
                             'placeholder' => 'Seleccionar código..',
-                            'multiple' => false
+                            // 'multiple' => false
                               ],
                             'pluginOptions' => [
-                                'allowClear' => true
+                                'allowClear' => false
                               ],
                     ]);
              echo (Html::label('Código topografia', 'username', ['class' => 'form-group field-biopsias-material has-success'])); ?>
@@ -173,8 +167,10 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
                                    ],
                            ]);
 
-      echo ( $form->field($model, 'ihq')->textarea(['rows' => 3]));
-
+      echo ( $form->field($model, 'ihq')->widget(SwitchInput::classname(), [    'pluginOptions' => [
+        'onText' => 'Si',
+        'offText' => 'No',
+    ]]))->label('Estudio inmunostoquimica');
       echo (Html::label('Código diagnostico', 'codigo diagnostico', ['class' => 'form-group field-biopsias-diagnostico has-success']));
       if( !isset($model->estado) || $model->estado->descripcion!=="LISTO"){
       ?>
@@ -261,9 +257,9 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
       <?= $form->field($model, 'frase')->textarea(['rows' => 4]) ?>
      </div>
     <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-        <?= Html::submitButton($model->isNewRecord ? 'Guardar' : 'Actualizar', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
-        <!-- <button type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target=".bs-frases-modal-lg" style="margin-left: 10px;">Vista previa</button> -->
-
+        <?= Html::submitButton($model->isNewRecord ? 'Guardar' : 'Actualizar', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']);
+        if( !$model->isNewRecord &&  $model->ihq)
+          echo Html::a('<i class="glyphicon glyphicon-arrow-right"></i> Ir inmunostoquimica',['/inmunohistoquimica/update', 'id'=>$model->inmunohistoquimica->id], ['class'=>'btn btn-success grid-button']) ?>
 
     </div>
     <? if (Usuario::isPatologo()) { ?>

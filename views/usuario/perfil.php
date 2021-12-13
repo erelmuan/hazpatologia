@@ -65,8 +65,8 @@ CrudAsset::register($this);
               <div class="tab-pane vertical-pad" id="photo">
 
                 <? echo $form->field($model, 'imagen')->widget(FileInput::classname(), [
-                    'options' => ['accept' => 'imagen/*'],
-                     'pluginOptions'=>['allowedFileExtensions'=>['jpg','gif','png']],
+                    // 'options' => ['accept' => 'imagen/*'],
+                    //  'pluginOptions'=>['allowedFileExtensions'=>['jpg','gif','png']],
                 ])   ?>
               </div> <!-- end of upload photo tab -->
 

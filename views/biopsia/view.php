@@ -46,25 +46,25 @@ use yii\helpers\Html;
             'topografia:ntext',
             'macroscopia:ntext',
             'microscopia:ntext',
-            'ihq:ntext',
+            'ihq:boolean',
             // 'id_plantilladiagnostico',
             'diagnostico:ntext',
-            'ubicacion',
             'observacion:ntext',
             [
               'value'=> $model->estado->descripcion ,
               'label'=> 'Estado',
            ],
-           [
-            'value'=> $model->fechalisto ,
-            'label'=> 'Fecha de listo',
-            'format' => ['date', 'd/M/Y'],
-
-         ],
+         //   [
+         //    'value'=> $model->fechalisto ,
+         //    'label'=> 'Fecha de listo',
+         //    'format' => ['date', 'd/M/Y'],
+         //
+         // ],
          'frase',
 
         ],
     ]) ;
+    
 
     if (($model->estado->descripcion == 'EN_PROCESO')){
       echo Html::a('<i class="fa fa-file-pdf-o"></i> Generar informe', ['/biopsia/informe', 'id' => $model->id], [
