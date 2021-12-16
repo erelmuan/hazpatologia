@@ -234,7 +234,6 @@ class SolicitudController extends Controller
         $dataProviderMed = $searchModelMed->search(Yii::$app->request->queryParams);
         $dataProviderMed->pagination->pageSize=7;
 
-
             /*
             *   Process for non-ajax request
             */
@@ -259,7 +258,6 @@ class SolicitudController extends Controller
                 return $this->redirect(['view', 'id' => $model->id]);
             }else{
               return $this->redirect([$model->tableName()."/create" ]);
-
             }
       }
          else {

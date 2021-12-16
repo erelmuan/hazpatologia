@@ -88,13 +88,10 @@ return [
              'format' => 'raw',
 
     ],
+
     [
         'class'=>'\kartik\grid\DataColumn',
-        'attribute'=>'id_plantillatopografia',
-    ],
-    [
-        'class'=>'\kartik\grid\DataColumn',
-        'attribute'=>'topografia',
+        'attribute'=>'material',
     ],
     [
         'class'=>'\kartik\grid\DataColumn',

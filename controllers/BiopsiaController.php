@@ -6,7 +6,7 @@ use Yii;
 use app\models\Biopsia;
 use app\models\BiopsiaSearch;
 use app\models\PlantillamaterialSearch;
-use app\models\PlantillatopografiaSearch;
+// use app\models\PlantillatopografiaSearch;
 use app\models\PlantillamacroscopiaSearch;
 use app\models\PlantillamicroscopiaSearch;
 use app\models\PlantilladiagnosticoSearch;
@@ -95,14 +95,7 @@ class BiopsiaController extends Controller
       $search['searchModelMat']=$searchModelMat;
       $array['arraymaterial']=$arraymaterial;
       $provider['dataProviderMat']=$dataProviderMat;
-      ////////////Topografia/////////////////
-      $searchModelTop = new PlantillatopografiaSearch();
-      $arraytopografia= $searchModelTop::find()->all();
-      $dataProviderTop = $searchModelTop->search(Yii::$app->request->queryParams);
-      $dataProviderTop->pagination->pageSize=7;
-      $search['searchModelTop']=$searchModelTop;
-      $array['arraytopografia']=$arraytopografia;
-      $provider['dataProviderTop']=$dataProviderTop;
+
       ////////////Macroscopia/////////////////
       $searchModelMac = new PlantillamacroscopiaSearch();
       $arraymacroscopia= $searchModelMac::find()->all();

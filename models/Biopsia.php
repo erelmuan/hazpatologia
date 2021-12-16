@@ -9,7 +9,7 @@ use Yii;
 /**
  * This is the model class for table "biopsia".
  *
- * @property string $topografia
+ * @property string $material
  * @property string $macroscopia
  * @property string $microscopia
  * @property bool $ihq
@@ -20,7 +20,7 @@ use Yii;
  * @property bool $Pagado
  * @property int $id
  * @property int $id_solicitudbiopsia
- * @property int $id_plantillatopografia
+ * @property int $id_plantillamaterial
  * @property int $id_plantilladiagnostico
  * @property string $fechalisto
  * @property string $ubicacion
@@ -29,7 +29,7 @@ use Yii;
  	* @property int $id_usuario Se registra el usuario con rol de patologo, cuando el mismo pasa de estado pendiente a LISTO.
  * @property Estado $estado
  * @property Plantilladiagnostico $plantilladiagnostico
- * @property Plantillatopografia $plantillatopografia
+ * @property Plantillamaterial $plantillamaterial
  * @property Solicitudbiopsia $solicitudbiopsia
  * @property Usuario $usuario
  * @property Inmunohistoquimica $inmunohistoquimica
@@ -63,16 +63,16 @@ class Biopsia extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['topografia', 'macroscopia', 'microscopia',  'diagnostico', 'ubicacion', 'observacion', 'frase'], 'string'],
+            [['material', 'macroscopia', 'microscopia',  'diagnostico', 'ubicacion', 'observacion', 'frase'], 'string'],
            [['ihq', 'firmado', 'Pagado'], 'boolean'],
-           [['id_solicitudbiopsia', 'id_plantillatopografia', 'id_plantilladiagnostico', 'id_estado', 'id_usuario'], 'default', 'value' => null],
-            [['id_solicitudbiopsia', 'id_plantillatopografia', 'id_plantilladiagnostico', 'id_estado', 'id_usuario'], 'integer'],
+           [['id_solicitudbiopsia', 'id_plantillamaterial', 'id_plantilladiagnostico', 'id_estado', 'id_usuario'], 'default', 'value' => null],
+            [['id_solicitudbiopsia', 'id_plantillamaterial', 'id_plantilladiagnostico', 'id_estado', 'id_usuario'], 'integer'],
             [['fechalisto'], 'safe'],
             // [['ID_Diagnostico'], 'string', 'max' => 55],
             [['id_solicitudbiopsia'], 'unique'],
             [['id_estado'], 'exist', 'skipOnError' => true, 'targetClass' => Estado::className(), 'targetAttribute' => ['id_estado' => 'id']],
             [['id_plantilladiagnostico'], 'exist', 'skipOnError' => true, 'targetClass' => Plantilladiagnostico::className(), 'targetAttribute' => ['id_plantilladiagnostico' => 'id']],
-            [['id_plantillatopografia'], 'exist', 'skipOnError' => true, 'targetClass' => Plantillatopografia::className(), 'targetAttribute' => ['id_plantillatopografia' => 'id']],
+            [['id_plantillamaterial'], 'exist', 'skipOnError' => true, 'targetClass' => Plantillamaterial::className(), 'targetAttribute' => ['id_plantillamaterial' => 'id']],
             [['id_solicitudbiopsia'], 'exist', 'skipOnError' => true, 'targetClass' => Solicitudbiopsia::className(), 'targetAttribute' => ['id_solicitudbiopsia' => 'id']],
             [['id_usuario'], 'exist', 'skipOnError' => true, 'targetClass' => Usuario::className(), 'targetAttribute' => ['id_usuario' => 'id']],
 
@@ -85,7 +85,7 @@ class Biopsia extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'topografia' => 'Topografia',
+            'material' => 'Material',
             'macroscopia' => 'Macroscopia',
             'microscopia' => 'Microscopia',
             'ihq' => 'Ihq',
@@ -95,7 +95,7 @@ class Biopsia extends \yii\db\ActiveRecord
             'Pagado' => 'Pagado',
             'id' => 'ID',
             'id_solicitudbiopsia' => 'Id Solicitudbiopsia',
-            'id_plantillatopografia' => 'Id Plantillatopografia',
+            'id_plantillamaterial' => 'Id Plantillamaterial',
             'id_plantilladiagnostico' => 'Id Plantilladiagnostico',
             'fechalisto' => 'Fechalisto',
             'ubicacion' => 'Ubicacion',
@@ -187,7 +187,7 @@ class Biopsia extends \yii\db\ActiveRecord
 
           [
               'class'=>'\kartik\grid\DataColumn',
-              'attribute'=>'topografia',
+              'attribute'=>'material',
           ],
           [
               'class'=>'\kartik\grid\DataColumn',
@@ -234,9 +234,9 @@ class Biopsia extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getPlantillatopografia()
+    public function getPlantillamaterial()
     {
-        return $this->hasOne(Plantillatopografia::className(), ['id' => 'id_plantillatopografia']);
+        return $this->hasOne(Plantillamaterial::className(), ['id' => 'id_plantillamaterial']);
     }
 
     /**

@@ -151,11 +151,10 @@ $pdf->Text(140,$Inicio ,$model->solicitudbiopsia->procedencia->nombre);
 
 $Inicio = $pdf->GetY() + 10;
 $pdf->SetFont('Times','B',10);
-//En topografia va con el item de material - revisar!!!
 $pdf->Text(14,$Inicio ,"MATERIAL:");
 $pdf->SetFont('Times','',10);
 $pdf->SetXY(30, $Inicio +1);
-$pdf->MultiCell(0,5, utf8_decode($model->topografia));
+$pdf->MultiCell(0,5, utf8_decode($model->material));
 
 
 $Inicio = $pdf->GetY() + 10 ;

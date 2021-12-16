@@ -85,7 +85,7 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
                  'Edad'=>['label'=>'Edad', 'options'=>['value'=>$edadDelPaciente, 'placeholder'=>'Edad...','readonly'=> true],'columnOptions'=>['class'=>'col-sm-1']],
                  'Medico'=>['label'=> Html::a('<i class="glyphicon glyphicon-eye-open"></i>'.' '.'Medico', ['medico/view' ,'id'=> $dataSol->id_medico],
                 ['role'=>'modal-remote','title'=> 'Ver medico']), 'options'=>['value'=>$dataSol->medico->apellido ." ". $dataSol->medico->nombre, 'readonly'=> true ,'url' => '#' ],'columnOptions'=>['class'=>'col-lg-3',],],
-               'id_solicitudbiopsia'=>['type'=>Form::INPUT_HIDDEN, 'columnOptions'=>['colspan'=>0], 'options'=>['value'=>$dataSol->id ]],
+               'id_solicitudpap'=>['type'=>Form::INPUT_HIDDEN, 'columnOptions'=>['colspan'=>0], 'options'=>['value'=>$dataSol->id ]],
               ]
           ]);
 
@@ -191,9 +191,9 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
                                 'allowClear' => true
                               ],
                     ]);
-       echo "</br>";
-       echo ( Html::label('Código aspecto', 'aspecto', ['class' => 'form-group field-pap-aspecto has-success']));
-       ?>
+         ?></br> </br></br>
+      <?    echo ( Html::label('Código aspecto', 'aspecto', ['class' => 'form-group field-pap-aspecto has-success'])); ?>
+
          <button type="button" class="btn btn-primary btn-xs"onclick="quitarSeleccion()"  data-toggle="modal" data-target=".bs-aspecto-modal-lg" style="margin-left: 10px;"><i class="glyphicon glyphicon-plus" ></i></button>
          <button type="button" class="btn btn-danger btn-xs" onclick="quitarAspecto()"><i class="glyphicon glyphicon-minus"></i></button>
       <?
@@ -213,10 +213,10 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
                     'allowClear' => true
                          ],
            ]);
-
-      echo "</br>";
-      echo (Html::label('Código pavimentosa', 'pavimentosa', ['class' => 'form-group field-pap-pavimentosa has-success']));
       ?>
+      </br> </br></br>
+    <?  echo (Html::label('Código pavimentosa', 'pavimentosa', ['class' => 'form-group field-pap-pavimentosa has-success'])); ?>
+
         <button type="button" class="btn btn-primary btn-xs"onclick="quitarSeleccion()"  data-toggle="modal" data-target=".bs-pavimentosa-modal-lg" style="margin-left: 10px;"><i class="glyphicon glyphicon-plus" ></i></button>
         <button type="button" class="btn btn-danger btn-xs" onclick="quitarPavimentosas()"><i class="glyphicon glyphicon-minus"></i></button>
      <?
@@ -237,10 +237,11 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
                        'allowClear' => true
                            ],
              ]);
+             ?>
+             </br> </br></br>
+           <?
+           echo (Html::label('Código glandular', 'glandular', ['class' => 'form-group field-pap-glandular has-success'])); ?>
 
-   echo "</br>";
-   echo (Html::label('Código glandular', 'glandular', ['class' => 'form-group field-pap-glandular has-success']));
-   ?>
      <button type="button" class="btn btn-primary btn-xs" onclick="quitarSeleccion()"  data-toggle="modal" data-target=".bs-glandular-modal-lg" style="margin-left: 10px;"><i class="glyphicon glyphicon-plus" ></i></button>
      <button type="button" class="btn btn-danger btn-xs" onclick="quitarGlandular()"><i class="glyphicon glyphicon-minus"></i></button>
   <?
@@ -260,7 +261,9 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
                   'allowClear' => true
                       ],
         ]);
-      echo "</br>";
+        ?>
+        </br> </br></br>
+      <?
       echo (Html::label('Código diagnostico', 'codigo diagnostico', ['class' => 'form-group field-pap-diagnostico has-success']));
       if( !isset($model->estado) || $model->estado->descripcion!=="LISTO"){
 
@@ -286,8 +289,10 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
                         'allowClear' => true
                           ],
                   ]);
-    echo "</br>";
-    echo (Html::label('Código frase', 'frase', ['class' => 'form-group field-pap-frase has-success'])) ;
+      ?>
+        </br> </br></br>
+    <?
+      echo (Html::label('Código frase', 'frase', ['class' => 'form-group field-pap-frase has-success'])) ;
 
     ?>
       <button type="button" class="btn btn-primary btn-xs"onclick="quitarSeleccion()"  data-toggle="modal" data-target=".bs-frase-modal-lg" style="margin-left: 10px;"><i class="glyphicon glyphicon-plus" ></i></button>
@@ -312,7 +317,7 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
                   ]);
 
           ?>
-
+            </br>
           <? if( !isset($model->estado) || $model->estado->descripcion!=="LISTO"){
             echo $form->field($model, 'id_estado')->dropDownList($model->estados())->label('Estado') ;
 

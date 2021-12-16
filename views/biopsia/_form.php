@@ -96,33 +96,9 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
                                 'allowClear' => false
                               ],
                     ]);
-             echo (Html::label('Código topografia', 'username', ['class' => 'form-group field-biopsias-material has-success'])); ?>
-            <button type="button" class="btn btn-primary btn-xs" onclick="quitarSeleccion()"data-toggle="modal" data-target=".bs-topografia-modal-lg" style="margin-left: 10px;"><i class="glyphicon glyphicon-plus" ></i></button>
-            <button type="button" class="btn btn-danger btn-xs" onclick="quitarTopografia()"><i class="glyphicon glyphicon-minus"></i></button>
-          <?
-
-
-          $maptopografia = ArrayHelper::map($array['arraytopografia'] , 'id',  'codigo'  );
-
-          echo Select2::widget( [
-                        'name' => 'topografia',
-                        'attribute' => 'Topografia',
-                        'data' => $maptopografia,
-                        'language' => 'es',
-                        'options' => [
-                        'onchange' => 'onEnviarTop (this.value)',
-                        'placeholder' => 'Seleccionar código..',
-                        'multiple' => false
-                          ],
-                        'pluginOptions' => [
-                            'allowClear' => true
-                          ],
-                ]);
-
-
-               echo ( Html::label('Código macroscopia', 'macro', ['class' => 'form-group field-biopsias-macroscopia has-success']));
-
-              ?>
+                    ?>
+              </br> </br></br>
+          <? echo ( Html::label('Código macroscopia', 'macro', ['class' => 'form-group field-biopsias-macroscopia has-success']));  ?>
                 <button type="button" class="btn btn-primary btn-xs"onclick="quitarSeleccion()"  data-toggle="modal" data-target=".bs-macroscopia-modal-lg" style="margin-left: 10px;"><i class="glyphicon glyphicon-plus" ></i></button>
                 <button type="button" class="btn btn-danger btn-xs" onclick="quitarMacroscopia()"><i class="glyphicon glyphicon-minus"></i></button>
              <?
@@ -142,10 +118,11 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
                            'allowClear' => true
                                  ],
                  ]);
+                 ?>
+               </br> </br></br> 
+            <?  echo (Html::label('Código microscopia', 'username', ['class' => 'form-group field-biopsias-microscopia has-success'])); ?>
 
 
-              echo (Html::label('Código microscopia', 'username', ['class' => 'form-group field-biopsias-microscopia has-success']));
-              ?>
                 <button type="button" class="btn btn-primary btn-xs" onclick="quitarSeleccion()" data-toggle="modal" data-target=".bs-microscopia-modal-lg" style="margin-left: 10px;"><i class="glyphicon glyphicon-plus" ></i></button>
                 <button type="button" class="btn btn-danger btn-xs" onclick="quitarMicroscopia()"><i class="glyphicon glyphicon-minus"></i></button>
              <?
@@ -159,17 +136,17 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
                          'options' => [
                                  'onchange' => 'onEnviarMic (this.value)',
                                  'placeholder' => 'Seleccionar código..',
-                                 'multiple' => false
                                  ],
                                  'pluginOptions' => [
-                                 'allowClear' => true
+                                 'allowClear' => true,
                                    ],
                            ]);
-
+        ?></br> </br></br> <?
       echo ( $form->field($model, 'ihq')->widget(SwitchInput::classname(), [    'pluginOptions' => [
         'onText' => 'Si',
         'offText' => 'No',
     ]]))->label('Estudio inmunostoquimica');
+      ?></br> </br></br> <?
       echo (Html::label('Código diagnostico', 'codigo diagnostico', ['class' => 'form-group field-biopsias-diagnostico has-success']));
       if( !isset($model->estado) || $model->estado->descripcion!=="LISTO"){
       ?>
@@ -194,7 +171,7 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
                      'allowClear' => true,
                        ],
                ]);
-
+  ?></br> </br></br> <?
 
       echo (Html::label('Código frase', 'frase', ['class' => 'form-group field-biopsias-frase has-success'])) ;
       ?>
@@ -234,7 +211,7 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
 
 
       <div class="col-md-8 col-sm-12 col-xs-12 form-group">
-        <?=$form->field($model, 'topografia')->textarea(['rows' => 4])  ?>
+        <?=$form->field($model, 'material')->textarea(['rows' => 4])  ?>
       </div>
       <div class="col-md-8 col-sm-12 col-xs-12 form-group">
         <?= $form->field($model, 'macroscopia')->textarea(['rows' => 4]) ?>
@@ -313,12 +290,10 @@ function quitarSeleccion (){
     function agregarFormularioMat (){
       if ($("tr.success").find("td:eq(1)").text() != ""){
           $("span#select2-w2-container.select2-selection__rendered")[0].innerText =$("tr.success").find("td:eq(1)").text();
-          $("textarea#biopsia-topografia.form-control").val($("tr.success").find("td:eq(2)").text());
-          $("textarea#biopsia-diagnostico.form-control").val($("tr.success").find("td:eq(3)").text());
+          $("textarea#biopsia-material.form-control").val($("tr.success").find("td:eq(2)").text());
           //vacias el contenido de la variable para que no se anexe con otra eleccion de otro campo
           $('span.kv-clear-radio').click();
           $('button.btn.btn-default').click();
-
         }
         else {
           swal(
@@ -327,42 +302,18 @@ function quitarSeleccion (){
           'error'
         );
         }
+      }
 
-  }
     function quitarMaterial (){
       $("span#select2-w2-container.select2-selection__rendered")[0].innerText ="";
-      $("textarea#biopsia-topografia.form-control").val('') ;
-      $("textarea#biopsia-diagnostico.form-control").val('') ;
+      $("textarea#biopsia-material.form-control").val('') ;
     }
 
-    function agregarFormularioTop (){
-      if ($("tr.success").find("td:eq(1)").text() != ""){
-        $("span#select2-w3-container.select2-selection__rendered")[0].innerText =$("tr.success").find("td:eq(1)").text();
-        //$("textarea#biopsias-topografia.form-control").val($("tr.success").find("td:eq(2)").text());
-        var textArea = document.getElementById('biopsia-topografia');
-        $("textarea#biopsia-topografia.form-control").val(textArea.value +"\r\n"+ $("tr.success").find("td:eq(2)").text());
-        //vacias el contenido de la variable para que no se anexe con otra eleccion de otro campo
-        $('span.kv-clear-radio').click();
-        $('button.btn.btn-default').click();
-
-      }
-      else {
-        swal(
-        'No se ha seleccionado a ningún registro' ,
-        'PRESIONAR OK',
-        'error'
-      );
-      }
-  }
-    function quitarTopografia (){
-      $("span#select2-w3-container.select2-selection__rendered")[0].innerText ="";
-      $("textarea#biopsia-topografia.form-control").val('') ;
-    }
 
 
     function agregarFormularioMac (){
       if ($("tr.success").find("td:eq(1)").text() != ""){
-        $("span#select2-w4-container.select2-selection__rendered")[0].innerText =$("tr.success").find("td:eq(1)").text();
+        $("span#select2-w3-container.select2-selection__rendered")[0].innerText =$("tr.success").find("td:eq(1)").text();
         $("textarea#biopsia-macroscopia.form-control").val($("tr.success").find("td:eq(2)").text());
         //vacias el contenido de la variable para que no se anexe con otra eleccion de otro campo
         $('span.kv-clear-radio').click();
@@ -379,13 +330,13 @@ function quitarSeleccion (){
 
       }
     function quitarMacroscopia(){
-      $("span#select2-w4-container.select2-selection__rendered")[0].innerText ="";
+      $("span#select2-w3-container.select2-selection__rendered")[0].innerText ="";
       $("textarea#biopsia-macroscopia.form-control").val('') ;
     }
 
     function agregarFormularioMic (){
       if ($("tr.success").find("td:eq(1)").text() != ""){
-        $("span#select2-w5-container.select2-selection__rendered")[0].innerText =$("tr.success").find("td:eq(1)").text();
+        $("span#select2-w4-container.select2-selection__rendered")[0].innerText =$("tr.success").find("td:eq(1)").text();
         $("textarea#biopsia-microscopia.form-control").val($("tr.success").find("td:eq(2)").text());
         //vacias el contenido de la variable para que no se anexe con otra eleccion de otro campo
         $('span.kv-clear-radio').click();
@@ -401,13 +352,13 @@ function quitarSeleccion (){
       }
     }
       function quitarMicroscopia (){
-        $("span#select2-w5-container.select2-selection__rendered")[0].innerText ="";
+        $("span#select2-w4-container.select2-selection__rendered")[0].innerText ="";
         $("textarea#biopsia-microscopia.form-control").val('') ;
       }
 
     function agregarFormularioDiag (){
       if ($("tr.success").find("td:eq(1)").text() != ""){
-        $("span#select2-w6-container.select2-selection__rendered")[0].innerText =$("tr.success").find("td:eq(1)").text();
+        $("span#select2-w5-container.select2-selection__rendered")[0].innerText =$("tr.success").find("td:eq(1)").text();
         $("textarea#biopsia-diagnostico.form-control").val($("tr.success").find("td:eq(2)").text());
         //vacias el contenido de la variable para que no se anexe con otra eleccion de otro campo
         $('span.kv-clear-radio').click();
@@ -423,7 +374,7 @@ function quitarSeleccion (){
       }
       }
     function quitarDiagnostico (){
-      $("span#select2-w6-container.select2-selection__rendered")[0].innerText ="";
+      $("span#select2-w5-container.select2-selection__rendered")[0].innerText ="";
       $("textarea#biopsia-diagnostico.form-control").val('') ;
 
         }
@@ -431,7 +382,7 @@ function quitarSeleccion (){
 
     function agregarFormularioFra (){
       if ($("tr.success").find("td:eq(1)").text() != ""){
-        $("span#select2-w7-container.select2-selection__rendered")[0].innerText =$("tr.success").find("td:eq(1)").text();
+        $("span#select2-w6-container.select2-selection__rendered")[0].innerText =$("tr.success").find("td:eq(1)").text();
         var textArea = document.getElementById('biopsia-frase');
         $("textarea#biopsia-frase.form-control").val(textArea.value +"\r\n"+ $("tr.success").find("td:eq(2)").text());
         //vacias el contenido de la variable para que no se anexe con otra eleccion de otro campo
@@ -449,30 +400,11 @@ function quitarSeleccion (){
 
       }
     function quitarFrase (){
-      $("span#select2-w7-container.select2-selection__rendered")[0].innerText ="";
+      $("span#select2-w6-container.select2-selection__rendered")[0].innerText ="";
       $("textarea#biopsia-frase.form-control").val('') ;
 
         }
-// LA FUNCION BUSCAR REGISTRO SE ENCUENTRA EN LA CLASE CONTROLLER UBICADO EN YIISOFT
-  function onEnviarTop(val)
-   {
-        var textArea = document.getElementById('biopsia-topografia');
 
-       $.ajax({
-             url: '<?php echo Url::to(['/plantillatopografia/buscaregistro']) ?>',
-          type: 'post',
-          data: {id: val },
-          success: function (data) {
-              var current_value = textArea.value;
-              var content = JSON.parse(data);
-              document.getElementById("biopsia-topografia").value=  current_value +"\r\n"+ content[0].topografia;
-             //document.getElementById("biopsias-topografia").value= content[0].Topografía;
-        }
-
-     });
-
-
-   }
    function onEnviarDiag(val)
     {
       var textArea = document.getElementById('biopsia-diagnostico');
@@ -526,8 +458,7 @@ function quitarSeleccion (){
               data: {id: val },
               success: function (data) {
                   var content = JSON.parse(data);
-                  document.getElementById("biopsia-topografia").value= content[0].material;
-                 document.getElementById("biopsia-diagnostico").value= content[0].materialdiagnostico;
+                  document.getElementById("biopsia-material").value= content[0].material;
               }
          });
        }

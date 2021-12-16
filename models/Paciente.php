@@ -10,6 +10,7 @@ use yii\helpers\ArrayHelper;
  * This is the model class for table "paciente".
  *
  * @property int $id
+   * @property string $num_documento
  * @property string $nombre
  * @property string $num_documento
  * @property string $sexo
@@ -68,12 +69,13 @@ class Paciente extends \yii\db\ActiveRecord
            [['nombre', 'num_documento', 'sexo', 'apellido','fecha_nacimiento'], 'required'],
             [['sexo', 'hc'], 'string'],
             [['id_provincia', 'id_localidad', 'id_nacionalidad', 'id_tipodoc'], 'default', 'value' => null],
-            [['id_provincia', 'id_localidad', 'id_nacionalidad', 'id_tipodoc'], 'integer'],
+            [['id_provincia', 'id_localidad', 'id_nacionalidad', 'id_tipodoc', 'num_documento'], 'integer'],
             [['fecha_nacimiento'], 'safe'],
             [['nombre', 'direccion', 'telefono', 'email'], 'string', 'max' => 50],
-            [['num_documento', 'afiliado'], 'string', 'max' => 15],
+            [[ 'afiliado'], 'string', 'max' => 15],
             [['cp'], 'string', 'max' => 8],
             [['apellido'], 'string', 'max' => 60],
+                       [['id_tipodoc', 'num_documento'], 'unique', 'targetAttribute' => ['id_tipodoc', 'num_documento']], 
             [['id_localidad'], 'exist', 'skipOnError' => true, 'targetClass' => Localidad::className(), 'targetAttribute' => ['id_localidad' => 'id']],
             [['id_nacionalidad'], 'exist', 'skipOnError' => true, 'targetClass' => Nacionalidad::className(), 'targetAttribute' => ['id_nacionalidad' => 'id']],
             [['id_provincia'], 'exist', 'skipOnError' => true, 'targetClass' => Provincia::className(), 'targetAttribute' => ['id_provincia' => 'id']],

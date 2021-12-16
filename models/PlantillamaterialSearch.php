@@ -12,57 +12,56 @@ use app\models\Plantillamaterial;
  */
 class PlantillamaterialSearch extends Plantillamaterial
 {
-    /**
-     * @inheritdoc
-     */
-    public function rules()
-    {
-        return [
-            [['id'], 'integer'],
-            [['codigo', 'material', 'materialdiagnostico'], 'safe'],
-        ];
-    }
+  /**
+   * @inheritdoc
+   */
+  public function rules()
+  {
+      return [
+          [['id'], 'integer'],
+          [['codigo', 'material'], 'safe'],
+      ];
+  }
 
-    /**
-     * @inheritdoc
-     */
-    public function scenarios()
-    {
-        // bypass scenarios() implementation in the parent class
-        return Model::scenarios();
-    }
+  /**
+   * @inheritdoc
+   */
+  public function scenarios()
+  {
+      // bypass scenarios() implementation in the parent class
+      return Model::scenarios();
+  }
 
-    /**
-     * Creates data provider instance with search query applied
-     *
-     * @param array $params
-     *
-     * @return ActiveDataProvider
-     */
-    public function search($params)
-    {
-        $query = Plantillamaterial::find();
+  /**
+   * Creates data provider instance with search query applied
+   *
+   * @param array $params
+   *
+   * @return ActiveDataProvider
+   */
+  public function search($params)
+  {
+      $query = Plantillamaterial::find();
 
-        $dataProvider = new ActiveDataProvider([
-            'query' => $query,
-        ]);
+      $dataProvider = new ActiveDataProvider([
+          'query' => $query,
+      ]);
 
-        $this->load($params);
+      $this->load($params);
 
-        if (!$this->validate()) {
-            // uncomment the following line if you do not want to return any records when validation fails
-            // $query->where('0=1');
-            return $dataProvider;
-        }
+      if (!$this->validate()) {
+          // uncomment the following line if you do not want to return any records when validation fails
+          // $query->where('0=1');
+          return $dataProvider;
+      }
 
-        $query->andFilterWhere([
-            'id' => $this->id,
-        ]);
+      $query->andFilterWhere([
+          'id' => $this->id,
+      ]);
 
-        $query->andFilterWhere(['like', 'codigo', $this->codigo])
-            ->andFilterWhere(['like', 'material', $this->material])
-            ->andFilterWhere(['like', 'materialdiagnostico', $this->materialdiagnostico]);
+      $query->andFilterWhere(['like', 'codigo', $this->codigo])
+          ->andFilterWhere(['like', 'material', $this->material]);
 
-        return $dataProvider;
-    }
+      return $dataProvider;
+  }
 }

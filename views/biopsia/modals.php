@@ -4,22 +4,6 @@ use kartik\grid\GridView;
 ?>
 
 <?
-$columnsTopografia=
-    [
-      [
-          'class' => '\kartik\grid\RadioColumn',
-          'width' => '20px',
-      ],
-      [
-          'class'=>'\kartik\grid\DataColumn',
-          'attribute'=>'codigo',
-      ],
-      [
-          'class'=>'\kartik\grid\DataColumn',
-          'attribute'=>'topografia',
-      ],
-    ];
-
 
     $columnsMaterial=
         [
@@ -35,10 +19,7 @@ $columnsTopografia=
               'class'=>'\kartik\grid\DataColumn',
               'attribute'=>'material',
           ],
-          [
-              'class'=>'\kartik\grid\DataColumn',
-              'attribute'=>'materialdiagnostico',
-          ],
+
         ];
   $columnsMacroscopia=
   [
@@ -103,46 +84,11 @@ $columnsTopografia=
       ];
 
 ?>
-        <div class="x_content">
-                    <div class="modal fade bs-topografia-modal-lg" tabindex="-1" role="dialog" aria-hidden="true">
-                      <div class="modal-dialog modal-lg">
-                        <div class="modal-content">
-                          <div class="modal-body">
-                            <div class="plantillatopografia-index">
-                                <div id="ajaxCrudDatatable">
-                                    <?=GridView::widget([
-                                        'id'=>'crud-topografia',
-                                        'dataProvider' => $provider['dataProviderTop'],
-                                        'filterModel' => $search['searchModelTop'],
-                                        'pjax'=>true,
-                                        'columns' => $columnsTopografia,
-                                        'toolbar'=> [
-
-                                        ],
-                                        'panel' => [
-                                            'type' => 'primary',
-                                            'heading'=> false,
-                                        ]
-                                    ])
-                                    ?>
-                                </div>
-                            </div>
-                            <div class="modal-footer">
-                              <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-                              <button type="button"  onclick='agregarFormularioTop();' class="btn btn-primary">Agregar al formulario</button>
-                            </div>
-                      </div>
-                    </div>
-                  </div>
-              </div>
-        </div>
 
   <div class="x_content">
         <div class="modal fade bs-material-modal-lg" tabindex="-1" role="dialog" aria-hidden="true">
           <div class="modal-dialog modal-lg">
             <div class="modal-content">
-
-
               <div class="modal-body">
                 <div class="plantillamaterialb-index">
                     <div id="ajaxCrudDatatable">

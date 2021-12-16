@@ -62,8 +62,11 @@ while ($Final == false)
 {
  	//echo "Registro: " . $Reg;
 	$i = 0;
+	//obtiene una linea desde el puntero al fichero
 	$Contenido = fgets($VarArc);
+	//longitud del string
 	if (strlen($Contenido) > 3) {
+		//substr devuelve una cadena desde $i (start) hasta el numero que tiene indicado en este caso 3
 	$Campo[1] = substr($Contenido, $i, 3);
 	$i = $i + 3;
 	$Campo[2] = substr($Contenido, $i, 6);
@@ -132,20 +135,35 @@ while ($Final == false)
 	//$Campo[30] = substr($Contenido, $i, 2);
 	//$i = $i + 2;
 	//---------------------------------------------------------//
-  	$i = 0;
-  	$Contenido = fgets($VarArc);
-  	if (strlen($Contenido) > 3) {
-  	$Campo[1] = substr($Contenido, $i, 3);
-    	$i = $i + 3;
-    	$Campo[2] = substr($Contenido, $i, 6);
-	$RSPac = pg_query($conn,'SELECT * FROM paciente WHERE id=' . intval(trim($Campo[2])));
+
+	// $RSPac = pg_query($conn,'SELECT * FROM paciente WHERE id=' . intval(trim($Campo[2])));
+	$RSPac = pg_query($conn,'SELECT * FROM paciente WHERE num_documento=' ."'" .trim($Campo[10])."'" );
+
   // while( $obj = pg_fetch_object($RSPac) )
   //                 echo $obj->id." - ".$obj->nombre."<br />";
 
-	if (pg_num_rows($RSPac) == 0)
+	if (pg_num_rows($RSPac) == 0 && strlen(trim($Campo[10])) >6)
 	{
-    $nomapellido = explode(" ", $Campo[4]);
+    // $nomapellido = explode(" ", $Campo[4]);
+		// $apellido = str_replace(",", "", $nomapellido[0]);
+		// $direccion = str_replace("'", "", $Campo[6]);
+		// $documento =intval(trim($Campo[10]));
+
+
+
+		$nomapellido = explode(" ", $Campo[4]);
+
 		$apellido = str_replace(",", "", $nomapellido[0]);
+		$apellido = str_replace("'", "", $apellido);
+		//tiene que estar si o si despues de
+		$nomapellido =  str_replace("'", "", $nomapellido[1]);
+
+		$direccion = str_replace("'", "", $Campo[6]);
+		$documento ="'".trim($Campo[10])."'";
+
+
+
+
 	//	pg_query("haz", "INSERT INTO hclinicas VALUES(" . intval(trim($Campo[2])) . ",'1900-01-01')");
 		$VarCam = "INSERT INTO paciente(";
 		$VarDat = "VALUES(";
@@ -154,11 +172,11 @@ while ($Final == false)
 		$VarCam .= "apellido, ";
 		$VarDat .= "'" . utf8_decode($apellido) . "', ";
     $VarCam .= "nombre, ";
-    $VarDat .= "'" . utf8_decode($nomapellido[1]) . "', ";
+    $VarDat .= "'" . utf8_decode($nomapellido) . "', ";
 		$VarCam .= "direccion, ";
-		$VarDat .= "'" . utf8_decode($Campo[6]) . "', ";
+		$VarDat .= "'" . utf8_decode($direccion) . "', ";
 		$VarCam .= "num_documento, ";
-		$VarDat .= $Campo[10] . ", ";
+		$VarDat .=  $documento. ", ";
 		$VarCam .= "sexo, ";
 		$VarDat .= "'" . $Campo[5] . "', ";
 		$VarCam .= "telefono, ";
@@ -175,36 +193,7 @@ while ($Final == false)
 		$VarDat .= "'" . substr($Campo[8], 0, 4) . "-" . substr($Campo[8], 4, 2) . "-" . substr($Campo[8], 6, 2) . "') ";
 		pg_query($conn, $VarCam . $VarDat);
 	}
-// 	else
-// 	{
-// 		echo " --- M\n";
-// 		$VarDat = "UPDATE paciente SET ";
-// 		$VarDat .= "idhclinica= ";
-// 		$VarDat .= intval(trim($Campo[2])) . ", ";
-// 		/*nuevo*/
-// 		$VarDat .= "idosocial= ";
-// 		$VarDat .= intval($Campo[11]) . ", ";
-// 		/*nuevo*/
-// 		$VarDat .= "apellido= ";
-// 		$VarDat .= "'" . utf8_decode($Campo[4]) . "', ";
-// 		$VarDat .= "calle= ";
-// 		$VarDat .= "'" . utf8_decode($Campo[6]) . "', ";
-// 		$VarDat .= "documento= ";
-// 		$VarDat .= $Campo[10] . ", ";
-// 		$VarDat .= "sexo= ";
-// 		$VarDat .= "'" . $Campo[5] . "', ";
-// 		$VarDat .= "telefonos= ";
-// 		$VarDat .= "'" . utf8_decode($Campo[16]) . "', ";
-// 		$VarDat .= "observaciones= ";
-// 		$VarDat .= "'" . utf8_decode($Campo[19]) . "', ";
-// 		$VarDat .= "fecultconsulta= ";
-// 		$VarDat .= "'" . substr($Campo[14], 0, 4) . "-" . substr($Campo[14], 4, 2) . "-" . substr($Campo[14], 6, 2) . "', ";
-// 		$VarDat .= "fecnacimiento= ";
-// 		$VarDat .= "'" . substr($Campo[8], 0, 4) . "-" . substr($Campo[8], 4, 2) . "-" . substr($Campo[8], 6, 2) . "' ";
-// 		$VarDat .= "WHERE idpaciente = " . intval(trim($Campo[2]));
-// 		pg_query("haz", $VarDat);
-// 		//if (intval(trim($Campo[2])) == 1) { echo $VarDat . "\n"; echo "ACA --> 1"; exit; }
-	}
+
 	pg_free_result($RSPac);
 	$Reg = $Reg + 1;
 	}
