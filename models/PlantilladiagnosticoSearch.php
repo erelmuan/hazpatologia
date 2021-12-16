@@ -65,8 +65,8 @@ class PlantilladiagnosticoSearch extends Plantilladiagnostico
             'id_estudio' => $this->id_estudio,
         ]);
 
-        $query->andFilterWhere(['like', 'codigo', $this->codigo])
-            ->andFilterWhere(['like', 'diagnostico', $this->diagnostico]);
+        $query->andFilterWhere(['ilike', 'codigo', $this->codigo])
+            ->andFilterWhere(['ilike', 'diagnostico', $this->diagnostico]);
 
         return $dataProvider;
     }

@@ -5,10 +5,10 @@ use yii\helpers\ArrayHelper;
 use app\models\Estudio;
 return [
 
-        // [
-        // 'class'=>'\kartik\grid\DataColumn',
-        // 'attribute'=>'id',
-    // ],
+        [
+        'class'=>'\kartik\grid\DataColumn',
+        'attribute'=>'id',
+    ],
     [
         'class'=>'\kartik\grid\DataColumn',
         'attribute'=>'codigo',

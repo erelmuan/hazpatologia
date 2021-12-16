@@ -2,10 +2,9 @@
 use yii\helpers\Url;
 
 return [
-
-    [
-        'class'=>'\kartik\grid\DataColumn',
-        'attribute'=>'id',
+      [
+      'class'=>'\kartik\grid\DataColumn',
+      'attribute'=>'id',
     ],
     [
         'class'=>'\kartik\grid\DataColumn',
@@ -15,10 +14,10 @@ return [
         'class'=>'\kartik\grid\DataColumn',
         'attribute'=>'material',
     ],
-    [
-        'class'=>'\kartik\grid\DataColumn',
-        'attribute'=>'materialdiagnostico',
-    ],
+    // [
+    //     'class'=>'\kartik\grid\DataColumn',
+    //     'attribute'=>'materialdiagnostico',
+    // ],
     // [
     //     'class' => 'kartik\grid\ActionColumn',
     //     'dropdown' => false,

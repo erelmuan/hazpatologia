@@ -59,8 +59,8 @@ class ProvinciaSearch extends Provincia
             'id' => $this->id,
         ]);
 
-        $query->andFilterWhere(['like', 'nombre', $this->nombre])
-            ->andFilterWhere(['like', 'codigo', $this->codigo]);
+        $query->andFilterWhere(['ilike', 'nombre', $this->nombre])
+            ->andFilterWhere(['ilike', 'codigo', $this->codigo]);
 
         return $dataProvider;
     }

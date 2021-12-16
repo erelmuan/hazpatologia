@@ -86,11 +86,11 @@ class SolicitudbiopsiaSearch extends Solicitudbiopsia
             'id_estado' => $this->id_estado,
         ]);
 
-        $query->andFilterWhere(['like', 'observacion', $this->observacion])
-            ->andFilterWhere(['like', 'sitio_prec_toma', $this->sitio_prec_toma])
-            ->andFilterWhere(['like', 'datos_clin_interes', $this->datos_clin_interes])
-            ->andFilterWhere(['like', 'diagnostico_presuntivo', $this->diagnostico_presuntivo])
-            ->andFilterWhere(['like', 'biopsia_anterior_resultado', $this->biopsia_anterior_resultado]);
+        $query->andFilterWhere(['ilike', 'observacion', $this->observacion])
+            ->andFilterWhere(['ilike', 'sitio_prec_toma', $this->sitio_prec_toma])
+            ->andFilterWhere(['ilike', 'datos_clin_interes', $this->datos_clin_interes])
+            ->andFilterWhere(['ilike', 'diagnostico_presuntivo', $this->diagnostico_presuntivo])
+            ->andFilterWhere(['ilike', 'biopsia_anterior_resultado', $this->biopsia_anterior_resultado]);
 
         return $dataProvider;
     }

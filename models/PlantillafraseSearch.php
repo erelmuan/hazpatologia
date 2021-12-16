@@ -65,8 +65,8 @@ class PlantillafraseSearch extends Plantillafrase
             'id_estudio' => $this->id_estudio,
         ]);
 
-        $query->andFilterWhere(['like', 'codigo', $this->codigo])
-            ->andFilterWhere(['like', 'frase', $this->frase]);
+        $query->andFilterWhere(['ilike', 'codigo', $this->codigo])
+            ->andFilterWhere(['ilike', 'frase', $this->frase]);
 
         return $dataProvider;
     }

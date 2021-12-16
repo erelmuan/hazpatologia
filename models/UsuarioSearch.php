@@ -65,11 +65,11 @@ class UsuarioSearch extends Usuario
               'id_pantalla' => $this->pantalla,
         ]);
 
-        $query->andFilterWhere(['like', 'usuario', $this->usuario])
-            ->andFilterWhere(['like', 'contrasenia', $this->contrasenia])
-            ->andFilterWhere(['like', 'nombre', $this->nombre])
-            ->andFilterWhere(['like', 'email', $this->email])
-            ->andFilterWhere(['like', 'descripcion', $this->descripcion]);
+        $query->andFilterWhere(['ilike', 'usuario', $this->usuario])
+            ->andFilterWhere(['ilike', 'contrasenia', $this->contrasenia])
+            ->andFilterWhere(['ilike', 'nombre', $this->nombre])
+            ->andFilterWhere(['ilike', 'email', $this->email])
+            ->andFilterWhere(['ilike', 'descripcion', $this->descripcion]);
 
         return $dataProvider;
     }

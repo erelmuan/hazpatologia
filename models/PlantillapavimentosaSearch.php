@@ -59,8 +59,8 @@ class PlantillapavimentosaSearch extends Plantillapavimentosa
             'id' => $this->id,
         ]);
 
-        $query->andFilterWhere(['like', 'codigo', $this->codigo])
-            ->andFilterWhere(['like', 'pavimentosa', $this->pavimentosa]);
+        $query->andFilterWhere(['ilike', 'codigo', $this->codigo])
+            ->andFilterWhere(['ilike', 'pavimentosa', $this->pavimentosa]);
 
         return $dataProvider;
     }

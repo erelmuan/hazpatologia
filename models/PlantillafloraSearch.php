@@ -59,8 +59,8 @@ class PlantillafloraSearch extends Plantillaflora
             'id' => $this->id,
         ]);
 
-        $query->andFilterWhere(['like', 'codigo', $this->codigo])
-            ->andFilterWhere(['like', 'flora', $this->flora]);
+        $query->andFilterWhere(['ilike', 'codigo', $this->codigo])
+            ->andFilterWhere(['ilike', 'flora', $this->flora]);
 
         return $dataProvider;
     }

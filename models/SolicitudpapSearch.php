@@ -98,12 +98,12 @@ class SolicitudpapSearch extends Solicitudpap
             'id_estado' => $this->id_estado,
         ]);
 
-        $query->andFilterWhere(['like', 'observacion', $this->observacion])
-            ->andFilterWhere(['like', 'resultado_pap_previo', $this->resultado_pap_previo])
-            ->andFilterWhere(['like', 'resultado_biopsia_previo', $this->resultado_biopsia_previo])
-            ->andFilterWhere(['like', 'fum', $this->fum])
-            ->andFilterWhere(['like', 'datos_clinicos_de_interes', $this->datos_clinicos_de_interes])
-            ->andFilterWhere(['like', 'conclusion', $this->conclusion]);
+        $query->andFilterWhere(['ilike', 'observacion', $this->observacion])
+            ->andFilterWhere(['ilike', 'resultado_pap_previo', $this->resultado_pap_previo])
+            ->andFilterWhere(['ilike', 'resultado_biopsia_previo', $this->resultado_biopsia_previo])
+            ->andFilterWhere(['ilike', 'fum', $this->fum])
+            ->andFilterWhere(['ilike', 'datos_clinicos_de_interes', $this->datos_clinicos_de_interes])
+            ->andFilterWhere(['ilike', 'conclusion', $this->conclusion]);
 
         return $dataProvider;
     }

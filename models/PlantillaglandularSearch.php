@@ -59,8 +59,8 @@ class PlantillaglandularSearch extends Plantillaglandular
             'id' => $this->id,
         ]);
 
-        $query->andFilterWhere(['like', 'codigo', $this->codigo])
-            ->andFilterWhere(['like', 'glandular', $this->glandular]);
+        $query->andFilterWhere(['ilike', 'codigo', $this->codigo])
+            ->andFilterWhere(['ilike', 'glandular', $this->glandular]);
 
         return $dataProvider;
     }

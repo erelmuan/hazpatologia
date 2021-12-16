@@ -59,9 +59,9 @@ class ProcedenciaSearch extends Procedencia
             'id' => $this->id,
         ]);
 
-        $query->andFilterWhere(['like', 'nombre', $this->nombre])
-            ->andFilterWhere(['like', 'contacto', $this->contacto])
-            ->andFilterWhere(['like', 'direccion', $this->direccion]);
+        $query->andFilterWhere(['ilike', 'nombre', $this->nombre])
+            ->andFilterWhere(['ilike', 'contacto', $this->contacto])
+            ->andFilterWhere(['ilike', 'direccion', $this->direccion]);
         return $dataProvider;
     }
 }

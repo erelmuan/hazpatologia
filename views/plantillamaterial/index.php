@@ -55,12 +55,12 @@ $columns[]=
             'dataProvider' => $dataProvider,
             'filterModel' => $searchModel,
             'pjax'=>true,
-            'columns' => $columns,
+            'columns' => require(__DIR__.'/_columns.php'),
             'toolbar'=> [
                 ['content'=>
                     Html::button('<i class="glyphicon glyphicon-search"></i>', ['Buscar' ,'title'=> 'Buscar','class'=>'btn btn-default']).
-                    Html::a('<i class="glyphicon glyphicon-th"></i>', ['select'],
-                    ['role'=>'modal-remote','title'=> 'Personalizar','class'=>'btn btn-default']).
+                    // Html::a('<i class="glyphicon glyphicon-th"></i>', ['select'],
+                    // ['role'=>'modal-remote','title'=> 'Personalizar','class'=>'btn btn-default']).
                     Html::a('<i class="glyphicon glyphicon-plus"></i>', ['create'],
                     ['role'=>'modal-remote','title'=> 'Crear plantilla','class'=>'btn btn-default']).
                     Html::a('<i class="glyphicon glyphicon-repeat"></i>', [''],

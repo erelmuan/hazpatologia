@@ -59,7 +59,7 @@ class TipodocSearch extends Tipodoc
             'id' => $this->id,
         ]);
 
-        $query->andFilterWhere(['like', 'documento', $this->documento]);
+        $query->andFilterWhere(['ilike', 'documento', $this->documento]);
 
         return $dataProvider;
     }

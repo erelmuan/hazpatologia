@@ -20,7 +20,7 @@ use yii\helpers\Json;
  */
 class PlantillamaterialController extends Controller
 {
-  
+
 
     /**
      * Lists all Plantillamaterial models.
@@ -33,12 +33,12 @@ class PlantillamaterialController extends Controller
         $searchModel = new PlantillamaterialSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         $dataProvider->pagination->pageSize=7;
-        $columnas=Metodos::obtenerColumnas($model);
+        // $columnas=Metodos::obtenerColumnas($model);
 
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
-            'columns' => $columnas,
+            // 'columns' => $columnas,
               ]);
     }
     public function actionPlantillamb()
@@ -50,7 +50,7 @@ class PlantillamaterialController extends Controller
         $searchModel = new PlantillamaterialSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         $dataProvider->pagination->pageSize=7;
-        $columnas=Metodos::obtenerColumnas($model);
+        // $columnas=Metodos::obtenerColumnas($model);
 
         return $this->render('plantillamb', [
             'searchModel' => $searchModel,

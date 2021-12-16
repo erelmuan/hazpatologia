@@ -115,7 +115,6 @@ $bundle = yiister\gentelella\assets\Asset::register($this);
                                         "url" => "#",
                                         "items" => [
                                             ["label" => "Diagnostico", "url" => ["/plantilladiagnostico"]],
-                                            ["label" => "Topografia", "url" => ["/plantillatopografia"]],
                                             ["label" => "Microscopia  ", "url" => ["/plantillamicroscopia"]],
                                             ["label" => "Macroscopia", "url" => ["/plantillamacroscopia"]],
                                             ["label" => "Material", "url" => ["/plantillamaterial"]],

@@ -59,8 +59,8 @@ class PlantillamicroscopiaSearch extends Plantillamicroscopia
             'id' => $this->id,
         ]);
 
-        $query->andFilterWhere(['like', 'codigo', $this->codigo])
-            ->andFilterWhere(['like', 'microscopia', $this->microscopia]);
+        $query->andFilterWhere(['ilike', 'codigo', $this->codigo])
+            ->andFilterWhere(['ilike', 'microscopia', $this->microscopia]);
 
         return $dataProvider;
     }

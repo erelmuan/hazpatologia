@@ -59,7 +59,7 @@ class TipoprofesionalSearch extends Tipoprofesional
             'id' => $this->id,
         ]);
 
-        $query->andFilterWhere(['like', 'profesion', $this->profesion]);
+        $query->andFilterWhere(['ilike', 'profesion', $this->profesion]);
 
         return $dataProvider;
     }

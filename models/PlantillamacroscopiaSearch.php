@@ -59,8 +59,8 @@ class PlantillamacroscopiaSearch extends Plantillamacroscopia
             'id' => $this->id,
         ]);
 
-        $query->andFilterWhere(['like', 'codigo', $this->codigo])
-            ->andFilterWhere(['like', 'macroscopia', $this->macroscopia]);
+        $query->andFilterWhere(['ilike', 'codigo', $this->codigo])
+            ->andFilterWhere(['ilike', 'macroscopia', $this->macroscopia]);
 
         return $dataProvider;
     }

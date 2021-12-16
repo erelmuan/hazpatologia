@@ -15,8 +15,6 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'material')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'materialdiagnostico')->textInput(['maxlength' => true]) ?>
-
 
 	<?php if (!Yii::$app->request->isAjax){ ?>
 	  	<div class="form-group">

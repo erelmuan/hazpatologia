@@ -59,8 +59,8 @@ class PlantillatopografiaSearch extends Plantillatopografia
             'id' => $this->id,
         ]);
 
-        $query->andFilterWhere(['like', 'codigo', $this->codigo])
-            ->andFilterWhere(['like', 'topografia', $this->topografia]);
+        $query->andFilterWhere(['ilike', 'codigo', $this->codigo])
+            ->andFilterWhere(['ilike', 'topografia', $this->topografia]);
 
         return $dataProvider;
     }

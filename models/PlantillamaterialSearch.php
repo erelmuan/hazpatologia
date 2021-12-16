@@ -59,8 +59,8 @@ class PlantillamaterialSearch extends Plantillamaterial
           'id' => $this->id,
       ]);
 
-      $query->andFilterWhere(['like', 'codigo', $this->codigo])
-          ->andFilterWhere(['like', 'material', $this->material]);
+      $query->andFilterWhere(['ilike', 'codigo', $this->codigo])
+          ->andFilterWhere(['ilike', 'material', $this->material]);
 
       return $dataProvider;
   }

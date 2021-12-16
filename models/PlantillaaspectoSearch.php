@@ -59,8 +59,8 @@ class PlantillaaspectoSearch extends Plantillaaspecto
             'id' => $this->id,
         ]);
 
-        $query->andFilterWhere(['like', 'codigo', $this->codigo])
-            ->andFilterWhere(['like', 'aspecto', $this->aspecto]);
+        $query->andFilterWhere(['ilike', 'codigo', $this->codigo])
+            ->andFilterWhere(['ilike', 'aspecto', $this->aspecto]);
 
         return $dataProvider;
     }

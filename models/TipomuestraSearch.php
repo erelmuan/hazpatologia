@@ -59,7 +59,7 @@ class TipomuestraSearch extends Tipomuestra
             'id' => $this->id,
         ]);
 
-        $query->andFilterWhere(['like', 'descripcion', $this->descripcion]);
+        $query->andFilterWhere(['ilike', 'descripcion', $this->descripcion]);
 
         return $dataProvider;
     }
