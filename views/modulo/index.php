@@ -28,6 +28,8 @@ CrudAsset::register($this);
             'dataProvider' => $dataProvider,
             'filterModel' => $searchModel,
             'pjax'=>true,
+            //Para que no busque automaticamente, sino que espere a que se teclee ENTER
+            'filterOnFocusOut'=>false,
             'columns' => require(__DIR__.'/_columns.php'),
             'toolbar'=> [
                 ['content'=>
@@ -46,7 +48,7 @@ CrudAsset::register($this);
             'panel' => [
                   'type' => 'primary',
                   'heading' => '<i class="glyphicon glyphicon-list"></i> Lista de modulos',
-                  'before'=>'<em>* Para buscar algún modulo tipear en el filtro y presionar ENTER o el boton <i class="glyphicon glyphicon-search"></i></em>',
+                  'before'=>'<em>* Para buscar algún registro tipear en el filtro y presionar ENTER </em>',
                  '<div class="clearfix"></div>',
             ]
         ])?>

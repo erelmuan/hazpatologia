@@ -103,6 +103,8 @@ $columns[]=
             'dataProvider' => $dataProvider,
             'filterModel' => $searchModel,
             'pjax'=>true,
+            //Para que no busque automaticamente, sino que espere a que se teclee ENTER
+            'filterOnFocusOut'=>false,
             'columns' => $columns,
             'toolbar'=> [
               ['content'=>
@@ -119,7 +121,7 @@ $columns[]=
             'panel' => [
                 'type' => 'primary',
                 'heading' => '<i class="glyphicon glyphicon-list"></i> Lista de solicitudes',
-                'before'=>'<em>* Para buscar una solicitud, tipear en el filtro y presionar ENTER o el boton <i class="glyphicon glyphicon-search"> SOLO BUSCA SOLICITUDES SIN ESTUDIO ASOC.</i></em>',
+                'before'=>'<em>* Para buscar algún registro tipear en el filtro y presionar ENTER </em>',
 
                         '<div class="clearfix"></div>',
             ]
