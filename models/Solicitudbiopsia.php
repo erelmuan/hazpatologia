@@ -76,11 +76,11 @@ class Solicitudbiopsia extends Solicitud
                return $('#solicitudbiopsia-protocolo_automatico').val() == 0;
            }"],
                ///////
-            //[['id_paciente', 'id_procedencia', 'id_medico', 'id_plantillamaterial', 'id_materialginecologico', 'id_estudio', 'id_estado'], 'default', 'value' => null],
+            //[['id_paciente', 'id_procedencia', 'id_medico', 'id_plantillamaterial', 'id_materialginecologico', 'id_estudio', 'id_estado' ,'id_anio_protocolo'], 'default', 'value' => null],
             [['id_paciente', 'id_procedencia', 'id_medico', 'id_materialsolicitud', 'id_materialginecologico', 'id_estudio', 'id_estado'], 'integer'],
             [['fecharealizacion', 'fechadeingreso'], 'safe'],
             [['fechadeingreso','protocolo_automatico'], 'required'],
-             [['id_anio_protocolo', 'protocolo'], 'unique', 'targetAttribute' => ['id_anio_protocolo', 'protocolo']],
+             [['id_anio_protocolo', 'protocolo'], 'unique','message' => 'El numero de protocolo ya fue asignado para el año seleccionado','targetAttribute' => ['id_anio_protocolo', 'protocolo']],
             [['observacion', 'sitio_prec_toma', 'datos_clin_interes', 'diagnostico_presuntivo', 'biopsia_anterior_resultado'], 'string'],
             [['id_materialginecologico'], 'exist', 'skipOnError' => true, 'targetClass' => Paramaterialginecologico::className(), 'targetAttribute' => ['id_materialginecologico' => 'id']],
             [['id_paciente'], 'exist', 'skipOnError' => true, 'targetClass' => Paciente::className(), 'targetAttribute' => ['id_paciente' => 'id']],

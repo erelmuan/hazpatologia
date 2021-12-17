@@ -256,7 +256,16 @@ class SolicitudController extends Controller
             if ($model->load($request->post()) && $model->save()) {
                 return $this->redirect(['view', 'id' => $model->id]);
             }else{
-              return $this->redirect([$model->tableName()."/create" ]);
+              return $this->render('_form', [
+                'model' => $model,
+                'searchModelPac' => $searchModelPac,
+                'dataProviderPac' => $dataProviderPac,
+                'modelPac' => $modelPac,
+                'searchModelMed' => $searchModelMed,
+                'dataProviderMed' => $dataProviderMed,
+                'modelMed' => $modelMed,
+                'protocolo_insertar'=> $model->protocolo,
+                ]);
             }
       }
          else {
