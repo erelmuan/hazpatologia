@@ -29,7 +29,7 @@ use app\models\Usuario;
 use kartik\widgets\SwitchInput
 
 ?>
-<div id="w0sss" class="x_panel">
+<div id="w0" class="x_panel">
   <div class="x_title"><h2> <?=$model->isNewRecord ? "<i class='glyphicon glyphicon-plus'></i> NUEVA BIOPSIA" : "<i class='glyphicon glyphicon-pencil'></i> ACTUALIZAR BIOPSIA" ; ?> </h2>
     <div class="clearfix"> <div class="nav navbar-right panel_toolbox"><?= Html::a('<i class="glyphicon glyphicon-arrow-left"></i> Atrás', $model->isNewRecord ? ['/solicitudbiopsia/seleccionar']:['/biopsia/index'], ['class'=>'btn btn-danger grid-button']) ?></div>
 </div>
@@ -119,7 +119,7 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
                                  ],
                  ]);
                  ?>
-               </br> </br></br> 
+               </br> </br></br>
             <?  echo (Html::label('Código microscopia', 'username', ['class' => 'form-group field-biopsias-microscopia has-success'])); ?>
 
 
@@ -234,8 +234,15 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
      </div>
     <div class="col-md-12 col-sm-12 col-xs-12 form-group">
         <?= Html::submitButton($model->isNewRecord ? 'Guardar' : 'Actualizar', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']);
-        if( !$model->isNewRecord &&  $model->ihq)
-          echo Html::a('<i class="glyphicon glyphicon-arrow-right"></i> Ir inmunostoquimica',['/inmunohistoquimica/update', 'id'=>$model->inmunohistoquimica->id], ['class'=>'btn btn-success grid-button']) ?>
+        if( !$model->isNewRecord &&  $model->ihq){
+            if ($model->ihq && isset($model->inmunohistoquimica)){
+              echo Html::a('<i class="glyphicon glyphicon-arrow-right"></i> Ir inmunostoquimica',['/inmunohistoquimica/update', 'id'=>$model->inmunohistoquimica->id], ['class'=>'btn btn-success grid-button']) ;
+            }else {
+              echo Html::a('<i class="glyphicon glyphicon-arrow-right"></i> Crear inmunostoquimica',['/inmunohistoquimica/create', 'id_biopsia'=>$model->id], ['class'=>'btn btn-success grid-button']) ;
+            }
+
+        }
+        ?>
     </div>
     <? if (Usuario::isPatologo()) { ?>
     <div class="col-md-8 col-sm-12 col-xs-12 form-group">
@@ -290,7 +297,14 @@ function quitarSeleccion (){
     function agregarFormularioMat (){
       if ($("tr.success").find("td:eq(1)").text() != ""){
           $("span#select2-w2-container.select2-selection__rendered")[0].innerText =$("tr.success").find("td:eq(1)").text();
-          $("textarea#biopsia-material.form-control").val($("tr.success").find("td:eq(2)").text());
+          var textArea = document.getElementById('biopsia-material');
+          if (textArea.value.trim()==""){
+            $("textarea#biopsia-material.form-control").val( $("tr.success").find("td:eq(2)").text());
+          }else{
+            $("textarea#biopsia-material.form-control").val(textArea.value +"\r\n"+ $("tr.success").find("td:eq(2)").text());
+          }
+
+          // $("textarea#biopsia-material.form-control").val($("tr.success").find("td:eq(2)").text());
           //vacias el contenido de la variable para que no se anexe con otra eleccion de otro campo
           $('span.kv-clear-radio').click();
           $('button.btn.btn-default').click();
@@ -314,7 +328,13 @@ function quitarSeleccion (){
     function agregarFormularioMac (){
       if ($("tr.success").find("td:eq(1)").text() != ""){
         $("span#select2-w3-container.select2-selection__rendered")[0].innerText =$("tr.success").find("td:eq(1)").text();
-        $("textarea#biopsia-macroscopia.form-control").val($("tr.success").find("td:eq(2)").text());
+        var textArea = document.getElementById('biopsia-macroscopia');
+        if (textArea.value.trim()==""){
+          $("textarea#biopsia-macroscopia.form-control").val( $("tr.success").find("td:eq(2)").text());
+        }else{
+          $("textarea#biopsia-macroscopia.form-control").val(textArea.value +"\r\n"+ $("tr.success").find("td:eq(2)").text());
+        }
+        // $("textarea#biopsia-macroscopia.form-control").val($("tr.success").find("td:eq(2)").text());
         //vacias el contenido de la variable para que no se anexe con otra eleccion de otro campo
         $('span.kv-clear-radio').click();
         $('button.btn.btn-default').click();
@@ -337,7 +357,13 @@ function quitarSeleccion (){
     function agregarFormularioMic (){
       if ($("tr.success").find("td:eq(1)").text() != ""){
         $("span#select2-w4-container.select2-selection__rendered")[0].innerText =$("tr.success").find("td:eq(1)").text();
-        $("textarea#biopsia-microscopia.form-control").val($("tr.success").find("td:eq(2)").text());
+        var textArea = document.getElementById('biopsia-microscopia');
+        if (textArea.value.trim()==""){
+          $("textarea#biopsia-microscopia.form-control").val( $("tr.success").find("td:eq(2)").text());
+        }else{
+          $("textarea#biopsia-microscopia.form-control").val(textArea.value +"\r\n"+ $("tr.success").find("td:eq(2)").text());
+        }
+        // $("textarea#biopsia-microscopia.form-control").val($("tr.success").find("td:eq(2)").text());
         //vacias el contenido de la variable para que no se anexe con otra eleccion de otro campo
         $('span.kv-clear-radio').click();
         $('button.btn.btn-default').click();
@@ -359,7 +385,14 @@ function quitarSeleccion (){
     function agregarFormularioDiag (){
       if ($("tr.success").find("td:eq(1)").text() != ""){
         $("span#select2-w5-container.select2-selection__rendered")[0].innerText =$("tr.success").find("td:eq(1)").text();
-        $("textarea#biopsia-diagnostico.form-control").val($("tr.success").find("td:eq(2)").text());
+        var textArea = document.getElementById('biopsia-diagnostico');
+        if (textArea.value.trim()==""){
+          $("textarea#biopsia-diagnostico.form-control").val( $("tr.success").find("td:eq(2)").text());
+        }else{
+          $("textarea#biopsia-diagnostico.form-control").val(textArea.value +"\r\n"+ $("tr.success").find("td:eq(2)").text());
+        }
+
+        // $("textarea#biopsia-diagnostico.form-control").val($("tr.success").find("td:eq(2)").text());
         //vacias el contenido de la variable para que no se anexe con otra eleccion de otro campo
         $('span.kv-clear-radio').click();
         $('button.btn.btn-default').click();
@@ -384,7 +417,12 @@ function quitarSeleccion (){
       if ($("tr.success").find("td:eq(1)").text() != ""){
         $("span#select2-w6-container.select2-selection__rendered")[0].innerText =$("tr.success").find("td:eq(1)").text();
         var textArea = document.getElementById('biopsia-frase');
-        $("textarea#biopsia-frase.form-control").val(textArea.value +"\r\n"+ $("tr.success").find("td:eq(2)").text());
+        if (textArea.value.trim()==""){
+          $("textarea#biopsia-frase.form-control").val( $("tr.success").find("td:eq(2)").text());
+        }else{
+          $("textarea#biopsia-frase.form-control").val(textArea.value +"\r\n"+ $("tr.success").find("td:eq(2)").text());
+        }
+
         //vacias el contenido de la variable para que no se anexe con otra eleccion de otro campo
         $('span.kv-clear-radio').click();
         $('button.btn.btn-default').click();
@@ -416,21 +454,32 @@ function quitarSeleccion (){
            success: function (data) {
              var current_value = textArea.value;
              var content = JSON.parse(data);
-            document.getElementById("biopsia-diagnostico").value=  current_value +"\r\n"+content[0].diagnostico;
+            if (current_value.trim()==""){
+              document.getElementById("biopsia-diagnostico").value=  content[0].diagnostico;
+            }else {
+              document.getElementById("biopsia-diagnostico").value=  current_value +"\r\n"+content[0].diagnostico;
             }
+
+          }
 
       });
     }
     function onEnviarMic(val)
      {
+       var textArea = document.getElementById('biopsia-microscopia');
+
          $.ajax({
              url: '<?php echo Url::to(['/plantillamicroscopia/buscaregistro']) ?>',
             type: 'post',
             data: {id: val },
             success: function (data) {
+              var current_value = textArea.value;
                 var content = JSON.parse(data);
-               document.getElementById("biopsia-microscopia").value= content[0].microscopia;
-
+               if (current_value.trim()==""){
+                 document.getElementById("biopsia-microscopia").value=  content[0].microscopia;
+               }else {
+                 document.getElementById("biopsia-microscopia").value=current_value +"\r\n"+ content[0].microscopia;
+               }
             }
 
        });
@@ -438,13 +487,20 @@ function quitarSeleccion (){
 
      function onEnviarMac(val)
       {
+        var textArea = document.getElementById('biopsia-macroscopia');
+
           $.ajax({
               url: '<?php echo Url::to(['/plantillamacroscopia/buscaregistro']) ?>',
              type: 'post',
              data: {id: val },
              success: function (data) {
+               var current_value = textArea.value;
                  var content = JSON.parse(data);
-                document.getElementById("biopsia-macroscopia").value= content[0].macroscopia;
+                 if (current_value.trim()==""){
+                   document.getElementById("biopsia-macroscopia").value=  content[0].macroscopia;
+                 }else {
+                   document.getElementById("biopsia-macroscopia").value=current_value +"\r\n"+ content[0].macroscopia;
+                 }
              }
 
         });
@@ -452,13 +508,19 @@ function quitarSeleccion (){
 
       function onEnviarMat(val)
        {
+         var textArea = document.getElementById('biopsia-material');
            $.ajax({
                url: '<?php echo Url::to(['/plantillamaterial/buscaregistro']) ?>',
               type: 'post',
               data: {id: val },
               success: function (data) {
+                  var current_value = textArea.value;
                   var content = JSON.parse(data);
-                  document.getElementById("biopsia-material").value= content[0].material;
+                  if (current_value.trim()==""){
+                    document.getElementById("biopsia-material").value=  content[0].material;
+                  }else {
+                    document.getElementById("biopsia-material").value= current_value +"\r\n"+ content[0].material;
+                  }
               }
          });
        }
@@ -475,7 +537,11 @@ function quitarSeleccion (){
                success: function (data) {
                    var current_value = textArea.value;
                    var content = JSON.parse(data);
-                  document.getElementById("biopsia-frase").value=  current_value +"\r\n"+"\r\n"+content[0].frase;
+                   if (current_value.trim()==""){
+                     document.getElementById("biopsia-frase").value=  content[0].frase;
+                   }else {
+                     document.getElementById("biopsia-frase").value=  current_value +"\r\n"+content[0].frase;
+                   }
                }
 
           });

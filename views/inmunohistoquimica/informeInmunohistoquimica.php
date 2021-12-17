@@ -29,11 +29,11 @@ public function setEstado($e){
 function Header()
 {
     ///////////////////MARCA DE AGUA//////////////////////
-      if ($this->estado =='PENDIENTE'){
-        $this->SetFont('Arial','B',50);
-        $this->SetTextColor(255,192,203);
-        $this->RotatedText(35,215,'INFORME PENDIENTE',35);
-      }
+      // if ($this->estado =='PENDIENTE'){
+      //   $this->SetFont('Arial','B',50);
+      //   $this->SetTextColor(255,192,203);
+      //   $this->RotatedText(35,215,'INFORME PENDIENTE',35);
+      // }
     /////////////////////////////////////////////////////
   $this->SetTextColor(245,245,245);
   $this->Image(  Yii::$app->basePath .'/web/img/hospitalzatti.png',18,18,15);
@@ -48,7 +48,7 @@ function Header()
   $this->Cell(0,5,'UNIDAD DE ANATOMIA PATOLOGICA',0,0,'C');
   $this->Ln(6);
   $this->SetFont('Times','BI');
-  $this->Cell(0,5,'Informe Anatomo Patologico',0,0,'C');
+  $this->Cell(0,5,'ESTUDIO INMUNOHISTOQUIMICO - DIAGNOSTICO MOLECULAR',0,0,'C');
 
   $this->Ln(11);
 }
@@ -162,7 +162,7 @@ $pdf->MultiCell(0,5, utf8_decode($model->diagnostico));
 
 $Inicio = $pdf->GetY() + 10 ;
 $pdf->SetFont('Times','B',10);
-$pdf->Text(14,$Inicio ,"OBSERVACIÓN:");
+$pdf->Text(14,$Inicio ,utf8_decode("OBSERVACIÓN:"));
 $pdf->SetFont('Times','',10);
 $pdf->SetXY(30, $Inicio +1);
 $pdf->MultiCell(0,5, utf8_decode($model->observacion));

@@ -35,7 +35,7 @@ background: #E6FDBD;
         <div class="tile-stats">
             <div class="icon"><i class="fa fa-file-text-o"></i>
             </div>
-            <div class="count">6</div>
+            <div class="count">5</div>
             <h3>PLANTILLAS DE BIOPSIAS</h3>
             <p>Alta-Baja-Modificacion.</p>
         </div>

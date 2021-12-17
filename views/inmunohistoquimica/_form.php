@@ -68,7 +68,10 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
     <?php if (!Yii::$app->request->isAjax){ ?>
         <div class="form-group">
             <?= Html::submitButton($model->isNewRecord ? 'Crear' : 'Actualizar', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
-            <?= Html::a('<i class="glyphicon glyphicon-arrow-right"></i> Ir los informes',['/biopsia/view', 'id'=>$model->biopsia->id], ['class'=>'btn btn-success grid-button']) ?>
+            <? if (!$model->isNewRecord){
+               echo  Html::a('<i class="glyphicon glyphicon-arrow-right"></i> Ir los informes',['/biopsia/view', 'id'=>$model->biopsia->id], ['class'=>'btn btn-success grid-button']);
+            }
+            ?>
 
         </div>
     <?php } ?>

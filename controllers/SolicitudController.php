@@ -252,7 +252,6 @@ class SolicitudController extends Controller
           if ($_POST[$model->classNameM()]["protocolo_automatico"] ==	"1"){
               unset($_POST[$model->classNameM()]["protocolo"]);
               $model->protocolo=Solicitud::obtenerProtocolo();
-
           }
             if ($model->load($request->post()) && $model->save()) {
                 return $this->redirect(['view', 'id' => $model->id]);

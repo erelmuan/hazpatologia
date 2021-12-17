@@ -73,24 +73,29 @@ use yii\helpers\Html;
       <div class="clearfix"> <div class="nav navbar-right panel_toolbox"></div>
     </div>
     </div>
-    <? if ($model->ihq){
-    echo DetailView::widget([
-        'model' => $model,
-        'attributes' => [
+    <? if ($model->ihq ){
+      if ($model->ihq && isset($model->inmunohistoquimica)){
+        echo DetailView::widget([
+            'model' => $model,
+            'attributes' => [
 
-         [
-           'value'=> $model->inmunohistoquimica->microscopia ,
-           'label'=> 'Microscopia',
-        ],
-        [
-          'value'=> $model->inmunohistoquimica->diagnostico ,
-          'label'=> 'Microscopia',
-       ],
-            'observacion:ntext',
+             [
+               'value'=> $model->inmunohistoquimica->microscopia ,
+               'label'=> 'Microscopia',
+            ],
+            [
+              'value'=> $model->inmunohistoquimica->diagnostico ,
+              'label'=> 'Microscopia',
+           ],
+                'observacion:ntext',
 
 
-        ],
-    ]) ;
+            ],
+        ]) ;
+      }
+      else {
+          echo "ESTA ACTIVA LA OPCIÓN IHQ PERO NO SE CARGO NINGÚN ESTUDIO";
+      }
     }
    ?>
    </div>
@@ -103,7 +108,7 @@ use yii\helpers\Html;
             'data-toggle'=>'tooltip',
             'title'=>'Se abrirá el archivo PDF generado en una nueva pestaña'
         ]);
-        if ($model->ihq){
+        if ($model->ihq && isset($model->inmunohistoquimica)){
           echo Html::a('<i class="fa fa-file-pdf-o"></i> Generar informe inmunohistoquimica', ['/inmunohistoquimica/informe', 'id' => $model->inmunohistoquimica->id], [
                 'class'=>'btn btn-Primary',
                 'target'=>'_blank',
@@ -119,7 +124,7 @@ use yii\helpers\Html;
               'data-toggle'=>'tooltip',
               'title'=>'Se abrirá el archivo PDF generado en una nueva pestaña'
           ]);
-          if ($model->ihq){
+          if ($model->ihq && isset($model->inmunohistoquimica)){
             echo Html::a('<i class="fa fa-file-pdf-o"></i> Generar informe inmunohistoquimica', ['/inmunohistoquimica/informe', 'id' => $model->inmunohistoquimica->id], [
                   'class'=>'btn btn-primary',
                   'target'=>'_blank',
@@ -131,5 +136,4 @@ use yii\helpers\Html;
 
 
     ?>
-
 </div>

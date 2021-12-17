@@ -25,7 +25,6 @@ use app\models\Provincia;
 use app\models\Localidad;
 
 use app\models\Plantilladiagnostico;
-use app\models\Plantillatopografia;
 use app\models\Plantillamicroscopia;
 use app\models\Plantillamacroscopia;
 use app\models\Plantillamaterial;
@@ -214,14 +213,12 @@ class SiteController extends Controller
     public function actionPlantillas()
     {
       $cantidadPlantillaDiag =Plantilladiagnostico::find()->count();
-      $cantidadPlantillaTop =Plantillatopografia::find()->count();
       $cantidadPlantillaMic = Plantillamicroscopia::find()->count();
       $cantidadPlantillaMac =Plantillamacroscopia::find()->count();
       $cantidadPlantillaMatb = Plantillamaterial::find()->count();
       $cantidadPlantillaFra =Plantillafrase::find()->count();
      return $this->render('plantillas',[
        'cantidadPlantillaDiag'=>$cantidadPlantillaDiag,
-       'cantidadPlantillaTop'=>$cantidadPlantillaTop,
        'cantidadPlantillaMic'=>$cantidadPlantillaMic,
        'cantidadPlantillaMac'=>$cantidadPlantillaMac,
        'cantidadPlantillaMatb'=>$cantidadPlantillaMatb,
@@ -242,14 +239,12 @@ class SiteController extends Controller
     public function actionPlantillasbiopsias()
     {
       $cantidadPlantillaDiag = Plantilladiagnostico::find()->count();
-      $cantidadPlantillaTop = Plantillatopografia::find()->count();
       $cantidadPlantillaMic = Plantillamicroscopia::find()->count();
       $cantidadPlantillaMac = Plantillamacroscopia::find()->count();
       $cantidadPlantillaMatb = Plantillamaterial::find()->count();
       $cantidadPlantillaFra = Plantillafrase::find()->count();
      return $this->render('plantillasbiopsias',[
        'cantidadPlantillaDiag'=>$cantidadPlantillaDiag,
-       'cantidadPlantillaTop'=>$cantidadPlantillaTop,
        'cantidadPlantillaMic'=>$cantidadPlantillaMic,
        'cantidadPlantillaMac'=>$cantidadPlantillaMac,
        'cantidadPlantillaMatb'=>$cantidadPlantillaMatb,

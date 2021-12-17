@@ -35,11 +35,13 @@ use Yii;
  * @property string $conclusion
  * @property int $id_estudio
  * @property int $id_estado
- *
+ * @property int $id_anio_protocolo
+* @property bool $protocolo_automatico
  * @property Pap $pap
  * @property Cirugiaprevia $cirugiaPrevia
  * @property Metodoanticonceptivo $metodoAnticonceptivo
  * @property Tipomuestra $tipoMuestra
+
  */
  use app\components\behaviors\AuditoriaBehaviors;
 
@@ -94,10 +96,12 @@ class Solicitudpap extends Solicitud
             [['id_paciente', 'id_procedencia', 'id_medico', 'id_materialsolicitud', 'id_tipo_muestra', 'id_metodo_anticonceptivo', 'id_cirugia_previa', 'id_estudio', 'id_estado','protocolo'], 'integer'],
             [['fecharealizacion', 'fechadeingreso', 'fecha_ult_parto'], 'safe'],
             [['observacion', 'resultado_pap_previo', 'resultado_biopsia_previo', 'fum', 'datos_clinicos_de_interes', 'conclusion'], 'string'],
-            [['pap_previo', 'biopsia_previa', 'embarazo_actual', 'menopausia', 'tratamiento_radiante', 'quimioterapia', 'colposcopia'], 'boolean'],
+            [['pap_previo', 'biopsia_previa', 'embarazo_actual', 'menopausia', 'tratamiento_radiante', 'quimioterapia', 'colposcopia', 'protocolo_automatico'], 'boolean'],
             [['id_cirugia_previa'], 'exist', 'skipOnError' => true, 'targetClass' => Cirugiaprevia::className(), 'targetAttribute' => ['id_cirugia_previa' => 'id']],
             [['id_metodo_anticonceptivo'], 'exist', 'skipOnError' => true, 'targetClass' => Metodoanticonceptivo::className(), 'targetAttribute' => ['id_metodo_anticonceptivo' => 'id']],
             [['id_tipo_muestra'], 'exist', 'skipOnError' => true, 'targetClass' => Tipomuestra::className(), 'targetAttribute' => ['id_tipo_muestra' => 'id']],
+            [['id_anio_protocolo', 'protocolo'], 'unique', 'targetAttribute' => ['id_anio_protocolo', 'protocolo']],
+		        
         ];
     }
 

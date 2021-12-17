@@ -293,7 +293,7 @@ class BiopsiaController extends Controller
                 $Solicitud =  Solicitud::findOne($model->id_solicitudbiopsia);
 
                 $_SESSION['solicitudb']=$Solicitud;
-
+                
                 return $this->render('_form', [
                     'model' => $model,
                     'dataSol' => $_SESSION['solicitudb'],

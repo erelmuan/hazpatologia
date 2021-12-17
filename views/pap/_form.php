@@ -389,9 +389,16 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
   }
     function agregarFormularioFlo (){
       if ($("tr.success").find("td:eq(1)").text() != ""){
-
         $("span#select2-w4-container.select2-selection__rendered")[0].innerText =$("tr.success").find("td:eq(1)").text();
-        $("textarea#pap-flora.form-control").val($("tr.success").find("td:eq(2)").text());
+
+        var textArea = document.getElementById('pap-flora');
+        if (textArea.value.trim()==""){
+          $("textarea#pap-flora.form-control").val( $("tr.success").find("td:eq(2)").text());
+        }else{
+          $("textarea#pap-flora.form-control").val(textArea.value +"\r\n"+ $("tr.success").find("td:eq(2)").text());
+        }
+
+        // $("textarea#pap-flora.form-control").val($("tr.success").find("td:eq(2)").text());
         //vacias el contenido de la variable para que no se anexe con otra eleccion de otro campo
         $('span.kv-clear-radio').click();
         $('button.btn.btn-default').click();
@@ -411,7 +418,14 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
     function agregarFormularioAsp (){
       if ($("tr.success").find("td:eq(1)").text() != ""){
         $("span#select2-w5-container.select2-selection__rendered")[0].innerText =$("tr.success").find("td:eq(1)").text();
-        $("textarea#pap-aspecto.form-control").val($("tr.success").find("td:eq(2)").text());
+        var textArea = document.getElementById('pap-aspecto');
+        if (textArea.value.trim()==""){
+          $("textarea#pap-aspecto.form-control").val( $("tr.success").find("td:eq(2)").text());
+        }else{
+          $("textarea#pap-aspecto.form-control").val(textArea.value +"\r\n"+ $("tr.success").find("td:eq(2)").text());
+        }
+
+        // $("textarea#pap-aspecto.form-control").val($("tr.success").find("td:eq(2)").text());
         //vacias el contenido de la variable para que no se anexe con otra eleccion de otro campo
         $('span.kv-clear-radio').click();
         $('button.btn.btn-default').click();
@@ -433,7 +447,14 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
     function agregarFormularioPav (){
       if ($("tr.success").find("td:eq(1)").text() != ""){
         $("span#select2-w6-container.select2-selection__rendered")[0].innerText =$("tr.success").find("td:eq(1)").text();
-        $("textarea#pap-pavimentosas.form-control").val($("tr.success").find("td:eq(2)").text());
+
+        var textArea = document.getElementById('pap-pavimentosas');
+        if (textArea.value.trim()==""){
+          $("textarea#pap-pavimentosas.form-control").val( $("tr.success").find("td:eq(2)").text());
+        }else{
+          $("textarea#pap-pavimentosas.form-control").val(textArea.value +"\r\n"+ $("tr.success").find("td:eq(2)").text());
+        }
+        // $("textarea#pap-pavimentosas.form-control").val($("tr.success").find("td:eq(2)").text());
         //vacias el contenido de la variable para que no se anexe con otra eleccion de otro campo
         $('span.kv-clear-radio').click();
         $('button.btn.btn-default').click();
@@ -454,7 +475,14 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
     function agregarFormularioGland (){
       if ($("tr.success").find("td:eq(1)").text() != ""){
         $("span#select2-w7-container.select2-selection__rendered")[0].innerText =$("tr.success").find("td:eq(1)").text();
-        $("textarea#pap-glandulares.form-control").val($("tr.success").find("td:eq(2)").text());
+        var textArea = document.getElementById('pap-glandulares');
+        if (textArea.value.trim()==""){
+          $("textarea#pap-glandulares.form-control").val( $("tr.success").find("td:eq(2)").text());
+        }else{
+          $("textarea#pap-glandulares.form-control").val(textArea.value +"\r\n"+ $("tr.success").find("td:eq(2)").text());
+        }
+
+        // $("textarea#pap-glandulares.form-control").val($("tr.success").find("td:eq(2)").text());
         //vacias el contenido de la variable para que no se anexe con otra eleccion de otro campo
         $('span.kv-clear-radio').click();
         $('button.btn.btn-default').click();
@@ -475,7 +503,13 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
     function agregarFormularioDiag (){
       if ($("tr.success").find("td:eq(1)").text() != ""){
         $("span#select2-w8-container.select2-selection__rendered")[0].innerText =$("tr.success").find("td:eq(1)").text();
-        $("textarea#pap-diagnostico.form-control").val($("tr.success").find("td:eq(2)").text());
+        var textArea = document.getElementById('pap-diagnostico');
+        if (textArea.value.trim()==""){
+          $("textarea#pap-diagnostico.form-control").val( $("tr.success").find("td:eq(2)").text());
+        }else{
+          $("textarea#pap-diagnostico.form-control").val(textArea.value +"\r\n"+ $("tr.success").find("td:eq(2)").text());
+        }
+        // $("textarea#pap-diagnostico.form-control").val($("tr.success").find("td:eq(2)").text());
         //vacias el contenido de la variable para que no se anexe con otra eleccion de otro campo
         $('span.kv-clear-radio').click();
         $('button.btn.btn-default').click();
@@ -498,7 +532,11 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
       if ($("tr.success").find("td:eq(1)").text() != ""){
         $("span#select2-w9-container.select2-selection__rendered")[0].innerText =$("tr.success").find("td:eq(1)").text();
         var textArea = document.getElementById('pap-frase');
-        $("textarea#pap-frase.form-control").val(textArea.value +"\r\n"+ $("tr.success").find("td:eq(2)").text());
+        if (textArea.value.trim()==""){
+          $("textarea#pap-frase.form-control").val( $("tr.success").find("td:eq(2)").text());
+        }else{
+          $("textarea#pap-frase.form-control").val(textArea.value +"\r\n"+ $("tr.success").find("td:eq(2)").text());
+        }
         //vacias el contenido de la variable para que no se anexe con otra eleccion de otro campo
         $('span.kv-clear-radio').click();
         $('button.btn.btn-default').click();
@@ -522,14 +560,21 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
         }
   function onEnviarFlora(val)
      {
+       var textArea = document.getElementById('pap-flora');
+
        $.ajax({
            url: '<?php echo Url::to(['/plantillaflora/buscaregistro']) ?>',
           type: 'post',
           data: {id: val
           },
           success: function (data) {
+            var current_value = textArea.value;
               var content = JSON.parse(data);
-              document.getElementById("pap-flora").value= content[0].flora;
+              if (current_value.trim()==""){
+                document.getElementById("pap-flora").value=  content[0].flora;
+              }else {
+                document.getElementById("pap-flora").value= current_value +"\r\n"+content[0].flora;
+              }
           }
      });
      }
@@ -545,7 +590,11 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
           success: function (data) {
               var current_value = textArea.value;
               var content = JSON.parse(data);
-              document.getElementById("pap-aspecto").value=  content[0].aspecto;
+              if (current_value.trim()==""){
+                document.getElementById("pap-aspecto").value=  content[0].aspecto;
+              }else {
+                document.getElementById("pap-aspecto").value= current_value +"\r\n"+ content[0].aspecto;
+              }
 
         }
 
@@ -555,7 +604,7 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
    }
    function onEnviarPav(val)
     {
-      var textArea = document.getElementById('pap-pavimentosa');
+      var textArea = document.getElementById('pap-pavimentosas');
 
         $.ajax({
             url: '<?php echo Url::to(['/plantillapavimentosa/buscaregistro']) ?>',
@@ -563,23 +612,34 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
            data: {id: val
            },
            success: function (data) {
+             var current_value = textArea.value;
              var content = JSON.parse(data);
-            document.getElementById("pap-pavimentosas").value= content[0].pavimentosa;
+            if (current_value.trim()==""){
+              document.getElementById("pap-pavimentosas").value=  content[0].pavimentosa;
+            }else {
+              document.getElementById("pap-pavimentosas").value= current_value +"\r\n"+content[0].pavimentosa;
+            }
             }
 
       });
     }
     function onEnviarGlan(val)
      {
+       var textArea = document.getElementById('pap-glandulares');
+
          $.ajax({
              url: '<?php echo Url::to(['/plantillaglandular/buscaregistro']) ?>',
             type: 'post',
             data: {id: val
             },
             success: function (data) {
+              var current_value = textArea.value;
                 var content = JSON.parse(data);
-               document.getElementById("pap-glandulares").value= content[0].glandular;
-
+               if (current_value.trim()==""){
+                 document.getElementById("pap-glandulares").value=  content[0].glandular;
+               }else {
+                 document.getElementById("pap-glandulares").value= current_value +"\r\n"+content[0].glandular;
+               }
             }
 
        });
@@ -587,14 +647,21 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
 
      function onEnviarDiag(val)
       {
+        var textArea = document.getElementById('pap-diagnostico');
+
           $.ajax({
               url: '<?php echo Url::to(['/plantilladiagnostico/buscaregistro']) ?>',
              type: 'post',
              data: {id: val
              },
              success: function (data) {
+               var current_value = textArea.value;
                  var content = JSON.parse(data);
-                document.getElementById("pap-diagnostico").value= content[0].diagnostico;
+                 if (current_value.trim()==""){
+                   document.getElementById("pap-diagnostico").value=  content[0].diagnostico;
+                 }else {
+                   document.getElementById("pap-diagnostico").value=  current_value +"\r\n"+content[0].diagnostico;
+                 }
              }
 
         });
@@ -614,7 +681,11 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
                success: function (data) {
                    var current_value = textArea.value;
                    var content = JSON.parse(data);
-                  document.getElementById("pap-frase").value=  current_value +"\r\n"+"\r\n"+content[0].frase;
+                  if (current_value.trim()==""){
+                    document.getElementById("pap-frase").value=  content[0].frase;
+                  }else {
+                    document.getElementById("pap-frase").value=  current_value +"\r\n"+content[0].frase;
+                  }
                }
 
           });

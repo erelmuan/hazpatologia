@@ -24,7 +24,9 @@ use app\components\behaviors\AuditoriaBehaviors;
  * @property int $id_materialginecologico
  * @property int $id_estudio
  * @property int $id_estado
- *
+ ** @property int $id_anio_protocolo
+* @property bool $protocolo_automatico
+*
  * @property Biopsia $biopsia
  * @property Paramaterialginecologico $materialginecologico
  */
@@ -78,6 +80,7 @@ class Solicitudbiopsia extends Solicitud
             [['id_paciente', 'id_procedencia', 'id_medico', 'id_materialsolicitud', 'id_materialginecologico', 'id_estudio', 'id_estado'], 'integer'],
             [['fecharealizacion', 'fechadeingreso'], 'safe'],
             [['fechadeingreso','protocolo_automatico'], 'required'],
+             [['id_anio_protocolo', 'protocolo'], 'unique', 'targetAttribute' => ['id_anio_protocolo', 'protocolo']],
             [['observacion', 'sitio_prec_toma', 'datos_clin_interes', 'diagnostico_presuntivo', 'biopsia_anterior_resultado'], 'string'],
             [['id_materialginecologico'], 'exist', 'skipOnError' => true, 'targetClass' => Paramaterialginecologico::className(), 'targetAttribute' => ['id_materialginecologico' => 'id']],
             [['id_paciente'], 'exist', 'skipOnError' => true, 'targetClass' => Paciente::className(), 'targetAttribute' => ['id_paciente' => 'id']],
@@ -124,13 +127,6 @@ class Solicitudbiopsia extends Solicitud
     {
         return $this->hasOne(Paramaterialginecologico::className(), ['id' => 'id_materialginecologico']);
     }
-    /**
-		    * @return \yii\db\ActiveQuery
-		    */
-		   public function getPaciente()
-		   {
-		       return $this->hasOne(Paciente::className(), ['id' => 'id_paciente']);
-		   }
 
 
 }

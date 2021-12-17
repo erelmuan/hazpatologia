@@ -67,11 +67,11 @@ class MedicoSearch extends Medico
             'id_tipoprofesional' => $this->id_tipoprofesional,
         ]);
 
-        $query->andFilterWhere(['like', 'apellido', $this->apellido])
-            ->andFilterWhere(['like', 'nombre', $this->nombre])
-            ->andFilterWhere(['like', 'num_documento', $this->num_documento])
+        $query->andFilterWhere(['ilike', 'apellido', $this->apellido])
+            ->andFilterWhere(['ilike', 'nombre', $this->nombre])
+            ->andFilterWhere(['ilike', 'num_documento', $this->num_documento])
             ->andFilterWhere(['ilike', 'tipodoc.documento', $this->tipodoc])
-            ->andFilterWhere(['like', 'matricula', $this->matricula]);
+            ->andFilterWhere(['ilike', 'matricula', $this->matricula]);
 
         return $dataProvider;
     }

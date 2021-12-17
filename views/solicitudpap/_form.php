@@ -136,9 +136,13 @@ CrudAsset::register($this);
                    ]]);
            ?>
 
-           <? if( isset($protocolo_insertar)){
+           <?
+           // if( isset($protocolo_insertar)){
              echo $form->field($model, 'protocolo_automatico')->checkBox(['label' => 'Protocolo automatico',
-        'onclick' => 'cambioProtocoloAutomatico();', 'checked' => '1','value' => '1']);} ?>
+        'onclick' => 'cambioProtocoloAutomatico();', 'checked' => '1','value' => '1']);
+
+      // }
+      ?>
              </div>
              <div class='col-sm-3'>
                   <?
