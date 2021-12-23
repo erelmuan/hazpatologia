@@ -9,7 +9,7 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 use kartik\widgets\Alert;
 use kartik\widgets\Growl;
-use kartik\icons\Icon;
+// use kartik\icons\Icon;
 use kartik\widgets\SwitchInput;
 
 use app\models\AnioProtocolo;

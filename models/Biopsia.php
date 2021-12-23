@@ -33,6 +33,7 @@ use Yii;
  * @property Solicitudbiopsia $solicitudbiopsia
  * @property Usuario $usuario
  * @property Inmunohistoquimica $inmunohistoquimica
+* @property InmunohistoquimicaEscaneada $inmunohistoquimicaEscaneada
  */
 use app\components\behaviors\AuditoriaBehaviors;
 
@@ -205,7 +206,7 @@ class Biopsia extends \yii\db\ActiveRecord
             'attribute' => 'id_estado',
             'label' => 'Estado',
             'value' => 'estado.descripcion',
-            'filter'=>$this->estados(),
+            'filter'=>Estado::estadosEstudioAdminYpat(),
             'filterType' => GridView::FILTER_SELECT2,
             'filterWidgetOptions' => [
                 'options' => ['prompt' => ''],
@@ -247,15 +248,10 @@ class Biopsia extends \yii\db\ActiveRecord
         return $this->hasOne(Solicitudbiopsia::className(), ['id' => 'id_solicitudbiopsia']);
     }
     public function estados() {
-        //PATRON STATE;
-        // if (!isset ($this->estado)){
-        //   //Estado en pendiente por defecto
-        //     $this->id_estado=5;
-        // }
-        // $namespace="app\models\\";
-        // $e= $namespace.$this->estado->descripcion;
-        // $estado= new $e();
         return Estado::estadosEstudio();
+    }
+    public function estadoSinRestriccion() {
+        return Estado::estadosEstudioAdminYpat();
     }
       /**
 		    * @return \yii\db\ActiveQuery
@@ -272,5 +268,12 @@ class Biopsia extends \yii\db\ActiveRecord
       {
         return $this->hasOne(Inmunohistoquimica::className(), ['id_biopsia' => 'id']);
      }
+     /**
+   		    * @return \yii\db\ActiveQuery
+   		    */
+   		   public function getInmunohistoquimicaEscaneada()
+   		   {
+   		       return $this->hasOne(InmunohistoquimicaEscaneada::className(), ['id_biopsia' => 'id']);
+   		   }
 
    }

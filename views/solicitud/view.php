@@ -1,4 +1,4 @@
-<?php
+<!-- <?php
 
 use yii\widgets\DetailView;
 use yii\helpers\Html;
@@ -37,7 +37,7 @@ use yii\helpers\Html;
 
         ],
     ]) ;
-    if ($model->estado=="LISTO")
+    if ($mode  l-> estado=="LISTO")
     {
       echo Html::a('<i class="fa glyphicon glyphicon-hand-up"></i> VER EL INFORME', ['/biopsia/informe', 'id' => $idbiopsia], [
             'class'=>'btn btn-info',
@@ -52,4 +52,4 @@ use yii\helpers\Html;
     }
      ?>
 
-</div>
+</div> -->

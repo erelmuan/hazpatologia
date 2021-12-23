@@ -76,7 +76,7 @@ CrudAsset::register($this);
         ?>
         <input type="hidden" id="idsolicitud" name="idsol" data-toggle="tooltip" />
         <div class = "form-group">
-          <button type="submit" class="btn btn-default" data-toggle="modal" data-target="#modal_large">Agregar al formulario</button>
+          <button type="submit" class="btn btn-success" data-toggle="modal" data-target="#modal_large">Agregar al formulario</button>
       </div>
       <?php ActiveForm::end(); ?>
 

@@ -191,7 +191,7 @@ class Solicitud extends \yii\db\ActiveRecord
             'label' => 'Estado',
             'value' => 'estado.descripcion',
 
-            'filter'=>ArrayHelper::map(Estado::find()->all(), 'id','descripcion'),
+             'filter'=>Estado::estadosEstudioAdminYpat(),
             'filterType' => GridView::FILTER_SELECT2,
             'filterWidgetOptions' => [
                 'options' => ['prompt' => ''],

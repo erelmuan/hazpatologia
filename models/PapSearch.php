@@ -80,6 +80,7 @@ class PapSearch extends Pap
             'id' => $this->id,
             'id_solicitudpap' => $this->id_solicitudpap,
             'indicepicnotico' => $this->indicepicnotico,
+            'protocolo' => $this->protocolo,
             'id_plantilladiagnostico' => $this->id_plantilladiagnostico,
             'fechalisto' => $this->fechalisto,
             'cantidad' => $this->cantidad,

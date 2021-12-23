@@ -15,6 +15,7 @@ use app\models\Procedencia;
 use yii\widgets\MaskedInput;
 
 use kartik\datecontrol\DateControl;
+use nex\chosen\Chosen;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\SolicitudSearch */
@@ -85,16 +86,7 @@ CrudAsset::register($this);
 
             <div class='col-sm-3'>
             <?
-            // echo $form->field($model, 'fecharealizacion')->widget(MaskedInput::classname(),['name' => 'input-31',
-            //         'clientOptions' => ['alias' =>  'dd/mm/yyyy']])->widget(DatePicker::classname(), [
-            //         'options' => ['placeholder' => 'Ingrese fecha',
-            //         'format' => 'dd/mm/yyyy',
-            //       ],
-            //         'pluginOptions' => [
-            //             'autoclose'=>true,
-            //
-            //         ]
-            //     ]);
+
                 echo $form->field($model, 'fecharealizacion')->widget(DateControl::classname(), [
                           'options' => ['placeholder' => 'Debe agregar una fecha',
                           'value'=> ($model->fecharealizacion)?$model->fecharealizacion:"" ,
@@ -114,26 +106,15 @@ CrudAsset::register($this);
 
 
              <?
-               echo Form::widget([ // continuation fields to row above without labels
-                 'id' => 'login-form-horizontal',
-                   'model'=>$model,
-                   'form'=>$form,
-                   'columns'=>4,
-                   'attributes'=>[
-                       'id_procedencia'=>['type'=> Form::INPUT_WIDGET,
-                       'widgetClass'=>'kartik\select2\Select2',
-                       'options'=>[
-                         'data' => $mapprocedencia,
-                             'language' => 'es',
-                             ],
-                         'pluginOptions' => [
-                               'allowClear' => true
-                               ],
-                         'placeholder' => 'Seleccionar codigo..',
-                               'label'=>'Procedencia'
-                         ],
-
-                   ]]);
+             echo $form->field($model, 'id_procedencia')->widget(
+                 Chosen::className(), [
+                     'items' => $mapprocedencia,
+                     'clientOptions' => [
+                       'rtl'=> true,
+                         'search_contains' => true,
+                         'single_backstroke_delete' => false,
+                     ],
+             ])->label("Procedencia");
            ?>
 
            <?

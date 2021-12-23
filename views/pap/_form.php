@@ -46,6 +46,7 @@ use yii\web\JsExpression;
 use kartik\builder\Form;
 use kartik\widgets\ActiveForm;
 use app\models\Usuario;
+use nex\chosen\Chosen;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Biopsias */
@@ -176,21 +177,23 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
        <?
 
         $mapFlora= ArrayHelper::map(plantillaflora::find()->all() , 'id',  'codigo' );
+        echo Chosen::widget([
+              'name' => 'ChosenTest',
+              'items' => $mapFlora,
+              'allowDeselect' => true,
 
-              echo Select2::widget( [
-                            'name' => 'flora',
-                            'attribute' => 'Flora',
-                            'data' => $mapFlora,
-                            'language' => 'es',
-                            'options' => [
-                            'onchange' => 'onEnviarFlora (this.value)',
-                            'placeholder' => 'Seleccionar codigo..',
-                            'multiple' => false
-                              ],
-                            'pluginOptions' => [
-                                'allowClear' => true
-                              ],
-                    ]);
+              'placeholder' => 'Seleccionar código..',
+
+              'clientOptions' => [
+                  'search_contains' => true,
+                  'no_results_text'=>"Oops, nothing found!",
+              ],
+              'options' => [
+                    'onchange' => 'onEnviarFlora (this.value)',
+
+                    ],
+          ]);
+
          ?></br> </br></br>
       <?    echo ( Html::label('Código aspecto', 'aspecto', ['class' => 'form-group field-pap-aspecto has-success'])); ?>
 
@@ -199,20 +202,23 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
       <?
        $mapAspecto= ArrayHelper::map(Plantillaaspecto::find()->all() , 'id',  'codigo' );
 
-        echo Select2::widget( [
-                  'name' => 'aspecto',
-                    'attribute' => 'Aspecto',
-                    'data' => $mapAspecto,
-                    'language' => 'es',
-                    'options' => [
-                    'onchange' => 'onEnviarAspecto (this.value)',
-                    'placeholder' => 'Seleccionar codigo..',
-                    'multiple' => false
-                       ],
-                    'pluginOptions' => [
-                    'allowClear' => true
-                         ],
-           ]);
+       echo Chosen::widget([
+             'name' => 'ChosenTest',
+             'items' => $mapAspecto,
+             'allowDeselect' => true,
+
+             'placeholder' => 'Seleccionar código..',
+
+             'clientOptions' => [
+                 'search_contains' => true,
+                 'no_results_text'=>"Oops, nothing found!",
+             ],
+             'options' => [
+                   'onchange' => 'onEnviarAspecto (this.value)',
+
+                   ],
+         ]);
+
       ?>
       </br> </br></br>
     <?  echo (Html::label('Código pavimentosa', 'pavimentosa', ['class' => 'form-group field-pap-pavimentosa has-success'])); ?>
@@ -221,22 +227,23 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
         <button type="button" class="btn btn-danger btn-xs" onclick="quitarPavimentosas()"><i class="glyphicon glyphicon-minus"></i></button>
      <?
      $mapPavimentosa= ArrayHelper::map(Plantillapavimentosa::find()->all() , 'id',  'codigo' );
+     echo Chosen::widget([
+           'name' => 'ChosenTest',
+           'items' => $mapPavimentosa,
+           'allowDeselect' => true,
 
-         echo Select2::widget( [
-               'name' => 'pavimentosa',
-               'attribute' => 'Pavimentosa',
-               'data' => $mapPavimentosa,
-               'language' => 'es',
-                 'options' => [
-                         'onchange' => 'onEnviarPav
-                          (this.value)',
-                         'placeholder' => 'Seleccionar codigo..',
-                         'multiple' => false
-                         ],
-                       'pluginOptions' => [
-                       'allowClear' => true
-                           ],
-             ]);
+           'placeholder' => 'Seleccionar código..',
+
+           'clientOptions' => [
+               'search_contains' => true,
+               'no_results_text'=>"Oops, nothing found!",
+           ],
+           'options' => [
+                 'onchange' => 'onEnviarPav (this.value)',
+
+                 ],
+       ]);
+
              ?>
              </br> </br></br>
            <?
@@ -245,22 +252,25 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
      <button type="button" class="btn btn-primary btn-xs" onclick="quitarSeleccion()"  data-toggle="modal" data-target=".bs-glandular-modal-lg" style="margin-left: 10px;"><i class="glyphicon glyphicon-plus" ></i></button>
      <button type="button" class="btn btn-danger btn-xs" onclick="quitarGlandular()"><i class="glyphicon glyphicon-minus"></i></button>
   <?
-  $mapglandular = ArrayHelper::map(Plantillaglandular::find()->all() , 'id',  'codigo'  );
+      $mapglandular = ArrayHelper::map(Plantillaglandular::find()->all() , 'id',  'codigo'  );
+        echo Chosen::widget([
+              'name' => 'ChosenTest',
+              'items' => $mapglandular,
+              'allowDeselect' => true,
 
-    echo Select2::widget( [
-          'name' => 'glandular',
-          'attribute' => 'Glandular',
-          'data' => $mapglandular,
-          'language' => 'es',
-            'options' => [
+              'placeholder' => 'Seleccionar código..',
+
+              'clientOptions' => [
+                  'search_contains' => true,
+                  'no_results_text'=>"Oops, nothing found!",
+              ],
+              'options' => [
                     'onchange' => 'onEnviarGlan (this.value)',
-                    'placeholder' => 'Seleccionar codigo..',
-                    'multiple' => false
+
                     ],
-                  'pluginOptions' => [
-                  'allowClear' => true
-                      ],
-        ]);
+          ]);
+
+
         ?>
         </br> </br></br>
       <?
@@ -272,23 +282,24 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
           <button type="button" class="btn btn-danger btn-xs" onclick="quitarDiagnostico()"><i class="glyphicon glyphicon-minus"></i></button>
      <?}
         $mapdiagnostico = ArrayHelper::map($array['arraydiagnostico'] , 'id',  'codigo'  );
+        echo Chosen::widget([
+              'name' => 'ChosenTest',
+              'items' => $mapdiagnostico,
+              'allowDeselect' => true,
 
-        echo Select2::widget( [
-                'name' => 'diagnostico',
-                'attribute' => 'Diagnostico',
-                'data' => $mapdiagnostico,
-                'language' => 'es',
-                'options' => [
-                        'onchange' => 'onEnviarDiag (this.value)',
-                        'placeholder' => 'Seleccionar codigo..',
-                        'multiple' => false,
-                        'disabled'=>(!isset($model->estado) || $model->estado->descripcion!=="LISTO")?false:true,
+              'placeholder' => 'Seleccionar código..',
 
-                        ],
-                        'pluginOptions' => [
-                        'allowClear' => true
-                          ],
-                  ]);
+              'clientOptions' => [
+                  'search_contains' => true,
+                  'no_results_text'=>"Oops, nothing found!",
+              ],
+              'options' => [
+                    'onchange' => 'onEnviarDiag (this.value)',
+                    'disabled'=>(!isset($model->estado) || $model->estado->descripcion!=="LISTO")?false:true,
+
+                    ],
+          ]);
+
       ?>
         </br> </br></br>
     <?
@@ -300,25 +311,27 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
    <?
     // $mapFrases= ArrayHelper::map(Plantillafrase::find()->all() , 'id',  'codigo' );
     $mapFrases= ArrayHelper::map($array['arrayfrase'] , 'id',  'codigo' );
+    echo Chosen::widget([
+          'name' => 'ChosenTest',
+          'items' => $mapFrases,
+          'allowDeselect' => true,
 
-      echo Select2::widget( [
-                    'name' => 'frases',
-                    'attribute' => 'Frases',
-                    'data' => $mapFrases,
-                    'language' => 'es',
-                    'options' => [
-                          'onchange' => 'onEnviarFra (this.value)',
-                          'placeholder' => 'Seleccionar codigo..',
-                          'multiple' => false
-                            ],
-                    'pluginOptions' => [
-                          'allowClear' => true
-                            ],
-                  ]);
+          'placeholder' => 'Seleccionar código..',
+
+          'clientOptions' => [
+              'search_contains' => true,
+              'no_results_text'=>"Oops, nothing found!",
+          ],
+          'options' => [
+                'onchange' => 'onEnviarFra (this.value)',
+
+                ],
+      ]);
+
 
           ?>
-            </br>
-          <? if( !isset($model->estado) || $model->estado->descripcion!=="LISTO"){
+            </br> </br>
+            <? if( !isset($model->estado) || $model->estado->descripcion!=="LISTO"){
             echo $form->field($model, 'id_estado')->dropDownList($model->estados())->label('Estado') ;
 
           }else {
@@ -389,8 +402,6 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
   }
     function agregarFormularioFlo (){
       if ($("tr.success").find("td:eq(1)").text() != ""){
-        $("span#select2-w4-container.select2-selection__rendered")[0].innerText =$("tr.success").find("td:eq(1)").text();
-
         var textArea = document.getElementById('pap-flora');
         if (textArea.value.trim()==""){
           $("textarea#pap-flora.form-control").val( $("tr.success").find("td:eq(2)").text());
@@ -412,12 +423,10 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
       }
     }
     function quitarFlora (){
-      $("span#select2-w4-container.select2-selection__rendered")[0].innerText ="";
       $("textarea#pap-flora.form-control").val('') ;
     }
     function agregarFormularioAsp (){
       if ($("tr.success").find("td:eq(1)").text() != ""){
-        $("span#select2-w5-container.select2-selection__rendered")[0].innerText =$("tr.success").find("td:eq(1)").text();
         var textArea = document.getElementById('pap-aspecto');
         if (textArea.value.trim()==""){
           $("textarea#pap-aspecto.form-control").val( $("tr.success").find("td:eq(2)").text());
@@ -440,14 +449,11 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
       }
   }
     function quitarAspecto (){
-      $("span#select2-w5-container.select2-selection__rendered")[0].innerText ="";
       $("textarea#pap-aspecto.form-control").val('') ;
     }
 
     function agregarFormularioPav (){
       if ($("tr.success").find("td:eq(1)").text() != ""){
-        $("span#select2-w6-container.select2-selection__rendered")[0].innerText =$("tr.success").find("td:eq(1)").text();
-
         var textArea = document.getElementById('pap-pavimentosas');
         if (textArea.value.trim()==""){
           $("textarea#pap-pavimentosas.form-control").val( $("tr.success").find("td:eq(2)").text());
@@ -469,12 +475,10 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
       }
   }
     function quitarPavimentosas (){
-      $("span#select2-w6-container.select2-selection__rendered")[0].innerText ="";
       $("textarea#pap-pavimentosas.form-control").val('') ;
     }
     function agregarFormularioGland (){
       if ($("tr.success").find("td:eq(1)").text() != ""){
-        $("span#select2-w7-container.select2-selection__rendered")[0].innerText =$("tr.success").find("td:eq(1)").text();
         var textArea = document.getElementById('pap-glandulares');
         if (textArea.value.trim()==""){
           $("textarea#pap-glandulares.form-control").val( $("tr.success").find("td:eq(2)").text());
@@ -497,12 +501,10 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
       }
   }
     function quitarGlandular (){
-      $("span#select2-w7-container.select2-selection__rendered")[0].innerText ="";
       $("textarea#pap-glandulares.form-control").val('') ;
     }
     function agregarFormularioDiag (){
       if ($("tr.success").find("td:eq(1)").text() != ""){
-        $("span#select2-w8-container.select2-selection__rendered")[0].innerText =$("tr.success").find("td:eq(1)").text();
         var textArea = document.getElementById('pap-diagnostico');
         if (textArea.value.trim()==""){
           $("textarea#pap-diagnostico.form-control").val( $("tr.success").find("td:eq(2)").text());
@@ -524,13 +526,11 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
       }
   }
     function quitarDiagnostico (){
-      $("span#select2-w8-container.select2-selection__rendered")[0].innerText ="";
       $("textarea#pap-diagnostico.form-control").val('') ;
     }
 
     function agregarFormularioFra (){
       if ($("tr.success").find("td:eq(1)").text() != ""){
-        $("span#select2-w9-container.select2-selection__rendered")[0].innerText =$("tr.success").find("td:eq(1)").text();
         var textArea = document.getElementById('pap-frase');
         if (textArea.value.trim()==""){
           $("textarea#pap-frase.form-control").val( $("tr.success").find("td:eq(2)").text());
@@ -553,8 +553,6 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
       }
 
     function quitarFrase (){
-
-      $("span#select2-w9-container.select2-selection__rendered")[0].innerText ="";
       $("textarea#pap-frase.form-control").val('') ;
 
         }

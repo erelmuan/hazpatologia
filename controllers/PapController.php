@@ -275,7 +275,7 @@ class PapController extends Controller
 
 
             if (!$this->validarContraseña($_POST["contrasenia"])){
-              unset($post['Biopsia']['id_estado']);
+              unset($post['Pap']['id_estado']);
               $model->load($post);
               return $this->render('_form', [
                   'model' => $model,

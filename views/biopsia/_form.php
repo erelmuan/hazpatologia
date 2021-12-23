@@ -26,8 +26,8 @@ use kartik\widgets\ActiveForm;
 /* @var $form yii\widgets\ActiveForm */
 use kartik\datecontrol\DateControl;
 use app\models\Usuario;
-use kartik\widgets\SwitchInput
-
+use kartik\widgets\SwitchInput;
+use nex\chosen\Chosen;
 ?>
 <div id="w0" class="x_panel">
   <div class="x_title"><h2> <?=$model->isNewRecord ? "<i class='glyphicon glyphicon-plus'></i> NUEVA BIOPSIA" : "<i class='glyphicon glyphicon-pencil'></i> ACTUALIZAR BIOPSIA" ; ?> </h2>
@@ -81,21 +81,23 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
         <button type="button" class="btn btn-danger btn-xs" onclick="quitarMaterial()"><i class="glyphicon glyphicon-minus"></i></button>
         <?
         $mapMaterial= ArrayHelper::map($array['arraymaterial'], 'id',  'codigo' );
+      echo Chosen::widget([
+            'name' => 'id_material',
+            'items' => $mapMaterial,
+            'allowDeselect' => true,
 
-              echo Select2::widget( [
-                            'name' => 'material',
-                            'attribute' => 'Material',
-                            'data' => $mapMaterial,
-                            'language' => 'es',
-                            'options' => [
-                            'onchange' => 'onEnviarMat (this.value)',
-                            'placeholder' => 'Seleccionar código..',
-                            // 'multiple' => false
-                              ],
-                            'pluginOptions' => [
-                                'allowClear' => false
-                              ],
-                    ]);
+            'placeholder' => 'Seleccionar código..',
+
+            'clientOptions' => [
+                'search_contains' => true,
+                'no_results_text'=>"Oops, nothing found!",
+            ],
+            'options' => [
+                  'onchange' => 'onEnviarMat (this.value)',
+
+                  ],
+        ]);
+
                     ?>
               </br> </br></br>
           <? echo ( Html::label('Código macroscopia', 'macro', ['class' => 'form-group field-biopsias-macroscopia has-success']));  ?>
@@ -103,21 +105,23 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
                 <button type="button" class="btn btn-danger btn-xs" onclick="quitarMacroscopia()"><i class="glyphicon glyphicon-minus"></i></button>
              <?
                $mapMacroscopia= ArrayHelper::map($array['arraymacroscopia'] , 'id',  'codigo' );
+               echo Chosen::widget([
+                   'name' => 'id_macroscopia',
+                   'items' => $mapMacroscopia,
+                   'allowDeselect' => true,
 
-               echo Select2::widget( [
-                          'name' => 'macroscopia',
-                          'attribute' => 'Macroscopia',
-                          'data' => $mapMacroscopia,
-                          'language' => 'es',
-                          'options' => [
-                          'onchange' => 'onEnviarMac (this.value)',
-                          'placeholder' => 'Seleccionar código..',
-                          'multiple' => false
-                             ],
-                          'pluginOptions' => [
-                           'allowClear' => true
-                                 ],
-                 ]);
+                   'placeholder' => 'Seleccionar código..',
+
+                   'clientOptions' => [
+                       'search_contains' => true,
+                       'no_results_text'=>"Oops, nothing found!",
+                   ],
+                   'options' => [
+                         'onchange' => 'onEnviarMac (this.value)',
+
+                         ],
+               ]);
+
                  ?>
                </br> </br></br>
             <?  echo (Html::label('Código microscopia', 'username', ['class' => 'form-group field-biopsias-microscopia has-success'])); ?>
@@ -127,20 +131,23 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
                 <button type="button" class="btn btn-danger btn-xs" onclick="quitarMicroscopia()"><i class="glyphicon glyphicon-minus"></i></button>
              <?
              $mapMicroscopia= ArrayHelper::map($array['arraymicroscopia'] , 'id',  'codigo' );
+             echo Chosen::widget([
+                   'name' => 'id_microscopia',
+                   'items' => $mapMicroscopia,
+                   'allowDeselect' => true,
 
-                 echo Select2::widget( [
-                         'name' => 'microscopia',
-                         'attribute' => 'Microscopia',
-                         'data' => $mapMicroscopia,
-                         'language' => 'es',
-                         'options' => [
-                                 'onchange' => 'onEnviarMic (this.value)',
-                                 'placeholder' => 'Seleccionar código..',
-                                 ],
-                                 'pluginOptions' => [
-                                 'allowClear' => true,
-                                   ],
-                           ]);
+                   'placeholder' => 'Seleccionar código..',
+
+                   'clientOptions' => [
+                       'search_contains' => true,
+                       'no_results_text'=>"Oops, nothing found!",
+                   ],
+                   'options' => [
+                         'onchange' => 'onEnviarMic (this.value)',
+
+                         ],
+               ]);
+
         ?></br> </br></br> <?
       echo ( $form->field($model, 'ihq')->widget(SwitchInput::classname(), [    'pluginOptions' => [
         'onText' => 'Si',
@@ -154,23 +161,24 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
         <button type="button" class="btn btn-danger btn-xs" onclick="quitarDiagnostico()"><i class="glyphicon glyphicon-minus"></i></button>
      <?}
      $mapdiagnostico = ArrayHelper::map($array['arraydiagnostico'] , 'id',  'codigo'  );
+     echo Chosen::widget([
+           'name' => 'id_diagnostico',
+           'items' => $mapdiagnostico,
+           'allowDeselect' => true,
 
-     echo Select2::widget( [
-             'name' => 'diagnostico',
-             'attribute' => 'Diagnostico',
-             'data' => $mapdiagnostico,
-             'language' => 'es',
-             'options' => [
-                     'onchange' => 'onEnviarDiag (this.value)',
-                     'placeholder' => 'Seleccionar código..',
-                     'multiple' => false,
-                      'disabled'=>(!isset($model->estado) || $model->estado->descripcion!=="LISTO")?false:true,
+           'placeholder' => 'Seleccionar código..',
 
-                     ],
-                     'pluginOptions' => [
-                     'allowClear' => true,
-                       ],
-               ]);
+           'clientOptions' => [
+               'search_contains' => true,
+               'no_results_text'=>"Oops, nothing found!",
+           ],
+           'options' => [
+                 'onchange' => 'onEnviarDiag (this.value)',
+                 'disabled'=>(!isset($model->estado) || $model->estado->descripcion!=="LISTO")?false:true,
+
+                 ],
+       ]);
+
   ?></br> </br></br> <?
 
       echo (Html::label('Código frase', 'frase', ['class' => 'form-group field-biopsias-frase has-success'])) ;
@@ -196,7 +204,7 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
                   ]);
 
           ?>
-
+        </br> </br>
         <?   if( !isset($model->estado) || $model->estado->descripcion!=="LISTO"){
               echo $form->field($model, 'id_estado')->dropDownList($model->estados())->label('Estado') ;
 
@@ -235,10 +243,13 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
     <div class="col-md-12 col-sm-12 col-xs-12 form-group">
         <?= Html::submitButton($model->isNewRecord ? 'Guardar' : 'Actualizar', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']);
         if( !$model->isNewRecord &&  $model->ihq){
-            if ($model->ihq && isset($model->inmunohistoquimica)){
-              echo Html::a('<i class="glyphicon glyphicon-arrow-right"></i> Ir inmunostoquimica',['/inmunohistoquimica/update', 'id'=>$model->inmunohistoquimica->id], ['class'=>'btn btn-success grid-button']) ;
+            if ($model->ihq && isset($model->inmunohistoquimicaEscaneada)){
+              // echo Html::a('<i class="glyphicon glyphicon-arrow-right"></i> Ir inmunostoquimica',['/inmunohistoquimica/update', 'id'=>$model->inmunohistoquimica->id], ['class'=>'btn btn-success grid-button']) ;
+              echo Html::a('<i class="glyphicon glyphicon-arrow-right"></i> Ir inmunostoquimica',['/inmunohistoquimica-escaneada/update', 'id'=>$model->inmunohistoquimicaEscaneada->id], ['class'=>'btn btn-success grid-button']) ;
+
             }else {
-              echo Html::a('<i class="glyphicon glyphicon-arrow-right"></i> Crear inmunostoquimica',['/inmunohistoquimica/create', 'id_biopsia'=>$model->id], ['class'=>'btn btn-success grid-button']) ;
+              // echo Html::a('<i class="glyphicon glyphicon-arrow-right"></i> Crear inmunostoquimica',['/inmunohistoquimica/create', 'id_biopsia'=>$model->id], ['class'=>'btn btn-success grid-button']) ;
+              echo Html::a('<i class="glyphicon glyphicon-arrow-right"></i> Crear inmunostoquimica',['/inmunohistoquimica-escaneada/create', 'id_biopsia'=>$model->id], ['class'=>'btn btn-success grid-button']) ;
             }
 
         }
@@ -296,14 +307,13 @@ function quitarSeleccion (){
 
     function agregarFormularioMat (){
       if ($("tr.success").find("td:eq(1)").text() != ""){
-          $("span#select2-w2-container.select2-selection__rendered")[0].innerText =$("tr.success").find("td:eq(1)").text();
+          // $("span#select2-w2-container.select2-selection__rendered")[0].innerText =$("tr.success").find("td:eq(1)").text();
           var textArea = document.getElementById('biopsia-material');
           if (textArea.value.trim()==""){
             $("textarea#biopsia-material.form-control").val( $("tr.success").find("td:eq(2)").text());
           }else{
             $("textarea#biopsia-material.form-control").val(textArea.value +"\r\n"+ $("tr.success").find("td:eq(2)").text());
           }
-
           // $("textarea#biopsia-material.form-control").val($("tr.success").find("td:eq(2)").text());
           //vacias el contenido de la variable para que no se anexe con otra eleccion de otro campo
           $('span.kv-clear-radio').click();
@@ -319,7 +329,7 @@ function quitarSeleccion (){
       }
 
     function quitarMaterial (){
-      $("span#select2-w2-container.select2-selection__rendered")[0].innerText ="";
+      // $("span#select2-w2-container.select2-selection__rendered")[0].innerText ="";
       $("textarea#biopsia-material.form-control").val('') ;
     }
 
@@ -327,7 +337,7 @@ function quitarSeleccion (){
 
     function agregarFormularioMac (){
       if ($("tr.success").find("td:eq(1)").text() != ""){
-        $("span#select2-w3-container.select2-selection__rendered")[0].innerText =$("tr.success").find("td:eq(1)").text();
+        // $("span#select2-w3-container.select2-selection__rendered")[0].innerText =$("tr.success").find("td:eq(1)").text();
         var textArea = document.getElementById('biopsia-macroscopia');
         if (textArea.value.trim()==""){
           $("textarea#biopsia-macroscopia.form-control").val( $("tr.success").find("td:eq(2)").text());
@@ -350,13 +360,11 @@ function quitarSeleccion (){
 
       }
     function quitarMacroscopia(){
-      $("span#select2-w3-container.select2-selection__rendered")[0].innerText ="";
       $("textarea#biopsia-macroscopia.form-control").val('') ;
     }
 
     function agregarFormularioMic (){
       if ($("tr.success").find("td:eq(1)").text() != ""){
-        $("span#select2-w4-container.select2-selection__rendered")[0].innerText =$("tr.success").find("td:eq(1)").text();
         var textArea = document.getElementById('biopsia-microscopia');
         if (textArea.value.trim()==""){
           $("textarea#biopsia-microscopia.form-control").val( $("tr.success").find("td:eq(2)").text());
@@ -378,13 +386,11 @@ function quitarSeleccion (){
       }
     }
       function quitarMicroscopia (){
-        $("span#select2-w4-container.select2-selection__rendered")[0].innerText ="";
         $("textarea#biopsia-microscopia.form-control").val('') ;
       }
 
     function agregarFormularioDiag (){
       if ($("tr.success").find("td:eq(1)").text() != ""){
-        $("span#select2-w5-container.select2-selection__rendered")[0].innerText =$("tr.success").find("td:eq(1)").text();
         var textArea = document.getElementById('biopsia-diagnostico');
         if (textArea.value.trim()==""){
           $("textarea#biopsia-diagnostico.form-control").val( $("tr.success").find("td:eq(2)").text());
@@ -407,7 +413,6 @@ function quitarSeleccion (){
       }
       }
     function quitarDiagnostico (){
-      $("span#select2-w5-container.select2-selection__rendered")[0].innerText ="";
       $("textarea#biopsia-diagnostico.form-control").val('') ;
 
         }
@@ -415,7 +420,6 @@ function quitarSeleccion (){
 
     function agregarFormularioFra (){
       if ($("tr.success").find("td:eq(1)").text() != ""){
-        $("span#select2-w6-container.select2-selection__rendered")[0].innerText =$("tr.success").find("td:eq(1)").text();
         var textArea = document.getElementById('biopsia-frase');
         if (textArea.value.trim()==""){
           $("textarea#biopsia-frase.form-control").val( $("tr.success").find("td:eq(2)").text());
@@ -438,7 +442,6 @@ function quitarSeleccion (){
 
       }
     function quitarFrase (){
-      $("span#select2-w6-container.select2-selection__rendered")[0].innerText ="";
       $("textarea#biopsia-frase.form-control").val('') ;
 
         }

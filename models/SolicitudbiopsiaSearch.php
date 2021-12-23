@@ -53,11 +53,11 @@ class SolicitudbiopsiaSearch extends Solicitudbiopsia
     public function search($params)
     {
         //$query = Solicitudbiopsia::find();
-        $query = Solicitudbiopsia::find()
+        $query = Solicitudbiopsia::find();
         //No debe tener estudio de biopsia asociado
-        ->leftJoin('biopsia', 'biopsia.id_solicitudbiopsia = solicitudbiopsia.id')
-        ->where(['and','biopsia.id IS NULL ' ])
-        ->andWhere(['and','solicitudbiopsia.id_estado <> 3 ' ]);
+        // ->leftJoin('biopsia', 'biopsia.id_solicitudbiopsia = solicitudbiopsia.id')
+        // ->where(['and','biopsia.id IS NULL ' ])
+        // ->andWhere(['and','solicitudbiopsia.id_estado <> 3 ' ]);
 
 
         $dataProvider = new ActiveDataProvider([

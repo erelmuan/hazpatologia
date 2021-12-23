@@ -185,7 +185,7 @@ class BiopsiaController extends Controller
               if ($model->load($post) && $model->save()) {
                       //si tiene inmunohistoquimica se creara el estudio
                       if ($model->ihq){
-                        return $this->redirect(['inmunohistoquimica/create', 'id_biopsia' => $model->id]);
+                        return $this->redirect(['inmunohistoquimica-escaneada/create', 'id_biopsia' => $model->id]);
                       }
                      return $this->redirect(['view', 'id' =>$model->id]);
               } else {
@@ -242,7 +242,7 @@ class BiopsiaController extends Controller
         $modelUsuario = Usuario::find()->where(["id"=>Yii::$app->user->identity->getId()])->one();
 
         $this->cargarEstructuras($search,$array,$provider,$model->solicitudbiopsia->estudio->id);
-        if ($model->estado->descripcion=='LISTO' ){
+        if ( $model->estado->descripcion=='LISTO' ){
             unset($post['Biopsia']['diagnostico']);
         }
         if ( isset($post['Biopsia']['id_estado']) && $post['Biopsia']['id_estado'] !=2){
@@ -270,7 +270,7 @@ class BiopsiaController extends Controller
 
               $Solicitud =  Solicitud::findOne($model->id_solicitudbiopsia);
               //puede pasar a estado en proceso
-              $Solicitud->id_estado= $model->id_estado;
+              $Solicitud->id_estado= $post['Biopsia']['id_estado'] ;
               $Solicitud->save();
               //fecha cuando esta listo el informe de la biopsia
               $model->fechalisto=date("Y-m-d");
@@ -278,11 +278,11 @@ class BiopsiaController extends Controller
             }
 
              if ($model->load($post) && $model->save()) {
-               if ($model->ihq && isset($model->inmunohistoquimica)){
-                 return $this->redirect(['inmunohistoquimica/update',
-                  'id' => $model->inmunohistoquimica->id]);
+               if ($model->ihq && isset($model->inmunohistoquimicaEscaneada)){
+                 return $this->redirect(['inmunohistoquimica-escaneada/update',
+                  'id' => $model->inmunohistoquimicaEscaneada->id]);
                }elseif($model->ihq ) {
-                 return $this->redirect(['inmunohistoquimica/create', 'id_biopsia' => $model->id]);
+                 return $this->redirect(['inmunohistoquimica-escaneada/create', 'id_biopsia' => $model->id]);
                }
                 return $this->redirect(['view', 'id' =>$model->id]);
             } else {

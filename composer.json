@@ -34,7 +34,8 @@
         "bacon/bacon-qr-code": "1.0.3",
         "kartik-v/yii2-icons": "@dev",
         "yiisoft/yii2-imagine": "^2.1",
-	"yii2assets/yii2-pdfjs": ">=1.0"
+	"yii2assets/yii2-pdfjs": ">=1.0",
+	"nex/yii2-chosen" : "*"
 
     },
     "require-dev": {

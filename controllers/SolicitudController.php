@@ -86,45 +86,7 @@ class SolicitudController extends Controller
         ]);
 
     }
-    // public function actionSeleccionarmod()
-    // {
-    //     $searchModel = new SolicitudSearch();
-    //     $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-    //     $exibirEligir=false;
-    //     $exibirUsado=false;
-    //     if (isset($_POST['idsol']) ) {
-    //       if ($_POST['idsol'] =='' ){
-    //         $exibirEligir=true;
-    //         $exibirUsado=false;
-    //
-    //
-    //       }else
-    //       {
-    //
-    //           $data = Yii::$app->request->post();
-    //           $id= explode(":", $data['idsol']);
-    //           $id= $id[0];
-    //           $models = Biopsia::find()->where('id_solicitud = '.$id)->all();
-    //           if (count($models)==1 ){
-    //           $searchModel = new SolicitudSearch();
-    //           $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-    //           $exibirEligir=false;
-    //           $exibirUsado=true;
-    //         }else {
-    //
-    //           return $this->redirect(['biopsia/update', 'id' => 15,'idsol' => $_POST['idsol']]);
-    //         }
-    //       }
-    //     }
-    //
-    //     return $this->render('seleccionarmod', [
-    //         'searchModel' => $searchModel,
-    //         'dataProvider' => $dataProvider,
-    //         'exibirEligir' =>$exibirEligir,
-    //         'exibirUsado' =>$exibirUsado,
-    //     ]);
-    //
-    // }
+
     function calcular_edad($id){
 
       $Solicitud =  Solicitud::findOne($id);
@@ -300,10 +262,10 @@ class SolicitudController extends Controller
 ;
 
         $modelestudio= $model->estudio->modelo;
-        if (isset($model->$modelestudio) && $model->$modelestudio->estado->descripcion=='LISTO'){
-          $this->setearMensajeError('No se puede modificar una solicitud con informe listo.');
-           return $this->redirect(['solicitud/index', 'listo' => false]);
-        }
+        // if (isset($model->$modelestudio) && $model->$modelestudio->estado->descripcion=='LISTO'){
+        //   $this->setearMensajeError('No se puede modificar una solicitud con informe listo.');
+        //    return $this->redirect(['solicitud/index', 'listo' => false]);
+        // }
 
 
          ////////////PACIENTE/////////////////

@@ -119,6 +119,9 @@ $config = [
       ],
 
       'modules' => [
+     //    'pdfjs' => [
+     //     'class' => '\yii2assets\pdfjs\Module',
+     // ],
         'datecontrol' =>  [
            'class' => '\kartik\datecontrol\Module'
        ],

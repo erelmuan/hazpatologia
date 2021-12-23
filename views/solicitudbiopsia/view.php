@@ -50,7 +50,7 @@ if (isset($parametros)){
         ],
     ]) ?>
     <?
-    if ($model->estado=="LISTO")
+    if ($model->estado->ver_informe_solicitud)
     {
       echo Html::a('<i class="fa fa-file-pdf-o"></i> Documento del informe', ['/biopsia/informe', 'id' => $model->biopsia->id], [
             'class'=>'btn btn-danger',
@@ -66,6 +66,45 @@ if (isset($parametros)){
      ?>
 
 </div>
+<? if ($model->biopsia->ihq ){ ?>
+<div id="w0ss" class="x_panel">
+<div class="x_title"><h2><i class="fa fa-table"></i> ESTUDIO INMUNOHISTOQUIMICA  </h2>
+<div class="clearfix"> <div class="nav navbar-right panel_toolbox"></div>
+</div>
+</div>
+
+<?  if ($model->biopsia->ihq && isset($model->biopsia->inmunohistoquimicaEscaneada)){
+  echo DetailView::widget([
+      'model' => $model->biopsia,
+      'attributes' => [
+
+      [
+        'value'=> Html::a('<i class="fa fa-file-pdf-o"></i> Generar informe inmunostoquimica', ['/inmunohistoquimica-escaneada/informe', 'id' => $model->biopsia->inmunohistoquimicaEscaneada->id], [
+              'class'=>'btn btn-primary',
+              // 'role'=>'modal-remote',
+              'target'=>'_blank',
+              'data-toggle'=>'tooltip',
+              'title'=>'Se abrirá el archivo PDF generado en una nueva pestaña'
+          ]) ,
+        'label'=> 'Documento',
+        'format'=>'raw',
+     ],
+     [
+       'value'=> $model->biopsia->inmunohistoquimicaEscaneada->observacion ,
+       'label'=> 'Observacion',
+    ] ,
+
+      ],
+      ]) ;
+    }
+    else {
+        echo "ESTA ACTIVA LA OPCIÓN IHQ PERO NO SE CARGO NINGÚN ESTUDIO";
+    }
+    ?>
+    </div>
+    <?
+  }
+  ?>
 <script language="JavaScript" type="text/javascript">
     // protocolo=document.getElementById("w0").rows[0].cells[1].innerHTML;
     // swal(

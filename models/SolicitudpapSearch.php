@@ -54,12 +54,12 @@ class SolicitudpapSearch extends Solicitudpap
      */
     public function search($params)
     {
-        $query = Solicitudpap::find()
-                //No debe tener estudio de biopsia asociado
-            ->leftJoin('pap', 'pap.id_solicitudpap = solicitudpap.id')
-            //Tiene que se distinto a el estado RECHAZADO id=3
-            ->where(['and','pap.id IS NULL' ])
-            ->andWhere(['and','solicitudpap.id_estado <> 3 ' ]);
+        $query = Solicitudpap::find();
+            //     //No debe tener estudio de biopsia asociado
+            // ->leftJoin('pap', 'pap.id_solicitudpap = solicitudpap.id')
+            // //Tiene que se distinto a el estado RECHAZADO id=3
+            // ->where(['and','pap.id IS NULL' ])
+            // ->andWhere(['and','solicitudpap.id_estado <> 3 ' ]);
 
 
         $dataProvider = new ActiveDataProvider([

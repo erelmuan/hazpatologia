@@ -1,4 +1,4 @@
-<?php
+<!-- <?php
 
 use yii\widgets\DetailView;
 use yii\helpers\Html;
@@ -43,7 +43,7 @@ use yii\helpers\Html;
         ],
     ]);
 
-    if ($model->estado=="LISTO")
+    if ($modvel->estvvvvvado=="LISTO")
     {
       echo Html::a('<i class="fa glyphicon glyphicon-hand-up"></i> Generar documento', ['/biopsia/informe', 'id' => $model->procedencia->id], [
             'class'=>'btn btn-info',
@@ -66,4 +66,4 @@ use yii\helpers\Html;
     'PRESIONAR OK',
     'success'
     )
-  </script>
+  </script> -->

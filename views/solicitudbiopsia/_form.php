@@ -15,7 +15,7 @@ use app\models\Procedencia;
 use app\models\Plantillamaterial;
 use yii\widgets\MaskedInput;
 use kartik\datecontrol\DateControl;
-
+use nex\chosen\Chosen;
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\SolicitudSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -102,36 +102,21 @@ CrudAsset::register($this);
 
                   <?= $form->field($model, 'id_estado')->dropDownList($model->estados())->label('Estado') ;?>
                   <?
-                    echo Form::widget([ // continuation fields to row above without labels
-                      'id' => 'login-form-horizontal',
-                        'model'=>$model,
-                        'form'=>$form,
-                        'columns'=>4,
-                        'attributes'=>[
-                            'id_procedencia'=>['type'=> Form::INPUT_WIDGET,
-                            'widgetClass'=>'kartik\select2\Select2',
-                            'options'=>[
-                              'data' => $mapprocedencia,
-                                  'language' => 'es',
-                                  ],
-                              'pluginOptions' => [
-                                    'allowClear' => true
-                                    ],
-                              'placeholder' => 'Seleccionar codigo..',
-                                    'label'=>'Procedencia'
-                              ],
 
-                        ]]);
-                ?>
-
-
-          <?
-           // if( isset($protocolo_insertar)){
+           echo $form->field($model, 'id_procedencia')->widget(
+               Chosen::className(), [
+                   'items' => $mapprocedencia,
+                   'clientOptions' => [
+                     'rtl'=> true,
+                       'search_contains' => true,
+                       'single_backstroke_delete' => false,
+                   ],
+           ])->label("Procedencia");
             echo $form->field($model, 'protocolo_automatico')->checkBox(['label' => 'Protocolo automatico',
        'onclick' => 'cambioProtocoloAutomatico();', 'checked' => '1','value' => '1']);
 
-     // }
        ?>
+
 
                  </div>
 
@@ -291,6 +276,7 @@ CrudAsset::register($this);
 <?php Modal::end(); ?>
 
 <script>
+
 var input = document.getElementById("pacientebuscar");
 input.addEventListener("keyup", function(event) {
   if (event.keyCode === 13) {

@@ -238,8 +238,7 @@ class Pap extends \yii\db\ActiveRecord
             'attribute' => 'id_estado',
             'label' => 'Estado',
             'value' => 'estado.descripcion',
-
-            'filter'=>$this->estados(),
+            'filter'=>Estado::estadosEstudioAdminYpat(),
             'filterType' => GridView::FILTER_SELECT2,
             'filterWidgetOptions' => [
                 'options' => ['prompt' => ''],
@@ -292,6 +291,8 @@ class Pap extends \yii\db\ActiveRecord
         // $estado= new $e();
         return Estado::estadosEstudio();
     }
-
+    public function estadoSinRestriccion() {
+        return Estado::estadosEstudioAdminYpat();
+    }
 
 }

@@ -68,27 +68,33 @@ use yii\helpers\Html;
     ]) ; ?>
 
     </div>
+    <? if ($model->ihq ){ ?>
     <div id="w0ss" class="x_panel">
     <div class="x_title"><h2><i class="fa fa-table"></i> ESTUDIO INMUNOHISTOQUIMICA  </h2>
       <div class="clearfix"> <div class="nav navbar-right panel_toolbox"></div>
     </div>
     </div>
-    <? if ($model->ihq ){
-      if ($model->ihq && isset($model->inmunohistoquimica)){
+    <?
+      if ($model->ihq && isset($model->inmunohistoquimicaEscaneada)){
         echo DetailView::widget([
             'model' => $model,
             'attributes' => [
 
-             [
-               'value'=> $model->inmunohistoquimica->microscopia ,
-               'label'=> 'Microscopia',
-            ],
             [
-              'value'=> $model->inmunohistoquimica->diagnostico ,
-              'label'=> 'Microscopia',
+              'value'=> Html::a('<i class="fa fa-file-pdf-o"></i> Generar informe inmunostoquimica', ['/inmunohistoquimica-escaneada/informe', 'id' => $model->inmunohistoquimicaEscaneada->id], [
+                    'class'=>'btn btn-primary',
+                    'role'=>'modal-remote',
+                    'target'=>'_blank',
+                    'data-toggle'=>'tooltip',
+                    'title'=>'Se abrirá el archivo PDF generado en una nueva pestaña'
+                ]) ,
+              'label'=> 'Documento',
+              'format'=>'raw',
            ],
-                'observacion:ntext',
-
+           [
+             'value'=> $model->inmunohistoquimicaEscaneada->observacion ,
+             'label'=> 'Observacion',
+          ] ,
 
             ],
         ]) ;
@@ -96,10 +102,11 @@ use yii\helpers\Html;
       else {
           echo "ESTA ACTIVA LA OPCIÓN IHQ PERO NO SE CARGO NINGÚN ESTUDIO";
       }
-    }
+
    ?>
    </div>
   <?
+      }
     if ($model->estado->descripcion== 'EN_PROCESO'){
       echo Html::a('<i class="fa fa-file-pdf-o"></i> Generar informe biopsia', ['/biopsia/informe', 'id' => $model->id], [
             'class'=>'btn btn-dark',
@@ -108,14 +115,7 @@ use yii\helpers\Html;
             'data-toggle'=>'tooltip',
             'title'=>'Se abrirá el archivo PDF generado en una nueva pestaña'
         ]);
-        if ($model->ihq && isset($model->inmunohistoquimica)){
-          echo Html::a('<i class="fa fa-file-pdf-o"></i> Generar informe inmunohistoquimica', ['/inmunohistoquimica/informe', 'id' => $model->inmunohistoquimica->id], [
-                'class'=>'btn btn-Primary',
-                'target'=>'_blank',
-                'data-toggle'=>'tooltip',
-                'title'=>'Se abrirá el archivo PDF generado en una nueva pestaña'
-            ]);
-        }
+
       }
       else {
         echo Html::a('<i class="fa fa-file-pdf-o"></i> Generar informe biopsia', ['/biopsia/informe', 'id' => $model->id], [
@@ -124,16 +124,6 @@ use yii\helpers\Html;
               'data-toggle'=>'tooltip',
               'title'=>'Se abrirá el archivo PDF generado en una nueva pestaña'
           ]);
-          if ($model->ihq && isset($model->inmunohistoquimica)){
-            echo Html::a('<i class="fa fa-file-pdf-o"></i> Generar informe inmunohistoquimica', ['/inmunohistoquimica/informe', 'id' => $model->inmunohistoquimica->id], [
-                  'class'=>'btn btn-primary',
-                  'target'=>'_blank',
-                  'data-toggle'=>'tooltip',
-                  'title'=>'Se abrirá el archivo PDF generado en una nueva pestaña'
-              ]);
-          }
       }
-
-
     ?>
 </div>

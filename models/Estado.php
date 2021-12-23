@@ -57,7 +57,7 @@ class Estado extends \yii\db\ActiveRecord
     }
     //hay que eliminar el patron state osea PENDIENTE RECHAZADO EN_PROCESO LISTO
 
-    //Si elimino los estados, tendria que modificar la consulta tengo que quitar los true y consultar por la descripcion  
+    //Si elimino los estados, tendria que modificar la consulta tengo que quitar los true y consultar por la descripcion
     public function estadosSolicitud(){
         return ArrayHelper::map(Estado::find()->where(['and', "solicitud=true"])
         ->all(), 'id','descripcion');
@@ -69,6 +69,11 @@ class Estado extends \yii\db\ActiveRecord
         }
       else {
         return ArrayHelper::map(Estado::find()->where(['and', "biopsia=true","pap=true","descripcion='PENDIENTE'"])
-        ->all(), 'id','descripcion');      }
-    }
+                ->all(), 'id','descripcion');
+              }
+  }
+    public function estadosEstudioAdminYpat(){
+        return ArrayHelper::map(Estado::find()->where(['and', "biopsia=true","pap=true"])
+        ->all(), 'id','descripcion');
+}
 }
