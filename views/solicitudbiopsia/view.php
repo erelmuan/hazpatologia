@@ -66,14 +66,14 @@ if (isset($parametros)){
      ?>
 
 </div>
-<? if ($model->biopsia->ihq ){ ?>
+<? if (isset($model->biopsia) && $model->biopsia->ihq ){ ?>
 <div id="w0ss" class="x_panel">
 <div class="x_title"><h2><i class="fa fa-table"></i> ESTUDIO INMUNOHISTOQUIMICA  </h2>
 <div class="clearfix"> <div class="nav navbar-right panel_toolbox"></div>
 </div>
 </div>
 
-<?  if ($model->biopsia->ihq && isset($model->biopsia->inmunohistoquimicaEscaneada)){
+<?  if (isset($model->biopsia) && $model->biopsia->ihq && isset($model->biopsia->inmunohistoquimicaEscaneada)){
   echo DetailView::widget([
       'model' => $model->biopsia,
       'attributes' => [

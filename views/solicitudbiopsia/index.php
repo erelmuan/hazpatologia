@@ -108,8 +108,8 @@ $columns[]=
             'toolbar'=> [
               ['content'=>
                   Html::button('<i class="glyphicon glyphicon-search"></i>', ['Buscar' ,'title'=> 'Buscar','class'=>'btn btn-default']).
-                  Html::a('<i class="glyphicon glyphicon-th"></i>', ['select'],
-                  ['role'=>'modal-remote','title'=> 'Personalizar','class'=>'btn btn-default']).
+                  // Html::a('<i class="glyphicon glyphicon-th"></i>', ['select'],
+                  // ['role'=>'modal-remote','title'=> 'Personalizar','class'=>'btn btn-default']).
                   Html::a('<i class="glyphicon glyphicon-repeat"></i>', [''],
                   ['data-pjax'=>1, 'class'=>'btn btn-default', 'title'=>'Refrescar'])
               ]
@@ -119,7 +119,7 @@ $columns[]=
             'responsive' => true,
             'panel' => [
                 'type' => 'primary',
-                'heading' => '<i class="glyphicon glyphicon-list"></i> Lista de solicitudes',
+                'heading' => '<i class="glyphicon glyphicon-list"></i> Lista de solicitudes (SOLO SE VISAULIZAN LOS QUE NO TIENEN ESTUDIO ASOCIADO)',
                 'before'=>'<em>* Para buscar algún registro tipear en el filtro y presionar ENTER </em>',
 
                         '<div class="clearfix"></div>',
