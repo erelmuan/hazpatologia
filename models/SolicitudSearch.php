@@ -91,7 +91,7 @@ class SolicitudSearch extends Solicitud
         }
 
         $query->andFilterWhere([
-            'id' => $this->id,
+            'solicitud.id' => $this->id,
             'protocolo' => $this->protocolo,
             'id_estudio' => $this->id_estudio,
             'id_estado' => $this->id_estado,

@@ -75,7 +75,7 @@ class SolicitudpapSearch extends Solicitudpap
         }
 
         $query->andFilterWhere([
-            'id' => $this->id,
+            'solicitudpap.id' => $this->id,
             'id_paciente' => $this->id_paciente,
             'id_procedencia' => $this->id_procedencia,
             'id_medico' => $this->id_medico,
