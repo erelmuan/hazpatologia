@@ -10,14 +10,15 @@ use yii\widgets\ActiveForm;
 <div class="procedencia-form">
 
     <?php $form = ActiveForm::begin(); ?>
-
-    <?= $form->field($model, 'id')->textInput() ?>
-
-    <?= $form->field($model, 'nombre')->textInput(['maxlength' => true]) ?>
-
+    <? if($model->estudios()){
+                echo  $form->field($model, 'nombre')->input("text",['readonly' => true])->label('Nombre');
+              }else {
+                echo  $form->field($model, 'nombre')->input("text",['style'=> 'width:100%; text-transform:uppercase;'])->label('Nombre');
+              }
+            ?>
     <?= $form->field($model, 'contacto')->textInput(['maxlength' => true]) ?>
-    
-    <?= $form->field($model, 'direccion')->textInput() ?> 
+
+    <?= $form->field($model, 'direccion')->textInput() ?>
 
 	<?php if (!Yii::$app->request->isAjax){ ?>
 	  	<div class="form-group">

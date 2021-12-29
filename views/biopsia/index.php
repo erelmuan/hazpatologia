@@ -155,3 +155,12 @@ $columns[]=
     "footer"=>"",// always need it for jquery plugin
 ])?>
 <?php Modal::end(); ?>
+
+
+<script>
+function enter(){
+  methods.applyFilter.apply($e);
+
+}
+
+</script>

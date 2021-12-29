@@ -209,7 +209,10 @@ class Biopsia extends \yii\db\ActiveRecord
             'filter'=>Estado::estadosEstudioAdminYpat(),
             'filterType' => GridView::FILTER_SELECT2,
             'filterWidgetOptions' => [
-                'options' => ['prompt' => ''],
+                'options' => ['prompt' => '',
+                'change' => 'enter()',
+
+              ],
                 'pluginOptions' => ['allowClear' => true],
             ],
         ],
