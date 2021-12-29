@@ -105,7 +105,7 @@ $Inicio = 49;
 $pdf->SetFont('Times','B',10);
 $pdf->Text(14,$Inicio,"PACIENTE:");
 $pdf->SetFont('Times','',10);
-$pdf->Text(35,$Inicio,$model->solicitudpap->paciente->nombre.' '.$model->solicitudpap->paciente->apellido);
+$pdf->Text(35,utf8_decode($Inicio,$model->solicitudpap->paciente->nombre).' '.utf8_decode($model->solicitudpap->paciente->apellido));
 $pdf->SetFont('Times','B',10);
 $pdf->Text(120,$Inicio,"FECHA:");
 $pdf->SetFont('Times','',10);
@@ -125,7 +125,7 @@ $Inicio=$Inicio +8;
 $pdf->SetFont('Times','B',10);
 $pdf->Text(14,$Inicio ,"MEDICO:");
 $pdf->SetFont('Times','',10);
-$pdf->Text(31,$Inicio ,$model->solicitudpap->medico->nombre.' '.$model->solicitudpap->medico->apellido);
+$pdf->Text(31,$Inicio ,utf8_decode($model->solicitudpap->medico->nombre).' '.utf8_decode($model->solicitudpap->medico->apellido));
 $pdf->SetFont('Times','B',10);
 $pdf->Text(120,$Inicio,"EDAD:");
 $pdf->SetFont('Times','',10);
@@ -135,7 +135,7 @@ $Inicio=$Inicio +8;
 $pdf->SetFont('Times','B',10);
 $pdf->Text(14,$Inicio ,"PROCEDENCIA:");
 $pdf->SetFont('Times','',10);
-$pdf->Text(43,$Inicio ,$model->solicitudpap->procedencia->nombre);
+$pdf->Text(43,$Inicio ,utf8_decode($model->solicitudpap->procedencia->nombre));
 
 //////////////////////////////
 

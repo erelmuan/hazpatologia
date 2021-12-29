@@ -187,23 +187,24 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
         <button type="button" class="btn btn-danger btn-xs" onclick="quitarFrase()"><i class="glyphicon glyphicon-minus"></i></button>
      <?
       $mapFrases= ArrayHelper::map($array['arrayfrase'] , 'id',  'codigo' );
+      echo Chosen::widget([
+            'name' => 'ChosenTest',
+            'items' => $mapFrases,
+            'allowDeselect' => true,
 
-      echo Select2::widget( [
-                    'name' => 'frases',
-                    'attribute' => 'Frases',
-                    'data' => $mapFrases,
-                    'language' => 'es',
-                    'options' => [
-                          'onchange' => 'onEnviarFra (this.value)',
-                          'placeholder' => 'Seleccionar código..',
-                          'multiple' => false
-                            ],
-                    'pluginOptions' => [
-                          'allowClear' => true
-                            ],
-                  ]);
+            'placeholder' => 'Seleccionar código..',
 
-          ?>
+            'clientOptions' => [
+                'search_contains' => true,
+                'no_results_text'=>"Oops, nothing found!",
+            ],
+            'options' => [
+                  'onchange' => 'onEnviarFra (this.value)',
+
+                  ],
+        ]);
+
+        ?>
         </br> </br>
         <?   if( !isset($model->estado) || $model->estado->descripcion!=="LISTO"){
               echo $form->field($model, 'id_estado')->dropDownList($model->estados())->label('Estado') ;

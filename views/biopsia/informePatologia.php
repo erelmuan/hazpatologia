@@ -109,7 +109,7 @@ $Inicio = 49;
 $pdf->SetFont('Times','B',10);
 $pdf->Text(14,$Inicio,"PACIENTE:");
 $pdf->SetFont('Times','',10);
-$pdf->Text(35,$Inicio,$model->solicitudbiopsia->paciente->nombre.' '.$model->solicitudbiopsia->paciente->apellido);
+$pdf->Text(35,$Inicio,utf8_decode($model->solicitudbiopsia->paciente->nombre).' '.utf8_decode($model->solicitudbiopsia->paciente->apellido));
 $pdf->SetFont('Times','B',10);
 $pdf->Text(120,$Inicio,"FECHA:");
 $pdf->SetFont('Times','',10);
@@ -129,7 +129,7 @@ $Inicio=$Inicio +8;
 $pdf->SetFont('Times','B',10);
 $pdf->Text(14,$Inicio ,"MEDICO:");
 $pdf->SetFont('Times','',10);
-$pdf->Text(30,$Inicio ,$model->solicitudbiopsia->medico->nombre.' '.$model->solicitudbiopsia->medico->apellido);
+$pdf->Text(30,$Inicio ,utf8_decode($model->solicitudbiopsia->medico->nombre).' '.utf8_decode($model->solicitudbiopsia->medico->apellido));
 $pdf->SetFont('Times','B',10);
 $pdf->Text(120,$Inicio,"EDAD:");
 $pdf->SetFont('Times','',10);
@@ -140,11 +140,6 @@ $pdf->SetFont('Times','B',10);
 $pdf->Text(14,$Inicio ,"PROCEDENCIA:");
 $pdf->SetFont('Times','',10);
 $pdf->Text(43,$Inicio ,$model->solicitudbiopsia->procedencia->nombre);
-
-$pdf->SetFont('Times','B',10);
-$pdf->Text(120,$Inicio ,"SERVICIO:");
-$pdf->SetFont('Times','',10);
-$pdf->Text(140,$Inicio ,$model->solicitudbiopsia->procedencia->nombre);
 
 //////////////////////////////
 
