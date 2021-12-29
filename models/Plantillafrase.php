@@ -15,6 +15,8 @@ use Yii;
  *
  * @property Estudio $estudio
  */
+ use app\components\behaviors\AuditoriaBehaviors;
+
 class Plantillafrase extends \yii\db\ActiveRecord
 {
     /**

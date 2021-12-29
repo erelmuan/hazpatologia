@@ -11,8 +11,19 @@ use Yii;
  * @property string $codigo
  * @property string $glandular
  */
+ use app\components\behaviors\AuditoriaBehaviors;
+
 class Plantillaglandular extends \yii\db\ActiveRecord
 {
+  public function behaviors()
+  {
+
+    return array(
+           'AuditoriaBehaviors'=>array(
+                  'class'=>AuditoriaBehaviors::className(),
+                  ),
+      );
+ }
     /**
      * {@inheritdoc}
      */

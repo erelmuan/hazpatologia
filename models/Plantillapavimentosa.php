@@ -11,8 +11,19 @@ use Yii;
  * @property string $codigo
  * @property string $pavimentosa
  */
+ use app\components\behaviors\AuditoriaBehaviors;
+
 class Plantillapavimentosa extends \yii\db\ActiveRecord
 {
+  public function behaviors()
+  {
+
+    return array(
+           'AuditoriaBehaviors'=>array(
+                  'class'=>AuditoriaBehaviors::className(),
+                  ),
+      );
+ }
     /**
      * {@inheritdoc}
      */

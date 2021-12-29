@@ -11,6 +11,8 @@ use Yii;
  * @property string $codigo
  * @property string $macroscopia
  */
+ use app\components\behaviors\AuditoriaBehaviors;
+
 class Plantillamacroscopia extends \yii\db\ActiveRecord
 {
     /**

@@ -11,8 +11,19 @@ use Yii;
  * @property string $codigo
  * @property string $microscopia
  */
+ use app\components\behaviors\AuditoriaBehaviors;
+
 class Plantillamicroscopia extends \yii\db\ActiveRecord
 {
+  public function behaviors()
+  {
+
+    return array(
+           'AuditoriaBehaviors'=>array(
+                  'class'=>AuditoriaBehaviors::className(),
+                  ),
+      );
+ }
     /**
      * {@inheritdoc}
      */

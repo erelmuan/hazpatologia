@@ -11,8 +11,19 @@ use Yii;
  * @property string $codigo
  * @property string $aspecto
  */
+ use app\components\behaviors\AuditoriaBehaviors;
+
 class Plantillaaspecto extends \yii\db\ActiveRecord
 {
+  public function behaviors()
+  {
+
+    return array(
+           'AuditoriaBehaviors'=>array(
+                  'class'=>AuditoriaBehaviors::className(),
+                  ),
+      );
+ }
     /**
      * {@inheritdoc}
      */
