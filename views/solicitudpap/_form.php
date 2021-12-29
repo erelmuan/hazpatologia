@@ -67,7 +67,14 @@ CrudAsset::register($this);
 
 
       <div class='col-sm-3'>
+        <b>
+        <? if( isset($protocolo_insertar)){
+        echo $form->field($model, 'protocolo')->textInput(['readonly'=> true , 'value'=>$protocolo_insertar,'style'=> 'font-size:23px; color:red;']) ;
+       }else {
+         echo $form->field($model, 'protocolo')->textInput(['readonly'=> true ,'style'=> 'font-size:23px;']) ;
 
+      } ?>
+    </b>
       <label> Paciente </label></br>
       <input id="solicitud-paciente"  style="width:250px;" value='<?=($model->paciente)?$model->paciente->apellido.", ".$model->paciente->nombre:''; ?>' type="text" readonly>
       <?=$form->field($model, 'id_paciente')->hiddenInput()->label(false); ?>
@@ -75,12 +82,6 @@ CrudAsset::register($this);
       <input id="solicitud-medico" style="width:250px;" value='<?=($model->medico)?$model->medico->apellido.", ".$model->medico->nombre:'' ?>' type="text" readonly>
       <?=$form->field($model, 'id_medico')->hiddenInput()->label(false); ?>
 
-      <? if( isset($protocolo_insertar)){
-      echo $form->field($model, 'protocolo')->textInput(['readonly'=> true , 'value'=>$protocolo_insertar]) ;
-     }else {
-       echo $form->field($model, 'protocolo')->textInput(['readonly'=> true ]) ;
-
-    } ?>
         </div>
 
 

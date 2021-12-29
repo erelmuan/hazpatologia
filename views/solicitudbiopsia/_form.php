@@ -70,6 +70,14 @@ CrudAsset::register($this);
 
 
           <div class='col-sm-3'>
+            <b>
+            <? if( isset($protocolo_insertar)){
+            echo $form->field($model, 'protocolo')->textInput(['readonly'=> true , 'value'=>$protocolo_insertar,'style'=> 'font-size:23px; color:red;']) ;
+           }else {
+             echo $form->field($model, 'protocolo')->textInput(['readonly'=> true ,'style'=> 'font-size:23px;']) ;
+
+          } ?>
+        </b>
 
           <label> Paciente </label></br>
           <input id="solicitud-paciente" class="form-control"  style="width:250px;" value='<?=($model->paciente)?$model->paciente->apellido.", ".$model->paciente->nombre:''; ?>' type="text" readonly>
@@ -77,13 +85,7 @@ CrudAsset::register($this);
           <label> Medico </label> </br>
           <input id="solicitud-medico" class="form-control" style="width:250px;" value='<?=($model->medico)?$model->medico->apellido.", ".$model->medico->nombre:'' ?>' type="text" readonly>
           <?=$form->field($model, 'id_medico')->hiddenInput()->label(false); ?>
-          <? if( isset($protocolo_insertar)){
-          echo $form->field($model, 'protocolo')->textInput(['readonly'=> true , 'value'=>$protocolo_insertar]) ;
-         }else {
-           echo $form->field($model, 'protocolo')->textInput(['readonly'=> true ]) ;
-
-        } ?>
-              </div>
+  </div>
                 <div class='col-sm-3'>
                   <?
                   echo $form->field($model, 'fecharealizacion')->widget(DateControl::classname(), [
