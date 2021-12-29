@@ -74,7 +74,7 @@ CrudAsset::register($this);
             <? if( isset($protocolo_insertar)){
             echo $form->field($model, 'protocolo')->textInput(['readonly'=> true , 'value'=>$protocolo_insertar,'style'=> 'font-size:23px; color:red;']) ;
            }else {
-             echo $form->field($model, 'protocolo')->textInput(['readonly'=> true ,'style'=> 'font-size:23px;']) ;
+             echo $form->field($model, 'protocolo')->textInput(['readonly'=> true ,'style'=> 'font-size:23px;color:red;']) ;
 
           } ?>
         </b>
