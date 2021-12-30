@@ -211,6 +211,9 @@ class SolicitudController extends Controller
           $model->id_anio_protocolo=$anioprotocolo->id;
           //si protocolo automatico esta activado si o si va insertar el valor que obtiene de la base
           // con esto me aseguro que por mas que se edite el campo va editar
+          //ESTA FUNCIONALIDAD NO ESTA FUNCIONANDO PERO SE ACTIVARA CUANDO SE INCORPORE EL PROTOCOLO AUTOMATICO
+          //PROTOCOLO_INSERTAR NO TIENE INCIDENCIA
+
           if ($_POST[$model->classNameM()]["protocolo_automatico"] ==	"1"){
               unset($_POST[$model->classNameM()]["protocolo"]);
               $model->protocolo=Solicitud::obtenerProtocolo();
@@ -259,15 +262,8 @@ class SolicitudController extends Controller
         $request = Yii::$app->request;
 
         $model = $this->findModel($id);
-;
 
         $modelestudio= $model->estudio->modelo;
-        // if (isset($model->$modelestudio) && $model->$modelestudio->estado->descripcion=='LISTO'){
-        //   $this->setearMensajeError('No se puede modificar una solicitud con informe listo.');
-        //    return $this->redirect(['solicitud/index', 'listo' => false]);
-        // }
-
-
          ////////////PACIENTE/////////////////
         $modelPac= new Paciente();
         $searchModelPac = new PacienteSearch();
@@ -296,9 +292,21 @@ class SolicitudController extends Controller
                   ]);
 
                 }
-                if ($model->load($request->post()) && $model->save()) {
+                if ($model->load($request->post()) && $model->validate()) {
+                    $model->save();
                     return $this->redirect(['view', 'id' => $model->id]);
                 }
+                else {
+                      return $this->render('_form', [
+                          'model' => $model,
+                          'searchModelPac' => $searchModelPac,
+                          'dataProviderPac' => $dataProviderPac,
+                          'modelPac' => $modelPac,
+                          'searchModelMed' => $searchModelMed,
+                          'dataProviderMed' => $dataProviderMed,
+                          'modelMed' => $modelMed,
+                      ]);
+                  }
           } else {
                 return $this->render('_form', [
                     'model' => $model,

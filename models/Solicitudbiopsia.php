@@ -72,21 +72,31 @@ class Solicitudbiopsia extends Solicitud
                [['id_paciente'], 'required',  'message' => 'El campo paciente no puede estar vacío.'],
                [['id_medico'], 'required',  'message' => 'El campo medico no puede estar vacío.'],
                [['id_paciente', 'id_procedencia', 'id_medico',  'fechadeingreso', 'id_estudio', 'id_estado'], 'required'],
-               [['protocolo'], 'required',  'whenClient' => "function (attribute, value) {
-               return $('#solicitudbiopsia-protocolo_automatico').val() == 0;
-           }"],
+           //     [['protocolo'], 'required',  'whenClient' => "function (attribute, value) {
+           //     return $('#solicitudbiopsia-protocolo_automatico').val() == 0;
+           // }"],
+           [['protocolo'], 'required'],
                ///////
             //[['id_paciente', 'id_procedencia', 'id_medico', 'id_plantillamaterial', 'id_materialginecologico', 'id_estudio', 'id_estado' ,'id_anio_protocolo'], 'default', 'value' => null],
             [['id_paciente', 'id_procedencia', 'id_medico', 'id_materialsolicitud', 'id_materialginecologico', 'id_estudio', 'id_estado'], 'integer'],
             [['fecharealizacion', 'fechadeingreso'], 'safe'],
-            [['fechadeingreso','protocolo_automatico'], 'required'],
+            // [['fechadeingreso','protocolo_automatico'], 'required'],
+              [['fechadeingreso'], 'required'],
+              [ 'protocolo', 'validacion_protocolo_anio'],
              [['id_anio_protocolo', 'protocolo'], 'unique','message' => 'El numero de protocolo ya fue asignado para el año seleccionado','targetAttribute' => ['id_anio_protocolo', 'protocolo']],
             [['observacion', 'sitio_prec_toma', 'datos_clin_interes', 'diagnostico_presuntivo', 'biopsia_anterior_resultado'], 'string'],
             [['id_materialginecologico'], 'exist', 'skipOnError' => true, 'targetClass' => Paramaterialginecologico::className(), 'targetAttribute' => ['id_materialginecologico' => 'id']],
             [['id_paciente'], 'exist', 'skipOnError' => true, 'targetClass' => Paciente::className(), 'targetAttribute' => ['id_paciente' => 'id']],
         ];
     }
+    public function validacion_protocolo_anio($attribute, $params){
+        // add custom validation
+        $solpap=Solicitudpap::find()->where(['protocolo' =>$this->protocolo,'id_anio_protocolo' => $this->id_anio_protocolo])->one();
+        if(isset($solpap)){
+          $this->addError('protocolo','El numero de protocolo ya fue asignado para el año seleccionado');
 
+        }
+    }
     /**
      * {@inheritdoc}
      */

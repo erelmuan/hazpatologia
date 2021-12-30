@@ -68,12 +68,15 @@ CrudAsset::register($this);
 
       <div class='col-sm-3'>
         <b>
-        <? if( isset($protocolo_insertar)){
-        echo $form->field($model, 'protocolo')->textInput(['readonly'=> true , 'value'=>$protocolo_insertar,'style'=> 'font-size:23px; color:red;']) ;
-       }else {
-         echo $form->field($model, 'protocolo')->textInput(['readonly'=> true ,'style'=> 'font-size:23px;color:red;']) ;
+        <?
+      //   if( isset($protocolo_insertar)){
+      //   echo $form->field($model, 'protocolo')->textInput(['readonly'=> true , 'value'=>$protocolo_insertar,'style'=> 'font-size:23px; color:red;']) ;
+      //  }else {
+      //    echo $form->field($model, 'protocolo')->textInput(['readonly'=> true ,'style'=> 'font-size:23px;color:red;']) ;
+      // }
+      echo $form->field($model, 'protocolo')->textInput(['style'=> 'font-size:23px;color:red;']) ;
 
-      } ?>
+       ?>
     </b>
       <label> Paciente </label></br>
       <input id="solicitud-paciente" class="form-control"  style="width:250px;" value='<?=($model->paciente)?$model->paciente->apellido.", ".$model->paciente->nombre:''; ?>' type="text" readonly>
@@ -119,11 +122,10 @@ CrudAsset::register($this);
            ?>
 
            <?
-           // if( isset($protocolo_insertar)){
-             echo $form->field($model, 'protocolo_automatico')->checkBox(['label' => 'Protocolo automatico',
-        'onclick' => 'cambioProtocoloAutomatico();', 'checked' => '1','value' => '1']);
+           //Cuando se incorpore esta funcionalidad hay que cambiar la base de datos por NOT NULL
+           echo $form->field($model, 'protocolo_automatico')->checkBox([
+         'onclick' => 'cambioProtocoloAutomatico();', 'checked' => '1','value' => '0'])->hiddenInput()->label(false);
 
-      // }
       ?>
              </div>
              <div class='col-sm-3'>
@@ -388,19 +390,20 @@ function agregarFormularioPac (){
     $('span.kv-clear-radio').click();
     $('button.btn.btn-default').click();
 
-    swal(
-    'Se agrego el paciente' ,
-    'PRESIONAR OK',
-    'success'
-    )
-  }
-  else {
-      swal(
-      'No se ha seleccionado a ningún paciente' ,
-      'PRESIONAR OK',
-      'error'
-    );
-  }
+    swal({
+         title: "Confirmado!",
+         text: "Se agrego el paciente",
+         type: "success",
+         timer: 800
+         })
+       }
+       else {
+         swal(
+         'No se ha seleccionado a ningún paciente' ,
+         'PRESIONAR OK',
+         'error'
+       );
+       }
 
 }
 function quitarSeleccion (){
@@ -417,11 +420,13 @@ function agregarFormularioMed (){
     $('span.kv-clear-radio').click();
     $('button.btn.btn-default').click();
 
-    swal(
-    'Se agrego el medico' ,
-    'PRESIONAR OK',
-    'success'
-    )
+    swal({
+         title: "Confirmado!",
+         text: "Se agrego el medico",
+         type: "success",
+         timer: 800
+         })
+
   }
   else {
     swal(

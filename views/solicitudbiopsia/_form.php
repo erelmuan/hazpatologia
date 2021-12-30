@@ -71,12 +71,16 @@ CrudAsset::register($this);
 
           <div class='col-sm-3'>
             <b>
-            <? if( isset($protocolo_insertar)){
-            echo $form->field($model, 'protocolo')->textInput(['readonly'=> true , 'value'=>$protocolo_insertar,'style'=> 'font-size:23px; color:red;']) ;
-           }else {
-             echo $form->field($model, 'protocolo')->textInput(['readonly'=> true ,'style'=> 'font-size:23px;color:red;']) ;
+            <?
+            echo $form->field($model, 'protocolo')->textInput(['style'=> 'font-size:23px;color:red;']) ;
 
-          } ?>
+          //   if( isset($protocolo_insertar)){
+          //   echo $form->field($model, 'protocolo')->textInput(['readonly'=> true , 'value'=>$protocolo_insertar,'style'=> 'font-size:23px; color:red;']) ;
+          //  }else {
+          //    echo $form->field($model, 'protocolo')->textInput(['readonly'=> true ,'style'=> 'font-size:23px;color:red;']) ;
+          //
+          // }
+          ?>
         </b>
 
           <label> Paciente </label></br>
@@ -114,8 +118,9 @@ CrudAsset::register($this);
                        'single_backstroke_delete' => false,
                    ],
            ])->label("Procedencia");
-            echo $form->field($model, 'protocolo_automatico')->checkBox(['label' => 'Protocolo automatico',
-       'onclick' => 'cambioProtocoloAutomatico();', 'checked' => '1','value' => '1']);
+           //Cuando se incorpore esta funcionalidad hay que cambiar la base de datos por NOT NULL
+            echo $form->field($model, 'protocolo_automatico')->checkBox([
+       'onclick' => 'cambioProtocoloAutomatico();', 'checked' => '1','value' => '0'])->hiddenInput()->label(false);
 
        ?>
 
@@ -398,7 +403,7 @@ if ($("tr.success").find("td:eq(1)").text() != ""){
        title: "Confirmado!",
        text: "Se agrego el paciente",
        type: "success",
-       timer: 1800
+       timer: 800
        })
      }
      else {
@@ -426,7 +431,7 @@ if ($("tr.success").find("td:eq(1)").text() != ""){
        title: "Confirmado!",
        text: "Se agrego el medico",
        type: "success",
-       timer: 1800
+       timer: 800
        })
 
 }

@@ -349,7 +349,7 @@ white-space: nowrap;
     display: -ms-flexbox;
     display: flex;
     z-index: 1;
-    position: fixed; /* Hacemos que la cabecera tenga una posición fija */
+    /* position: fixed; /* Hacemos que la cabecera tenga una posición fija */ */
 }
 .nav-md .container.body .col-md-3.left_col.menu_fixed {
     height: 100%;

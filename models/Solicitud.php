@@ -52,12 +52,18 @@ class Solicitud extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id_paciente', 'id_procedencia', 'id_medico',  'fechadeingreso', 'id_estudio', 'id_estado'], 'required'],
+          [['id_paciente'], 'required',  'message' => 'El campo paciente no puede estar vacío.'],
+          [['id_medico'], 'required',  'message' => 'El campo medico no puede estar vacío.'],
+          [['id_paciente', 'id_procedencia', 'id_medico',  'fechadeingreso', 'id_estudio', 'id_estado'], 'required'],
+
             [['id_paciente', 'id_procedencia', 'id_medico', 'id_materialsolicitud', 'id_estudio', 'id_estado'], 'integer'],
             [['fecharealizacion', 'fechadeingreso'], 'safe'],
-            [['fechadeingreso', 'protocolo','protocolo_automatico'], 'required'],
+            [['fechadeingreso', 'protocolo'], 'required'],
             [['observacion'], 'string'],
-            [['protocolo', 'id_anio_protocolo'], 'unique', 'targetAttribute' => ['protocolo', 'id_anio_protocolo']],
+            // [['protocolo', 'id_anio_protocolo'], 'unique','message' => 'El numero de protocolo ya fue asignado para el año seleccionado', 'targetAttribute' => ['protocolo', 'id_anio_protocolo']],
+            // [['id_anio_protocolo', 'protocolo'], 'unique','message' => 'El numero de protocolo ya fue asignado para el año seleccionado','targetAttribute' => ['id_anio_protocolo', 'protocolo']],
+
+            // [['id_anio_protocolo', 'protocolo'], 'unique','message' => 'El numero de protocolo ya fue asignado para el año seleccionado','targetAttribute' => ['id_anio_protocolo', 'protocolo']],
             [['protocolo_automatico'], 'boolean'],
             [['id_estado'], 'exist', 'skipOnError' => true, 'targetClass' => Estado::className(), 'targetAttribute' => ['id_estado' => 'id']],
             [['id_estudio'], 'exist', 'skipOnError' => true, 'targetClass' => Estudio::className(), 'targetAttribute' => ['id_estudio' => 'id']],
