@@ -40,6 +40,9 @@ use app\models\Rol;
 use app\models\Modulo;
 use app\models\Accion;
 use app\models\Firma;
+use app\models\Tipoprofesional;
+
+
 
 use app\components\Seguridad\Seguridad;
 
@@ -120,7 +123,6 @@ class SiteController extends Controller
 
        $cantidadBiopsias = Biopsia::find()->count();
        $cantidadSolicitudes =Solicitud::find()->count();
-       $cantidadMedicos = Medico::find()->count();
        $cantidadPacientes = Paciente::find()->count();
        $cantidadPaps = Pap::find()->count();
        $cantidadProcedencia =Procedencia::find()->count();
@@ -130,7 +132,6 @@ class SiteController extends Controller
         'cantidadBiopsias'=>$cantidadBiopsias,
         'cantidadPacientes'=>$cantidadPacientes,
         'cantidadPaps'=>$cantidadPaps,
-        'cantidadMedicos'=>$cantidadMedicos,
         'cantidadProcedencia'=>$cantidadProcedencia,
         ]);
     }
@@ -304,6 +305,16 @@ class SiteController extends Controller
        'cantidadSolicitudpap'=>$cantidadSolicitudpap,
 
       ]);
+    }
+    public function actionProfesionales()
+    {
+      $cantidadMedicos = Medico::find()->count();
+      $cantidadTipoProfesional = Tipoprofesional::find()->count();
+
+        return $this->render('profesionales',[
+          'cantidadTipoProfesional'=>$cantidadTipoProfesional,
+          'cantidadMedicos'=>$cantidadMedicos,
+         ]);
     }
     public function actionConstruccion()
     {
