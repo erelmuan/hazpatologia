@@ -335,11 +335,12 @@ function pacienteba(){
             'error'
             )
           }else{
-            swal(
-            'Se agrego el paciente' ,
-            'PRESIONAR OK',
-            'success'
-            )
+            swal({
+                 title: "Confirmado!",
+                 text: "Se agrego el paciente",
+                 type: "success",
+                 timer: 800
+               });
           document.getElementById("solicitud-paciente").value= content['apellido']+", "+content['nombre'];
           document.getElementById("solicitudpap-id_paciente").value= content['id'];
          }
@@ -366,11 +367,12 @@ function medicoba(){
             'error'
             )
           }else{
-            swal(
-            'Se agrego el medico' ,
-            'PRESIONAR OK',
-            'success'
-            )
+            swal({
+           title: "Confirmado!",
+           text: "Se agrego el medico",
+           type: "success",
+           timer: 800
+         });
           document.getElementById("solicitud-medico").value= content['apellido']+" "+content['nombre'];
           document.getElementById("solicitudpap-id_medico").value= content['id'];
         }
