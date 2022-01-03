@@ -338,32 +338,32 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
             echo  $form->field($model, 'estado')->input("text",['readonly' => true , "value"=>$model->estado->descripcion])->label('Estado');
 
           }?>
-    <?= $form->field($model, 'observacion')->textarea(['rows' => 7]) ?>
+    <?= $form->field($model, 'observacion')->textarea(['rows' => 7,'style'=> 'font-size:17px;']) ?>
     </div>
 
      <div class="col-md-8 col-sm-12 col-xs-12 form-group">
-       <?=$form->field($model, 'flora')->textarea(['rows' => 3])  ?>
+       <?=$form->field($model, 'flora')->textarea(['rows' => 3,'style'=> 'font-size:17px;'])  ?>
      </div>
      <div class="col-md-8 col-sm-12 col-xs-12 form-group">
-       <?= $form->field($model, 'aspecto')->textarea(['rows' => 3]) ?>
+       <?= $form->field($model, 'aspecto')->textarea(['rows' => 3,'style'=> 'font-size:17px;']) ?>
      </div>
      <div class="col-md-8 col-sm-12 col-xs-12 form-group">
-       <?= $form->field($model, 'pavimentosas')->textarea(['rows' => 3]) ?>
+       <?= $form->field($model, 'pavimentosas')->textarea(['rows' => 3,'style'=> 'font-size:17px;']) ?>
      </div>
      <div class="col-md-8 col-sm-12 col-xs-12 form-group">
-      <?= $form->field($model, 'glandulares')->textarea(['rows' => 3]) ?>
+      <?= $form->field($model, 'glandulares')->textarea(['rows' => 3,'style'=> 'font-size:17px;']) ?>
     </div>
     <div class="col-md-8 col-sm-12 col-xs-12 form-group">
       <? if( !isset($model->estado) || $model->estado->descripcion!=="LISTO"){
-          echo $form->field($model, 'diagnostico')->textarea(['rows' => 4 ]);
+          echo $form->field($model, 'diagnostico')->textarea(['rows' => 4 ,'style'=> 'font-size:17px;']);
         } else {
-          echo $form->field($model, 'diagnostico')->textarea(['rows' => 4, 'readonly' => true]);
+          echo $form->field($model, 'diagnostico')->textarea(['rows' => 4, 'readonly' => true,'style'=> 'font-size:17px;']);
 
         }
           ?>
    </div>
    <div class="col-md-8 col-sm-12 col-xs-12 form-group">
-    <?= $form->field($model, 'frase')->textarea(['rows' => 3]) ?>
+    <?= $form->field($model, 'frase')->textarea(['rows' => 3,'style'=> 'font-size:17px;']) ?>
   </div>
     <div class="col-md-12 col-sm-12 col-xs-12 form-group">
       <?= Html::submitButton($model->isNewRecord ? 'Guardar' : 'Actualizar', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
