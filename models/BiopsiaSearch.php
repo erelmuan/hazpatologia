@@ -115,11 +115,9 @@ class BiopsiaSearch extends Biopsia
             ->andFilterWhere(['ilike', 'ubicacion', $this->ubicacion])
             ->andFilterWhere(['ilike', 'observacion', $this->observacion]);
             $query->andFilterWhere(['=', 'fecharealizacion', $this->fecharealizacion]);
-            $query->andFilterWhere(['>=', 'fecharealizacion', $this->fecha_desde]);
-            $query->andFilterWhere(['<=', 'fecharealizacion', $this->fecha_hasta]);
             $query->andFilterWhere(['=', 'fechadeingreso', $this->fechadeingreso]);
             $query->andFilterWhere(['>=', 'fechadeingreso', $this->fecha_desde]);
-            $query->andFilterWhere(['<=', 'fechadeingreso', $this->fecha_hasta]);
+            $query->andFilterWhere(['<', 'fechadeingreso', $this->fecha_hasta]);
         return $dataProvider;
     }
 }

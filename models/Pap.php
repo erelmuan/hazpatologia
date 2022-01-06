@@ -170,7 +170,7 @@ class Pap extends \yii\db\ActiveRecord
               'class'=>'\kartik\grid\DataColumn',
               'attribute'=>'fecharealizacion',
               'label'=> 'Fecha de realización',
-              'value'=>'solicitudbiopsia.fecharealizacion',
+              'value'=>'solicitudpap.fecharealizacion',
               'format' => ['date', 'd/M/Y'],
               'filterInputOptions' => [
                   'id' => 'fecha1',
@@ -188,7 +188,7 @@ class Pap extends \yii\db\ActiveRecord
               'class'=>'\kartik\grid\DataColumn',
               'attribute'=>'fechadeingreso',
               'label'=> 'Fecha de ingreso',
-              'value'=>'solicitudbiopsia.fechadeingreso',
+              'value'=>'solicitudpap.fechadeingreso',
               'format' => ['date', 'd/M/Y'],
               'filterInputOptions' => [
                   'id' => 'fecha1',
@@ -197,7 +197,6 @@ class Pap extends \yii\db\ActiveRecord
                   'format' => 'dd/mm/yyyy',
                   'startView' => 'year',
                   'placeholder' => 'd/m/aaaa'
-
               ]
 
           ],

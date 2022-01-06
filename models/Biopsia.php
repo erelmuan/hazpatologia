@@ -169,7 +169,6 @@ class Biopsia extends \yii\db\ActiveRecord
                   'format' => 'dd/mm/yyyy',
                   'startView' => 'year',
                   'placeholder' => 'd/m/aaaa'
-
               ]
 
           ],
