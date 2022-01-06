@@ -55,14 +55,14 @@ $this->title = 'Inicio';
         </div>
       </div>
       </a>
-      <a href=<?=Yii::$app->homeUrl."?r=site/localizacion"; ?>>
+      <a href=<?=Yii::$app->homeUrl."?r=site/extras"; ?>>
         <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
           <div class="tile-stats">
-            <div class="icon"><i class="fa fa-location-arrow"></i>
+            <div class="icon"><i class="fa fa-table"></i>
             </div>
             <div class="count">3</div>
 
-            <h3>LOCALIZACIÓN</h3>
+            <h3>TABLAS-EXTRAS</h3>
             <p>Permisos-cambio de clave-roles.</p>
           </div>
         </div>
@@ -79,14 +79,14 @@ $this->title = 'Inicio';
         </div>
       </div>
       </a>
-      <a href=<?=Yii::$app->homeUrl."?r=site/profesionales"; ?>>
+      <a href=<?=Yii::$app->homeUrl."?r=medico"; ?>>
       <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
         <div class="tile-stats">
           <div class="icon"><i class="fa fa-user-md"></i>
           </div>
-          <div class="count">2</div>
+          <div class="count"><?=$cantidadMedicos ?></div>
 
-          <h3>PROFESIONALES</h3>
+          <h3>MEDICOS</h3>
           <p>Información de los medicos - ABM.</p>
         </div>
       </div>
@@ -174,12 +174,7 @@ $this->title = 'Inicio';
 </div>
 </div>
 <div id="detalleIndex" >
-  <?
-  // $db = Yii::$app->db;
-  // $protocolo = $db->createCommand('SELECT protocolo FROM solicitud  WHERE anio =2020 order by protocolo DESC')
-  //             ->queryColumn();
-  //             echo($protocolo[0]);
-              ?>
+
     <?  echo Icon::show('microscope', ['class'=>'fa-2x', 'framework' => Icon::WHHG]);
      ?>
      <span>DEPARTAMENTO DE ANATOMIA PATOLÓGICA HOSPITAL ARTÉMIDES ZATTI </span>

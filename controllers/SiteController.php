@@ -41,8 +41,10 @@ use app\models\Modulo;
 use app\models\Accion;
 use app\models\Firma;
 use app\models\Tipoprofesional;
-
-
+use app\models\Obrasocial;
+use app\models\Nacionalidad;
+use app\models\Tipodoc;
+use app\models\Estado;
 
 use app\components\Seguridad\Seguridad;
 
@@ -126,6 +128,7 @@ class SiteController extends Controller
        $cantidadPacientes = Paciente::find()->count();
        $cantidadPaps = Pap::find()->count();
        $cantidadProcedencia =Procedencia::find()->count();
+       $cantidadMedicos = Medico::find()->count();
 
         return $this->render('index',['cantidadBiopsias'=>$cantidadBiopsias,
         'cantidadSolicitudes'=>$cantidadSolicitudes,
@@ -133,6 +136,8 @@ class SiteController extends Controller
         'cantidadPacientes'=>$cantidadPacientes,
         'cantidadPaps'=>$cantidadPaps,
         'cantidadProcedencia'=>$cantidadProcedencia,
+        'cantidadMedicos'=>$cantidadMedicos,
+
         ]);
     }
 
@@ -226,15 +231,29 @@ class SiteController extends Controller
        'cantidadPlantillaFra'=>$cantidadPlantillaFra,
       ]);
     }
-    public function actionLocalizacion()
+    public function actionExtras()
     {
       $cantidadProcedencia = Procedencia::find()->count();
       $cantidadProvincia =Provincia::find()->count();
       $cantidadLocalidad = Localidad::find()->count();
-     return $this->render('localizacion',[
+      $cantidadTipoProfesional = Tipoprofesional::find()->count();
+      $cantidadObrasocial = Obrasocial::find()->count();
+      $cantidadNacionalidad = Nacionalidad::find()->count();
+      $cantidadTipoDoc = Tipodoc::find()->count();
+      $cantidadEstado = Estado::find()->count();
+
+     return $this->render('extras',[
        'cantidadProcedencia'=>$cantidadProcedencia,
        'cantidadProvincia'=>$cantidadProvincia,
        'cantidadLocalidad'=>$cantidadLocalidad,
+       'cantidadTipoProfesional'=>$cantidadTipoProfesional,
+       'cantidadObrasocial'=>$cantidadObrasocial,
+       'cantidadNacionalidad'=>$cantidadNacionalidad,
+       'cantidadTipoDoc'=>$cantidadTipoDoc,
+       'cantidadEstado'=>$cantidadEstado,
+
+
+
           ]);
     }
     public function actionPlantillasbiopsias()
@@ -306,16 +325,7 @@ class SiteController extends Controller
 
       ]);
     }
-    public function actionProfesionales()
-    {
-      $cantidadMedicos = Medico::find()->count();
-      $cantidadTipoProfesional = Tipoprofesional::find()->count();
 
-        return $this->render('profesionales',[
-          'cantidadTipoProfesional'=>$cantidadTipoProfesional,
-          'cantidadMedicos'=>$cantidadMedicos,
-         ]);
-    }
     public function actionConstruccion()
     {
         return $this->render('construccion');

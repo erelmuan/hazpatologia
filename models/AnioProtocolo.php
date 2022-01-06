@@ -92,4 +92,22 @@ class AnioProtocolo extends \yii\db\ActiveRecord
 		   {
 		       return $this->hasMany(Solicitud::className(), ['id_anio_protocolo' => 'id']);
 		   }
+
+       public function Estudios()
+      {
+          if (!isset($this->id))
+              return false;
+          $id= $this->id;
+          $estudios = Solicitud::find()
+           ->innerJoinWith('anioProtocolo', 'anio_protocolo.id = solicitud.id_anio_protocolo')
+           //Estado 2 pap
+           ->where(['and', "anio_protocolo.id=".$id])
+           ->count('*');
+         if ($estudios >0)
+             return true;
+
+        return false;
+      }
+
+
 }

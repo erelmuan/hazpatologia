@@ -16,6 +16,11 @@ $this->params['breadcrumbs'][] = $this->title;
 CrudAsset::register($this);
 
 ?>
+<div id="w0Prov" class="x_panel">
+  <div class="x_title"><h2><i class="fa fa-table"></i> OBRAS SOCIALES  </h2>
+    <div class="clearfix"> <div class="nav navbar-right panel_toolbox"><?echo Html::button('<i class="glyphicon glyphicon-arrow-left"></i> Atrás',array('name' => 'btnBack','onclick'=>'js:history.go(-1);returnFalse;','id'=>'botonAtras')); ?></div>
+</div>
+  </div>
 <div class="obrasocial-index">
     <div id="ajaxCrudDatatable">
         <?=GridView::widget([
@@ -41,24 +46,12 @@ CrudAsset::register($this);
             'responsive' => true,
             'panel' => [
                 'type' => 'primary',
-                'heading' => '<i class="glyphicon glyphicon-list"></i> Obrasocials listing',
+                'heading' => '<i class="glyphicon glyphicon-list"></i> Lista de obras sociales',
                 'before'=>'<em>* Para buscar algún registro tipear en el filtro y presionar ENTER </em>',
-                'after'=>BulkButtonWidget::widget([
-                            'buttons'=>Html::a('<i class="glyphicon glyphicon-trash"></i>&nbsp; Delete All',
-                                ["bulk-delete"] ,
-                                [
-                                    "class"=>"btn btn-danger btn-xs",
-                                    'role'=>'modal-remote-bulk',
-                                    'data-confirm'=>false, 'data-method'=>false,// for overide yii data api
-                                    'data-request-method'=>'post',
-                                    'data-confirm-title'=>'Are you sure?',
-                                    'data-confirm-message'=>'Are you sure want to delete this item'
-                                ]),
-                        ]).
-                        '<div class="clearfix"></div>',
             ]
         ])?>
     </div>
+</div>
 </div>
 <?php Modal::begin([
     "id"=>"ajaxCrudModal",

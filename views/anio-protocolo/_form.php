@@ -12,8 +12,12 @@ use yii\widgets\ActiveForm;
 <div class="anio-protocolo-form">
 
     <?php $form = ActiveForm::begin(); ?>
-
-    <?= $form->field($model, 'anio')->textInput(); ?>
+    <? if($model->estudios()){
+                echo  $form->field($model, 'anio')->input("text",['readonly' => true])->label('Nombre');
+              }else {
+                echo  $form->field($model, 'anio')->input("text",['style'=> 'width:100%; text-transform:uppercase;'])->label('Nombre');
+              }
+            ?>
     <? if (!$model->isNewRecord){
     echo $form->field($model, 'activo')->checkbox(['readOnly' => true]); }?>
 

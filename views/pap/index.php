@@ -84,14 +84,8 @@ $columns[]=
         'urlCreator' => function($action, $model, $key, $index) {
             return Url::to([$action,'id'=>$key]);
         },
-        'viewOptions'=>['role'=>'modal-remote','title'=>'Ver','data-toggle'=>'tooltip'],
-        'updateOptions'=>['title'=>'Editar', 'data-toggle'=>'tooltip'],
-        'deleteOptions'=>['role'=>'modal-remote','title'=>'Borrar',
-            'data-confirm'=>false, 'data-method'=>false,// for overide yii data api
-            'data-request-method'=>'post',
-            'data-toggle'=>'tooltip',
-            'data-confirm-title'=>'Pap',
-            'data-confirm-message'=>'¿ Desea borrar este registro ?'],
+        'updateOptions'=>['title'=>'Actualizar', 'data-toggle'=>'tooltip','icon'=>"<button class='btn-primary btn-circle'><span class='glyphicon glyphicon-pencil'></span></button>"],
+
         'visibleButtons'=>[
             'view'=> ['view'],
             'update'=> ['update'],

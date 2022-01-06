@@ -1,3 +1,24 @@
+<style>
+  .x_title h2 {
+      margin: 5px 0 6px;
+      float: left;
+      display: block;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+  }
+  .x_title {
+    border-bottom: 2px solid #E6E9ED;
+    padding: 0px;
+    margin-bottom: 10px;
+    height:45;
+}
+.tile-stats{
+background: #D5ECF4;
+}
+
+
+</style>
 <?php
 use kartik\icons\Icon;
 use yii\helpers\Html;
@@ -7,31 +28,6 @@ Icon::map($this, Icon::WHHG);
 // Maps the Elusive icon font framework/* @var $this yii\web\View */
 
 $this->title = 'Administración';
-?>
-<style>
-.tile-stats{
-background: #D5ECF4;
-}
-.body-content {
-  display: flex;
-  justify-content: center;
-  margin-left: auto;
-  margin-right: auto;
-
-}
-.row {
-  display: flex;
-  justify-content: center;
-  width: 1000px;
-}
-.tile-stats {
-  width: 300px;
-
-
-}
-</style>
-
-  <?php
   use derekisbusy\panel\PanelWidget;
   ?>
   <div id="w0" class="x_panel">

@@ -71,18 +71,11 @@ $columns[]=
         // 'urlCreator' => function($action, $model, $key, $index) {
         //     return Url::to([$action,'id'=>$key]);
         // },
-        'viewOptions'=>['role'=>'modal-remote','title'=>'Ver','data-toggle'=>'tooltip'],
-        'updateOptions'=>['title'=>'Editar', 'data-toggle'=>'tooltip'],
-        'deleteOptions'=>['role'=>'modal-remote','title'=>'Borrar',
-            'data-confirm'=>false, 'data-method'=>false,// for overide yii data api
-            'data-request-method'=>'post',
-            'data-toggle'=>'tooltip',
-            'data-confirm-title'=>'Solicitud',
-            'data-confirm-message'=>'¿ Desea borrar este registro ?'],
+
 
             'buttons' => [
               'view' => function ($url, $model, $key) {
-                return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', [$model::tableName().$model->estudio->modelo.'/view',"id"=> $key]
+                return Html::a("<button class='btn-success btn-circle'><span class='glyphicon glyphicon-eye-open'></span></button>", [$model::tableName().$model->estudio->modelo.'/view',"id"=> $key]
                 ,[ 'role'=>'modal-remote',
                    'title'=>'Ver',
                   'data-toggle'=>'tooltip'
@@ -93,7 +86,7 @@ $columns[]=
               },
 
               'update' => function ($url, $model, $key) {
-                return Html::a('<span class="glyphicon glyphicon-pencil"></span>', [$model::tableName().$model->estudio->modelo.'/update',"id"=> $key]
+                return Html::a("<button class='btn-primary btn-circle'><span class='glyphicon glyphicon-pencil'></span></button>", [$model::tableName().$model->estudio->modelo.'/update',"id"=> $key]
                 ,[
                    'title'=>'Actualizar',
                   'data-toggle'=>'tooltip'

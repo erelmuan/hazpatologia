@@ -50,6 +50,20 @@ $bundle = yiister\gentelella\assets\Asset::register($this);
         position:absolute;
         right:123px;
       top: 40px;     }
+      .panel-primary > .panel-heading {
+          color: #fff;
+          background-color: #333;
+          border-color: #977979;
+      }
+      .btn-circle {
+          width: 25px;
+          height: 25px;
+          /* padding: 6px 0px; */
+          border-radius: 15px;
+          text-align: center;
+          font-size: 12px;
+          line-height: 1.42857;
+      }
      </style>
 </head>
 

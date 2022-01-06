@@ -16,6 +16,11 @@ $this->params['breadcrumbs'][] = $this->title;
 CrudAsset::register($this);
 
 ?>
+<div id="w0Prov" class="x_panel">
+  <div class="x_title"><h2><i class="fa fa-table"></i> TIPO DE DOCUMENTOS  </h2>
+    <div class="clearfix"> <div class="nav navbar-right panel_toolbox"><?echo Html::button('<i class="glyphicon glyphicon-arrow-left"></i> Atrás',array('name' => 'btnBack','onclick'=>'js:history.go(-1);returnFalse;','id'=>'botonAtras')); ?></div>
+</div>
+  </div>
 <div class="tipodoc-index">
     <div id="ajaxCrudDatatable">
         <?=GridView::widget([
@@ -29,9 +34,9 @@ CrudAsset::register($this);
             'toolbar'=> [
                 ['content'=>
                     Html::a('<i class="glyphicon glyphicon-plus"></i>', ['create'],
-                    ['role'=>'modal-remote','title'=> 'Create new Tipodocs','class'=>'btn btn-default']).
+                    ['role'=>'modal-remote','title'=> 'Crear nuevo tipo doc','class'=>'btn btn-default']).
                     Html::a('<i class="glyphicon glyphicon-repeat"></i>', [''],
-                    ['data-pjax'=>1, 'class'=>'btn btn-default', 'title'=>'Reset Grid']).
+                    ['data-pjax'=>1, 'class'=>'btn btn-default', 'title'=>'Refrescar']).
                     '{toggleData}'.
                     '{export}'
                 ],
@@ -41,24 +46,13 @@ CrudAsset::register($this);
             'responsive' => true,
             'panel' => [
                 'type' => 'primary',
-                'heading' => '<i class="glyphicon glyphicon-list"></i> Tipodocs listing',
+                'heading' => '<i class="glyphicon glyphicon-list"></i> Lista de tipo de documentos',
                 'before'=>'<em>* Para buscar algún registro tipear en el filtro y presionar ENTER </em>',
-                'after'=>BulkButtonWidget::widget([
-                            'buttons'=>Html::a('<i class="glyphicon glyphicon-trash"></i>&nbsp; Delete All',
-                                ["bulk-delete"] ,
-                                [
-                                    "class"=>"btn btn-danger btn-xs",
-                                    'role'=>'modal-remote-bulk',
-                                    'data-confirm'=>false, 'data-method'=>false,// for overide yii data api
-                                    'data-request-method'=>'post',
-                                    'data-confirm-title'=>'Are you sure?',
-                                    'data-confirm-message'=>'Are you sure want to delete this item'
-                                ]),
-                        ]).
-                        '<div class="clearfix"></div>',
+
             ]
         ])?>
     </div>
+</div>
 </div>
 <?php Modal::begin([
     "id"=>"ajaxCrudModal",

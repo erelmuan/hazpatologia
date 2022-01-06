@@ -60,6 +60,7 @@ class Solicitud extends \yii\db\ActiveRecord
             [['fecharealizacion', 'fechadeingreso'], 'safe'],
             [['fechadeingreso', 'protocolo'], 'required'],
             [['observacion'], 'string'],
+            
             // [['protocolo', 'id_anio_protocolo'], 'unique','message' => 'El numero de protocolo ya fue asignado para el año seleccionado', 'targetAttribute' => ['protocolo', 'id_anio_protocolo']],
             // [['id_anio_protocolo', 'protocolo'], 'unique','message' => 'El numero de protocolo ya fue asignado para el año seleccionado','targetAttribute' => ['id_anio_protocolo', 'protocolo']],
 
@@ -72,6 +73,7 @@ class Solicitud extends \yii\db\ActiveRecord
             [['id_materialsolicitud'], 'exist', 'skipOnError' => true, 'targetClass' => Materialsolicitud::className(), 'targetAttribute' => ['id_materialsolicitud' => 'id']],
             [['id_procedencia'], 'exist', 'skipOnError' => true, 'targetClass' => Procedencia::className(), 'targetAttribute' => ['id_procedencia' => 'id']],
  	          [['id_anio_protocolo'], 'exist', 'skipOnError' => true, 'targetClass' => AnioProtocolo::className(), 'targetAttribute' => ['id_anio_protocolo' => 'id']],
+
         ];
     }
 
@@ -226,10 +228,7 @@ class Solicitud extends \yii\db\ActiveRecord
               'class'=>'\kartik\grid\DataColumn',
               'attribute'=>'observacion',
           ],
-          // [
-              // 'class'=>'\kartik\grid\DataColumn',
-              // 'attribute'=>'informe',
-          // ],
+
 
         ];
     }
@@ -279,13 +278,6 @@ class Solicitud extends \yii\db\ActiveRecord
     public function getProcedencia(){
         return $this->hasOne(Procedencia::className(), ['id' => 'id_procedencia']);
     }
-    /**
-   		    * @return \yii\db\ActiveQuery
-   		    */
-   		   public function getAnioProtocolo()
-   		   {
-   		       return $this->hasOne(AnioProtocolo::className(), ['id' => 'id_anio_protocolo']);
-   		   }
 
     public function obtenerProtocolo()  {
         $anioprotocolo= AnioProtocolo::anioprotocoloActivo();
@@ -355,5 +347,10 @@ class Solicitud extends \yii\db\ActiveRecord
           }
           return $ano_diferencia;
       }
-
+      /**
+      		    * @return \yii\db\ActiveQuery
+      		    */
+    public function getAnioProtocolo() {
+  	    return $this->hasOne(AnioProtocolo::className(), ['id' => 'id_anio_protocolo']);
+       }
 }
