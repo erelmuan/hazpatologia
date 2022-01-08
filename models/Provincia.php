@@ -43,33 +43,26 @@ class Provincia extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'idprovincia' => 'Idprovincia',
+            'id' => 'Id',
             'nombre' => 'Nombre',
             'codigo' => 'Codigo',
         ];
     }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getDepartamentos()
-    {
-        return $this->hasMany(Departamento::className(), ['idprovincia' => 'idprovincia']);
-    }
 
     /**
      * @return \yii\db\ActiveQuery
      */
     public function getLocalidads()
     {
-        return $this->hasMany(Localidad::className(), ['idprovincia' => 'idprovincia']);
-    }
+       return $this->hasMany(Localidad::className(), ['id_provincia' => 'id']);
+         }
 
     /**
      * @return \yii\db\ActiveQuery
      */
     public function getPacientes()
     {
-        return $this->hasMany(Paciente::className(), ['idprovincia' => 'idprovincia']);
+      return $this->hasMany(Paciente::className(), ['id_provincia' => 'id']);
     }
 }

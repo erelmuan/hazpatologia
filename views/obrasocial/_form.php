@@ -11,9 +11,20 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'sigla')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'denominacion')->textInput(['maxlength' => true]) ?>
+    <!--si existen pacientes asociados no se puede modificar el sigla  -->
+    <? if($model->carnetOs){
+            echo  $form->field($model, 'sigla')->input("text",['readonly' => true])->label('Nombre');
+          }else {
+            echo  $form->field($model, 'sigla')->input("text",['style'=> 'width:100%; text-transform:uppercase;'])->label('Sigla');
+        }
+    ?>
+    <!--si existen pacientes asociados no se puede modificar el denominacion  -->
+    <? if($model->carnetOs){
+            echo  $form->field($model, 'denominacion')->input("text",['readonly' => true])->label('Nombre');
+          }else {
+            echo  $form->field($model, 'denominacion')->input("text",['style'=> 'width:100%; text-transform:uppercase;'])->label('Denominación');
+        }
+    ?>
 
     <?= $form->field($model, 'direccion')->textInput(['maxlength' => true]) ?>
 

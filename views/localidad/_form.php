@@ -18,7 +18,13 @@ use yii\helpers\ArrayHelper;
 
     <?= $form->field($model, 'id_provincia')->dropDownList(ArrayHelper::map(Provincia::find()->all(), 'id','nombre'))->label('Provincia') ;?>
 
-    <?= $form->field($model, 'nombre')->textInput(['maxlength' => true]) ?>
+    <!--si existen pacientes asociados no se puede modificar el nombre  -->
+    <? if($model->pacientes){
+            echo  $form->field($model, 'nombre')->input("text",['readonly' => true])->label('Nombre');
+          }else {
+            echo  $form->field($model, 'nombre')->input("text",['style'=> 'width:100%; text-transform:uppercase;'])->label('Nombre');
+        }
+    ?>
 
     <?= $form->field($model, 'codigopostal')->textInput() ?>
 

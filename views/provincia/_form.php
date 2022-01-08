@@ -10,8 +10,13 @@ use yii\widgets\ActiveForm;
 <div class="provincia-form">
 
     <?php $form = ActiveForm::begin(); ?>
-
-    <?= $form->field($model, 'nombre')->textInput(['maxlength' => true]) ?>
+    <!--si existen pacientes asociados no se puede modificar el nombre  -->
+    <? if($model->pacientes){
+            echo  $form->field($model, 'nombre')->input("text",['readonly' => true])->label('Nombre');
+          }else {
+            echo  $form->field($model, 'nombre')->input("text",['style'=> 'width:100%; text-transform:uppercase;'])->label('Nombre');
+        }
+    ?>
 
     <?= $form->field($model, 'codigo')->textInput(['maxlength' => true]) ?>
 

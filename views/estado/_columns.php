@@ -16,23 +16,23 @@ return [
         'attribute'=>'descripcion',
     ],
     [
-        'class'=>'\kartik\grid\DataColumn',
+        'class'=>'\kartik\grid\BooleanColumn',
         'attribute'=>'solicitud',
     ],
     [
-        'class'=>'\kartik\grid\DataColumn',
+        'class'=>'\kartik\grid\BooleanColumn',
         'attribute'=>'biopsia',
     ],
     [
-        'class'=>'\kartik\grid\DataColumn',
+        'class'=>'\kartik\grid\BooleanColumn',
         'attribute'=>'pap',
     ],
     [
-        'class'=>'\kartik\grid\DataColumn',
+        'class'=>'\kartik\grid\BooleanColumn',
         'attribute'=>'ver_informe_solicitud',
     ],
     [
-        'class'=>'\kartik\grid\DataColumn',
+        'class'=>'\kartik\grid\BooleanColumn',
         'attribute'=>'ver_informe_estudio',
     ],
     [

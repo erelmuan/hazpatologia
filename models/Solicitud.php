@@ -60,7 +60,7 @@ class Solicitud extends \yii\db\ActiveRecord
             [['fecharealizacion', 'fechadeingreso'], 'safe'],
             [['fechadeingreso', 'protocolo'], 'required'],
             [['observacion'], 'string'],
-            
+
             // [['protocolo', 'id_anio_protocolo'], 'unique','message' => 'El numero de protocolo ya fue asignado para el año seleccionado', 'targetAttribute' => ['protocolo', 'id_anio_protocolo']],
             // [['id_anio_protocolo', 'protocolo'], 'unique','message' => 'El numero de protocolo ya fue asignado para el año seleccionado','targetAttribute' => ['id_anio_protocolo', 'protocolo']],
 
@@ -109,6 +109,8 @@ class Solicitud extends \yii\db\ActiveRecord
           [
               'class'=>'\kartik\grid\DataColumn',
               'attribute'=>'protocolo',
+              'filterInputOptions' => ['class' => 'form-control','placeholder' => 'Protocolo'],
+
           ],
 
             [
@@ -148,7 +150,6 @@ class Solicitud extends \yii\db\ActiveRecord
             'attribute' => 'id_procedencia',
             'label' => 'Procedencia',
             'value' => 'procedencia.nombre',
-
             'filter'=>ArrayHelper::map(Procedencia::find()->all(), 'id','nombre'),
             'filterType' => GridView::FILTER_SELECT2,
             'filterWidgetOptions' => [

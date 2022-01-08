@@ -73,9 +73,9 @@ class Obrasocial extends \yii\db\ActiveRecord
             'direccion' => 'Direccion',
             'telefono' => 'Telefono',
             'id_localidad' => 'Id_localidad',
-            'paginaweb' => 'Paginaweb',
+            'paginaweb' => 'Pagina web',
             'observaciones' => 'Observaciones',
-            'correoelectronico' => 'Correoelectronico',
+            'correoelectronico' => 'Correo electronico',
         ];
     }
 

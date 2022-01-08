@@ -35,7 +35,8 @@
         "kartik-v/yii2-icons": "@dev",
         "yiisoft/yii2-imagine": "^2.1",
 	"yii2assets/yii2-pdfjs": ">=1.0",
-	"nex/yii2-chosen" : "*"
+	"nex/yii2-chosen" : "*",
+  	"ricar2ce/yii2-material-theme": "*"
 
     },
     "require-dev": {

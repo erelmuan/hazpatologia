@@ -10,10 +10,14 @@ use yii\widgets\ActiveForm;
 <div class="tipodoc-form">
 
     <?php $form = ActiveForm::begin(); ?>
+    <!--si existen pacientes asociados no se puede modificar el nombre  -->
+    <? if($model->pacientes){
+            echo  $form->field($model, 'documento')->input("text",['readonly' => true])->label('Documento');
+          }else {
+            echo  $form->field($model, 'documento')->input("text",['style'=> 'width:100%; text-transform:uppercase;'])->label('Documento');
+        }
+    ?>
 
-    <?= $form->field($model, 'documento')->textInput() ?>
-
-  
 	<?php if (!Yii::$app->request->isAjax){ ?>
 	  	<div class="form-group">
 	        <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
@@ -21,5 +25,5 @@ use yii\widgets\ActiveForm;
 	<?php } ?>
 
     <?php ActiveForm::end(); ?>
-    
+
 </div>

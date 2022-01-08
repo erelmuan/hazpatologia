@@ -10,9 +10,13 @@ use yii\widgets\ActiveForm;
 <div class="nacionalidad-form">
 
     <?php $form = ActiveForm::begin(); ?>
-
-    <?= $form->field($model, 'gentilicio')->textInput() ?>
-
+    <!--si existen pacientes asociados no se puede modificar el nombre  -->
+    <? if($model->pacientes){
+            echo  $form->field($model, 'gentilicio')->input("text",['readonly' => true])->label('Gentilicio');
+          }else {
+            echo  $form->field($model, 'gentilicio')->input("text",['style'=> 'width:100%; text-transform:uppercase;'])->label('Gentilicio');
+        }
+    ?>
 
 	<?php if (!Yii::$app->request->isAjax){ ?>
 	  	<div class="form-group">
