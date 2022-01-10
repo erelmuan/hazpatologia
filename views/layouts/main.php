@@ -64,6 +64,7 @@ $bundle = yiister\gentelella\assets\Asset::register($this);
           font-size: 12px;
           line-height: 1.42857;
       }
+
      </style>
 </head>
 

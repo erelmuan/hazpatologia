@@ -198,7 +198,7 @@ class ProcedenciaController extends Controller
           Yii::$app->response->format = Response::FORMAT_HTML;
           // throw new NotFoundHttpException('Error en la base de datos.',500);
           throw new \yii\web\HttpException(500,
-              'No se puede eliminar la procedencia porque esta asociado a una solicitud',500);
+              'No se puede eliminar la procedencia porque esta asociado a una o mas solicitudes',500);
 
       }
 

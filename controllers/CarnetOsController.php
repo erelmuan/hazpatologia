@@ -14,7 +14,7 @@ use yii\filters\VerbFilter;
  */
 class CarnetOsController extends Controller
 {
-  
+
     /**
      * Lists all CarnetOs models.
      * @return mixed
