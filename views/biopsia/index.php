@@ -118,6 +118,7 @@ $columns[]=
             'pjax'=>true,
             //Para que no busque automaticamente, sino que espere a que se teclee ENTER
             'filterOnFocusOut'=>false,
+
             'columns' => $columns,
             'toolbar'=> [
                 ['content'=>
@@ -153,7 +154,6 @@ $columns[]=
 
 <script>
 function enter(){
-  methods.applyFilter.apply($e);
 
 }
 

@@ -46,7 +46,7 @@ class Medico extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['apellido', 'nombre'], 'required'], 
+            [['apellido', 'nombre'], 'required'],
             [['matricula'], 'string'],
             [['id_tipodoc','tipodoc', 'id_tipoprofesional'], 'default', 'value' => null],
             [['id_tipodoc', 'id_tipoprofesional'], 'integer'],
@@ -105,4 +105,28 @@ class Medico extends \yii\db\ActiveRecord
     {
         return $this->hasMany(Solicitud::className(), ['id_medico' => 'id']);
     }
+    public function Estudios()
+   {
+       if (!isset($this->id))
+         return false;
+     $id= $this->id;
+     $estudiosPap = Solicitudpap::find()
+      ->innerJoinWith('medico', 'medico.id = solicitudpap.id_medico')
+      ->innerJoinWith('pap', 'pap.id_solicitudpap = solicitudpap.id')
+      //Estado 2 pap
+      ->where(['and', "medico.id=".$id, "pap.id_estado=2"])
+      ->count('*');
+      if ($estudiosPap >0)
+          return true;
+      $estudiosBiopsia = Solicitudbiopsia::find()
+       ->innerJoinWith('medico', 'medico.id = solicitudbiopsia.id_medico')
+       ->innerJoinWith('biopsia', 'biopsia.id_solicitudbiopsia = solicitudbiopsia.id')
+       ->where(['and', "medico.id=".$id, "biopsia.id_estado=2"])
+       ->count('*');
+
+     if ($estudiosBiopsia >0)
+         return true;
+
+     return false;
+   }
 }

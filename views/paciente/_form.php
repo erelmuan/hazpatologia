@@ -45,6 +45,9 @@ use kartik\datecontrol\DateControl;
 <div id="w0" class="x_panel">
 
 <div class="paciente-form">
+  <? if($model->estudios()){ ?>
+    <span style="color:red">  Advertencia: La modificacion del nombre, apellido, dni o historia clinica impactara en todos los estudios anteriores del paciente (no cambie la identidad del mismo).</span>
+  <? } ?>
 
     <?php $form = ActiveForm::begin(); ?>
     <div class="row">

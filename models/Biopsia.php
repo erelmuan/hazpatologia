@@ -209,10 +209,13 @@ class Biopsia extends \yii\db\ActiveRecord
             'filterType' => GridView::FILTER_SELECT2,
             'filterWidgetOptions' => [
                 'options' => ['prompt' => '',
-                'onChange' => 'enter(event)',
+
+                'Onchange' => "enter()",
+
 
               ],
-                'pluginOptions' => ['allowClear' => true],
+                'pluginOptions' => ['allowClear' => true,    ],
+
             ],
         ],
         ];

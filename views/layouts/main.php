@@ -195,7 +195,8 @@ $bundle = yiister\gentelella\assets\Asset::register($this);
                     echo Html::beginForm(['/site/logout'], 'post')
                     . Html::submitButton(
                         '<span  class="glyphicon glyphicon-off"  aria-hidden="true"></span>' .'<i data-toggle="tooltip" data-placement="top" title="" data-original-title="Ayuda" aria-hidden="true"   style="padding-top: 3px;"></i>',
-                        ['class' => 'boton_3'
+                        ['class' => 'boton_3',
+                        'title'=>"Salir"
 
                       ]
                     )
