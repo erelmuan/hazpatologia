@@ -292,7 +292,7 @@ class PapController extends Controller
 
             $Solicitud =  Solicitud::findOne($model->id_solicitudpap);
             //puede pasar a estado en proceso
-            $Solicitud->id_estado= $model->id_estado;
+            $Solicitud->id_estado=  $post['Pap']['id_estado'] ;
             $Solicitud->save();
             //fecha cuando esta listo el informe de la biopsia
             $model->fechalisto=date("Y-m-d");
