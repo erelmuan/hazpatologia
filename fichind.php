@@ -156,7 +156,8 @@ while ($Final == false)
 		$apellido = str_replace(",", "", $nomapellido[0]);
 		$apellido = str_replace("'", "", $apellido);
 		//tiene que estar si o si despues de
-		$nomapellido =  str_replace("'", "", $nomapellido[1]);
+		$nomapellido1 =  str_replace("'", "", $nomapellido[1]);
+		$nomapellido2 =  str_replace("'", "", $nomapellido[2]);
 
 		$direccion = str_replace("'", "", $Campo[6]);
 		$documento ="'".trim($Campo[10])."'";
@@ -172,7 +173,7 @@ while ($Final == false)
 		$VarCam .= "apellido, ";
 		$VarDat .= "'" . utf8_decode($apellido) . "', ";
     $VarCam .= "nombre, ";
-    $VarDat .= "'" . utf8_decode($nomapellido) . "', ";
+    $VarDat .= "'" . utf8_decode($nomapellido1)." " .utf8_decode($nomapellido2). "', ";
 		$VarCam .= "direccion, ";
 		$VarDat .= "'" . utf8_decode($direccion) . "', ";
 		$VarCam .= "num_documento, ";
