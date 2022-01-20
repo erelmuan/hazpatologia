@@ -15,6 +15,9 @@ class SolicitudSearch extends Solicitud
   public $paciente;
   public $medico;
   public $procedencia;
+  public $estado;
+  public $estudio;
+
     /**
      * @inheritdoc
      */
@@ -30,7 +33,7 @@ class SolicitudSearch extends Solicitud
             ['fecharealizacion', 'date', 'format' => 'dd/MM/yyyy'],
             ['fechadeingreso', 'date', 'format' => 'dd/MM/yyyy'],
             [[ 'observacion','solicitud'], 'safe'],
-            [['paciente','medico','procedencia'], 'safe'],
+            [['paciente','medico','procedencia','estudio','estado'], 'safe'],
 
         ];
     }
@@ -73,6 +76,7 @@ class SolicitudSearch extends Solicitud
        ->innerJoinWith('paciente', 'paciente.id = solicitud.id_paciente')
        ->innerJoinWith('medico', 'medico.id = solicitud.id_medico')
        ->innerJoinWith('estado', 'estado.id = solicitud.id_estado')
+       ->innerJoinWith('estudio', 'estudio.id = solicitud.id_estudio')
 
        ->orderBy(['fechadeingreso' => SORT_DESC,]);
 
@@ -80,6 +84,7 @@ class SolicitudSearch extends Solicitud
      //}
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            
         ]);
 
         $this->load($params);
@@ -93,9 +98,6 @@ class SolicitudSearch extends Solicitud
         $query->andFilterWhere([
             'solicitud.id' => $this->id,
             'protocolo' => $this->protocolo,
-            'id_estudio' => $this->id_estudio,
-            'id_estado' => $this->id_estado,
-            'id_procedencia' => $this->id_procedencia,
 
             // 'id_paciente' => $this->id_paciente,
              // 'procedencia' => $this->procedencia,
@@ -122,7 +124,12 @@ class SolicitudSearch extends Solicitud
 
         }
 
-        $query->andFilterWhere(['ilike', 'observacion', $this->observacion]);
+        $query->andFilterWhere(['ilike', 'observacion', $this->observacion])
+        ->andFilterWhere(['ilike', 'estado.descripcion', $this->estado])
+        ->andFilterWhere(['ilike', 'estudio.descripcion', $this->estudio])
+        ->andFilterWhere(['ilike', 'procedencia.nombre', $this->procedencia])
+
+        ;
 
         return $dataProvider;
     }

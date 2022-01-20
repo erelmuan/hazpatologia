@@ -23,6 +23,7 @@ class PapSearch extends Pap
     public $procedencia;
     public $fecha_desde;
     public $fecha_hasta;
+    public $estado;
 
     /**
      * @inheritdoc
@@ -33,7 +34,7 @@ class PapSearch extends Pap
             [['id', 'id_solicitudpap','protocolo', 'sexo',  'indicepicnotico', 'id_plantilladiagnostico', 'cantidad', 'id_estado'], 'integer'],
             [['descripcion', 'calificacion', 'indicedemaduracion', 'plegamiento', 'agrupamiento', 'leucocitos', 'hematies', 'histiocitos', 'detritus', 'citolisis', 'flora', 'aspecto', 'pavimentosas', 'glandulares', 'diagnostico',  'fechalisto', 'observacion','fecha_desde','fecha_hasta','fecharealizacion'], 'safe'],
             //Se agrego para permitir la habilitacion del filtro en la grilla
-            [['paciente','medico','procedencia'], 'safe'],
+            [['paciente','medico','procedencia','estado'], 'safe'],
             ['fecharealizacion', 'date', 'format' => 'dd/MM/yyyy'],
             ['fechadeingreso', 'date', 'format' => 'dd/MM/yyyy'],
 
@@ -62,11 +63,13 @@ class PapSearch extends Pap
        ->leftJoin('paciente', 'paciente.id = solicitudpap.id_paciente')
        ->leftJoin('medico', 'medico.id = solicitudpap.id_medico')
       ->leftJoin('procedencia', 'procedencia.id = solicitudpap.id_procedencia')
+      ->innerJoinWith('estado', 'estado.id = pap.id_estado')
+
        ->orderBy(['fecharealizacion' => SORT_DESC,]);
        //para que pueda ordenarse colocar los atributos(se pone gris la referencia label)
        $dataProvider = new ActiveDataProvider([
            'query' => $query,
-           'sort' => ['attributes' => ['protocolo','fecharealizacion',  'paciente','sexo','procedencia','medico']]
+           'sort' => ['attributes' => ['protocolo','fecharealizacion',  'paciente','sexo','procedencia','medico','estado']]
        ]);
         $this->load($params);
 
@@ -116,6 +119,9 @@ class PapSearch extends Pap
             ->andFilterWhere(['ilike', 'pavimentosas', $this->pavimentosas])
             ->andFilterWhere(['ilike', 'glandulares', $this->glandulares])
             ->andFilterWhere(['ilike', 'diagnostico', $this->diagnostico])
+            ->andFilterWhere(['ilike', 'procedencia.nombre', $this->procedencia])
+            ->andFilterWhere(['ilike', 'estado.descripcion', $this->estado])
+
             ->andFilterWhere(['ilike', 'observacion', $this->observacion]);
             $query->andFilterWhere(['=', 'fecharealizacion', $this->fecharealizacion]);
             $query->andFilterWhere(['=', 'fechadeingreso', $this->fechadeingreso]);

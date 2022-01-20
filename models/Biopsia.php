@@ -193,30 +193,17 @@ class Biopsia extends \yii\db\ActiveRecord
               'class'=>'\kartik\grid\DataColumn',
               'attribute'=>'macroscopia',
           ],
-          // [
-          //     'class'=>'\kartik\grid\DataColumn',
-          //     'attribute'=>'id_plantilladiagnostico',
-          // ],
+
           [
               'class'=>'\kartik\grid\DataColumn',
               'attribute'=>'diagnostico',
           ],
           [
-            'attribute' => 'id_estado',
+            'class'=>'\kartik\grid\DataColumn',
+            'attribute' => 'estado',
             'label' => 'Estado',
             'value' => 'estado.descripcion',
-            'filter'=>Estado::estadosEstudioAdminYpat(),
-            'filterType' => GridView::FILTER_SELECT2,
-            'filterWidgetOptions' => [
-                'options' => ['prompt' => '',
 
-                'Onchange' => "enter()",
-
-
-              ],
-                'pluginOptions' => ['allowClear' => true,    ],
-
-            ],
         ],
         ];
     }

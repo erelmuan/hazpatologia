@@ -234,15 +234,11 @@ class Pap extends \yii\db\ActiveRecord
               'attribute'=>'diagnostico',
           ],
           [
-            'attribute' => 'id_estado',
+            'class'=>'\kartik\grid\DataColumn',
+            'attribute' => 'estado',
             'label' => 'Estado',
             'value' => 'estado.descripcion',
-            'filter'=>Estado::estadosEstudioAdminYpat(),
-            'filterType' => GridView::FILTER_SELECT2,
-            'filterWidgetOptions' => [
-                'options' => ['prompt' => ''],
-                'pluginOptions' => ['allowClear' => true],
-            ],
+
         ],
         ];
     }

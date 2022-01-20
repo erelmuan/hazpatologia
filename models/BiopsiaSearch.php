@@ -23,7 +23,7 @@ class BiopsiaSearch extends Biopsia
   public $procedencia;
   public $fecha_desde;
   public $fecha_hasta;
-
+  public $estado;
     /**
      * @inheritdoc
      */
@@ -36,7 +36,7 @@ class BiopsiaSearch extends Biopsia
             ['fechadeingreso', 'date', 'format' => 'dd/MM/yyyy'],
 
             //Se agrego para permitir la habilitacion del filtro en la grilla
-            [['paciente','medico','procedencia'], 'safe'],
+            [['paciente','medico','procedencia','estado'], 'safe'],
         ];
     }
 
@@ -62,12 +62,13 @@ class BiopsiaSearch extends Biopsia
         ->leftJoin('paciente', 'paciente.id = solicitudbiopsia.id_paciente')
       ->leftJoin('procedencia', 'procedencia.id = solicitudbiopsia.id_procedencia')
       ->leftJoin('medico', 'medico.id = solicitudbiopsia.id_medico')
+      ->innerJoinWith('estado', 'estado.id = biopsia.id_estado')
 
        ->orderBy(['fecharealizacion' => SORT_DESC,]);
         //para que pueda ordenarse colocar los atributos(se pone gris la referencia label)
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
-            'sort' => ['attributes' => ['protocolo','fecharealizacion',  'paciente','sexo','procedencia','medico']]
+            'sort' => ['attributes' => ['protocolo','fecharealizacion',  'paciente','sexo','procedencia','medico','estado']]
         ]);
 
         $this->load($params);
@@ -87,7 +88,6 @@ class BiopsiaSearch extends Biopsia
             //Esto es solo posble porque se agrego una variable a la clase
             'protocolo' => $this->protocolo,
             'id_plantilladiagnostico' => $this->id_plantilladiagnostico,
-            'biopsia.id_estado' => $this->id_estado,
             'fechalisto' => $this->fechalisto,
         ]);
         if (is_numeric($this->paciente)){
@@ -108,8 +108,10 @@ class BiopsiaSearch extends Biopsia
         $query->andFilterWhere(['ilike', 'material', $this->material])
             ->andFilterWhere(['ilike', 'macroscopia', $this->macroscopia])
             ->andFilterWhere(['ilike', 'microscopia', $this->microscopia])
+
             ->andFilterWhere(['ilike', 'ihq', $this->ihq])
             ->andFilterWhere(['ilike', 'sexo', $this->sexo])
+            ->andFilterWhere(['ilike', 'estado.descripcion', $this->estado])
             ->andFilterWhere(['ilike', 'procedencia.nombre', $this->procedencia])
             ->andFilterWhere(['ilike', 'diagnostico', $this->diagnostico])
             ->andFilterWhere(['ilike', 'ubicacion', $this->ubicacion])

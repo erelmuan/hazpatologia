@@ -146,17 +146,7 @@ class Solicitud extends \yii\db\ActiveRecord
         //       'label'=> 'Procedencia',
         //       'value'=>'procedencia.nombre'
         //   ],
-          [
-            'attribute' => 'id_procedencia',
-            'label' => 'Procedencia',
-            'value' => 'procedencia.nombre',
-            'filter'=>ArrayHelper::map(Procedencia::find()->all(), 'id','nombre'),
-            'filterType' => GridView::FILTER_SELECT2,
-            'filterWidgetOptions' => [
-                'options' => ['prompt' => ''],
-                'pluginOptions' => ['allowClear' => true],
-            ],
-         ],
+
           [
               'class'=>'\kartik\grid\DataColumn',
               'attribute'=>'medico',
@@ -167,45 +157,26 @@ class Solicitud extends \yii\db\ActiveRecord
 
           ],
 
-          // [
-              // 'class'=>'\kartik\grid\DataColumn',
-              // 'attribute'=>'idplantillamaterialb',
-          // ],
-          // [
-              // 'class'=>'\kartik\grid\DataColumn',
-              // 'attribute'=>'fecharealizacion',
-          // ],
-
-        //  [
-        //       'class'=>'\kartik\grid\DataColumn',
-        //       'attribute'=>'id_estudio',
-        //       'label'=> 'Estudio',
-        //       'value'=>'estudio.descripcion',
-        //   ],
           [
-            'attribute' => 'id_estudio',
-            'label' => 'Estudio',
-            'value' => 'estudio.descripcion',
+              'class'=>'\kartik\grid\DataColumn',
+              'attribute'=>'procedencia',
+              'label'=> 'Procedencia',
+              'value'=>'procedencia.nombre'
+          ],
 
-            'filter'=>ArrayHelper::map(Estudio::find()->all(), 'id','descripcion'),
-            'filterType' => GridView::FILTER_SELECT2,
-            'filterWidgetOptions' => [
-                'options' => ['prompt' => ''],
-                'pluginOptions' => ['allowClear' => true],
-            ],
-        ],
+         [
+              'class'=>'\kartik\grid\DataColumn',
+              'attribute'=>'estudio',
+              'label'=> 'Estudio',
+              'value'=>'estudio.descripcion',
+          ],
 
-        [
-            'attribute' => 'id_estado',
+          [
+            'class'=>'\kartik\grid\DataColumn',
+            'attribute' => 'estado',
             'label' => 'Estado',
             'value' => 'estado.descripcion',
 
-             'filter'=>Estado::estadosEstudioAdminYpat(),
-            'filterType' => GridView::FILTER_SELECT2,
-            'filterWidgetOptions' => [
-                'options' => ['prompt' => ''],
-                'pluginOptions' => ['allowClear' => true],
-            ],
         ],
           [
             //nombre
