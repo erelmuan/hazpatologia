@@ -73,7 +73,7 @@ return [
     ],
     [
         'class'=>'\kartik\grid\DataColumn',
-        'attribute' => 'id_estudio',
+        'attribute' => 'estudio',
         'label' => 'Estudio',
         'value' => 'estudio.descripcion',
     ],
