@@ -60,7 +60,7 @@ $this->title = 'Inicio';
           <div class="tile-stats">
             <div class="icon"><i class="fa fa-table"></i>
             </div>
-            <div class="count">3</div>
+            <div class="count">8</div>
 
             <h3>TABLAS-EXTRAS</h3>
             <p>Permisos-cambio de clave-roles.</p>
