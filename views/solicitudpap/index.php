@@ -102,7 +102,6 @@ $columns[]=
             'columns' => $columns,
             'toolbar'=> [
               ['content'=>
-                  Html::button('<i class="glyphicon glyphicon-search"></i>', ['Buscar' ,'title'=> 'Buscar','class'=>'btn btn-default']).
                   // Html::a('<i class="glyphicon glyphicon-th"></i>', ['select'],
                   // ['role'=>'modal-remote','title'=> 'Personalizar','class'=>'btn btn-default']).
                   Html::a('<i class="glyphicon glyphicon-repeat"></i>', [''],
@@ -111,7 +110,8 @@ $columns[]=
             ],
             'striped' => true,
             'condensed' => true,
-            'responsive' => true,
+            //Adaptacion para moviles
+            'responsiveWrap' => false,
             'panel' => [
                 'type' => 'primary',
                 'heading' => '<i class="glyphicon glyphicon-list"></i> Lista de solicitudes (SOLO SE VISAULIZAN LOS QUE NO TIENEN ESTUDIO ASOCIADO)',

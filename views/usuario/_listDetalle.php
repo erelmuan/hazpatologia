@@ -55,7 +55,7 @@ use kartik\grid\GridView;
 
                 'template' => '{deleteDetalle}',
                 'buttons' => [
-              
+
                     'deleteDetalle' => function ($url) {
                             return Html::a('<span class="glyphicon glyphicon-trash">&nbsp;</span>', $url,
                                 ['role'=>'modal-remote','title'=>'Quitar registro',
@@ -82,7 +82,8 @@ use kartik\grid\GridView;
         ],
         'striped' => true,
         'condensed' => true,
-        'responsive' => true,
+        //Adaptacion para moviles
+        'responsiveWrap' => false,
     ]);
 
     ?>

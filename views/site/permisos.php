@@ -1,3 +1,24 @@
+<style>
+
+.x_title h2 {
+    margin: 5px 0 6px;
+    float: left;
+    display: block;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+.x_title {
+  border-bottom: 2px solid #D5EBD5;
+  padding: 0px;
+  margin-bottom: 10px;
+  height:45;
+}
+.tile-stats{
+background: #D5EBD5;
+}
+
+</style>
 <?php
 use kartik\icons\Icon;
 use yii\helpers\Html;
@@ -8,28 +29,7 @@ Icon::map($this, Icon::WHHG);
 
 $this->title = 'Permisos';
 ?>
-<style>
-.tile-stats{
-background: #D5EBD5;
-}
-.body-content {
-  display: flex;
-  justify-content: center;
-  margin-left: auto;
-  margin-right: auto;
 
-}
-.row {
-  display: flex;
-  justify-content: center;
-  width: 1000px;
-}
-.tile-stats {
-  width: 300px;
-
-
-}
-</style>
 
   <?php
   use derekisbusy\panel\PanelWidget;
@@ -41,10 +41,7 @@ background: #D5EBD5;
   </div>
 
   <div class="body-content">
-
-
   <div class="row">
-
     <div class="row top_tiles">
       <a href=<?=Yii::$app->homeUrl."?r=rol"; ?>>
       <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">

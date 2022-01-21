@@ -34,14 +34,14 @@ CrudAsset::register($this);
 
             'toolbar'=> [
                 ['content'=>
-                    Html::button('<i class="glyphicon glyphicon-search"></i>', ['Buscar' ,'title'=> 'Buscar','class'=>'btn btn-default']).
                     Html::a('<i class="glyphicon glyphicon-repeat"></i>', [''],
                     ['data-pjax'=>1, 'class'=>'btn btn-default', 'title'=>'Refrescar'])
                 ],
             ],
             'striped' => true,
             'condensed' => true,
-            'responsive' => true,
+            //Adaptacion para moviles
+            'responsiveWrap' => false,
             'panel' => [
                 'type' => 'primary',
                 'heading' => '<i class="glyphicon glyphicon-list"></i> Lista de auditorias',

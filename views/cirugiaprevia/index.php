@@ -38,7 +38,8 @@ CrudAsset::register($this);
             ],
             'striped' => true,
             'condensed' => true,
-            'responsive' => true,
+            //Adaptacion para moviles
+            'responsiveWrap' => false,
             'panel' => [
                 'type' => 'primary',
                 'heading' => '<i class="glyphicon glyphicon-list"></i> Cirugiaprevias listing',

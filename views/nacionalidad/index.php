@@ -43,12 +43,13 @@ CrudAsset::register($this);
             ],
             'striped' => true,
             'condensed' => true,
-            'responsive' => true,
+            //Adaptacion para moviles
+            'responsiveWrap' => false,
             'panel' => [
                 'type' => 'primary',
                 'heading' => '<i class="glyphicon glyphicon-list"></i> Lista de nacionalidades',
                 'before'=>'<em>* Para buscar algún registro tipear en el filtro y presionar ENTER </em>',
-            
+
             ]
         ])?>
     </div>

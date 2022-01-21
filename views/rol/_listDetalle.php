@@ -111,7 +111,8 @@ use kartik\grid\GridView;
         ],
         'striped' => true,
         'condensed' => true,
-        'responsive' => true,
+        //Adaptacion para moviles
+        'responsiveWrap' => false,
     ]);
 
     ?>

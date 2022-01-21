@@ -31,7 +31,6 @@ CrudAsset::register($this);
             'columns' => require(__DIR__.'/_columns.php'),
             'toolbar'=> [
                 ['content'=>
-                    Html::button('<i class="glyphicon glyphicon-search"></i>', ['Buscar' ,'title'=> 'Buscar','class'=>'btn btn-default']).
                     Html::a('<i class="glyphicon glyphicon-plus"></i>', ['create'],
                     ['role'=>'modal-remote','title'=> 'Crear nueva acción','class'=>'btn btn-default']).
                     Html::a('<i class="glyphicon glyphicon-repeat"></i>', [''],
@@ -41,7 +40,8 @@ CrudAsset::register($this);
             ],
             'striped' => true,
             'condensed' => true,
-            'responsive' => true,
+            //Adaptacion para moviles
+            'responsiveWrap' => false,
             'panel' => [
                 'type' => 'primary',
                 'heading' => '<i class="glyphicon glyphicon-list"></i> Lista de acciones',

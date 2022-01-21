@@ -58,7 +58,6 @@ $columns[]=
             'columns' => require(__DIR__.'/_columns.php'),
             'toolbar'=> [
                 ['content'=>
-                    Html::button('<i class="glyphicon glyphicon-search"></i>', ['Buscar' ,'title'=> 'Buscar','class'=>'btn btn-default']).
                     // Html::a('<i class="glyphicon glyphicon-th"></i>', ['select'],
                     // ['role'=>'modal-remote','title'=> 'Personalizar','class'=>'btn btn-default']).
                     Html::a('<i class="glyphicon glyphicon-plus"></i>', ['create'],
@@ -69,7 +68,8 @@ $columns[]=
             ],
             'striped' => true,
             'condensed' => true,
-            'responsive' => true,
+            //Adaptacion para moviles
+            'responsiveWrap' => false,
             'panel' => [
                 'type' => 'primary',
                 'heading' => '<i class="glyphicon glyphicon-list"></i> Lista de plantillas',

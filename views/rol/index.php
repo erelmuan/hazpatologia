@@ -163,7 +163,6 @@ $gridColumns =[  [
                      ],
             'toolbar'=> [
                 ['content'=>
-                    Html::button('<i class="glyphicon glyphicon-search"></i>', ['Buscar' ,'title'=> 'Buscar','class'=>'btn btn-default']).
                     Html::a('<i class="glyphicon glyphicon-plus"></i>', ['create'],
                     ['role'=>'modal-remote','title'=> 'Crear nuevo rol','class'=>'btn btn-default']).
                     Html::a('<i class="glyphicon glyphicon-repeat"></i>', [''],
@@ -173,7 +172,8 @@ $gridColumns =[  [
             ],
             'striped' => true,
             'condensed' => true,
-            'responsive' => true,
+            //Adaptacion para moviles
+            'responsiveWrap' => false,
             'panel' => [
                 'type' => 'primary',
                 'heading' => '<i class="glyphicon glyphicon-list"></i> Lista de roles',
