@@ -31,13 +31,11 @@ use yii\helpers\Html;
             'id_plantillamaterial',
             'fecharealizacion',
             'fechadeingreso',
-            'estudio',
-            'estado',
-            'observacion:ntext',
+
 
         ],
     ]) ;
-    if ($mode  l-> estado=="LISTO")
+    if ($model->estado->descripcion=="LISTO")
     {
       echo Html::a('<i class="fa glyphicon glyphicon-hand-up"></i> VER EL INFORME', ['/biopsia/informe', 'id' => $idbiopsia], [
             'class'=>'btn btn-info',
@@ -48,7 +46,7 @@ use yii\helpers\Html;
     }
 
     else {
-      echo "<b>LA SOLICITUD AÚN NO POSEE EL INFORME DE ".$model->estudio."</b>";
+      echo "<b>LA SOLICITUD AÚN NO POSEE EL INFORME DE ".$model->estudio->descripcion."</b>";
     }
      ?>
 

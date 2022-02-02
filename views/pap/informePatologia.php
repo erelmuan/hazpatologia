@@ -28,10 +28,10 @@ public function setEstado($e){
 function Header()
 {
    ///////////////////MARCA DE AGUA//////////////////////
-   if ($this->estado =='PENDIENTE'){
+   if ($this->estado =='EN PROCESO'){
     $this->SetFont('Arial','B',50);
     $this->SetTextColor(255,192,203);
-    $this->RotatedText(35,215,'INFORME PENDIENTE',35);
+    $this->RotatedText(35,215,'INFORME EN PROCESO',35);
   }
 /////////////////////////////////////////////////////
   $this->SetTextColor(245,245,245);

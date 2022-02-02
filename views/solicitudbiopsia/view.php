@@ -61,7 +61,7 @@ if (isset($parametros)){
     }
 
     else {
-      echo "<b>LA SOLICITUD AÚN NO POSEE EL INFORME DE ".$model->estudio->descripcion." </b>";
+      echo "<b>LA SOLICITUD AÚN NO POSEE EL INFORME"; echo ($model->estado->descripcion=='EN PROCESO')?" VERIFICADO":""; echo " DE ".$model->estudio->descripcion." </b>";
     }
      ?>
 

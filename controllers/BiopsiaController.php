@@ -180,9 +180,14 @@ class BiopsiaController extends Controller
                     $model->id_usuario=$modelUsuario->id;
                     $Solicitud =  Solicitud::findOne($model->id_solicitudbiopsia);
                     $Solicitud->id_estado=$model->id_estado;
-                    $Solicitud->save();
+
               }
               if ($model->load($post) && $model->save()) {
+                    // Estado EN PROCESO
+                      if ($model->id_estado ==1){
+                        $Solicitud->id_estado=$model->id_estado;
+                      }
+                      $Solicitud->save();
                       //si tiene inmunohistoquimica se creara el estudio
                       if ($model->ihq){
                         return $this->redirect(['inmunohistoquimica-escaneada/create', 'id_biopsia' => $model->id]);
@@ -325,8 +330,12 @@ class BiopsiaController extends Controller
               'footer'=> Html::button('Cerrar',['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"])
           ];
         }
+        $solicitud =  Solicitud::findOne($model->id_solicitudbiopsia);
         $request = Yii::$app->request;
+        $solicitud->id_estado=5; //Vuelve al estado PENDIENTE
+        $solicitud->save();
         $this->findModel($id)->delete();
+
         if($request->isAjax){
             /*
             *   Process for ajax request

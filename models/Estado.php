@@ -68,7 +68,7 @@ class Estado extends \yii\db\ActiveRecord
         ->all(), 'id','descripcion');
         }
       else {
-        return ArrayHelper::map(Estado::find()->where(['and', "biopsia=true","pap=true","descripcion='PENDIENTE'"])
+        return ArrayHelper::map(Estado::find()->where(['and', "biopsia=true","pap=true","descripcion='PENDIENTE' or descripcion='EN PROCESO' "])
                 ->all(), 'id','descripcion');
               }
   }
