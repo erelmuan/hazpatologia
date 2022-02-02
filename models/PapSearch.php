@@ -65,7 +65,7 @@ class PapSearch extends Pap
       ->leftJoin('procedencia', 'procedencia.id = solicitudpap.id_procedencia')
       ->innerJoinWith('estado', 'estado.id = pap.id_estado')
 
-       ->orderBy(['fecharealizacion' => SORT_DESC,]);
+      ->orderBy(['id' => SORT_DESC,]);
        //para que pueda ordenarse colocar los atributos(se pone gris la referencia label)
        $dataProvider = new ActiveDataProvider([
            'query' => $query,

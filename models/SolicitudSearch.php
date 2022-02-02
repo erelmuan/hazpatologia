@@ -78,13 +78,13 @@ class SolicitudSearch extends Solicitud
        ->innerJoinWith('estado', 'estado.id = solicitud.id_estado')
        ->innerJoinWith('estudio', 'estudio.id = solicitud.id_estudio')
 
-       ->orderBy(['fechadeingreso' => SORT_DESC,]);
+       ->orderBy(['id' => SORT_DESC,]);
 
 
      //}
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
-            
+
         ]);
 
         $this->load($params);

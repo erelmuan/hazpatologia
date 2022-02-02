@@ -64,7 +64,7 @@ class BiopsiaSearch extends Biopsia
       ->leftJoin('medico', 'medico.id = solicitudbiopsia.id_medico')
       ->innerJoinWith('estado', 'estado.id = biopsia.id_estado')
 
-       ->orderBy(['fecharealizacion' => SORT_DESC,]);
+       ->orderBy(['id' => SORT_DESC,]);
         //para que pueda ordenarse colocar los atributos(se pone gris la referencia label)
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
