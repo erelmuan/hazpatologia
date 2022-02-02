@@ -115,6 +115,10 @@ class Biopsia extends \yii\db\ActiveRecord
 
         return [
           [
+              'class'=>'\kartik\grid\DataColumn',
+              'attribute'=>'id',
+          ],
+          [
               'attribute' => 'protocolo',
               'value' => 'solicitudbiopsia.protocolo',
               'width' => '50px',

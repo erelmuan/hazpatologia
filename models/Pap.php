@@ -143,6 +143,10 @@ class Pap extends \yii\db\ActiveRecord
 
         return [
           [
+              'class'=>'\kartik\grid\DataColumn',
+              'attribute'=>'id',
+          ],
+          [
               'attribute' => 'protocolo',
               'value' => 'solicitudpap.protocolo',
               'width' => '50px',
