@@ -63,10 +63,7 @@ return [
         // 'class'=>'\kartik\grid\DataColumn',
         // 'attribute'=>'estudio',
     // ],
-    // [
-        // 'class'=>'\kartik\grid\DataColumn',
-        // 'attribute'=>'estado',
-    // ],
+
     [
         'class'=>'\kartik\grid\DataColumn',
         'attribute'=>'observacion',
@@ -77,10 +74,12 @@ return [
         'label' => 'Estudio',
         'value' => 'estudio.descripcion',
     ],
-    // [
-        // 'class'=>'\kartik\grid\DataColumn',
-        // 'attribute'=>'informe',
-    // ],
+    [
+        'class'=>'\kartik\grid\DataColumn',
+        'attribute' => 'estado',
+        'label' => 'Estado',
+        'value' => 'estado.descripcion',
+    ],
     [
         'class' => 'kartik\grid\ActionColumn',
         'dropdown' => false,
