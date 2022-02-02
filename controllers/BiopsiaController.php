@@ -255,6 +255,8 @@ class BiopsiaController extends Controller
         if ( isset($post['Biopsia']['id_estado']) && $post['Biopsia']['id_estado'] !=2){
             unset($post['Biopsia']['firmado']);
         }
+        $Solicitud =  Solicitud::findOne($model->id_solicitudbiopsia);
+
           //si esta el estudio  en estado listo, ['Biopsia']['id_estado'] no estara definido por lo tanto no entra al if
             if ( Usuario::isPatologo() && isset($post['Biopsia']['id_estado'] ) && $post['Biopsia']['id_estado'] ==2){
 
@@ -275,7 +277,6 @@ class BiopsiaController extends Controller
 
               }
 
-              $Solicitud =  Solicitud::findOne($model->id_solicitudbiopsia);
               //puede pasar a estado en proceso
               $Solicitud->id_estado= $post['Biopsia']['id_estado'] ;
               $Solicitud->save();
