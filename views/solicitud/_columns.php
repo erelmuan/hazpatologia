@@ -33,9 +33,13 @@ return [
     // ],
     [
         'class'=>'\kartik\grid\DataColumn',
-        'label'=>'Nombre Paciente',
-        'attribute'=>'paciente.nombre',
+        'label'=>'Paciente',
+        'value' => function($model) {
+          return $model->paciente->nombre .' '.$model->paciente->apellido;
+         }
+         ,
     ],
+  
 
     [
         'class'=>'\kartik\grid\DataColumn',
@@ -46,9 +50,11 @@ return [
     ],
     [
         'class'=>'\kartik\grid\DataColumn',
-        'label'=>'Nombre Medico',
-
-        'attribute'=>'medico.nombre',
+        'label'=>'Medico',
+        'value' => function($model) {
+          return $model->medico->nombre .' '.$model->medico->apellido;
+         }
+         ,
     ],
     // [
         // 'class'=>'\kartik\grid\DataColumn',
