@@ -306,6 +306,10 @@ class PapController extends Controller
           }
 
            if ($model->load($post) && $model->save()) {
+             if ($model->id_estado ==1){
+               $Solicitud->id_estado=$model->id_estado;
+               $Solicitud->save();
+             }
               return $this->redirect(['view', 'id' =>$model->id]);
           } else {
 

@@ -285,6 +285,10 @@ class BiopsiaController extends Controller
             }
 
              if ($model->load($post) && $model->save()) {
+               if ($model->id_estado ==1){
+                 $Solicitud->id_estado=$model->id_estado;
+                 $Solicitud->save();
+               }
                if ($model->ihq && isset($model->inmunohistoquimicaEscaneada)){
                  return $this->redirect(['inmunohistoquimica-escaneada/update',
                   'id' => $model->inmunohistoquimicaEscaneada->id]);
