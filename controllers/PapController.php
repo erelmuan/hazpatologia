@@ -181,6 +181,7 @@ class PapController extends Controller
                       $model->id_usuario=$modelUsuario->id;
                       $Solicitud =  Solicitud::findOne($model->id_solicitudpap);
                       $Solicitud->id_estado=$model->id_estado;
+                      $Solicitud->save();
                     }
 
 
@@ -188,7 +189,9 @@ class PapController extends Controller
                 // Estado EN PROCESO
                   if ($model->id_estado ==1){
                     $Solicitud->id_estado=$model->id_estado;
+                    $Solicitud->save();
                   }
+
                     return $this->redirect(['view', 'id' =>$model->id]);
               } else {
 

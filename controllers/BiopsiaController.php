@@ -180,14 +180,16 @@ class BiopsiaController extends Controller
                     $model->id_usuario=$modelUsuario->id;
                     $Solicitud =  Solicitud::findOne($model->id_solicitudbiopsia);
                     $Solicitud->id_estado=$model->id_estado;
+                    $Solicitud->save();
 
               }
               if ($model->load($post) && $model->save()) {
                     // Estado EN PROCESO
                       if ($model->id_estado ==1){
                         $Solicitud->id_estado=$model->id_estado;
+                        $Solicitud->save();
                       }
-                      $Solicitud->save();
+
                       //si tiene inmunohistoquimica se creara el estudio
                       if ($model->ihq){
                         return $this->redirect(['inmunohistoquimica-escaneada/create', 'id_biopsia' => $model->id]);
