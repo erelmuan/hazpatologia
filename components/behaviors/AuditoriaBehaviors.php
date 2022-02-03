@@ -23,8 +23,10 @@ class AuditoriaBehaviors extends Behavior
           $log=new Auditoria();
           $log->id_usuario= Yii::$app->user->identity->id_user;
           $log->accion= "MODIFICACIÓN";
+  
+
           $tabla=str_replace("_", "-", $this->owner->tableName());
-          $log->tabla=  $tabla;
+          $log->tabla= substr(get_class($this->owner),11);
           $log->fecha= date("d/m/Y");
           $log->hora= date("H:i:s");
           $log->ip=  $_SERVER['REMOTE_ADDR'];
