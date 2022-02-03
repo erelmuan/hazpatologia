@@ -12,7 +12,7 @@ return [
     // ],
         [
         'class'=>'\kartik\grid\DataColumn',
-        'attribute'=>'id',
+        'attribute'=>'biopsia.id',
     ],
     [
         // 'class'=>'\kartik\grid\DataColumn',

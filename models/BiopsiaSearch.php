@@ -83,7 +83,7 @@ class BiopsiaSearch extends Biopsia
         }
         //filtro de busqueda
         $query->andFilterWhere([
-            'id' => $this->id,
+            'biopsia.id' => $this->id,
             'id_solicitudbiopsia' => $this->id_solicitudbiopsia,
             //Esto es solo posble porque se agrego una variable a la clase
             'protocolo' => $this->protocolo,

@@ -80,7 +80,7 @@ class PapSearch extends Pap
         }
 
         $query->andFilterWhere([
-            'id' => $this->id,
+            'pap.id' => $this->id,
             'id_solicitudpap' => $this->id_solicitudpap,
             'indicepicnotico' => $this->indicepicnotico,
             'protocolo' => $this->protocolo,
