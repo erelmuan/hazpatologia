@@ -278,17 +278,22 @@ class Solicitud extends \yii\db\ActiveRecord
         return $protocolo+ 1;
 
     }
-    public function estados() {
-        //PATRON STATE;
-        if (!isset ($this->estado)){
-          //Estado pendiente por defecto
-            $this->id_estado=5;
-        }
-        $namespace="app\models\\";
-        $e= $namespace.$this->estado->descripcion;
-        $estado= new $e();
-        return $estado->estadosSolicitud();
-    }
+    // public function estados() {
+    //     //PATRON STATE;
+    //     if (!isset ($this->estado)){
+    //       //Estado pendiente por defecto
+    //         $this->id_estado=5;
+    //     }
+    //     $namespace="app\models\\";
+    //     if ($this->estado->descripcion=="EN PROCESO"){
+    //       $e= $namespace."EN_PROCESO";
+    //
+    //     }else {
+    //       $e= $namespace.$this->estado->descripcion;
+    //     }
+    //     $estado= new $e();
+    //     return $estado->estadosSolicitud();
+    // }
 
     public function idEstudio(){
         $estudio=Estudio::find()->where(['modelo'=>$this->modelo()])->all();

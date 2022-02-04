@@ -423,12 +423,11 @@ class SolicitudController extends Controller
     }
     public function actionDelete($id)
        {
-           $request = Yii::$app->request;
-           Yii::$app->response->format = Response::FORMAT_JSON;
-           $model = $this->findModel($id);
-           $modelestudio= $model->estudio->modelo;
 
-           if (isset($model->$modelestudio)){
+           Yii::$app->response->format = Response::FORMAT_JSON;
+           $modelbiopsia = Biopsia::find()->where(['and','biopsia.id_solicitudbiopsia = '.$id ])->one();
+           $modelpap = Pap::find()->where(['and','pap.id_solicitudpap = '.$id ])->one();
+           if (isset($modelbiopsia) || isset($modelpap)){
              return [
                'title'=> "Eliminar solicitud  #".$id,
                'content'=>"No se puede eliminar la solicitud porque tiene un informe asociado",
@@ -436,6 +435,7 @@ class SolicitudController extends Controller
            ];
            }
 
+           $request = Yii::$app->request;
            if($request->isAjax){
                /*
                *   Process for ajax request
@@ -455,7 +455,7 @@ class SolicitudController extends Controller
                return $this->redirect(['index']);
            }
 
-}
+         }
 //     public function save($runValidation = true, $attributeNames = null)
 //     {
 //       $transaction = Solicitud::getDb()->beginTransaction();

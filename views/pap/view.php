@@ -81,7 +81,7 @@ use yii\helpers\Html;
             'frase',
         ],
     ]) ;
-    if ($model->estado->descripcion== 'EN_PROCESO'){
+    if ($model->estado->descripcion== 'EN PROCESO'){
       echo Html::a('<i class="fa fa-file-pdf-o"></i> Documento del informe', ['/pap/informe', 'id' => $model->id], [
             'class'=>'btn btn-danger',
             'role'=>'modal-remote',

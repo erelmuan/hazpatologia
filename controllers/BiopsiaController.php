@@ -285,7 +285,7 @@ class BiopsiaController extends Controller
             }
 
              if ($model->load($post) && $model->save()) {
-               
+
                if ($model->ihq && isset($model->inmunohistoquimicaEscaneada)){
                  return $this->redirect(['inmunohistoquimica-escaneada/update',
                   'id' => $model->inmunohistoquimicaEscaneada->id]);
@@ -451,7 +451,7 @@ class BiopsiaController extends Controller
             'forceReload'=>'#crud-datatable-pjax',
 
               'title'=> "AVISO!",
-              'content'=>'EL SIGUIENTE DOCUMENTO TIENE UN ESTADO <b>EN PROCESO</b> (NO ESTA TERMINADO) CONFIRME SI DESEA GENERAR EL DOCUMENTO',
+              'content'=>'EL SIGUIENTE DOCUMENTO TIENE UN ESTADO <b>EN PROCESO</b> (NO ESTA VERIFICADO) CONFIRME SI DESEA GENERAR EL DOCUMENTO',
               'footer'=> Html::button('Cerrar',['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
               Html::a('<i class="fa glyphicon glyphicon-hand-up"></i> Confirmar', ['/biopsia/informe', 'id' => $id], [
                       'class'=>'btn btn-primary',

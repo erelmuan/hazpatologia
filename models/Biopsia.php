@@ -246,9 +246,7 @@ class Biopsia extends \yii\db\ActiveRecord
     public function estados() {
         return Estado::estadosEstudio();
     }
-    public function estadoSinRestriccion() {
-        return Estado::estadosEstudioAdminYpat();
-    }
+
       /**
 		    * @return \yii\db\ActiveQuery
 		    */

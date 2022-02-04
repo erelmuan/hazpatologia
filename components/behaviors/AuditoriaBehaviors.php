@@ -23,7 +23,7 @@ class AuditoriaBehaviors extends Behavior
           $log=new Auditoria();
           $log->id_usuario= Yii::$app->user->identity->id_user;
           $log->accion= "MODIFICACIÓN";
-  
+
 
           $tabla=str_replace("_", "-", $this->owner->tableName());
           $log->tabla= substr(get_class($this->owner),11);

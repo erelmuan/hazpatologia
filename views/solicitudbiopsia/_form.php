@@ -106,7 +106,9 @@ CrudAsset::register($this);
 
                   <?=$form->field($model, 'id_estudio')->hiddenInput(['value'=> $model->idEstudio()])->label(false); //BIOPSIA ID 2  CORREGIR?>
 
-                  <?= $form->field($model, 'id_estado')->dropDownList($model->estados())->label('Estado') ;?>
+                  <?= $form->field($model, 'id_estado')->hiddenInput(['value'=>($model->estado)? $model->id_estado:5])->label(false) ;?>
+                  <?= $form->field($model, 'estado')->textInput(['value'=>($model->estado)? $model->estado->descripcion:"PENDIENTE", 'readOnly'=>true])->label("Estado") ;?>
+
                   <?
 
            echo $form->field($model, 'id_procedencia')->widget(

@@ -306,7 +306,7 @@ class PapController extends Controller
           }
 
            if ($model->load($post) && $model->save()) {
-             
+
               return $this->redirect(['view', 'id' =>$model->id]);
           } else {
 
@@ -447,7 +447,7 @@ class PapController extends Controller
             'forceReload'=>'#crud-datatable-pjax',
 
               'title'=> "AVISO!",
-              'content'=>'EL SIGUIENTE DOCUMENTO TIENE UN ESTADO <b>EN PROCESO</b> (NO ESTA TERMINADO) CONFIRME SI DESEA GENERAR EL DOCUMENTO',
+              'content'=>'EL SIGUIENTE DOCUMENTO TIENE UN ESTADO <b>EN PROCESO</b> (NO ESTA VERIFICADO) CONFIRME SI DESEA GENERAR EL DOCUMENTO',
               'footer'=> Html::button('Cerrar',['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
               Html::a('<i class="fa glyphicon glyphicon-hand-up"></i> Confirmar', ['/pap/informe', 'id' => $id], [
                       'class'=>'btn btn-primary',

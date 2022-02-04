@@ -1,4 +1,4 @@
-<!-- <?php
+<?php
 
 use yii\widgets\DetailView;
 use yii\helpers\Html;
@@ -28,26 +28,16 @@ use yii\helpers\Html;
          'label'=> 'Medico',
       ],
 
-            'id_plantillamaterial',
             'fecharealizacion',
             'fechadeingreso',
-
+            [
+              'value'=> $model->estado->descripcion,
+              'label'=> 'Estado',
+           ],
 
         ],
     ]) ;
-    if ($model->estado->descripcion=="LISTO")
-    {
-      echo Html::a('<i class="fa glyphicon glyphicon-hand-up"></i> VER EL INFORME', ['/biopsia/informe', 'id' => $idbiopsia], [
-            'class'=>'btn btn-info',
-            'target'=>'_blank',
-            'data-toggle'=>'tooltip',
-            'title'=>'Se abrirá el archivo PDF generado en una nueva ventana'
-        ]);
-    }
 
-    else {
-      echo "<b>LA SOLICITUD AÚN NO POSEE EL INFORME DE ".$model->estudio->descripcion."</b>";
-    }
      ?>
 
-</div> -->
+</div>
