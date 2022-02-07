@@ -54,25 +54,30 @@ use nex\chosen\Chosen;
 
 ?>
 <div id="w0" class="x_panel">
-  <div class="x_title"><h2> <?=$model->isNewRecord ? "<i class='glyphicon glyphicon-plus'></i> NUEVO PAP" : "<i class='glyphicon glyphicon-pencil'></i> ACTUALIZAR PAP" ; ?> </h2>
-    <div class="clearfix"> <div class="nav navbar-right panel_toolbox"><?= Html::a('<i class="glyphicon glyphicon-arrow-left"></i> Atrás', $model->isNewRecord ? ['/solicitudpap/seleccionar']:['/pap/index'], ['class'=>'btn btn-danger grid-button']) ?></div>
-</div>
-  </div>
+    <div class="x_title">
+        <h2> <?=$model->isNewRecord ? "<i class='glyphicon glyphicon-plus'></i> NUEVO PAP" : "<i class='glyphicon glyphicon-pencil'></i> ACTUALIZAR PAP" ; ?>
+        </h2>
+        <div class="clearfix">
+            <div class="nav navbar-right panel_toolbox">
+                <?= Html::a('<i class="glyphicon glyphicon-arrow-left"></i> Atrás', $model->isNewRecord ? ['/solicitudpap/seleccionar']:['/pap/index'], ['class'=>'btn btn-danger grid-button']) ?>
+            </div>
+        </div>
+    </div>
 
-<?
+    <?
 CrudAsset::register($this);
 
 $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['labelSpan'=>4]]);
 ?>
-<div class="x_panel" >
+    <div class="x_panel">
 
-    <ul class="nav navbar-right panel_toolbox">
-                        <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-                        </li>
-    </ul>
-    <legend class="text-info"><small>Datos de la solicitud</small></legend>
-    <div class="x_content" style="display: block;">
-          <?
+        <ul class="nav navbar-right panel_toolbox">
+            <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+            </li>
+        </ul>
+        <legend class="text-info"><small>Datos de la solicitud</small></legend>
+        <div class="x_content" style="display: block;">
+            <?
           echo Form::widget([ // fields with labels
             //  'contentBefore'=>'<legend class="text-info"><small>Datos del paciente</small></legend>',
               'model'=>$model,
@@ -92,41 +97,42 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
 
       ?>
 
-</div>
-</div>
+        </div>
+    </div>
 
-<div class="x_panel" >
+    <div class="x_panel">
 
-          <ul class="nav navbar-right panel_toolbox">
-              <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-              </li>
-          </ul>
-<legend class="text-info"><small>Datos del pap</small></legend>
+        <ul class="nav navbar-right panel_toolbox">
+            <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+            </li>
+        </ul>
+        <legend class="text-info"><small>Datos del pap</small></legend>
 
-  <div class="x_content" style="display: block;">
+        <div class="x_content" style="display: block;">
 
-          <div class="row">
-            <center>
+            <div class="row">
+                <center>
 
-              <div class="col-md-2 col-sm-12 col-xs-12 form-group"style="padding-right: 10px;margin-right: 0px;margin-left: 0px;">
-                <?= $form->field($model, 'indicepicnotico')->input("text",['style'=>'width:70%'])->label('I.Picnótico') ?>
-              </div>
-              <!-- <div class="col-md-2 col-sm-12 col-xs-12 form-group"style="padding-right: 10px;margin-right: 0px;margin-left: 0px;"> -->
-                <?//= $form->field($model, 'indicedemaduracion')->input("text",['style'=>'width:70%'])->label('I.maduración') ?>
-              <!-- </div> -->
-              <!-- <div class="col-md-2 col-sm-12 col-xs-12 form-group"style="padding-right: 10px;margin-right: 0px;margin-left: 0px;"> -->
-                <?//= $form->field($model, 'eosinofilas')->input("text",['style'=>'width:70%'])->label('Eosinofilas %') ?>
-              <!-- </div> -->
-              <!-- <div class="col-md-2 col-sm-12 col-xs-12 form-group"style="padding-right: 10px;margin-right: 0px;margin-left: 0px;"> -->
-                <?//= $form->field($model, 'cianofilas')->input("text",['style'=>'width:70%'])->label('Cianofilas %') ?>
-              <!-- </div> -->
-              <!-- <div class="col-md-2 col-sm-12 col-xs-12 form-group"style="padding-right: 10px;margin-right: 0px;margin-left: 0px;"> -->
-                <?//= $form->field($model, 'intermedias')->input("text",['style'=>'width:70%'])->label('Intermedias %') ?>
-              <!-- </div> -->
-              <!-- <div class="col-md-2 col-sm-12 col-xs-12 form-group"style="padding-right: 10px;margin-right: 0px;margin-left: 0px;"> -->
-                <?//= $form->field($model, 'parabasales')->input("text",['style'=>'width:70%'])->label('Parabasales %') ?>
-              <!-- </div> -->
-            </center>
+                    <div class="col-md-2 col-sm-12 col-xs-12 form-group"
+                        style="padding-right: 10px;margin-right: 0px;margin-left: 0px;">
+                        <?= $form->field($model, 'indicepicnotico')->input("text",['style'=>'width:70%'])->label('I.Picnótico') ?>
+                    </div>
+                    <!-- <div class="col-md-2 col-sm-12 col-xs-12 form-group"style="padding-right: 10px;margin-right: 0px;margin-left: 0px;"> -->
+                    <?//= $form->field($model, 'indicedemaduracion')->input("text",['style'=>'width:70%'])->label('I.maduración') ?>
+                    <!-- </div> -->
+                    <!-- <div class="col-md-2 col-sm-12 col-xs-12 form-group"style="padding-right: 10px;margin-right: 0px;margin-left: 0px;"> -->
+                    <?//= $form->field($model, 'eosinofilas')->input("text",['style'=>'width:70%'])->label('Eosinofilas %') ?>
+                    <!-- </div> -->
+                    <!-- <div class="col-md-2 col-sm-12 col-xs-12 form-group"style="padding-right: 10px;margin-right: 0px;margin-left: 0px;"> -->
+                    <?//= $form->field($model, 'cianofilas')->input("text",['style'=>'width:70%'])->label('Cianofilas %') ?>
+                    <!-- </div> -->
+                    <!-- <div class="col-md-2 col-sm-12 col-xs-12 form-group"style="padding-right: 10px;margin-right: 0px;margin-left: 0px;"> -->
+                    <?//= $form->field($model, 'intermedias')->input("text",['style'=>'width:70%'])->label('Intermedias %') ?>
+                    <!-- </div> -->
+                    <!-- <div class="col-md-2 col-sm-12 col-xs-12 form-group"style="padding-right: 10px;margin-right: 0px;margin-left: 0px;"> -->
+                    <?//= $form->field($model, 'parabasales')->input("text",['style'=>'width:70%'])->label('Parabasales %') ?>
+                    <!-- </div> -->
+                </center>
 
 
                 <?
@@ -145,8 +151,8 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
                      // 'citolisis'=>['label'=>'Citólisis', 'type'=>Form::INPUT_DROPDOWN_LIST, 'items'=>["" => "","+" => "+", "++" => "++" ,"+++"=>"+++","++++"=>"++++"],'columnOptions'=>['colspan'=>2]],
                     ]
                 ]);  ?>
-                </div>
-                <?
+            </div>
+            <?
                 echo Form::widget([ // fields with labels
                   //  'contentBefore'=>'<legend class="text-info"><small>Datos del paciente</small></legend>',
                     'model'=>$model,
@@ -165,16 +171,19 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
 
                 //  echo '<div class="text-right" style="margin-right: 100px;">' . Html::resetButton('Resetear', ['class'=>'btn btn-warning']) . '</div>';
               ?>
-          </div>
-</div>
-
+        </div>
+    </div>
 
     <div class="col-md-4 col-sm-12 col-xs-12 form-group">
+       </br>
         <?  echo (Html::label('Código flora', 'flora', ['class' => 'form-group field-pap-material has-success']));
         ?>
-          <button type="button" class="btn btn-primary btn-xs"onclick="quitarSeleccion()"  data-toggle="modal" data-target=".bs-flora-modal-lg" style="margin-left: 10px;"><i class="glyphicon glyphicon-plus" ></i></button>
-          <button type="button" class="btn btn-danger btn-xs" onclick="quitarFlora()"><i class="glyphicon glyphicon-minus"></i></button>
-       <?
+        <button type="button" class="btn btn-primary btn-xs" onclick="quitarSeleccion()" data-toggle="modal"
+            data-target=".bs-flora-modal-lg" style="margin-left: 10px;"><i
+                class="glyphicon glyphicon-plus"></i></button>
+        <button type="button" class="btn btn-danger btn-xs" onclick="quitarFlora()"><i
+                class="glyphicon glyphicon-minus"></i></button>
+        <?
 
         $mapFlora= ArrayHelper::map(plantillaflora::find()->all() , 'id',  'codigo' );
         echo Chosen::widget([
@@ -194,12 +203,15 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
                     ],
           ]);
 
-         ?></br> </br></br>
-      <?    echo ( Html::label('Código aspecto', 'aspecto', ['class' => 'form-group field-pap-aspecto has-success'])); ?>
+         ?></br> </br> </br> </br> </br>
+        <?    echo ( Html::label('Código aspecto', 'aspecto', ['class' => 'form-group field-pap-aspecto has-success'])); ?>
 
-         <button type="button" class="btn btn-primary btn-xs"onclick="quitarSeleccion()"  data-toggle="modal" data-target=".bs-aspecto-modal-lg" style="margin-left: 10px;"><i class="glyphicon glyphicon-plus" ></i></button>
-         <button type="button" class="btn btn-danger btn-xs" onclick="quitarAspecto()"><i class="glyphicon glyphicon-minus"></i></button>
-      <?
+        <button type="button" class="btn btn-primary btn-xs" onclick="quitarSeleccion()" data-toggle="modal"
+            data-target=".bs-aspecto-modal-lg" style="margin-left: 10px;"><i
+                class="glyphicon glyphicon-plus"></i></button>
+        <button type="button" class="btn btn-danger btn-xs" onclick="quitarAspecto()"><i
+                class="glyphicon glyphicon-minus"></i></button>
+        <?
        $mapAspecto= ArrayHelper::map(Plantillaaspecto::find()->all() , 'id',  'codigo' );
 
        echo Chosen::widget([
@@ -220,12 +232,15 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
          ]);
 
       ?>
-      </br> </br></br>
-    <?  echo (Html::label('Código pavimentosa', 'pavimentosa', ['class' => 'form-group field-pap-pavimentosa has-success'])); ?>
+        </br> </br> </br> </br> </br> </br>
+        <?  echo (Html::label('Código pavimentosa', 'pavimentosa', ['class' => 'form-group field-pap-pavimentosa has-success'])); ?>
 
-        <button type="button" class="btn btn-primary btn-xs"onclick="quitarSeleccion()"  data-toggle="modal" data-target=".bs-pavimentosa-modal-lg" style="margin-left: 10px;"><i class="glyphicon glyphicon-plus" ></i></button>
-        <button type="button" class="btn btn-danger btn-xs" onclick="quitarPavimentosas()"><i class="glyphicon glyphicon-minus"></i></button>
-     <?
+        <button type="button" class="btn btn-primary btn-xs" onclick="quitarSeleccion()" data-toggle="modal"
+            data-target=".bs-pavimentosa-modal-lg" style="margin-left: 10px;"><i
+                class="glyphicon glyphicon-plus"></i></button>
+        <button type="button" class="btn btn-danger btn-xs" onclick="quitarPavimentosas()"><i
+                class="glyphicon glyphicon-minus"></i></button>
+        <?
      $mapPavimentosa= ArrayHelper::map(Plantillapavimentosa::find()->all() , 'id',  'codigo' );
      echo Chosen::widget([
            'name' => 'ChosenTest',
@@ -245,13 +260,16 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
        ]);
 
              ?>
-             </br> </br></br>
-           <?
+        </br> </br> </br> </br> </br>
+        <?
            echo (Html::label('Código glandular', 'glandular', ['class' => 'form-group field-pap-glandular has-success'])); ?>
 
-     <button type="button" class="btn btn-primary btn-xs" onclick="quitarSeleccion()"  data-toggle="modal" data-target=".bs-glandular-modal-lg" style="margin-left: 10px;"><i class="glyphicon glyphicon-plus" ></i></button>
-     <button type="button" class="btn btn-danger btn-xs" onclick="quitarGlandular()"><i class="glyphicon glyphicon-minus"></i></button>
-  <?
+        <button type="button" class="btn btn-primary btn-xs" onclick="quitarSeleccion()" data-toggle="modal"
+            data-target=".bs-glandular-modal-lg" style="margin-left: 10px;"><i
+                class="glyphicon glyphicon-plus"></i></button>
+        <button type="button" class="btn btn-danger btn-xs" onclick="quitarGlandular()"><i
+                class="glyphicon glyphicon-minus"></i></button>
+        <?
       $mapglandular = ArrayHelper::map(Plantillaglandular::find()->all() , 'id',  'codigo'  );
         echo Chosen::widget([
               'name' => 'ChosenTest',
@@ -272,15 +290,18 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
 
 
         ?>
-        </br> </br></br>
-      <?
+        </br> </br> </br> </br> </br>
+        <?
       echo (Html::label('Código diagnostico', 'codigo diagnostico', ['class' => 'form-group field-pap-diagnostico has-success']));
       if( !isset($model->estado) || $model->estado->descripcion!=="LISTO"){
 
       ?>
-          <button type="button" class="btn btn-primary btn-xs"onclick="quitarSeleccion()"  data-toggle="modal" data-target=".bs-diagnostico-modal-lg" style="margin-left: 10px;"><i class="glyphicon glyphicon-plus" ></i></button>
-          <button type="button" class="btn btn-danger btn-xs" onclick="quitarDiagnostico()"><i class="glyphicon glyphicon-minus"></i></button>
-     <?}
+        <button type="button" class="btn btn-primary btn-xs" onclick="quitarSeleccion()" data-toggle="modal"
+            data-target=".bs-diagnostico-modal-lg" style="margin-left: 10px;"><i
+                class="glyphicon glyphicon-plus"></i></button>
+        <button type="button" class="btn btn-danger btn-xs" onclick="quitarDiagnostico()"><i
+                class="glyphicon glyphicon-minus"></i></button>
+        <?}
         $mapdiagnostico = ArrayHelper::map($array['arraydiagnostico'] , 'id',  'codigo'  );
         echo Chosen::widget([
               'name' => 'ChosenTest',
@@ -301,14 +322,17 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
           ]);
 
       ?>
-        </br> </br></br>
-    <?
+        </br> </br> </br> </br> </br> </br>
+        <?
       echo (Html::label('Código frase', 'frase', ['class' => 'form-group field-pap-frase has-success'])) ;
 
     ?>
-      <button type="button" class="btn btn-primary btn-xs"onclick="quitarSeleccion()"  data-toggle="modal" data-target=".bs-frase-modal-lg" style="margin-left: 10px;"><i class="glyphicon glyphicon-plus" ></i></button>
-      <button type="button" class="btn btn-danger btn-xs" onclick="quitarFrase()"><i class="glyphicon glyphicon-minus"></i></button>
-   <?
+        <button type="button" class="btn btn-primary btn-xs" onclick="quitarSeleccion()" data-toggle="modal"
+            data-target=".bs-frase-modal-lg" style="margin-left: 10px;"><i
+                class="glyphicon glyphicon-plus"></i></button>
+        <button type="button" class="btn btn-danger btn-xs" onclick="quitarFrase()"><i
+                class="glyphicon glyphicon-minus"></i></button>
+        <?
     // $mapFrases= ArrayHelper::map(Plantillafrase::find()->all() , 'id',  'codigo' );
     $mapFrases= ArrayHelper::map($array['arrayfrase'] , 'id',  'codigo' );
     echo Chosen::widget([
@@ -330,54 +354,55 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
 
 
           ?>
-            </br> </br>
-            <? if( !isset($model->estado) || $model->estado->descripcion!=="LISTO"){
+        </br> </br>
+        <? if( !isset($model->estado) || $model->estado->descripcion!=="LISTO"){
             echo $form->field($model, 'id_estado')->dropDownList($model->estados())->label('Estado') ;
 
           }else {
             echo  $form->field($model, 'estado')->input("text",['readonly' => true , "value"=>$model->estado->descripcion])->label('Estado');
 
           }?>
-    <?= $form->field($model, 'observacion')->textarea(['rows' => 7,'style'=> 'font-size:17px;']) ?>
+        <?//= $form->field($model, 'observacion')->textarea(['rows' => 7,'style'=> 'font-size:17px;']) ?>
     </div>
 
-     <div class="col-md-8 col-sm-12 col-xs-12 form-group">
-       <?=$form->field($model, 'flora')->textarea(['rows' => 3,'style'=> 'font-size:17px;'])  ?>
-     </div>
-     <div class="col-md-8 col-sm-12 col-xs-12 form-group">
-       <?= $form->field($model, 'aspecto')->textarea(['rows' => 3,'style'=> 'font-size:17px;']) ?>
-     </div>
-     <div class="col-md-8 col-sm-12 col-xs-12 form-group">
-       <?= $form->field($model, 'pavimentosas')->textarea(['rows' => 3,'style'=> 'font-size:17px;']) ?>
-     </div>
-     <div class="col-md-8 col-sm-12 col-xs-12 form-group">
-      <?= $form->field($model, 'glandulares')->textarea(['rows' => 3,'style'=> 'font-size:17px;']) ?>
+    <div class="col-md-8 col-sm-12 col-xs-12 form-group">
+        <?=$form->field($model, 'flora')->textarea(['rows' => 3,'style'=> 'font-size:17px;'])  ?>
     </div>
     <div class="col-md-8 col-sm-12 col-xs-12 form-group">
-      <? if( !isset($model->estado) || $model->estado->descripcion!=="LISTO"){
+        <?= $form->field($model, 'aspecto')->textarea(['rows' => 3,'style'=> 'font-size:17px;']) ?>
+    </div>
+    <div class="col-md-8 col-sm-12 col-xs-12 form-group">
+        <?= $form->field($model, 'pavimentosas')->textarea(['rows' => 3,'style'=> 'font-size:17px;']) ?>
+    </div>
+    <div class="col-md-8 col-sm-12 col-xs-12 form-group">
+        <?= $form->field($model, 'glandulares')->textarea(['rows' => 3,'style'=> 'font-size:17px;']) ?>
+    </div>
+    <div class="col-md-8 col-sm-12 col-xs-12 form-group">
+        <? if( !isset($model->estado) || $model->estado->descripcion!=="LISTO"){
           echo $form->field($model, 'diagnostico')->textarea(['rows' => 4 ,'style'=> 'font-size:17px;']);
         } else {
           echo $form->field($model, 'diagnostico')->textarea(['rows' => 4, 'readonly' => true,'style'=> 'font-size:17px;']);
 
         }
           ?>
-   </div>
-   <div class="col-md-8 col-sm-12 col-xs-12 form-group">
-    <?= $form->field($model, 'frase')->textarea(['rows' => 3,'style'=> 'font-size:17px;']) ?>
-  </div>
+    </div>
+    <div class="col-md-8 col-sm-12 col-xs-12 form-group">
+        <?= $form->field($model, 'frase')->textarea(['rows' => 3,'style'=> 'font-size:17px;']) ?>
+    </div>
     <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-      <?= Html::submitButton($model->isNewRecord ? 'Guardar' : 'Actualizar', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+        <?= Html::submitButton($model->isNewRecord ? 'Guardar' : 'Actualizar', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
     </div>
     <? if (Usuario::isPatologo()) { ?>
     <div class="col-md-8 col-sm-12 col-xs-12 form-group">
-      <div class='col-sm-5'>
-        <label class="control-label" for="pap-contrseña">Contraseña</label>
-        <input type="password" id="contraseña" class="form-control" name="contrasenia" style="width:50%; " aria-required="true" aria-invalid="false">
-     </div>
-     <div class='col-sm-3'>
-          <?= $form->field($model, 'firmado')->checkBox(['label' => 'Firmar']); ?>
+        <div class='col-sm-5'>
+            <label class="control-label" for="pap-contrseña">Contraseña</label>
+            <input type="password" id="contraseña" class="form-control" name="contrasenia" style="width:50%; "
+                aria-required="true" aria-invalid="false">
+        </div>
+        <div class='col-sm-3'>
+            <?= $form->field($model, 'firmado')->checkBox(['label' => 'Firmar']); ?>
+        </div>
     </div>
-     </div>
     <? } ?>
     <?= $this->render('modals', [
         'model' => $model,
@@ -386,52 +411,55 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
     ]) ?>
 
     <?php ActiveForm::end(); ?>
-  </div>
+</div>
 
-    <?php Modal::begin([
+<?php Modal::begin([
         "id"=>"ajaxCrudModal",
         "footer"=>"",// always need it for jquery plugin
     ])?>
-    <?php Modal::end(); ?>
+<?php Modal::end(); ?>
 
 
 <script type="text/javascript">
-  function quitarSeleccion (){
+function quitarSeleccion() {
     $('span.kv-clear-radio').click();
 
-  }
-    function agregarFormularioFlo (){
-      if ($("tr.success").find("td:eq(1)").text() != ""){
+}
+
+function agregarFormularioFlo() {
+    if ($("tr.success").find("td:eq(1)").text() != "") {
         var textArea = document.getElementById('pap-flora');
-        if (textArea.value.trim()==""){
-          $("textarea#pap-flora.form-control").val( $("tr.success").find("td:eq(2)").text());
-        }else{
-          $("textarea#pap-flora.form-control").val(textArea.value +"\r\n"+ $("tr.success").find("td:eq(2)").text());
+        if (textArea.value.trim() == "") {
+            $("textarea#pap-flora.form-control").val($("tr.success").find("td:eq(2)").text());
+        } else {
+            $("textarea#pap-flora.form-control").val(textArea.value + "\r\n" + $("tr.success").find("td:eq(2)").text());
         }
 
         // $("textarea#pap-flora.form-control").val($("tr.success").find("td:eq(2)").text());
         //vacias el contenido de la variable para que no se anexe con otra eleccion de otro campo
         $('span.kv-clear-radio').click();
         $('button.btn.btn-default').click();
-      }
-      else {
-          swal(
-          'No se ha seleccionado a ningún registro' ,
-          'PRESIONAR OK',
-          'error'
+    } else {
+        swal(
+            'No se ha seleccionado a ningún registro',
+            'PRESIONAR OK',
+            'error'
         );
-      }
     }
-    function quitarFlora (){
-      $("textarea#pap-flora.form-control").val('') ;
-    }
-    function agregarFormularioAsp (){
-      if ($("tr.success").find("td:eq(1)").text() != ""){
+}
+
+function quitarFlora() {
+    $("textarea#pap-flora.form-control").val('');
+}
+
+function agregarFormularioAsp() {
+    if ($("tr.success").find("td:eq(1)").text() != "") {
         var textArea = document.getElementById('pap-aspecto');
-        if (textArea.value.trim()==""){
-          $("textarea#pap-aspecto.form-control").val( $("tr.success").find("td:eq(2)").text());
-        }else{
-          $("textarea#pap-aspecto.form-control").val(textArea.value +"\r\n"+ $("tr.success").find("td:eq(2)").text());
+        if (textArea.value.trim() == "") {
+            $("textarea#pap-aspecto.form-control").val($("tr.success").find("td:eq(2)").text());
+        } else {
+            $("textarea#pap-aspecto.form-control").val(textArea.value + "\r\n" + $("tr.success").find("td:eq(2)")
+            .text());
         }
 
         // $("textarea#pap-aspecto.form-control").val($("tr.success").find("td:eq(2)").text());
@@ -439,51 +467,54 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
         $('span.kv-clear-radio').click();
         $('button.btn.btn-default').click();
 
-      }
-      else {
+    } else {
         swal(
-        'No se ha seleccionado a ningún registro' ,
-        'PRESIONAR OK',
-        'error'
-      );
-      }
-  }
-    function quitarAspecto (){
-      $("textarea#pap-aspecto.form-control").val('') ;
+            'No se ha seleccionado a ningún registro',
+            'PRESIONAR OK',
+            'error'
+        );
     }
+}
 
-    function agregarFormularioPav (){
-      if ($("tr.success").find("td:eq(1)").text() != ""){
+function quitarAspecto() {
+    $("textarea#pap-aspecto.form-control").val('');
+}
+
+function agregarFormularioPav() {
+    if ($("tr.success").find("td:eq(1)").text() != "") {
         var textArea = document.getElementById('pap-pavimentosas');
-        if (textArea.value.trim()==""){
-          $("textarea#pap-pavimentosas.form-control").val( $("tr.success").find("td:eq(2)").text());
-        }else{
-          $("textarea#pap-pavimentosas.form-control").val(textArea.value +"\r\n"+ $("tr.success").find("td:eq(2)").text());
+        if (textArea.value.trim() == "") {
+            $("textarea#pap-pavimentosas.form-control").val($("tr.success").find("td:eq(2)").text());
+        } else {
+            $("textarea#pap-pavimentosas.form-control").val(textArea.value + "\r\n" + $("tr.success").find("td:eq(2)")
+                .text());
         }
         // $("textarea#pap-pavimentosas.form-control").val($("tr.success").find("td:eq(2)").text());
         //vacias el contenido de la variable para que no se anexe con otra eleccion de otro campo
         $('span.kv-clear-radio').click();
         $('button.btn.btn-default').click();
 
-      }
-      else {
+    } else {
         swal(
-        'No se ha seleccionado a ningún registro' ,
-        'PRESIONAR OK',
-        'error'
-      );
-      }
-  }
-    function quitarPavimentosas (){
-      $("textarea#pap-pavimentosas.form-control").val('') ;
+            'No se ha seleccionado a ningún registro',
+            'PRESIONAR OK',
+            'error'
+        );
     }
-    function agregarFormularioGland (){
-      if ($("tr.success").find("td:eq(1)").text() != ""){
+}
+
+function quitarPavimentosas() {
+    $("textarea#pap-pavimentosas.form-control").val('');
+}
+
+function agregarFormularioGland() {
+    if ($("tr.success").find("td:eq(1)").text() != "") {
         var textArea = document.getElementById('pap-glandulares');
-        if (textArea.value.trim()==""){
-          $("textarea#pap-glandulares.form-control").val( $("tr.success").find("td:eq(2)").text());
-        }else{
-          $("textarea#pap-glandulares.form-control").val(textArea.value +"\r\n"+ $("tr.success").find("td:eq(2)").text());
+        if (textArea.value.trim() == "") {
+            $("textarea#pap-glandulares.form-control").val($("tr.success").find("td:eq(2)").text());
+        } else {
+            $("textarea#pap-glandulares.form-control").val(textArea.value + "\r\n" + $("tr.success").find("td:eq(2)")
+                .text());
         }
 
         // $("textarea#pap-glandulares.form-control").val($("tr.success").find("td:eq(2)").text());
@@ -491,202 +522,209 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
         $('span.kv-clear-radio').click();
         $('button.btn.btn-default').click();
 
-      }
-      else {
+    } else {
         swal(
-        'No se ha seleccionado a ningún registro' ,
-        'PRESIONAR OK',
-        'error'
-      );
-      }
-  }
-    function quitarGlandular (){
-      $("textarea#pap-glandulares.form-control").val('') ;
+            'No se ha seleccionado a ningún registro',
+            'PRESIONAR OK',
+            'error'
+        );
     }
-    function agregarFormularioDiag (){
-      if ($("tr.success").find("td:eq(1)").text() != ""){
+}
+
+function quitarGlandular() {
+    $("textarea#pap-glandulares.form-control").val('');
+}
+
+function agregarFormularioDiag() {
+    if ($("tr.success").find("td:eq(1)").text() != "") {
         var textArea = document.getElementById('pap-diagnostico');
-        if (textArea.value.trim()==""){
-          $("textarea#pap-diagnostico.form-control").val( $("tr.success").find("td:eq(2)").text());
-        }else{
-          $("textarea#pap-diagnostico.form-control").val(textArea.value +"\r\n"+ $("tr.success").find("td:eq(2)").text());
+        if (textArea.value.trim() == "") {
+            $("textarea#pap-diagnostico.form-control").val($("tr.success").find("td:eq(2)").text());
+        } else {
+            $("textarea#pap-diagnostico.form-control").val(textArea.value + "\r\n" + $("tr.success").find("td:eq(2)")
+                .text());
         }
         // $("textarea#pap-diagnostico.form-control").val($("tr.success").find("td:eq(2)").text());
         //vacias el contenido de la variable para que no se anexe con otra eleccion de otro campo
         $('span.kv-clear-radio').click();
         $('button.btn.btn-default').click();
 
-      }
-      else {
+    } else {
         swal(
-        'No se ha seleccionado a ningún registro' ,
-        'PRESIONAR OK',
-        'error'
-      );
-      }
-  }
-    function quitarDiagnostico (){
-      $("textarea#pap-diagnostico.form-control").val('') ;
+            'No se ha seleccionado a ningún registro',
+            'PRESIONAR OK',
+            'error'
+        );
     }
+}
 
-    function agregarFormularioFra (){
-      if ($("tr.success").find("td:eq(1)").text() != ""){
+function quitarDiagnostico() {
+    $("textarea#pap-diagnostico.form-control").val('');
+}
+
+function agregarFormularioFra() {
+    if ($("tr.success").find("td:eq(1)").text() != "") {
         var textArea = document.getElementById('pap-frase');
-        if (textArea.value.trim()==""){
-          $("textarea#pap-frase.form-control").val( $("tr.success").find("td:eq(2)").text());
-        }else{
-          $("textarea#pap-frase.form-control").val(textArea.value +"\r\n"+ $("tr.success").find("td:eq(2)").text());
+        if (textArea.value.trim() == "") {
+            $("textarea#pap-frase.form-control").val($("tr.success").find("td:eq(2)").text());
+        } else {
+            $("textarea#pap-frase.form-control").val(textArea.value + "\r\n" + $("tr.success").find("td:eq(2)").text());
         }
         //vacias el contenido de la variable para que no se anexe con otra eleccion de otro campo
         $('span.kv-clear-radio').click();
         $('button.btn.btn-default').click();
 
-      }
-      else {
+    } else {
         swal(
-        'No se ha seleccionado a ningún registro' ,
-        'PRESIONAR OK',
-        'error'
-      );
-      }
-
-      }
-
-    function quitarFrase (){
-      $("textarea#pap-frase.form-control").val('') ;
-
-        }
-  function onEnviarFlora(val)
-     {
-       var textArea = document.getElementById('pap-flora');
-
-       $.ajax({
-           url: '<?php echo Url::to(['/plantillaflora/buscaregistro']) ?>',
-          type: 'post',
-          data: {id: val
-          },
-          success: function (data) {
-            var current_value = textArea.value;
-              var content = JSON.parse(data);
-              if (current_value.trim()==""){
-                document.getElementById("pap-flora").value=  content[0].flora;
-              }else {
-                document.getElementById("pap-flora").value= current_value +"\r\n"+content[0].flora;
-              }
-          }
-     });
-     }
-  function onEnviarAspecto(val)
-   {
-        var textArea = document.getElementById('pap-aspecto');
-
-       $.ajax({
-           url: '<?php echo Url::to(['/plantillaaspecto/buscaregistro']) ?>',
-          type: 'post',
-          data: {id: val
-           },
-          success: function (data) {
-              var current_value = textArea.value;
-              var content = JSON.parse(data);
-              if (current_value.trim()==""){
-                document.getElementById("pap-aspecto").value=  content[0].aspecto;
-              }else {
-                document.getElementById("pap-aspecto").value= current_value +"\r\n"+ content[0].aspecto;
-              }
-
-        }
-
-     });
-
-
-   }
-   function onEnviarPav(val)
-    {
-      var textArea = document.getElementById('pap-pavimentosas');
-
-        $.ajax({
-            url: '<?php echo Url::to(['/plantillapavimentosa/buscaregistro']) ?>',
-           type: 'post',
-           data: {id: val
-           },
-           success: function (data) {
-             var current_value = textArea.value;
-             var content = JSON.parse(data);
-            if (current_value.trim()==""){
-              document.getElementById("pap-pavimentosas").value=  content[0].pavimentosa;
-            }else {
-              document.getElementById("pap-pavimentosas").value= current_value +"\r\n"+content[0].pavimentosa;
-            }
-            }
-
-      });
+            'No se ha seleccionado a ningún registro',
+            'PRESIONAR OK',
+            'error'
+        );
     }
-    function onEnviarGlan(val)
-     {
-       var textArea = document.getElementById('pap-glandulares');
 
-         $.ajax({
-             url: '<?php echo Url::to(['/plantillaglandular/buscaregistro']) ?>',
-            type: 'post',
-            data: {id: val
-            },
-            success: function (data) {
-              var current_value = textArea.value;
-                var content = JSON.parse(data);
-               if (current_value.trim()==""){
-                 document.getElementById("pap-glandulares").value=  content[0].glandular;
-               }else {
-                 document.getElementById("pap-glandulares").value= current_value +"\r\n"+content[0].glandular;
-               }
+}
+
+function quitarFrase() {
+    $("textarea#pap-frase.form-control").val('');
+
+}
+
+function onEnviarFlora(val) {
+    var textArea = document.getElementById('pap-flora');
+
+    $.ajax({
+        url: '<?php echo Url::to(['/plantillaflora/buscaregistro']) ?>',
+        type: 'post',
+        data: {
+            id: val
+        },
+        success: function(data) {
+            var current_value = textArea.value;
+            var content = JSON.parse(data);
+            if (current_value.trim() == "") {
+                document.getElementById("pap-flora").value = content[0].flora;
+            } else {
+                document.getElementById("pap-flora").value = current_value + "\r\n" + content[0].flora;
+            }
+        }
+    });
+}
+
+function onEnviarAspecto(val) {
+    var textArea = document.getElementById('pap-aspecto');
+
+    $.ajax({
+        url: '<?php echo Url::to(['/plantillaaspecto/buscaregistro']) ?>',
+        type: 'post',
+        data: {
+            id: val
+        },
+        success: function(data) {
+            var current_value = textArea.value;
+            var content = JSON.parse(data);
+            if (current_value.trim() == "") {
+                document.getElementById("pap-aspecto").value = content[0].aspecto;
+            } else {
+                document.getElementById("pap-aspecto").value = current_value + "\r\n" + content[0].aspecto;
             }
 
-       });
-     }
-
-     function onEnviarDiag(val)
-      {
-        var textArea = document.getElementById('pap-diagnostico');
-
-          $.ajax({
-              url: '<?php echo Url::to(['/plantilladiagnostico/buscaregistro']) ?>',
-             type: 'post',
-             data: {id: val
-             },
-             success: function (data) {
-               var current_value = textArea.value;
-                 var content = JSON.parse(data);
-                 if (current_value.trim()==""){
-                   document.getElementById("pap-diagnostico").value=  content[0].diagnostico;
-                 }else {
-                   document.getElementById("pap-diagnostico").value=  current_value +"\r\n"+content[0].diagnostico;
-                 }
-             }
-
-        });
-      }
-
-
-
-       function onEnviarFra(val)
-        {
-
-          var textArea = document.getElementById('pap-frase');
-            $.ajax({
-                url: '<?php echo Url::to(['/plantillafrase/buscaregistro']) ?>',
-               type: 'post',
-               data: {id: val
-               },
-               success: function (data) {
-                   var current_value = textArea.value;
-                   var content = JSON.parse(data);
-                  if (current_value.trim()==""){
-                    document.getElementById("pap-frase").value=  content[0].frase;
-                  }else {
-                    document.getElementById("pap-frase").value=  current_value +"\r\n"+content[0].frase;
-                  }
-               }
-
-          });
         }
 
+    });
+
+
+}
+
+function onEnviarPav(val) {
+    var textArea = document.getElementById('pap-pavimentosas');
+
+    $.ajax({
+        url: '<?php echo Url::to(['/plantillapavimentosa/buscaregistro']) ?>',
+        type: 'post',
+        data: {
+            id: val
+        },
+        success: function(data) {
+            var current_value = textArea.value;
+            var content = JSON.parse(data);
+            if (current_value.trim() == "") {
+                document.getElementById("pap-pavimentosas").value = content[0].pavimentosa;
+            } else {
+                document.getElementById("pap-pavimentosas").value = current_value + "\r\n" + content[0]
+                    .pavimentosa;
+            }
+        }
+
+    });
+}
+
+function onEnviarGlan(val) {
+    var textArea = document.getElementById('pap-glandulares');
+
+    $.ajax({
+        url: '<?php echo Url::to(['/plantillaglandular/buscaregistro']) ?>',
+        type: 'post',
+        data: {
+            id: val
+        },
+        success: function(data) {
+            var current_value = textArea.value;
+            var content = JSON.parse(data);
+            if (current_value.trim() == "") {
+                document.getElementById("pap-glandulares").value = content[0].glandular;
+            } else {
+                document.getElementById("pap-glandulares").value = current_value + "\r\n" + content[0]
+                    .glandular;
+            }
+        }
+
+    });
+}
+
+function onEnviarDiag(val) {
+    var textArea = document.getElementById('pap-diagnostico');
+
+    $.ajax({
+        url: '<?php echo Url::to(['/plantilladiagnostico/buscaregistro']) ?>',
+        type: 'post',
+        data: {
+            id: val
+        },
+        success: function(data) {
+            var current_value = textArea.value;
+            var content = JSON.parse(data);
+            if (current_value.trim() == "") {
+                document.getElementById("pap-diagnostico").value = content[0].diagnostico;
+            } else {
+                document.getElementById("pap-diagnostico").value = current_value + "\r\n" + content[0]
+                    .diagnostico;
+            }
+        }
+
+    });
+}
+
+
+
+function onEnviarFra(val) {
+
+    var textArea = document.getElementById('pap-frase');
+    $.ajax({
+        url: '<?php echo Url::to(['/plantillafrase/buscaregistro']) ?>',
+        type: 'post',
+        data: {
+            id: val
+        },
+        success: function(data) {
+            var current_value = textArea.value;
+            var content = JSON.parse(data);
+            if (current_value.trim() == "") {
+                document.getElementById("pap-frase").value = content[0].frase;
+            } else {
+                document.getElementById("pap-frase").value = current_value + "\r\n" + content[0].frase;
+            }
+        }
+
+    });
+}
 </script>

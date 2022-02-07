@@ -287,8 +287,7 @@ $background = array(250,250,250);
 $color = array(0,0,0);
 // $qrcode->displayFPDF($pdf, $x, $y, $s, $background, $color);
 
-$pdf->Output();
-
+$pdf->Output("I","PAP --- ".utf8_decode($model->solicitudpap->paciente->apellido." ".$model->solicitudpap->paciente->nombre));
 
 exit;
 ?>

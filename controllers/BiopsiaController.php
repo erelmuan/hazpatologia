@@ -257,8 +257,6 @@ class BiopsiaController extends Controller
         }
           //si esta el estudio  en estado listo, ['Biopsia']['id_estado'] no estara definido por lo tanto no entra al if
             if ( Usuario::isPatologo() && isset($post['Biopsia']['id_estado'] ) && $post['Biopsia']['id_estado'] ==2){
-
-
               if (!$this->validarContraseña($_POST["contrasenia"])){
                 unset($post['Biopsia']['id_estado']);
                 $model->load($post);
@@ -269,7 +267,6 @@ class BiopsiaController extends Controller
                     'array' => $array,
                     'provider' => $provider,
                     'edadDelPaciente'=>Solicitud::calcular_edad($_SESSION['solicitudb']->id),
-
 
                 ]);
 
@@ -439,7 +436,7 @@ class BiopsiaController extends Controller
     }
 
 
-    public function actionInforme($id) {
+public function actionInforme($id) {
 
       $request = Yii::$app->request;
       // Si entra en el if es porque el estudio esta en estado EN_PROCESO

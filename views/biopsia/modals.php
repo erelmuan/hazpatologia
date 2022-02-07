@@ -85,14 +85,14 @@ use kartik\grid\GridView;
 
 ?>
 
-  <div class="x_content">
-        <div class="modal fade bs-material-modal-lg" tabindex="-1" role="dialog" aria-hidden="true">
-          <div class="modal-dialog modal-lg">
+<div class="x_content">
+    <div class="modal fade bs-material-modal-lg" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
             <div class="modal-content">
-              <div class="modal-body">
-                <div class="plantillamaterialb-index">
-                    <div id="ajaxCrudDatatable">
-                        <?=GridView::widget([
+                <div class="modal-body">
+                    <div class="plantillamaterialb-index">
+                        <div id="ajaxCrudDatatable">
+                            <?=GridView::widget([
                             'id'=>'crud-material',
                             'dataProvider' => $provider['dataProviderMat'],
                             'filterModel' => $search['searchModelMat'],
@@ -112,24 +112,25 @@ use kartik\grid\GridView;
                             ]
                         ])
                         ?>
-                      </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                        <button type="button" onclick='agregarFormularioMat();' class="btn btn-primary">Agregar al
+                            formulario</button>
+                    </div>
                 </div>
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-                  <button type="button"  onclick='agregarFormularioMat();' class="btn btn-primary">Agregar al formulario</button>
-                </div>
-          </div>
+            </div>
         </div>
-      </div>
-  </div>
+    </div>
 </div>
 
 
 <div class="x_content">
-            <div class="modal fade bs-microscopia-modal-lg" tabindex="-1" role="dialog" aria-hidden="true">
-              <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                  <div class="modal-body">
+    <div class="modal fade bs-microscopia-modal-lg" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-body">
                     <div class="plantillamicroscopia-index">
                         <div id="ajaxCrudDatatable">
                             <?=GridView::widget([
@@ -150,20 +151,21 @@ use kartik\grid\GridView;
                         </div>
                     </div>
                     <div class="modal-footer">
-                      <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-                      <button type="button"  onclick='agregarFormularioMic();' class="btn btn-primary">Agregar al formulario</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                        <button type="button" onclick='agregarFormularioMic();' class="btn btn-primary">Agregar al
+                            formulario</button>
                     </div>
-              </div>
+                </div>
             </div>
-          </div>
-      </div>
+        </div>
+    </div>
 </div>
 
 <div class="x_content">
-            <div class="modal fade bs-macroscopia-modal-lg" tabindex="-1" role="dialog" aria-hidden="true">
-              <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                  <div class="modal-body">
+    <div class="modal fade bs-macroscopia-modal-lg" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-body">
                     <div class="plantillamacroscopia-index">
                         <div id="ajaxCrudDatatable">
                             <?=GridView::widget([
@@ -184,20 +186,21 @@ use kartik\grid\GridView;
                         </div>
                     </div>
                     <div class="modal-footer">
-                      <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-                      <button type="button"  onclick='agregarFormularioMac();' class="btn btn-primary">Agregar al formulario</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                        <button type="button" onclick='agregarFormularioMac();' class="btn btn-primary">Agregar al
+                            formulario</button>
                     </div>
-              </div>
+                </div>
             </div>
-          </div>
-      </div>
+        </div>
+    </div>
 </div>
 
 <div class="x_content">
-            <div class="modal fade bs-diagnostico-modal-lg" tabindex="-1" role="dialog" aria-hidden="true">
-              <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                  <div class="modal-body">
+    <div class="modal fade bs-diagnostico-modal-lg" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-body">
                     <div class="plantilladiagnostico-index">
                         <div id="ajaxCrudDatatable">
                             <?=GridView::widget([
@@ -218,20 +221,21 @@ use kartik\grid\GridView;
                         </div>
                     </div>
                     <div class="modal-footer">
-                      <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-                      <button type="button"  onclick='agregarFormularioDiag();' class="btn btn-primary">Agregar al formulario</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                        <button type="button" onclick='agregarFormularioDiag();' class="btn btn-primary">Agregar al
+                            formulario</button>
                     </div>
-              </div>
+                </div>
             </div>
-          </div>
-      </div>
+        </div>
+    </div>
 </div>
 
 <div class="x_content">
-            <div class="modal fade bs-frases-modal-lg" tabindex="-1" role="dialog" aria-hidden="true">
-              <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                  <div class="modal-body">
+    <div class="modal fade bs-frases-modal-lg" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-body">
                     <div class="plantillafrases-index">
                         <div id="ajaxCrudDatatable">
                             <?=GridView::widget([
@@ -252,11 +256,12 @@ use kartik\grid\GridView;
                         </div>
                     </div>
                     <div class="modal-footer">
-                      <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-                      <button type="button"  onclick='agregarFormularioFra();' class="btn btn-primary">Agregar al formulario</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                        <button type="button" onclick='agregarFormularioFra();' class="btn btn-primary">Agregar al
+                            formulario</button>
                     </div>
-              </div>
+                </div>
             </div>
-          </div>
-      </div>
+        </div>
+    </div>
 </div>

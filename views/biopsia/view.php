@@ -46,19 +46,13 @@ use yii\helpers\Html;
         'macroscopia:ntext',
         'microscopia:ntext',
         'ihq:boolean',
-        // 'id_plantilladiagnostico',
         'diagnostico:ntext',
-        'observacion:ntext',
+        // 'observacion:ntext',
         [
           'value'=> $model->estado->descripcion ,
           'label'=> 'Estado',
        ] ,
-     //   [
-     //    'value'=> $model->fechalisto ,
-     //    'label'=> 'Fecha de listo',
-     //    'format' => ['date', 'd/M/Y'],
-     //
-     // ],
+
         'frase',
       ],
   ]) ; ?>
