@@ -63,16 +63,16 @@ class PapSearch extends Pap
        ->leftJoin('paciente', 'paciente.id = solicitudpap.id_paciente')
        ->leftJoin('medico', 'medico.id = solicitudpap.id_medico')
       ->leftJoin('procedencia', 'procedencia.id = solicitudpap.id_procedencia')
-      ->innerJoinWith('estado', 'estado.id = pap.id_estado')
+      ->innerJoinWith('estado', 'estado.id = pap.id_estado');
 
-      ->orderBy(['id' => SORT_DESC,]);
-       //para que pueda ordenarse colocar los atributos(se pone gris la referencia label)
        $dataProvider = new ActiveDataProvider([
            'query' => $query,
-           'sort' => ['attributes' => ['protocolo','fecharealizacion',  'paciente','sexo','procedencia','medico','estado']]
        ]);
+       $dataProvider->sort->attributes['protocolo'] = [
+              'asc' => ['solicitudpap.protocolo' => SORT_ASC],
+              'desc' => ['solicitudpap.protocolo' => SORT_DESC],
+          ];
         $this->load($params);
-
         if (!$this->validate()) {
             // uncomment the following line if you do not want to return any records when validation fails
             // $query->where('0=1');

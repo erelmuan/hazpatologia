@@ -11,8 +11,6 @@ use app\models\PlantillaglandularSearch;
 use app\models\PlantillapavimentosaSearch;
 use app\models\PlantilladiagnosticoSearch;
 use app\models\PlantillafraseSearch;
-
-
 use app\models\Usuario;
 
 use yii\web\Controller;
@@ -163,7 +161,28 @@ class PapController extends Controller
               if (Usuario::isPatologo() && isset($post['Pap']['id_estado'] ) && $post['Pap']['id_estado'] ==2){
                     //validar contraseñar
                     $model->load($post);
+                    if ($post['Pap']['firmado'] !=="1") {
+                      $model->id_estado =5;
+                        Yii::$app->getSession()->setFlash('warning', [
+                            'type' => 'danger',
+                            'duration' => 5000,
+                            'icon' => 'fa fa-warning',
+                            'message' => "EN ESTADO LISTO, DEBE POSEER LA FIRMA",
+                            'title' => 'NOTIFICACIÓN',
+                            'positonY' => 'top',
+                            'positonX' => 'right'
+                        ]);
+                        unset($post['Pap']['id_estado']);
+                        return $this->render('_form', [
+                            'model' => $model,
+                            'dataSol' => $_SESSION['solicitudb'],
+                            'search' => $search,
+                            'array' => $array,
+                            'provider' => $provider,
+                            'edadDelPaciente'=>Solicitud::calcular_edad($_SESSION['solicitudb']->id),
 
+                        ]);
+                    }
                     if (!$this->validarContraseña($_POST["contrasenia"])){
                       $model->id_estado =5;
                       return $this->render('_form', [
@@ -177,7 +196,7 @@ class PapController extends Controller
                       ]);
 
                     }
-                      $model->fechalisto=date("Y-m-d");
+                      $model->fechalisto=date("Y-m-d h:i:s");
                       $model->id_usuario=$modelUsuario->id;
                       $Solicitud =  Solicitud::findOne($model->id_solicitudpap);
                       $Solicitud->id_estado=$model->id_estado;
@@ -215,7 +234,6 @@ class PapController extends Controller
       $Solicitud =  Solicitud::findOne($id);
       list($ano,$mes,$dia) = explode("-",$Solicitud->paciente->fecha_nacimiento);
       list($anoR,$mesR,$diaR) = explode("-",$Solicitud->fechadeingreso);
-
 
       $ano_diferencia  = $anoR - $ano;
       $mes_diferencia = $mesR - $mes;
@@ -295,13 +313,34 @@ class PapController extends Controller
               ]);
 
             }
+            if ($post['Pap']['firmado'] !=="1") {
+                Yii::$app->getSession()->setFlash('warning', [
+                    'type' => 'danger',
+                    'duration' => 5000,
+                    'icon' => 'fa fa-warning',
+                    'message' => "EN ESTADO LISTO, DEBE POSEER LA FIRMA",
+                    'title' => 'NOTIFICACIÓN',
+                    'positonY' => 'top',
+                    'positonX' => 'right'
+                ]);
+                unset($post['Pap']['id_estado']);
+                $model->load($post);
+                return $this->render('_form', [
+                    'model' => $model,
+                    'dataSol' => $_SESSION['solicitudp'],
+                    'search' => $search,
+                    'array' => $array,
+                    'provider' => $provider,
+                    'edadDelPaciente'=>Solicitud::calcular_edad($_SESSION['solicitudp']->id),
 
+                ]);
+            }
             $Solicitud =  Solicitud::findOne($model->id_solicitudpap);
             //puede pasar a estado en proceso
             $Solicitud->id_estado=  $post['Pap']['id_estado'] ;
             $Solicitud->save();
             //fecha cuando esta listo el informe de la biopsia
-            $model->fechalisto=date("Y-m-d");
+            $model->fechalisto=date("Y-m-d  h:i:s");
             $model->id_usuario=$modelUsuario->id;
           }
 

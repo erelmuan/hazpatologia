@@ -41,7 +41,7 @@ class Auditoria extends \yii\db\ActiveRecord
             [['fecha', 'hora'], 'safe'],
             [['informacion_usuario', 'cambios'], 'string'],
             [['accion', 'ip'], 'string', 'max' => 15],
-            [['tabla'], 'string', 'max' => 25],
+            [['tabla'], 'string', 'max' => 50],
             //tomar como refencia en cuanto relaciones
             [['id_usuario'], 'exist', 'skipOnError' => true, 'targetClass' => Usuario::className(), 'targetAttribute' => ['id_usuario' => 'id']],
         ];

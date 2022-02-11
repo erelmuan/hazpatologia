@@ -81,13 +81,16 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
 
     <div class="col-md-4 col-sm-12 col-xs-12 form-group">
     </br>  </br>
-        <?  echo (Html::label('Código material', 'username', ['class' => 'form-group field-biopsias-material has-success'])); ?>
+        <?  echo (Html::label('Código material', 'username', ['class' => 'form-group field-biopsias-material has-success']));
+        if( !isset($model->estado) || $model->estado->descripcion!=="LISTO" || Usuario::isPatologo()){
+
+        ?>
         <button type="button" class="btn btn-primary btn-xs" onclick="quitarSeleccion()" data-toggle="modal"
             data-target=".bs-material-modal-lg" style="margin-left: 10px;"><i
                 class="glyphicon glyphicon-plus"></i></button>
         <button type="button" class="btn btn-danger btn-xs" onclick="quitarMaterial()"><i
                 class="glyphicon glyphicon-minus"></i></button>
-        <?
+        <?}
         $mapMaterial= ArrayHelper::map($array['arraymaterial'], 'id',  'codigo' );
       echo Chosen::widget([
             'name' => 'id_material',
@@ -102,19 +105,23 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
             ],
             'options' => [
                   'onchange' => 'onEnviarMat (this.value)',
+                  'disabled'=>(isset($model->estado) && ($model->estado->descripcion=="LISTO" && !Usuario::isPatologo())),
 
                   ],
         ]);
 
                     ?>
           </br>  </br>   </br>  </br>  </br>  </br>
-        <? echo ( Html::label('Código macroscopia', 'macro', ['class' => 'form-group field-biopsias-macroscopia has-success']));  ?>
+        <? echo ( Html::label('Código macroscopia', 'macro', ['class' => 'form-group field-biopsias-macroscopia has-success']));
+        if( !isset($model->estado) || $model->estado->descripcion!=="LISTO" || Usuario::isPatologo()){
+
+         ?>
         <button type="button" class="btn btn-primary btn-xs" onclick="quitarSeleccion()" data-toggle="modal"
             data-target=".bs-macroscopia-modal-lg" style="margin-left: 10px;"><i
                 class="glyphicon glyphicon-plus"></i></button>
         <button type="button" class="btn btn-danger btn-xs" onclick="quitarMacroscopia()"><i
                 class="glyphicon glyphicon-minus"></i></button>
-        <?
+        <?}
                $mapMacroscopia= ArrayHelper::map($array['arraymacroscopia'] , 'id',  'codigo' );
                echo Chosen::widget([
                    'name' => 'id_macroscopia',
@@ -129,21 +136,24 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
                    ],
                    'options' => [
                          'onchange' => 'onEnviarMac (this.value)',
+                         'disabled'=>(isset($model->estado) && ($model->estado->descripcion=="LISTO" && !Usuario::isPatologo())),
+                         'disabled'=>(isset($model->estado) && ($model->estado->descripcion=="LISTO" && !Usuario::isPatologo())),
 
                          ],
                ]);
 
                  ?>
          </br>  </br>  </br>  </br>  </br> </br>
-        <?  echo (Html::label('Código microscopia', 'username', ['class' => 'form-group field-biopsias-microscopia has-success'])); ?>
-
+        <?  echo (Html::label('Código microscopia', 'username', ['class' => 'form-group field-biopsias-microscopia has-success']));
+        if( !isset($model->estado) || $model->estado->descripcion!=="LISTO" || Usuario::isPatologo()){
+        ?>
 
         <button type="button" class="btn btn-primary btn-xs" onclick="quitarSeleccion()" data-toggle="modal"
             data-target=".bs-microscopia-modal-lg" style="margin-left: 10px;"><i
                 class="glyphicon glyphicon-plus"></i></button>
         <button type="button" class="btn btn-danger btn-xs" onclick="quitarMicroscopia()"><i
                 class="glyphicon glyphicon-minus"></i></button>
-        <?
+        <?}
              $mapMicroscopia= ArrayHelper::map($array['arraymicroscopia'] , 'id',  'codigo' );
              echo Chosen::widget([
                    'name' => 'id_microscopia',
@@ -158,6 +168,7 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
                    ],
                    'options' => [
                          'onchange' => 'onEnviarMic (this.value)',
+                         'disabled'=>(isset($model->estado) && ($model->estado->descripcion=="LISTO" && !Usuario::isPatologo())),
 
                          ],
                ]);
@@ -168,7 +179,12 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
       echo ( $form->field($model, 'ihq')->widget(SwitchInput::classname(), [    'pluginOptions' => [
         'onText' => 'Si',
         'offText' => 'No',
-    ]]))->label('Estudio inmunostoquimica');
+
+
+      ],
+      'disabled'=>isset($model->estado) && ($model->estado->descripcion=="LISTO" && !Usuario::isPatologo()),
+
+    ]))->label('Estudio inmunostoquimica');
       ?></br>
         <?
       echo (Html::label('Código diagnostico', 'codigo diagnostico', ['class' => 'form-group field-biopsias-diagnostico has-success']));
@@ -194,7 +210,7 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
            ],
            'options' => [
                  'onchange' => 'onEnviarDiag (this.value)',
-                 'disabled'=>(!isset($model->estado) || $model->estado->descripcion!=="LISTO")?false:true,
+                 'disabled'=>(isset($model->estado) && $model->estado->descripcion=="LISTO"),
 
                  ],
        ]);
@@ -203,6 +219,7 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
         <?
 
       echo (Html::label('Código frase', 'frase', ['class' => 'form-group field-biopsias-frase has-success'])) ;
+      if( !isset($model->estado) || $model->estado->descripcion!=="LISTO" || Usuario::isPatologo()){
       ?>
         <button type="button" class="btn btn-primary btn-xs" onclick="quitarSeleccion()" data-toggle="modal"
             data-target=".bs-frases-modal-lg" style="margin-left: 10px;"><i
@@ -210,6 +227,7 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
         <button type="button" class="btn btn-danger btn-xs" onclick="quitarFrase()"><i
                 class="glyphicon glyphicon-minus"></i></button>
         <?
+      }
       $mapFrases= ArrayHelper::map($array['arrayfrase'] , 'id',  'codigo' );
       echo Chosen::widget([
             'name' => 'ChosenTest',
@@ -224,6 +242,7 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
             ],
             'options' => [
                   'onchange' => 'onEnviarFra (this.value)',
+                  'disabled'=>(isset($model->estado) && ($model->estado->descripcion=="LISTO" && !Usuario::isPatologo())),
 
                   ],
         ]);
@@ -234,6 +253,7 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
               echo $form->field($model, 'id_estado')->dropDownList($model->estados())->label('Estado') ;
 
         }else {
+            echo $form->field($model, 'id_estado')->hiddenInput()->label(false);
              echo  $form->field($model, 'estado')->input("text",['readonly' => true , "value"=>$model->estado->descripcion])->label('Estado');
 
         }?>
@@ -244,13 +264,13 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
 
 
     <div class="col-md-8 col-sm-12 col-xs-12 form-group">
-        <?=$form->field($model, 'material')->textarea(['rows' => 4,'style'=> 'font-size:17px;'])  ?>
+        <?=$form->field($model, 'material')->textarea(['rows' => 4,'style'=> 'font-size:17px;', 'disabled'=>(isset($model->estado) && ($model->estado->descripcion=="LISTO" && !Usuario::isPatologo()))])  ?>
     </div>
     <div class="col-md-8 col-sm-12 col-xs-12 form-group">
-        <?= $form->field($model, 'macroscopia')->textarea(['rows' => 4,'style'=> 'font-size:17px;']) ?>
+        <?= $form->field($model, 'macroscopia')->textarea(['rows' => 4,'style'=> 'font-size:17px;', 'disabled'=>(isset($model->estado) && ($model->estado->descripcion=="LISTO" && !Usuario::isPatologo()))]) ?>
     </div>
     <div class="col-md-8 col-sm-12 col-xs-12 form-group">
-        <?= $form->field($model, 'microscopia')->textarea(['rows' => 4,'style'=> 'font-size:17px;']) ?>
+        <?= $form->field($model, 'microscopia')->textarea(['rows' => 4,'style'=> 'font-size:17px;', 'disabled'=>(isset($model->estado) && ($model->estado->descripcion=="LISTO" && !Usuario::isPatologo()))]) ?>
     </div>
     <div class="col-md-8 col-sm-12 col-xs-12 form-group">
         <? if( !isset($model->estado) || $model->estado->descripcion!=="LISTO"){
@@ -263,7 +283,7 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
             ?>
     </div>
     <div class="col-md-8 col-sm-12 col-xs-12 form-group">
-        <?= $form->field($model, 'frase')->textarea(['rows' => 4,'style'=> 'font-size:17px;']) ?>
+        <?= $form->field($model, 'frase')->textarea(['rows' => 4,'style'=> 'font-size:17px;', 'disabled'=>(isset($model->estado) && ($model->estado->descripcion=="LISTO" && !Usuario::isPatologo()))]) ?>
     </div>
     <div class="col-md-12 col-sm-12 col-xs-12 form-group">
         <?= Html::submitButton($model->isNewRecord ? 'Guardar' : 'Actualizar', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']);
@@ -288,7 +308,7 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
                 aria-required="true" aria-invalid="false">
         </div>
         <div class='col-sm-3'>
-            <?= $form->field($model, 'firmado')->checkbox()->label('FIRMAR (si el estado del estudio es pendiente, se ignorara esta opción)'); ?>
+            <?= $form->field($model, 'firmado')->checkbox()->label('FIRMAR (si el estado del estudio es EN PROCESO, se ignorara esta opción)'); ?>
 
         </div>
     </div>

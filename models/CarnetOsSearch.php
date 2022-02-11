@@ -18,8 +18,8 @@ class CarnetOsSearch extends CarnetOs
     public function rules()
     {
         return [
-            [['idcarnet_os', 'id_paciente', 'id_obrasocial'], 'integer'],
-            [['numeroafiliado'], 'safe'],
+            [['id', 'id_paciente', 'id_obrasocial'], 'integer'],
+            [['nroafiliado'], 'safe'],
         ];
     }
 
@@ -64,7 +64,7 @@ class CarnetOsSearch extends CarnetOs
             'id_obrasocial' => $this->id_obrasocial,
         ]);
 
-        $query->andFilterWhere(['ilike', 'numeroafiliado', $this->numeroafiliado]);
+        $query->andFilterWhere(['ilike', 'nroafiliado', $this->nroafiliado]);
 
         return $dataProvider;
     }

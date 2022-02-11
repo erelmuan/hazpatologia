@@ -209,6 +209,10 @@ class Biopsia extends \yii\db\ActiveRecord
             'value' => 'estado.descripcion',
 
         ],
+        [
+            'class'=>'\kartik\grid\BooleanColumn',
+            'attribute'=>'ihq',
+        ],
         ];
     }
 

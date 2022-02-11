@@ -5,9 +5,6 @@ use yii\bootstrap\Modal;
 use kartik\grid\GridView;
 use johnitvn\ajaxcrud\CrudAsset;
 use johnitvn\ajaxcrud\BulkButtonWidget;
-/* @var $this yii\web\View */
-/* @var $searchModel app\models\SolicitudSearch */
-/* @var $dataProvider yii\data\ActiveDataProvider */
 use yii\widgets\Pjax;
 use kartik\export\ExportMenu;
 use yii\bootstrap\Collapse;
@@ -111,7 +108,6 @@ $columns[]=
   </div>
 <p>
 
-    <?//= Html::a('Nueva Solicitud', "?r=solicitud/create", ['class' => 'btn btn-success']) ?>
     <?= Html::a('Nueva Solicitud biopsia', "?r=solicitudbiopsia/create", ['class' => 'btn btn-success']) ?>
     <?= Html::a('Nueva Solicitud pap', "?r=solicitudpap/create", ['class' => 'btn btn-success']) ?>
 

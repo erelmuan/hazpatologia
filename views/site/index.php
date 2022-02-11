@@ -91,7 +91,7 @@ $this->title = 'Inicio';
         </div>
       </div>
     </a>
-      <a href=<?=Yii::$app->homeUrl."?r=biopsia"; ?>>
+      <a href=<?=Yii::$app->homeUrl."?r=biopsia/index&sort=-id"; ?>>
       <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
         <div class="tile-stats">
           <div class="icon"> <?  echo Icon::show('microscope', ['class'=>'fa-2x', 'framework' => Icon::WHHG]); ?>
@@ -104,7 +104,7 @@ $this->title = 'Inicio';
         </div>
       </div>
       </a>
-      <a href=<?=Yii::$app->homeUrl."?r=pap"; ?>>
+      <a href=<?=Yii::$app->homeUrl."?r=pap/index&sort=-id"; ?>>
       <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
         <div class="tile-stats">
           <div class="icon"><i class="fa fa-flask"></i>
@@ -116,7 +116,7 @@ $this->title = 'Inicio';
         </div>
       </div>
       </a>
-      <a href=<?=Yii::$app->homeUrl."?r=solicitud"; ?>>
+      <a href=<?=Yii::$app->homeUrl."?r=solicitud/index&sort=-id"; ?>>
       <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
         <div class="tile-stats">
           <div class="icon"><i class="fa fa-file-text-o"></i>

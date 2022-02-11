@@ -62,31 +62,39 @@ class BiopsiaSearch extends Biopsia
         ->leftJoin('paciente', 'paciente.id = solicitudbiopsia.id_paciente')
       ->leftJoin('procedencia', 'procedencia.id = solicitudbiopsia.id_procedencia')
       ->leftJoin('medico', 'medico.id = solicitudbiopsia.id_medico')
-      ->innerJoinWith('estado', 'estado.id = biopsia.id_estado')
-
-       ->orderBy(['id' => SORT_DESC,]);
-        //para que pueda ordenarse colocar los atributos(se pone gris la referencia label)
+      ->innerJoinWith('estado', 'estado.id = biopsia.id_estado');
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
-            'sort' => ['attributes' => ['protocolo','fecharealizacion',  'paciente','sexo','procedencia','medico','estado']]
         ]);
+        $dataProvider->sort->attributes['protocolo'] = [
+             'asc' => ['solicitudbiopsia.protocolo' => SORT_ASC],
+             'desc' => ['solicitudbiopsia.protocolo' => SORT_DESC],
+           ];
 
         $this->load($params);
-        // $dataProvider->setSort([
-        //     'attributes' => [
-        //       'fecharealizacion',
-        //  ]]);
+        $dataProvider->setSort([
+            'attributes' => [
+              'protocolo'
+         ]]);
+
         if (!$this->validate()) {
             // uncomment the following line if you do not want to return any records when validation fails
             // $query->where('0=1');
             return $dataProvider;
         }
+        $dataProvider->sort->attributes['id'] = [
+               // The tables are the ones our relation are configured to
+               // in my case they are prefixed with "tbl_"
+               'desc' => ['id' => SORT_DESC],
+               'asc' => ['id' => SORT_ASC],
+
+           ];
         //filtro de busqueda
         $query->andFilterWhere([
             'biopsia.id' => $this->id,
             'id_solicitudbiopsia' => $this->id_solicitudbiopsia,
             //Esto es solo posble porque se agrego una variable a la clase
-            'protocolo' => $this->protocolo,
+            'solicitudbiopsia.protocolo' => $this->protocolo,
             'id_plantilladiagnostico' => $this->id_plantilladiagnostico,
             'fechalisto' => $this->fechalisto,
         ]);

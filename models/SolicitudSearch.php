@@ -76,14 +76,12 @@ class SolicitudSearch extends Solicitud
        ->innerJoinWith('paciente', 'paciente.id = solicitud.id_paciente')
        ->innerJoinWith('medico', 'medico.id = solicitud.id_medico')
        ->innerJoinWith('estado', 'estado.id = solicitud.id_estado')
-       ->innerJoinWith('estudio', 'estudio.id = solicitud.id_estudio')
-
-       ->orderBy(['id' => SORT_DESC,]);
+       ->innerJoinWith('estudio', 'estudio.id = solicitud.id_estudio');
 
 
-     //}
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'sort' => ['attributes' => ['protocolo','id']]
 
         ]);
 

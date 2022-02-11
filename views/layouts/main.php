@@ -113,8 +113,8 @@ $bundle = yiister\gentelella\assets\Asset::register($this);
                             [
                                 "items" => [
                                     ["label" => "Inicio", "url" => "index.php", "icon" => "fa fa-home"],
-                                    ["label" => "Biopsias", "url" => ["/biopsia"], 'icon' =>"fa icon-microscope"],
-                                    ["label" => "Paps", "url" => ["/pap"], "icon" => "fa fa-flask"],
+                                    ["label" => "Biopsias", "url" => ["/biopsia/index","sort"=>"-id"] , 'icon' =>"fa icon-microscope"],
+                                    ["label" => "Paps", "url" => ["/pap/index","sort"=>"-id"], "icon" => "fa fa-flask"],
 
                                 ],
                             ]
@@ -153,9 +153,9 @@ $bundle = yiister\gentelella\assets\Asset::register($this);
                                         ],
                                     ],
                                     ["label" => "Pacientes", "url" => ["/paciente"], "icon" => "fa fa-group"],
-                                    [ 'separator' => '<br>',"label" => "Biopsias",   "url" => ["/biopsia"],  'icon' =>"fa fa-plus-square"],
-                                    ["label" => "Paps", "url" => ["/pap"], "icon" => "fa fa-flask"],
-                                    ["label" => "Solicitudes", "url" => ["/solicitud"], "icon" => "fa fa-file-text-o"],
+                                    [ 'separator' => '<br>',"label" => "Biopsias",   "url" => ["/biopsia/index","sort"=>"-id"],  'icon' =>"fa fa-plus-square"],
+                                    ["label" => "Paps","url" => ["/pap/index","sort"=>"-id"], "icon" => "fa fa-flask"],
+                                    ["label" => "Solicitudes", "url" => ["/solicitud/index","sort"=>"-id"], "icon" => "fa fa-file-text-o"],
 
 
                                 ],

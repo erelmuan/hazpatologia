@@ -160,6 +160,28 @@ class BiopsiaController extends Controller
             if ( Usuario::isPatologo() && isset($post['Biopsia']['id_estado'] ) && $post['Biopsia']['id_estado'] ==2){
                     $model->load($post);
                     //validar contraseñar
+                    if ($post['Biopsia']['firmado'] !=="1") {
+                      $model->id_estado =5;
+                        Yii::$app->getSession()->setFlash('warning', [
+                            'type' => 'danger',
+                            'duration' => 5000,
+                            'icon' => 'fa fa-warning',
+                            'message' => "EN ESTADO LISTO, DEBE POSEER LA FIRMA",
+                            'title' => 'NOTIFICACIÓN',
+                            'positonY' => 'top',
+                            'positonX' => 'right'
+                        ]);
+                        unset($post['Biopsia']['id_estado']);
+                        return $this->render('_form', [
+                            'model' => $model,
+                            'dataSol' => $_SESSION['solicitudb'],
+                            'search' => $search,
+                            'array' => $array,
+                            'provider' => $provider,
+                            'edadDelPaciente'=>Solicitud::calcular_edad($_SESSION['solicitudb']->id),
+
+                        ]);
+                    }
                     if (!$this->validarContraseña($_POST["contrasenia"])){
 
                       $model->id_estado =5;
@@ -176,7 +198,7 @@ class BiopsiaController extends Controller
 
                     }
                     //fecha cuando esta listo el informe de la biopsia
-                    $model->fechalisto=date("Y-m-d");
+                    $model->fechalisto=date("Y-m-d  h:i:s");
                     $model->id_usuario=$modelUsuario->id;
                     $Solicitud =  Solicitud::findOne($model->id_solicitudbiopsia);
                     $Solicitud->id_estado=$model->id_estado;
@@ -257,27 +279,49 @@ class BiopsiaController extends Controller
         }
           //si esta el estudio  en estado listo, ['Biopsia']['id_estado'] no estara definido por lo tanto no entra al if
             if ( Usuario::isPatologo() && isset($post['Biopsia']['id_estado'] ) && $post['Biopsia']['id_estado'] ==2){
-              if (!$this->validarContraseña($_POST["contrasenia"])){
-                unset($post['Biopsia']['id_estado']);
-                $model->load($post);
-                return $this->render('_form', [
-                    'model' => $model,
-                    'dataSol' => $_SESSION['solicitudb'],
-                    'search' => $search,
-                    'array' => $array,
-                    'provider' => $provider,
-                    'edadDelPaciente'=>Solicitud::calcular_edad($_SESSION['solicitudb']->id),
+                if (!$this->validarContraseña($_POST["contrasenia"])){
+                    unset($post['Biopsia']['id_estado']);
+                    $model->load($post);
+                    return $this->render('_form', [
+                        'model' => $model,
+                        'dataSol' => $_SESSION['solicitudb'],
+                        'search' => $search,
+                        'array' => $array,
+                        'provider' => $provider,
+                        'edadDelPaciente'=>Solicitud::calcular_edad($_SESSION['solicitudb']->id),
 
-                ]);
+                    ]);
 
-              }
+                }
+                if ($post['Biopsia']['firmado'] !=="1") {
+                    Yii::$app->getSession()->setFlash('warning', [
+                        'type' => 'danger',
+                        'duration' => 5000,
+                        'icon' => 'fa fa-warning',
+                        'message' => "EN ESTADO LISTO, DEBE POSEER LA FIRMA",
+                        'title' => 'NOTIFICACIÓN',
+                        'positonY' => 'top',
+                        'positonX' => 'right'
+                    ]);
+                    unset($post['Biopsia']['id_estado']);
+                    $model->load($post);
+                    return $this->render('_form', [
+                        'model' => $model,
+                        'dataSol' => $_SESSION['solicitudb'],
+                        'search' => $search,
+                        'array' => $array,
+                        'provider' => $provider,
+                        'edadDelPaciente'=>Solicitud::calcular_edad($_SESSION['solicitudb']->id),
+
+                    ]);
+                }
 
               $Solicitud =  Solicitud::findOne($model->id_solicitudbiopsia);
               //puede pasar a estado en proceso
               $Solicitud->id_estado= $post['Biopsia']['id_estado'] ;
               $Solicitud->save();
               //fecha cuando esta listo el informe de la biopsia
-              $model->fechalisto=date("Y-m-d");
+              $model->fechalisto=date("Y-m-d  h:i:s");
               $model->id_usuario=$modelUsuario->id;
             }
 
