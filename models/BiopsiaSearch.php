@@ -106,7 +106,7 @@ class BiopsiaSearch extends Biopsia
 
         }
         if (is_numeric($this->medico)){
-            $query->orFilterWhere(["medico.num_documento"=>$this->medico]);
+            $query->orFilterWhere(["medico.matricula"=>$this->medico]);
              }
         else {
             $query->andFilterWhere(['ilike', '("medico"."apellido")',strtolower($this->medico)]);
@@ -117,7 +117,7 @@ class BiopsiaSearch extends Biopsia
             ->andFilterWhere(['ilike', 'macroscopia', $this->macroscopia])
             ->andFilterWhere(['ilike', 'microscopia', $this->microscopia])
 
-            ->andFilterWhere(['ilike', 'ihq', $this->ihq])
+            ->andFilterWhere(['=', 'ihq', $this->ihq])
             ->andFilterWhere(['ilike', 'sexo', $this->sexo])
             ->andFilterWhere(['ilike', 'estado.descripcion', $this->estado])
             ->andFilterWhere(['ilike', 'procedencia.nombre', $this->procedencia])

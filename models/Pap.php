@@ -156,16 +156,16 @@ class Pap extends \yii\db\ActiveRecord
               'attribute'=>'paciente',
               'width' => '170px',
               'value' => 'getlink',
-               'filterInputOptions' => [ 'class' => 'form-control','placeholder' => 'Ingrese DNI o apellido'],
+               'filterInputOptions' => [ 'class' => 'form-control','placeholder' => 'DNI o apellido'],
                'format' => 'raw',
 
           ],
           [
               'class'=>'\kartik\grid\DataColumn',
               'attribute'=>'medico',
-              'width' => '170px',
+              'width' => '185px',
               'value' => 'getLinkdos',
-               'filterInputOptions' => ['class' => 'form-control' ,'placeholder' => 'Ingrese DNI o apellido'],
+               'filterInputOptions' => ['class' => 'form-control' ,'placeholder' => 'matricula o apellido'],
                'format' => 'raw',
 
           ],

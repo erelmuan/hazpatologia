@@ -134,7 +134,7 @@ $this->title = 'Inicio';
         <div class="tile-stats">
           <div class="icon"><i class="fa fa-gears"></i>
           </div>
-          <div class="count">3</div>
+          <div class="count">4</div>
 
           <h3>ADMINISTRACION</h3>
           <p>Usuarios-Roles-Modulos-Acciones- ABM.</p>

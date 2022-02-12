@@ -96,11 +96,11 @@ class PapSearch extends Pap
             $query->andFilterWhere(['ilike', '("paciente"."apellido")',strtolower($this->paciente)]);
 
         }
-        if (is_numeric($this->paciente)){
-            $query->orFilterWhere(["medico.num_documento"=>$this->paciente]);
+        if (is_numeric($this->medico)){
+            $query->orFilterWhere(["medico.matricula"=>$this->medico]);
              }
         else {
-            $query->andFilterWhere(['ilike', '("paciente"."apellido")',strtolower($this->paciente)]);
+            $query->andFilterWhere(['ilike', '("medico"."apellido")',strtolower($this->medico)]);
 
         }
 

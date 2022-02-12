@@ -2,23 +2,11 @@
 use yii\helpers\Url;
 use yii\helpers\Html;
 return [
-    // [
-    //     'class' => 'kartik\grid\CheckboxColumn',
-    //     'width' => '20px',
-    // ],
-    // [
-    //     'class' => 'kartik\grid\SerialColumn',
-    //     'width' => '30px',
-    // ],
         [
         'class'=>'\kartik\grid\DataColumn',
         'attribute'=>'biopsia.id',
     ],
     [
-        // 'class'=>'\kartik\grid\DataColumn',
-        // 'attribute'=>'idsolicitud',
-        // 'class'=>'\kartik\grid\DataColumn',
-        // 'attribute'=>'solicitud.protocolo',
         'attribute' => 'protocolo',
         'value' => 'solicitudbiopsia.protocolo',
         'width' => '50px',
@@ -28,11 +16,8 @@ return [
         'class'=>'\kartik\grid\DataColumn',
         'label'=> 'Paciente',
         'width' => '170px',
-        //creo que no hacer falta ni key ni indez tampoco widget
-        'value' => function($dataProvider, $key, $index, $widget) {
-            $key = str_replace("[","",$key);
-            $key = str_replace("]","",$key);
-          return Html::a( $dataProvider->solicitudbiopsia->paciente->nombre .' '.$dataProvider->solicitudbiopsia->paciente->apellido,['paciente/view',"id"=> $dataProvider->solicitudbiopsia->paciente->id]
+        'value' => function($model) {
+          return Html::a( $model->solicitudbiopsia->paciente->nombre .' '.$model->solicitudbiopsia->paciente->apellido,['paciente/view',"id"=> $model->solicitudbiopsia->paciente->id]
 
             ,[    'class' => 'text-success','role'=>'modal-remote','title'=>'Datos del paciente','data-toggle'=>'tooltip']
            );
@@ -40,7 +25,7 @@ return [
          }
          ,
 
-         'filterInputOptions' => ['placeholder' => 'Ingrese Dni o apellido'],
+         'filterInputOptions' => ['placeholder' => 'DNI o apellido'],
          'format' => 'raw',
 
     ],
@@ -48,6 +33,8 @@ return [
       'class'=>'\kartik\grid\DataColumn',
       'value'=> 'solicitudbiopsia.paciente.fecha_nacimiento',
       'label'=> 'Fecha de nacimiento',
+      'format' => ['date', 'd/M/Y'],
+
    ],
     [
         //nombre
@@ -63,19 +50,11 @@ return [
         'label'=> 'Procedencia'
 
     ],
-        //nombre
-        // 'class'=>'\kartik\grid\DataColumn',
-        // 'attribute'=>'solicitud.medico.nombre',
-        // 'label'=> 'Medico'
-        [
-            //nombre
+      [
             'class'=>'\kartik\grid\DataColumn',
             'label'=> 'Medico',
-            'width' => '170px',
-            'value' => function($model, $key, $index, $widget) {
-                $key = str_replace("[","",$key);
-                $key = str_replace("]","",$key);
-                //var_dump ($key);
+              'width' => '185px',
+            'value' => function($model) {
               return Html::a( $model->solicitudbiopsia->medico->nombre .' '.$model->solicitudbiopsia->medico->apellido,['paciente/view',"id"=> $model->solicitudbiopsia->medico->id]
 
                 ,[    'class' => 'text-success','role'=>'modal-remote','title'=>'Datos del paciente','data-toggle'=>'tooltip']
@@ -84,7 +63,7 @@ return [
              }
              ,
 
-             'filterInputOptions' => ['placeholder' => 'Ingrese Dni o apellido'],
+             'filterInputOptions' => ['placeholder' => 'matricula o apellido'],
              'format' => 'raw',
 
     ],
@@ -105,19 +84,16 @@ return [
         'class'=>'\kartik\grid\BooleanColumn',
         'attribute'=>'ihq',
     ],
-    [
-        'class'=>'\kartik\grid\DataColumn',
-        'attribute'=>'id_plantilladiagnostico',
-    ],
+
     [
         'class'=>'\kartik\grid\DataColumn',
         'attribute'=>'diagnostico',
     ],
 
-    [
-        'class'=>'\kartik\grid\DataColumn',
-        'attribute'=>'observacion',
-    ],
+    // [
+    //     'class'=>'\kartik\grid\DataColumn',
+    //     'attribute'=>'observacion',
+    // ],
 
     [
         'class'=>'\kartik\grid\DataColumn',
@@ -128,6 +104,13 @@ return [
     ],
     [
         'class'=>'\kartik\grid\DataColumn',
+        'label'=> 'Fecha de ingreso',
+        'value' => 'solicitudbiopsia.fechadeingreso',
+        'format' => ['date', 'd/M/Y'],
+    ],
+    [
+        'class'=>'\kartik\grid\DataColumn',
+        'label'=> 'Fecha de informe listo',
         'attribute'=>'fechalisto',
         'format' => ['date', 'd/M/Y'],
     ],

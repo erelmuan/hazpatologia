@@ -74,28 +74,34 @@ if (isset($parametros)){
 </div>
 
 <?  if (isset($model->biopsia) && $model->biopsia->ihq && isset($model->biopsia->inmunohistoquimicaEscaneada)){
-  echo DetailView::widget([
-      'model' => $model->biopsia,
-      'attributes' => [
+        if($model->estado->descripcion ==='LISTO'){
+          echo DetailView::widget([
+              'model' => $model->biopsia,
+              'attributes' => [
 
-      [
-        'value'=> Html::a('<i class="fa fa-file-pdf-o"></i> Generar informe inmunostoquimica', ['/inmunohistoquimica-escaneada/informe', 'id' => $model->biopsia->inmunohistoquimicaEscaneada->id], [
-              'class'=>'btn btn-primary',
-              // 'role'=>'modal-remote',
-              'target'=>'_blank',
-              'data-toggle'=>'tooltip',
-              'title'=>'Se abrirá el archivo PDF generado en una nueva pestaña'
-          ]) ,
-        'label'=> 'Documento',
-        'format'=>'raw',
-     ],
-     [
-       'value'=> $model->biopsia->inmunohistoquimicaEscaneada->observacion ,
-       'label'=> 'Observacion',
-    ] ,
+              [
+                'value'=> Html::a('<i class="fa fa-file-pdf-o"></i> Generar informe inmunostoquimica', ['/inmunohistoquimica-escaneada/informe', 'id' => $model->biopsia->inmunohistoquimicaEscaneada->id], [
+                      'class'=>'btn btn-primary',
+                      // 'role'=>'modal-remote',
+                      'target'=>'_blank',
+                      'data-toggle'=>'tooltip',
+                      'title'=>'Se abrirá el archivo PDF generado en una nueva pestaña'
+                  ]) ,
+                'label'=> 'Documento',
+                'format'=>'raw',
+             ],
+             [
+               'value'=> $model->biopsia->inmunohistoquimicaEscaneada->observacion ,
+               'label'=> 'Observacion',
+            ] ,
 
-      ],
-      ]) ;
+              ],
+              ]) ;}
+              else {
+                echo "NO SE PUEDE VISUALIZAR PORQUE EL ESTUDIO NO ESTA LISTO";
+
+              }
+
     }
     else {
         echo "ESTA ACTIVA LA OPCIÓN IHQ PERO NO SE CARGO NINGÚN ESTUDIO";

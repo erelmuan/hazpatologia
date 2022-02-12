@@ -75,24 +75,13 @@ use yii\helpers\Html;
             'frase',
         ],
     ]) ;
-    if ($model->estado->descripcion== 'EN PROCESO'){
-      echo Html::a('<i class="fa fa-file-pdf-o"></i> Documento del informe', ['/pap/informe', 'id' => $model->id], [
-            'class'=>'btn btn-danger',
-            'role'=>'modal-remote',
-            'target'=>'_blank',
-            'data-toggle'=>'tooltip',
-            'title'=>'Se abrirá el archivo PDF generado en una nueva pestaña'
-        ]);
-      }
-      else {
+
         echo Html::a('<i class="fa fa-file-pdf-o"></i> Documento del informe', ['/pap/informe', 'id' => $model->id], [
               'class'=>'btn btn-danger',
               'target'=>'_blank',
               'data-toggle'=>'tooltip',
               'title'=>'Se abrirá el archivo PDF generado en una nueva pestaña'
           ]);
-          }
-
-    ?>
+              ?>
 
 </div>
