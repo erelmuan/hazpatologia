@@ -434,7 +434,7 @@ class SolicitudController extends Controller
                'footer'=> Html::button('Cerrar',['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"])
            ];
            }
-
+           
            $request = Yii::$app->request;
            if($request->isAjax){
                /*

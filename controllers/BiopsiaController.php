@@ -374,11 +374,15 @@ class BiopsiaController extends Controller
               'footer'=> Html::button('Cerrar',['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"])
           ];
         }
-        $solicitud =  Solicitud::findOne($model->id_solicitudbiopsia);
+        
         $request = Yii::$app->request;
+        $solicitud =  Solicitud::findOne($model->id_solicitudbiopsia);
         $solicitud->id_estado=5; //Vuelve al estado PENDIENTE
         $solicitud->save();
-        $this->findModel($id)->delete();
+        if(isset($model->inmunohistoquimicaEscaneada)){
+          $model->inmunohistoquimicaEscaneada->delete();
+        }
+        $model->delete();
 
         if($request->isAjax){
             /*

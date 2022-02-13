@@ -389,6 +389,10 @@ class PapController extends Controller
        ];
     }
         $request = Yii::$app->request;
+
+        $solicitud =  Solicitud::findOne($model->id_solicitudpap);
+        $solicitud->id_estado=5; //Vuelve al estado PENDIENTE
+        $solicitud->save();
         $this->findModel($id)->delete();
 
         if($request->isAjax){
