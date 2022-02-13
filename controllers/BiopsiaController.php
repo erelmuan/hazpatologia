@@ -16,8 +16,7 @@ use app\models\Inmunostoquimica;
 
 
 
-use app\models\Solicitud;
-use app\models\SolicitudSearch;
+use app\models\Solicitudbiopsia;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -64,7 +63,7 @@ class BiopsiaController extends Controller
     {
         $request = Yii::$app->request;
         $biopsia=$this->findModel($id);
-        $edad = Solicitud::calcular_edad($biopsia->id_solicitudbiopsia);
+        $edad = Solicitudbiopsia::calcular_edad($biopsia->id_solicitudbiopsia);
         if($request->isAjax){
             Yii::$app->response->format = Response::FORMAT_JSON;
 
@@ -146,7 +145,7 @@ class BiopsiaController extends Controller
         $model = new Biopsia();
         // Obtengo la solicitud para mostrar los datos en la creacion de la bipsia
         if (isset($_GET['idsol']) && $_GET['idsol'] !='') {
-            $Solicitud =  Solicitud::findOne($_GET['idsol']);
+            $Solicitud =  Solicitudbiopsia::findOne($_GET['idsol']);
             $_SESSION['solicitudb']=$Solicitud;
 
            }
@@ -178,7 +177,7 @@ class BiopsiaController extends Controller
                             'search' => $search,
                             'array' => $array,
                             'provider' => $provider,
-                            'edadDelPaciente'=>Solicitud::calcular_edad($_SESSION['solicitudb']->id),
+                            'edadDelPaciente'=>Solicitudbiopsia::calcular_edad($_SESSION['solicitudb']->id),
 
                         ]);
                     }
@@ -191,7 +190,7 @@ class BiopsiaController extends Controller
                           'search' => $search,
                           'array' => $array,
                           'provider' => $provider,
-                          'edadDelPaciente'=>Solicitud::calcular_edad($_SESSION['solicitudb']->id),
+                          'edadDelPaciente'=>Solicitudbiopsia::calcular_edad($_SESSION['solicitudb']->id),
 
 
                       ]);
@@ -200,7 +199,7 @@ class BiopsiaController extends Controller
                     //fecha cuando esta listo el informe de la biopsia
                     $model->fechalisto=date("Y-m-d  h:i:s");
                     $model->id_usuario=$modelUsuario->id;
-                    $Solicitud =  Solicitud::findOne($model->id_solicitudbiopsia);
+                    $Solicitud =  Solicitudbiopsia::findOne($model->id_solicitudbiopsia);
                     $Solicitud->id_estado=$model->id_estado;
                     $Solicitud->save();
 
@@ -219,7 +218,7 @@ class BiopsiaController extends Controller
                      return $this->redirect(['view', 'id' =>$model->id]);
               } else {
 
-              $edad =Solicitud::calcular_edad($_SESSION['solicitudb']->id);
+              $edad =Solicitudbiopsia::calcular_edad($_SESSION['solicitudb']->id);
 
                 return $this->render('_form', [
                   'model' => $model,
@@ -288,7 +287,7 @@ class BiopsiaController extends Controller
                         'search' => $search,
                         'array' => $array,
                         'provider' => $provider,
-                        'edadDelPaciente'=>Solicitud::calcular_edad($_SESSION['solicitudb']->id),
+                        'edadDelPaciente'=>Solicitudbiopsia::calcular_edad($_SESSION['solicitudb']->id),
 
                     ]);
 
@@ -311,12 +310,12 @@ class BiopsiaController extends Controller
                         'search' => $search,
                         'array' => $array,
                         'provider' => $provider,
-                        'edadDelPaciente'=>Solicitud::calcular_edad($_SESSION['solicitudb']->id),
+                        'edadDelPaciente'=>Solicitudbiopsia::calcular_edad($_SESSION['solicitudb']->id),
 
                     ]);
                 }
 
-              $Solicitud =  Solicitud::findOne($model->id_solicitudbiopsia);
+              $Solicitud =  Solicitudbiopsia::findOne($model->id_solicitudbiopsia);
               //puede pasar a estado en proceso
               $Solicitud->id_estado= $post['Biopsia']['id_estado'] ;
               $Solicitud->save();
@@ -337,9 +336,9 @@ class BiopsiaController extends Controller
             } else {
 
               if (isset($_GET['idsol']) && $_GET['idsol'] !='')
-                $Solicitud =  Solicitud::findOne($_GET['idsol']);
+                $Solicitud =  Solicitudbiopsia::findOne($_GET['idsol']);
               else
-                $Solicitud =  Solicitud::findOne($model->id_solicitudbiopsia);
+                $Solicitud =  Solicitudbiopsia::findOne($model->id_solicitudbiopsia);
 
                 $_SESSION['solicitudb']=$Solicitud;
 
@@ -349,7 +348,7 @@ class BiopsiaController extends Controller
                     'search' => $search,
                     'array' => $array,
                     'provider' => $provider,
-                    'edadDelPaciente'=>Solicitud::calcular_edad($_SESSION['solicitudb']->id),
+                    'edadDelPaciente'=>Solicitudbiopsia::calcular_edad($_SESSION['solicitudb']->id),
                 ]);
             }
 
@@ -369,16 +368,19 @@ class BiopsiaController extends Controller
       $model = $this->findModel($id);
       if ($model->estado->descripcion=='LISTO'){
             return [
-              'title'=> "Eliminar informe Pap #".$id,
+              'title'=> "Eliminar informe Biopsia #".$id,
               'content'=>"No se puede eliminar informe en estado listo",
               'footer'=> Html::button('Cerrar',['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"])
           ];
         }
-        
+
         $request = Yii::$app->request;
-        $solicitud =  Solicitud::findOne($model->id_solicitudbiopsia);
+        $clonedModel = clone $model->solicitudbiopsia;
+        $solicitud =  $model->solicitudbiopsia;
         $solicitud->id_estado=5; //Vuelve al estado PENDIENTE
         $solicitud->save();
+        AuditoriaBehaviors::actualizarEstadosolicitud($clonedModel,$solicitud,"solicitudbiopsia");
+
         if(isset($model->inmunohistoquimicaEscaneada)){
           $model->inmunohistoquimicaEscaneada->delete();
         }
@@ -509,7 +511,7 @@ public function actionInforme($id) {
 
         }else {
             $biopsia=$this->findModel($id);
-            return $this->render('informePatologia',['model' => $biopsia, 'edad'=> Solicitud::calcular_edad($biopsia->id_solicitudbiopsia) ]);
+            return $this->render('informePatologia',['model' => $biopsia, 'edad'=> Solicitudbiopsia::calcular_edad($biopsia->id_solicitudbiopsia) ]);
         }
   }
   public function actionEnviarcorreo($id) {

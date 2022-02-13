@@ -6,6 +6,9 @@ use Yii;
 use app\models\Solicitud;
 use app\models\SolicitudSearch;
 use app\models\Biopsia;
+use app\models\Solicitudpap;
+use app\models\Solicitudbiopsia;
+
 
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -434,14 +437,24 @@ class SolicitudController extends Controller
                'footer'=> Html::button('Cerrar',['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"])
            ];
            }
-           
+           $model=$this->findModel($id);
+
+           if($model->estudio->modelo=="pap"){
+              $modelsolicitud=Solicitudpap::find()->where(['and','id = '.$id ])->one();
+           }
+           if($model->estudio->modelo=="biopsia"){
+             $modelsolicitud= Solicitudbiopsia::find()->where(['and','id = '.$id ])->one();
+           }
+
+
+
            $request = Yii::$app->request;
            if($request->isAjax){
                /*
                *   Process for ajax request
                */
                try {
-                   if ($this->findModel($id)->delete()){
+                   if ($modelsolicitud->delete()){
                        return ['forceClose'=>true,'forceReload'=>'#crud-datatable-pjax'];
                    }
                  } catch (yii\db\Exception $e ) {
@@ -520,6 +533,7 @@ class SolicitudController extends Controller
               return $this->render('documento',['model' => $solicitud, 'edad'=> $this->calcular_edad($solicitud->id) ]);
           }
     }
+
 
 
 }

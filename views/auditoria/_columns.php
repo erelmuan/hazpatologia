@@ -51,11 +51,11 @@ return [
         'class'=>'\kartik\grid\DataColumn',
         'attribute'=>'informacion_usuario',
     ],
-    // [
-    //     'class'=>'\kartik\grid\DataColumn',
-    //     'attribute'=>'cambios',
-    //      'format' => 'raw',
-    // ],
+    [
+        'class'=>'\kartik\grid\DataColumn',
+        'attribute'=>'cambios',
+         'format' => 'raw',
+    ],
     [
         'class' => 'kartik\grid\ActionColumn',
         'dropdown' => false,

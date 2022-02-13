@@ -28,12 +28,16 @@ use yii\helpers\Html;
          'label'=> 'Medico',
       ],
 
-            'fecharealizacion',
-            'fechadeingreso',
-            [
-              'value'=> $model->estado->descripcion,
-              'label'=> 'Estado',
-           ],
+        'fecharealizacion',
+        'fechadeingreso',
+      [
+          'value'=> $model->estado->descripcion,
+          'label'=> 'Estado',
+       ],
+       [
+           'value'=> $model->estudio->descripcion,
+           'label'=> 'Estudio',
+        ],
 
         ],
     ]) ;

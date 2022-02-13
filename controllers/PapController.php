@@ -18,10 +18,10 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use \yii\web\Response;
 use yii\helpers\Html;
-use app\models\Solicitud;
-use app\models\SolicitudSearch;
+use app\models\Solicitudpap;
 use app\components\Metodos\Metodos;
 use app\components\behaviors\AuditoriaBehaviors;
+use app\models\Auditoria;
 /**
  * PapController implements the CRUD actions for Pap model.
  */
@@ -146,7 +146,7 @@ class PapController extends Controller
         $model = new Pap();
 
         if (isset($_GET['idsol']) && $_GET['idsol'] !='') {
-            $Solicitud =  Solicitud::findOne($_GET['idsol']);
+            $Solicitud =  Solicitudpap::findOne($_GET['idsol']);
             $_SESSION['solicitudp']=$Solicitud;
 
            }
@@ -179,7 +179,7 @@ class PapController extends Controller
                             'search' => $search,
                             'array' => $array,
                             'provider' => $provider,
-                            'edadDelPaciente'=>Solicitud::calcular_edad($_SESSION['solicitudb']->id),
+                            'edadDelPaciente'=>Solicitudpap::calcular_edad($_SESSION['solicitudb']->id),
 
                         ]);
                     }
@@ -198,7 +198,7 @@ class PapController extends Controller
                     }
                       $model->fechalisto=date("Y-m-d h:i:s");
                       $model->id_usuario=$modelUsuario->id;
-                      $Solicitud =  Solicitud::findOne($model->id_solicitudpap);
+                      $Solicitud =  Solicitudpap::findOne($model->id_solicitudpap);
                       $Solicitud->id_estado=$model->id_estado;
                       $Solicitud->save();
                     }
@@ -231,7 +231,7 @@ class PapController extends Controller
     //la fecha tiene que estar en formato d-m-y
     function calcular_edad($id){
 
-      $Solicitud =  Solicitud::findOne($id);
+      $Solicitud =  Solicitudpap::findOne($id);
       list($ano,$mes,$dia) = explode("-",$Solicitud->paciente->fecha_nacimiento);
       list($anoR,$mesR,$diaR) = explode("-",$Solicitud->fechadeingreso);
 
@@ -294,7 +294,7 @@ class PapController extends Controller
           unset($post['Pap']['firmado']);
       }
 
-        //si esta el estudio  en estado listo, ['Biopsia']['id_estado'] no estara definido por lo tanto no entra al if
+        //si esta el estudio  en estado listo, ['pap']['id_estado'] no estara definido por lo tanto no entra al if
           if ( Usuario::isPatologo() && isset($post['Pap']['id_estado'] ) && $post['Pap']['id_estado'] ==2){
 
 
@@ -331,15 +331,15 @@ class PapController extends Controller
                     'search' => $search,
                     'array' => $array,
                     'provider' => $provider,
-                    'edadDelPaciente'=>Solicitud::calcular_edad($_SESSION['solicitudp']->id),
+                    'edadDelPaciente'=>Solicitudpap::calcular_edad($_SESSION['solicitudp']->id),
 
                 ]);
             }
-            $Solicitud =  Solicitud::findOne($model->id_solicitudpap);
+            $Solicitud =  Solicitudpap::findOne($model->id_solicitudpap);
             //puede pasar a estado en proceso
             $Solicitud->id_estado=  $post['Pap']['id_estado'] ;
             $Solicitud->save();
-            //fecha cuando esta listo el informe de la biopsia
+            //fecha cuando esta listo el informe de la pap
             $model->fechalisto=date("Y-m-d  h:i:s");
             $model->id_usuario=$modelUsuario->id;
           }
@@ -350,9 +350,9 @@ class PapController extends Controller
           } else {
 
             if (isset($_GET['idsol']) && $_GET['idsol'] !='')
-              $Solicitud =  Solicitud::findOne($_GET['idsol']);
+              $Solicitud =  Solicitudpap::findOne($_GET['idsol']);
             else
-              $Solicitud =  Solicitud::findOne($model->id_solicitudpap);
+              $Solicitud =  Solicitudpap::findOne($model->id_solicitudpap);
 
             $_SESSION['solicitudp']=$Solicitud;
             $edad = $this->calcular_edad($_SESSION['solicitudp']->id);
@@ -389,10 +389,12 @@ class PapController extends Controller
        ];
     }
         $request = Yii::$app->request;
-
-        $solicitud =  Solicitud::findOne($model->id_solicitudpap);
+        $clonedModel = clone $model->solicitudpap;
+        $solicitud =  $model->solicitudpap;
         $solicitud->id_estado=5; //Vuelve al estado PENDIENTE
         $solicitud->save();
+        AuditoriaBehaviors::actualizarEstadosolicitud($clonedModel,$solicitud,"solicitudpap");
+
         $this->findModel($id)->delete();
 
         if($request->isAjax){
