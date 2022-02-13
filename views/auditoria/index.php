@@ -66,6 +66,10 @@ $export= ExportMenu::widget([
             'attribute'=>'accion',
         ],
         [
+        'class'=>'\kartik\grid\DataColumn',
+        'attribute'=>'registro',
+        ],
+        [
             'class'=>'\kartik\grid\DataColumn',
             'attribute'=>'tabla',
         ],

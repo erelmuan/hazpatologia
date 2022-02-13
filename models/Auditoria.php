@@ -7,15 +7,16 @@ use Yii;
 /**
  * This is the model class for table "auditoria".
  *
- * @property int $iid
+ * @property int $id
  * @property int $id_usuario
- * @property string $accion
  * @property string $tabla
  * @property string $fecha
  * @property string $hora
  * @property string $ip
  * @property string $informacion_usuario
  * @property string $cambios
+ * @property string $accion
+ * @property int $registro
  *
  * @property Usuario $usuario
  */
@@ -35,14 +36,12 @@ class Auditoria extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id_usuario'], 'required'],
-            [['id_usuario'], 'default', 'value' => null],
-            [['id_usuario'], 'integer'],
-            [['fecha', 'hora'], 'safe'],
-            [['informacion_usuario', 'cambios'], 'string'],
-            [['accion', 'ip'], 'string', 'max' => 15],
+            [['id_usuario', 'registro'], 'default', 'value' => null],
+            [['id_usuario', 'registro'], 'integer'],
+            [['fecha'], 'safe'],
+            [['hora', 'informacion_usuario', 'cambios', 'accion'], 'string'],
             [['tabla'], 'string', 'max' => 50],
-            //tomar como refencia en cuanto relaciones
+            [['ip'], 'string', 'max' => 15],
             [['id_usuario'], 'exist', 'skipOnError' => true, 'targetClass' => Usuario::className(), 'targetAttribute' => ['id_usuario' => 'id']],
         ];
     }
@@ -53,15 +52,16 @@ class Auditoria extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => 'Id',
-            'id_usuario' => 'Id_usuario',
-            'accion' => 'Accion',
+            'id' => 'ID',
+            'id_usuario' => 'Id Usuario',
             'tabla' => 'Tabla',
             'fecha' => 'Fecha',
             'hora' => 'Hora',
             'ip' => 'Ip',
             'informacion_usuario' => 'Informacion Usuario',
             'cambios' => 'Cambios',
+            'accion' => 'Accion',
+            'registro' => 'Registro',
         ];
     }
 
@@ -72,6 +72,4 @@ class Auditoria extends \yii\db\ActiveRecord
     {
         return $this->hasOne(Usuario::className(), ['id' => 'id_usuario']);
     }
-
-
 }

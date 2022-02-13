@@ -31,6 +31,8 @@ class AuditoriaBehaviors extends Behavior
           $log->hora= date("H:i:s");
           $log->ip=  $_SERVER['REMOTE_ADDR'];
           $log->informacion_usuario= $_SERVER['HTTP_USER_AGENT'];
+          $log->registro= $this->owner->getPrimaryKey();
+
           $model=strtolower($tabla);
 
                       // new attributes
@@ -79,6 +81,8 @@ class AuditoriaBehaviors extends Behavior
       $log->hora= date("H:i:s");
       $log->ip=  $_SERVER['REMOTE_ADDR'];
       $log->informacion_usuario= $_SERVER['HTTP_USER_AGENT'];
+      $log->registro= $this->owner->getPrimaryKey();
+
       $model=strtolower($tabla);
 
 
@@ -109,6 +113,8 @@ class AuditoriaBehaviors extends Behavior
       $log->hora= date("H:i:s");
       $log->ip=  $_SERVER['REMOTE_ADDR'];
       $log->informacion_usuario= $_SERVER['HTTP_USER_AGENT'];
+      $log->registro= $this->owner->getPrimaryKey();
+
        $registro="";
        foreach ($oldattributes as $name => $value) {
 
@@ -147,6 +153,8 @@ class AuditoriaBehaviors extends Behavior
       $log->hora= date("H:i:s");
       $log->ip=  $_SERVER['REMOTE_ADDR'];
       $log->informacion_usuario= $_SERVER['HTTP_USER_AGENT'];
+      $log->registro= $model->id;
+
         // new attributes
           $newattributes = $model->getAttributes();
           $oldattributes = $cloneModel->getOldAttributes();

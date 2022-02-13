@@ -57,6 +57,10 @@ return [
          'format' => 'raw',
     ],
     [
+    'class'=>'\kartik\grid\DataColumn',
+    'attribute'=>'registro',
+    ],
+    [
         'class' => 'kartik\grid\ActionColumn',
         'dropdown' => false,
         'vAlign'=>'middle',

@@ -5,7 +5,10 @@ use yii\helpers\ArrayHelper;
 use app\models\Tipodoc;
 
 return [
-
+      [
+      'class'=>'\kartik\grid\DataColumn',
+      'attribute'=>'id',
+    ],
     [
         'class'=>'\kartik\grid\DataColumn',
         'attribute'=>'nombre',

@@ -12,6 +12,7 @@ use yii\helpers\Html;
         'model' => $model,
         'attributes' => [
             'id',
+
             [
                 'class'=>'\kartik\grid\DataColumn',
                 'attribute'=>'usuario.usuario',
@@ -30,6 +31,10 @@ use yii\helpers\Html;
                  'format' => 'raw',
             ],
             'accion',
+            [
+            'class'=>'\kartik\grid\DataColumn',
+            'attribute'=>'registro',
+            ],
             'tabla',
             'fecha',
             'hora',

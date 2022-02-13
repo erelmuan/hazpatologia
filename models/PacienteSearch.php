@@ -67,7 +67,7 @@ class PacienteSearch extends Paciente
         }
 
         $query->andFilterWhere([
-            'id' => $this->id,
+            'paciente.id' => $this->id,
             'fecha_nacimiento' => $this->fecha_nacimiento,
             'id_provincia' => $this->id_provincia,
             'id_localidad' => $this->id_localidad,
