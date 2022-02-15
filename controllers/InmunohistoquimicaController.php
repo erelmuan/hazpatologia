@@ -200,92 +200,13 @@ class InmunohistoquimicaController extends Controller
         }
     }
 
-    /**
-     * Delete an existing Inmunohistoquimica model.
-     * For ajax request will return json object
-     * and for non-ajax request if deletion is successful, the browser will be redirected to the 'index' page.
-     * @param integer $id
-     * @return mixed
-     */
-    public function actionDelete($id)
-    {
-        $request = Yii::$app->request;
-        $this->findModel($id)->delete();
-
-        if($request->isAjax){
-            /*
-            *   Process for ajax request
-            */
-            Yii::$app->response->format = Response::FORMAT_JSON;
-            return ['forceClose'=>true,'forceReload'=>'#crud-datatable-pjax'];
-        }else{
-            /*
-            *   Process for non-ajax request
-            */
-            return $this->redirect(['index']);
-        }
 
 
-    }
+      public function actionInforme($id) {
 
-     /**
-     * Delete multiple existing Inmunohistoquimica model.
-     * For ajax request will return json object
-     * and for non-ajax request if deletion is successful, the browser will be redirected to the 'index' page.
-     * @param integer $id
-     * @return mixed
-     */
-    public function actionBulkDelete()
-    {
-        $request = Yii::$app->request;
-        $pks = explode(',', $request->post( 'pks' )); // Array or selected records primary keys
-        foreach ( $pks as $pk ) {
-            $model = $this->findModel($pk);
-            $model->delete();
-        }
+         $inmunohistoquimica=$this->findModel($id);
+          return $this->render('informeInmunohistoquimica',['model' => $inmunohistoquimica, 'edad'=> Solicitud::calcular_edad($inmunohistoquimica->biopsia->id_solicitudbiopsia) ]);
 
-        if($request->isAjax){
-            /*
-            *   Process for ajax request
-            */
-            Yii::$app->response->format = Response::FORMAT_JSON;
-            return ['forceClose'=>true,'forceReload'=>'#crud-datatable-pjax'];
-        }else{
-            /*
-            *   Process for non-ajax request
-            */
-            return $this->redirect(['index']);
-        }
-
-    }
-
-        public function actionInforme($id) {
-
-          $request = Yii::$app->request;
-          // Si entra en el if es porque el estudio esta en estado EN_PROCESO
-          //Ver el view de biopsia donde se accde al informe
-          if($request->isAjax){
-              Yii::$app->response->format = Response::FORMAT_JSON;
-
-              return [
-                'forceReload'=>'#crud-datatable-pjax',
-
-                  'title'=> "AVISO!",
-                  'content'=>'EL SIGUIENTE DOCUMENTO TIENE UN ESTADO <b>EN PROCESO</b> (NO ESTA TERMINADO) CONFIRME SI DESEA GENERAR EL DOCUMENTO',
-                  'footer'=> Html::button('Cerrar',['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
-                  Html::a('<i class="fa glyphicon glyphicon-hand-up"></i> Confirmar', ['/biopsia/informe', 'id' => $id], [
-                          'class'=>'btn btn-primary',
-                          'data-toggle'=>'tooltip',
-                          'target'=>'_blank',
-                          'title'=>'Se abrirá el archivo PDF generado en una nueva ventana'
-
-                      ])
-              ];
-
-            }else {
-                $inmunohistoquimica=$this->findModel($id);
-                return $this->render('informeInmunohistoquimica',['model' => $inmunohistoquimica, 'edad'=> Solicitud::calcular_edad($inmunohistoquimica->biopsia->id_solicitudbiopsia) ]);
-            }
       }
     /**
      * Finds the Inmunohistoquimica model based on its primary key value.

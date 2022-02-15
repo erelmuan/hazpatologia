@@ -6,6 +6,8 @@ $db = require __DIR__ . '/db.php';
 $config = [
     'id' => 'basic',
     'name' => 'HAZ QUIROFANO',
+    // set source language to be English
+    'sourceLanguage' => 'en-US',
     'language' => 'es-ES',
     'timeZone'  => 'America/Buenos_Aires',
     'basePath' => dirname(__DIR__),
