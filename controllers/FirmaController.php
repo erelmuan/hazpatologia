@@ -63,9 +63,7 @@ class FirmaController extends Controller {
         /*
          *   Process for non-ajax request
         */
-        if ($this
-            ->request
-            ->isPost) {
+        if ($this->request->isPost) {
             $post = $request->post();
             //verificar porque hay que agregar el indice [0] a diferencia cuando se sube una imagen de perfil
             $image = UploadedFile::getInstances($model, 'imagen') [0];
@@ -81,7 +79,7 @@ class FirmaController extends Controller {
                     //  $model->avatar = Yii::$app->security->generateRandomString().".{$ext}";
                     // the path to save file, you can set an uploadPath
                     // in Yii::$app->params (as used in example below)
-                    Yii::$app->params['uploadPath'] = Yii::$app->basePath . '/web/uploads/avatar/';
+                    Yii::$app->params['uploadPath'] = Yii::$app->basePath . '/web/uploads/firmas/';
                     $nombreEncriptadoImagen = Yii::$app
                         ->security
                         ->generateRandomString() . ".{$ext}";
@@ -128,9 +126,7 @@ class FirmaController extends Controller {
         /*
          *   Process for non-ajax request
         */
-        if ($this
-            ->request
-            ->isPost) {
+        if ($this->request->isPost) {
             $post = $request->post();
             //verificar porque hay que agregar el indice [0] a diferencia cuando se sube una imagen de perfil
             $image = UploadedFile::getInstances($model, 'imagen') [0];
@@ -145,8 +141,8 @@ class FirmaController extends Controller {
                     // generate a unique file name to prevent duplicate filenames
                     //  $model->avatar = Yii::$app->security->generateRandomString().".{$ext}";
                     // the path to save file, you can set an uploadPath
-                    // in Yii::$app->params (as used in example below)
-                    Yii::$app->params['uploadPath'] = Yii::$app->basePath . '/web/uploads/avatar/';
+                    // in Yii::$app->params (as used in example below)d
+                    Yii::$app->params['uploadPath'] = Yii::$app->basePath . '/web/uploads/firmas/';
                     $nombreEncriptadoImagen = Yii::$app
                         ->security
                         ->generateRandomString() . ".{$ext}";

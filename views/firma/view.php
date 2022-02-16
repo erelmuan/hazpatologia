@@ -23,7 +23,7 @@ use yii\helpers\Html;
             [
               'attribute'=>'imagen',
                 'label'=>'Imagen',
-                'value'=> '<img src=uploads/avatar/'.$model->imagen.' width="90px" height="90px" style="margin-left: auto;margin-right: auto;;position:relative;" >',
+                'value'=> '<img src=uploads/firmas/'.$model->imagen.' width="90px" height="90px" style="margin-left: auto;margin-right: auto;;position:relative;" >',
 
                 'format'=>'raw',
 

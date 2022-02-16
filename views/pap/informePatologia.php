@@ -261,7 +261,7 @@ $pdf->MultiCell(0,5, utf8_decode($model->diagnostico));
 $Inicio = $pdf->GetY() + 2;
 
 if($model->firmado){
-  $pdf->Image( Yii::$app->basePath .'/web/uploads/avatar/'.$model->usuario->firma->imagen,151,$Inicio ,49 ,45 ,'PNG' );
+  $pdf->Image( Yii::$app->basePath .'/web/uploads/firmas/'.$model->usuario->firma->imagen,151,$Inicio ,49 ,45 ,'PNG' );
 
 }
 

@@ -16,7 +16,7 @@ return [
       'attribute'=>'imagen',
         'label'=>'Imagen',
         'value' => function($model) {
-            return '<img src=uploads/avatar/'.$model->imagen.' width="90px" height="90px" style="margin-left: auto;margin-right: auto;;position:relative;" >';
+            return '<img src=uploads/firmas/'.$model->imagen.' width="90px" height="90px" style="margin-left: auto;margin-right: auto;;position:relative;" >';
           },
         'format'=>'raw',
 
