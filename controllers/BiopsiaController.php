@@ -218,8 +218,8 @@ class BiopsiaController extends Controller {
             ->solicitudbiopsia
             ->estudio
             ->id);
-        if ($model
-            ->estado->descripcion == 'LISTO') {
+            //Se agrego la validacion !Usuario::isPatologo(), para que aunque se edite el html el diagnostico sea cambiado solo por el patologo
+        if ($model->estado->descripcion == 'LISTO' && !Usuario::isPatologo()) {
             unset($post['Biopsia']['diagnostico']);
         }
         if (isset($post['Biopsia']['id_estado']) && $post['Biopsia']['id_estado'] != 2) {

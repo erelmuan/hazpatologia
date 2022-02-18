@@ -188,7 +188,7 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
       ?></br>
         <?
       echo (Html::label('Código diagnostico', 'codigo diagnostico', ['class' => 'form-group field-biopsias-diagnostico has-success']));
-      if( !isset($model->estado) || $model->estado->descripcion!=="LISTO"){
+      if( !isset($model->estado) || $model->estado->descripcion!=="LISTO" || Usuario::isPatologo()){
       ?>
         <button type="button" class="btn btn-primary btn-xs" onclick="quitarSeleccion()" data-toggle="modal"
             data-target=".bs-diagnostico-modal-lg" style="margin-left: 10px;"><i
@@ -210,7 +210,7 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
            ],
            'options' => [
                  'onchange' => 'onEnviarDiag (this.value)',
-                 'disabled'=>(isset($model->estado) && $model->estado->descripcion=="LISTO"),
+                 'disabled'=>(isset($model->estado) && ($model->estado->descripcion=="LISTO" && !Usuario::isPatologo())),
 
                  ],
        ]);
@@ -273,14 +273,7 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
         <?= $form->field($model, 'microscopia')->textarea(['rows' => 4,'style'=> 'font-size:17px;', 'disabled'=>(isset($model->estado) && ($model->estado->descripcion=="LISTO" && !Usuario::isPatologo()))]) ?>
     </div>
     <div class="col-md-8 col-sm-12 col-xs-12 form-group">
-        <? if( !isset($model->estado) || $model->estado->descripcion!=="LISTO"){
-          echo $form->field($model, 'diagnostico')->textarea(['rows' => 4 ,'style'=> 'font-size:17px;']);
-
-          } else {
-            echo $form->field($model, 'diagnostico')->textarea(['rows' => 4, 'readonly' => true,'style'=> 'font-size:17px;']);
-
-          }
-            ?>
+          <?= $form->field($model, 'diagnostico')->textarea(['rows' => 4,'style'=> 'font-size:17px;', 'disabled'=>(isset($model->estado) && ($model->estado->descripcion=="LISTO" && !Usuario::isPatologo()))]) ?>
     </div>
     <div class="col-md-8 col-sm-12 col-xs-12 form-group">
         <?= $form->field($model, 'frase')->textarea(['rows' => 4,'style'=> 'font-size:17px;', 'disabled'=>(isset($model->estado) && ($model->estado->descripcion=="LISTO" && !Usuario::isPatologo()))]) ?>

@@ -239,8 +239,8 @@ class PapController extends Controller {
         $this->cargarEstructuras($search, $array, $provider, $model
             ->solicitudpap
             ->id_estudio);
-        if ($model
-            ->estado->descripcion == 'LISTO') {
+        //Se agrego la validacion !Usuario::isPatologo(), para que aunque se edite el html el diagnostico sea cambiado solo por el patologo
+        if ($model->estado->descripcion == 'LISTO' && !Usuario::isPatologo()) {
             unset($post['Pap']['diagnostico']);
         }
         if (isset($post['Pap']['id_estado']) && $post['Pap']['id_estado'] != 2) {
