@@ -14,7 +14,6 @@ use yii\helpers\ArrayHelper;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'id')->textInput() ?>
 
     <?= $form->field($model, 'id_provincia')->dropDownList(ArrayHelper::map(Provincia::find()->all(), 'id','nombre'))->label('Provincia') ;?>
 

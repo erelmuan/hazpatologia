@@ -11,7 +11,7 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
     <? if($model->estudios()){ ?>
-      <span style="color:red">  Advertencia: La modificacion del nombre o apellido impactara en todos los estudios donde se registro al medico (no cambie la identidad del mismo).</span>
+      <span style="color:red">  Advertencia: La modificacion del nombre o apellido impactara en todos los estudios donde se registro al medico <b>(NO CAMBIE LA IDENTIDAD DEL MISMO)</b>.</span>
     <? } ?>
     <?= $form->field($model, 'apellido')->textInput(['maxlength' => true]) ?>
 

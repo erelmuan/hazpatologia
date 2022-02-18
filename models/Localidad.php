@@ -43,11 +43,9 @@ class Localidad extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id'], 'required'],
-            [['id', 'id_provincia', 'codigopostal'], 'default', 'value' => null],
-            [['id', 'id_provincia', 'codigopostal'], 'integer'],
+            [[ 'id_provincia', 'codigopostal'], 'default', 'value' => null],
+            [[ 'id_provincia', 'codigopostal'], 'integer'],
             [['nombre'], 'string', 'max' => 65],
-            [['id'], 'unique'],
             [['id_provincia'], 'exist', 'skipOnError' => true, 'targetClass' => Provincia::className(), 'targetAttribute' => ['id_provincia' => 'id']],
         ];
     }
