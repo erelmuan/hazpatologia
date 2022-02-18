@@ -1,6 +1,8 @@
 <?php
 namespace app\controllers;
 use Yii;
+use app\models\Firma;
+use app\models\Auditoria;
 use app\models\Usuario;
 use app\models\UsuarioSearch;
 use yii\web\Controller;
@@ -186,6 +188,14 @@ class UsuarioController extends Controller {
             return ['title' => "Eliminar Rol #" . $id, 'content' => "No puede eliminar usuario si no es administrador", 'footer' => Html::button('Cerrar', ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) ];
         }
         $request = Yii::$app->request;
+
+        Yii::$app->response->format = Response::FORMAT_JSON;
+        if (Firma::find()->where(['id_usuario'=>$id])->count()>0 ){
+            return ['title' => "Eliminar usuario #" . $id, 'content' =>'No se puede eliminar el usuario porque esta asociado a una firma', 'footer' => Html::button('Cerrar', ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) ];
+          }
+          if (Auditoria::find()->where(['id_usuario'=>$id])->count()>0 ){
+              return ['title' => "Eliminar usuario #" . $id, 'content' =>'No se puede eliminar el usuario porque esta asociado a una o más auditorias', 'footer' => Html::button('Cerrar', ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) ];
+            }
         $this->findModel($id)->delete();
         if ($request->isAjax) {
             /*

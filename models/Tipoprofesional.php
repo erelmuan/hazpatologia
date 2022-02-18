@@ -12,8 +12,19 @@ use Yii;
  *
  * @property Medico[] $medicos
  */
+ use app\components\behaviors\AuditoriaBehaviors;
+
 class Tipoprofesional extends \yii\db\ActiveRecord
 {
+    public function behaviors()
+    {
+
+      return array(
+             'AuditoriaBehaviors'=>array(
+                    'class'=>AuditoriaBehaviors::className(),
+                    ),
+        );
+   }
     /**
      * {@inheritdoc}
      */

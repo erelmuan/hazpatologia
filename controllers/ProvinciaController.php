@@ -1,6 +1,8 @@
 <?php
 namespace app\controllers;
 use Yii;
+use app\models\Localidad;
+use app\models\Paciente;
 use app\models\Provincia;
 use app\models\ProvinciaSearch;
 use yii\web\Controller;
@@ -123,15 +125,29 @@ class ProvinciaController extends Controller {
      */
     public function actionDelete($id) {
         $request = Yii::$app->request;
-        try {
+        Yii::$app->response->format = Response::FORMAT_JSON;
+        if (Paciente::find()->where(['id_provincia'=>$id])->count()>0 ){
+            return ['title' => "Eliminar provincia #" . $id, 'content' =>'No se puede eliminar la provincia porque esta asociado a uno o más pacientes', 'footer' => Html::button('Cerrar', ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) ];
+          }
+          if (Localidad::find()->where(['id_provincia'=>$id])->count()>0 ){
+              return ['title' => "Eliminar provincia #" . $id, 'content' =>'No se puede eliminar la provincia porque esta asociado a uno o más localidades', 'footer' => Html::button('Cerrar', ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) ];
+            }
             $this->findModel($id)->delete();
-        }
-        catch(yii\db\Exception $e) {
-            Yii::$app
-                ->response->format = Response::FORMAT_HTML;
-            // throw new NotFoundHttpException('Error en la base de datos.',500);
-            throw new \yii\web\HttpException(500, 'No se puede eliminar la provincia porque esta asociado a uno o más pacientes', 500);
-        }
+            if ($request->isAjax) {
+                /*
+                 *   Process for ajax request
+                */
+                Yii::$app
+                    ->response->format = Response::FORMAT_JSON;
+                return ['forceClose' => true, 'forceReload' => '#crud-datatable-pjax'];
+            }
+            else {
+                /*
+                 *   Process for non-ajax request
+                */
+                return $this->redirect(['index']);
+            }
+
     }
     /**
      * Finds the Provincia model based on its primary key value.

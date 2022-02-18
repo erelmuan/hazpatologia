@@ -114,25 +114,7 @@ class ObrasocialController extends Controller {
             }
         }
     }
-    /**
-     * Delete an existing Obrasocial model.
-     * For ajax request will return json object
-     * and for non-ajax request if deletion is successful, the browser will be redirected to the 'index' page.
-     * @param integer $id
-     * @return mixed
-     */
-    public function actionDelete($id) {
-        $request = Yii::$app->request;
-        try {
-            $this->findModel($id)->delete();
-        }
-        catch(yii\db\Exception $e) {
-            Yii::$app
-                ->response->format = Response::FORMAT_HTML;
-            // throw new NotFoundHttpException('Error en la base de datos.',500);
-            throw new \yii\web\HttpException(500, 'No se puede eliminar la provincia porque esta asociado a uno o más pacientes', 500);
-        }
-    }
+    
     /**
      * Finds the Obrasocial model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.

@@ -93,7 +93,7 @@ $this->title = 'Extras';
           </div>
           <div class="count"><?=$cantidadObrasocial ?></div>
           <h3>OBRA SOCIAL</h3>
-          <p>ABM de las localidades de la Argentina.</p>
+          <p>ABM de las obras sociales.</p>
 
 
       </div>
@@ -106,7 +106,7 @@ $this->title = 'Extras';
           </div>
           <div class="count"><?=$cantidadTipoDoc ?></div>
           <h3>TIPO DOCUMENTO</h3>
-          <p>ABM de las localidades de la Argentina.</p>
+          <p>ABM de los tipos de doc.</p>
 
 
       </div>
@@ -119,7 +119,7 @@ $this->title = 'Extras';
           </div>
           <div class="count"><?=$cantidadNacionalidad ?></div>
           <h3>NACIONALIDAD</h3>
-          <p>ABM de las localidades de la Argentina.</p>
+          <p>ABM de las nacionalidades.</p>
 
 
       </div>
@@ -132,7 +132,7 @@ $this->title = 'Extras';
           </div>
           <div class="count"><?=$cantidadEstado ?></div>
           <h3>ESTADOS</h3>
-          <p>ABM de las localidades de la Argentina.</p>
+          <p>Estados de los estudios y solicitudes.</p>
 
 
       </div>

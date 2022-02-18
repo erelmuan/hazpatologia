@@ -1,6 +1,7 @@
 <?php
 namespace app\controllers;
 use Yii;
+use app\models\Paciente;
 use app\models\Localidad;
 use app\models\LocalidadSearch;
 use yii\web\Controller;
@@ -123,16 +124,29 @@ class LocalidadController extends Controller {
      */
     public function actionDelete($id) {
         $request = Yii::$app->request;
-        try {
+        Yii::$app->response->format = Response::FORMAT_JSON;
+        if (Paciente::find()->where(['id_localidad'=>$id])->count()>0 ){
+            return ['title' => "Eliminar localidad #" . $id, 'content' => 'No se puede eliminar la localidad porque esta asociado a uno o más pacientes', 'footer' => Html::button('Cerrar', ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) ];
+          }
+
             $this->findModel($id)->delete();
+            if ($request->isAjax) {
+                /*
+                 *   Process for ajax request
+                */
+                Yii::$app
+                    ->response->format = Response::FORMAT_JSON;
+                return ['forceClose' => true, 'forceReload' => '#crud-datatable-pjax'];
+            }
+            else {
+                /*
+                 *   Process for non-ajax request
+                */
+                return $this->redirect(['index']);
+            }
         }
-        catch(yii\db\Exception $e) {
-            Yii::$app
-                ->response->format = Response::FORMAT_HTML;
-            // throw new NotFoundHttpException('Error en la base de datos.',500);
-            throw new \yii\web\HttpException(500, 'No se puede eliminar la provincia porque esta asociado a uno o más pacientes', 500);
-        }
-    }
+
+
     /**
      * Finds the Localidad model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.

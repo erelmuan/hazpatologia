@@ -235,27 +235,25 @@ class PacienteController extends Controller {
      */
     public function actionDelete($id) {
         $request = Yii::$app->request;
+        Yii::$app->response->format = Response::FORMAT_JSON;
+          if (Solicitud::find()->where(['id_paciente'=>$id])->count()>0 ){
+            return ['title' => "Eliminar paciente #" . $id, 'content' => 'No se puede eliminar el paciente porque esta asociado a una solicitud', 'footer' => Html::button('Cerrar', ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) ];
+          }
+
         if ($request->isAjax) {
             /*
              *   Process for ajax request
             */
             Yii::$app
                 ->response->format = Response::FORMAT_JSON;
-            try {
+
                 \Yii::$app
                     ->db
                     ->createCommand()
-                    ->delete('carnet_os', ['id_obrasocial' => $id])->execute();
+                    ->delete('carnet_os', ['id_paciente' => $id])->execute();
                 if ($this->findModel($id)->delete()) {
                     return ['forceClose' => true, 'forceReload' => '#crud-datatable-pjax'];
                 }
-            }
-            catch(yii\db\Exception $e) {
-                Yii::$app
-                    ->response->format = Response::FORMAT_HTML;
-                // throw new NotFoundHttpException('Error en la base de datos.',500);
-                throw new \yii\web\HttpException(500, 'No se puede eliminar el paciente porque esta asociado a una solicitud', 500);
-            }
         }
         else {
             /*
@@ -264,35 +262,7 @@ class PacienteController extends Controller {
             return $this->redirect(['index']);
         }
     }
-    /**
-     * Delete multiple existing Paciente model.
-     * For ajax request will return json object
-     * and for non-ajax request if deletion is successful, the browser will be redirected to the 'index' page.
-     * @param integer $id
-     * @return mixed
-     */
-    public function actionBulkDelete() {
-        $request = Yii::$app->request;
-        $pks = explode(',', $request->post('pks')); // Array or selected records primary keys
-        foreach ($pks as $pk) {
-            $model = $this->findModel($pk);
-            $model->delete();
-        }
-        if ($request->isAjax) {
-            /*
-             *   Process for ajax request
-            */
-            Yii::$app
-                ->response->format = Response::FORMAT_JSON;
-            return ['forceClose' => true, 'forceReload' => '#crud-datatable-pjax'];
-        }
-        else {
-            /*
-             *   Process for non-ajax request
-            */
-            return $this->redirect(['index']);
-        }
-    }
+
     public function actionPuco() {
         //fin
         return $this->render('puco');

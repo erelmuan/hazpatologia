@@ -77,7 +77,7 @@ use yii\helpers\Url;
                       <?php  if (!$model->isNewRecord ) { ?>
                       <div class="col-md-4">
                           <div class="x_panel">
-                            <?   echo '<img src=uploads/avatar/sqr_'.$model->imagen.' class="img-circle profile_img"   alt="..." >'; ?>
+                            <?   echo '<img src=uploads/firmas/sqr_'.$model->imagen.' class="img-circle profile_img"   alt="..." >'; ?>
                           </div>
                       </div>
                         <?  }?>

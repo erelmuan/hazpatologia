@@ -1,6 +1,7 @@
 <?php
 namespace app\controllers;
 use Yii;
+use app\models\Solicitud;
 use app\models\Procedencia;
 use app\models\ProcedenciaSearch;
 use yii\web\Controller;
@@ -127,30 +128,26 @@ class ProcedenciaController extends Controller {
      */
     public function actionDelete($id) {
         $request = Yii::$app->request;
-        try {
+        Yii::$app->response->format = Response::FORMAT_JSON;
+          if (Solicitud::find()->where(['id_procedencia'=>$id])->count()>0 ){
+            return ['title' => "Eliminar procedencia #" . $id, 'content' => 'No se puede eliminar la procedencia porque esta asociado a una o más solicitudes', 'footer' => Html::button('Cerrar', ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) ];
+          }
             $this->findModel($id)->delete();
-        }
-        catch(yii\db\Exception $e) {
-            Yii::$app
-                ->response->format = Response::FORMAT_HTML;
-            // throw new NotFoundHttpException('Error en la base de datos.',500);
-            throw new \yii\web\HttpException(500, 'No se puede eliminar la procedencia porque esta asociado a una o mas solicitudes', 500);
-        }
-        if ($request->isAjax) {
-            /*
-             *   Process for ajax request
-            */
-            Yii::$app
-                ->response->format = Response::FORMAT_JSON;
-            return ['forceClose' => true, 'forceReload' => '#crud-datatable-pjax'];
-        }
-        else {
-            /*
-             *   Process for non-ajax request
-            */
-            return $this->redirect(['index']);
-        }
-    }
+            if ($request->isAjax) {
+                /*
+                 *   Process for ajax request
+                */
+                Yii::$app
+                    ->response->format = Response::FORMAT_JSON;
+                return ['forceClose' => true, 'forceReload' => '#crud-datatable-pjax'];
+            }
+            else {
+                /*
+                 *   Process for non-ajax request
+                */
+                return $this->redirect(['index']);
+            }
+      }
     /**
      * Finds the Procedencia model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.

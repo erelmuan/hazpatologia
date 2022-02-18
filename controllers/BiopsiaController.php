@@ -275,8 +275,7 @@ class BiopsiaController extends Controller {
         Yii::$app
             ->response->format = Response::FORMAT_JSON;
         $model = $this->findModel($id);
-        if ($model
-            ->estado->descripcion == 'LISTO') {
+        if ($model->estado->descripcion == 'LISTO') {
             return ['title' => "Eliminar informe Biopsia #" . $id, 'content' => "No se puede eliminar informe en estado listo", 'footer' => Html::button('Cerrar', ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) ];
         }
         $request = Yii::$app->request;

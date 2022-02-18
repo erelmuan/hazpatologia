@@ -125,16 +125,17 @@ class RolController extends Controller {
      */
     public function actionDelete($id) {
         $request = Yii::$app->request;
+        Yii::$app
+            ->response->format = Response::FORMAT_JSON;
         if ($id == 1) {
-            Yii::$app
-                ->response->format = Response::FORMAT_JSON;
             return ['title' => "Eliminar Rol #" . $id, 'content' => "El rol administrador no se puede eliminar", 'footer' => Html::button('Cerrar', ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) ];
         }
         if ($id == 4) {
-            Yii::$app
-                ->response->format = Response::FORMAT_JSON;
             return ['title' => "Eliminar Rol #" . $id, 'content' => "El rol patologo no se puede eliminar", 'footer' => Html::button('Cerrar', ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) ];
         }
+        if (Permiso::find()->where(['id_rol'=>$id])->count()>0 ){
+            return ['title' => "Eliminar rol #" . $id, 'content' => 'No se puede eliminar la rol porque esta asociado a uno o más permisos', 'footer' => Html::button('Cerrar', ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) ];
+          }
         $this->findModel($id)->delete();
         if ($request->isAjax) {
             /*
@@ -269,28 +270,7 @@ class RolController extends Controller {
             return '<div>No se encontraron resultados</div>';
         }
     }
-    public function actionBulkDelete() {
-        $request = Yii::$app->request;
-        $pks = explode(',', $request->post('pks')); // Array or selected records primary keys
-        foreach ($pks as $pk) {
-            $model = $this->findModel($pk);
-            $model->delete();
-        }
-        if ($request->isAjax) {
-            /*
-             *   Process for ajax request
-            */
-            Yii::$app
-                ->response->format = Response::FORMAT_JSON;
-            return ['forceClose' => true, 'forceReload' => '#crud-datatable-pjax'];
-        }
-        else {
-            /*
-             *   Process for non-ajax request
-            */
-            return $this->redirect(['index']);
-        }
-    }
+
     /**
      * Finds the Rol model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
