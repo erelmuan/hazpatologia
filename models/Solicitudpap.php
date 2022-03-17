@@ -84,18 +84,17 @@ class Solicitudpap extends Solicitud
     public function rules()
     {
         return [
-            ///////
             [['id_paciente'], 'required',  'message' => 'El campo paciente no puede estar vacío.'],
             [['id_medico'], 'required',  'message' => 'El campo medico no puede estar vacío.'],
+            [['id_procedencia'], 'required',  'message' => 'Procedencia no puede estar vacío.'],
+
         //     [['protocolo'], 'required',  'whenClient' => "function (attribute, value) {
         //     return $('#solicitudpap-protocolo_automatico').val() == 0;
         // }"],
          // [['protocolo','protocolo_automatico'], 'required'],
          [['protocolo'], 'required'],
 
-            [['id_paciente', 'id_procedencia', 'id_medico',  'fechadeingreso', 'id_estudio', 'id_estado'], 'required'],
-
-            ///////
+            [['id_paciente','id_medico',  'fechadeingreso', 'id_estudio', 'id_estado'], 'required'],
             [['id_paciente', 'id_procedencia', 'id_medico', 'id_materialsolicitud', 'id_tipo_muestra', 'id_metodo_anticonceptivo', 'id_cirugia_previa', 'id_estudio', 'id_estado','protocolo'], 'integer'],
             [['fecharealizacion', 'fechadeingreso', 'fecha_ult_parto'], 'safe'],
             [['observacion', 'resultado_pap_previo', 'resultado_biopsia_previo', 'fum', 'datos_clinicos_de_interes', 'conclusion'], 'string'],
@@ -103,7 +102,7 @@ class Solicitudpap extends Solicitud
             [['id_cirugia_previa'], 'exist', 'skipOnError' => true, 'targetClass' => Cirugiaprevia::className(), 'targetAttribute' => ['id_cirugia_previa' => 'id']],
             [['id_metodo_anticonceptivo'], 'exist', 'skipOnError' => true, 'targetClass' => Metodoanticonceptivo::className(), 'targetAttribute' => ['id_metodo_anticonceptivo' => 'id']],
             [['id_tipo_muestra'], 'exist', 'skipOnError' => true, 'targetClass' => Tipomuestra::className(), 'targetAttribute' => ['id_tipo_muestra' => 'id']],
-               [ 'protocolo', 'validacion_protocolo_anio'],
+             [ 'protocolo', 'validacion_protocolo_anio'],
             // [['id_anio_protocolo', 'protocolo',],  'compare','message' => 'El numero de protocolo ya fue asignado para el año seleccionado','targetAttribute' => ['id_anio_protocolo', 'protocolo']],
             [['id_anio_protocolo', 'protocolo'], 'unique','message' => 'El numero de protocolo ya fue asignado para el año seleccionado','targetAttribute' => ['id_anio_protocolo', 'protocolo']],
 
