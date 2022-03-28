@@ -14,8 +14,14 @@ use yii\helpers\ArrayHelper;
 
     <?php $form = ActiveForm::begin(); ?>
 
-
-    <?= $form->field($model, 'id_provincia')->dropDownList(ArrayHelper::map(Provincia::find()->all(), 'id','nombre'))->label('Provincia') ;?>
+    <!--si existen pacientes asociados no se puede modificar el nombre  -->
+    <? if($model->pacientes){
+          echo $form->field($model, 'id_provincia')->hiddenInput()->label(false);
+          echo  $form->field($model, 'provincia')->input("text",['readonly' => true , "value"=>$model->provincia->nombre])->label('Provincia');
+          }else {
+            echo $form->field($model, 'id_provincia')->dropDownList(ArrayHelper::map(Provincia::find()->all(), 'id','nombre'))->label('Provincia') ;
+        }
+    ?>
 
     <!--si existen pacientes asociados no se puede modificar el nombre  -->
     <? if($model->pacientes){

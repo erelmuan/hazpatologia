@@ -45,32 +45,21 @@ class CarnetOsController extends Controller {
         return $this->render('create', ['model' => $model, ]);
     }
     public function createParametros($id_paciente, $obraSocial, $nroAfiliado) {
-        $i = 1;
-        $arrayCarnet = [];
-        foreach ($obraSocial as $value1) {
-            $arrayCarnet['obrasocial' . $i] = $value1;
-            $i = $i + 1;
-        }
-        $j = 1;
-        foreach ($nroAfiliado as $value2) {
-            $arrayCarnet['afiliado' . $j] = $value2;
-            $j = $j + 1;
-        }
-        for ($z = 1;$z < $i;$z++) {
-            if ($modelCarnetOs = new CarnetOs()) {
-                $modelCarnetOs->id_obrasocial = $arrayCarnet['obrasocial' . $z];
-                $modelCarnetOs->id_paciente = $id_paciente;
-                $modelCarnetOs->nroafiliado = $arrayCarnet['afiliado' . $z];
-                if (!$modelCarnetOs->save()) {
-                    $lerror = true;
-                    break;
-                }
-            }
-            else {
-                $lerror = true;
-                break;
-            }
-        }
+      for ($z = 0;$z < count($obraSocial);$z++) {
+          if ($modelCarnetOs = new CarnetOs()) {
+              $modelCarnetOs->id_obrasocial = $obraSocial[$z];
+              $modelCarnetOs->id_paciente = $id_paciente;
+              $modelCarnetOs->nroafiliado = $nroAfiliado[$z];
+              if (!$modelCarnetOs->save()) {
+                  $lerror = true;
+                  break;
+              }
+          }
+          else {
+              $lerror = true;
+              break;
+          }
+      }
     }
     public function updateParametros($id_paciente, $obraSocial, $nroAfiliado) {
         $models = CarnetOsController::findidpacModel($id_paciente);

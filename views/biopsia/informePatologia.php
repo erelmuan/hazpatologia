@@ -210,6 +210,7 @@ $color = array(0,0,0);
 // $qrcode->displayFPDF($pdf, $x, $y, $s, $background, $color);
 
 $pdf->Output("I","BIOPSIA --- ".utf8_decode($model->solicitudbiopsia->paciente->apellido." ". $model->solicitudbiopsia->paciente->nombre));
+// $pdf->Output("F","BIOPSIA --- ".utf8_decode($model->solicitudbiopsia->paciente->apellido." ". $model->solicitudbiopsia->paciente->nombre));
 
 
 exit;

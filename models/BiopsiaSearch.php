@@ -74,7 +74,7 @@ class BiopsiaSearch extends Biopsia
         $this->load($params);
         $dataProvider->setSort([
             'attributes' => [
-              'protocolo'
+              'protocolo','estado'
          ]]);
 
         if (!$this->validate()) {
