@@ -389,4 +389,10 @@ class BiopsiaController extends Controller {
             ->compose()
             ->attachContent($path, ['fileName' => 'Invoice #sdas.pdf', 'contentType' => 'application/pdf']);
     }
+    public function actionFos($id) {
+        $request = Yii::$app->request;
+        $biopsia = $this->findModel($id);
+        return $this->render('fos', ['model' => $biopsia, 'edad' => Solicitudbiopsia::calcular_edad($biopsia->id_solicitudbiopsia) ]);
+
+    }
 }
