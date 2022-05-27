@@ -1,3 +1,5 @@
+# configuracion de la base
+/config/db.php
 # phpstorm project files
 .idea
 
