@@ -3,7 +3,7 @@
 return [
   'class' => 'yii\db\Connection',
   'dsn' => 'pgsql:host=localhost;dbname=hazpatologia',
-  'username' => 'elias',
+  'username' => 'postgres',
   'password' => '123',
   'charset' => 'utf8',
 
