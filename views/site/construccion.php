@@ -8,7 +8,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>Gentallela Alela!  | </title>
+  <title>Gentallela Alela!dddd  | </title>
 
   <!-- Bootstrap core CSS -->
 
@@ -20,7 +20,7 @@
   <!-- Custom styling plus plugins -->
   <link href="css/custom.css" rel="stylesheet">
   <link href="css/icheck/flat/green.css" rel="stylesheet">
-
+ghp_
 
   <script src="js/jquery.min.js"></script>
 
