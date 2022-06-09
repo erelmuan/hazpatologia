@@ -1,0 +1,12 @@
+VERSIONADO
+
+
+Algo común es realizar el manejo de versiones mediante 3 números: X.Y.Z y cada uno indica una cosa diferente:
+
+    Versión mayor o X, Se agrega nuevas funcionalidades importantes, es decir nuevas modulos y/o funcionalidades criticas.
+    Versión menor o Y, Correcciones menores, cuando arreglamos un error y se agregan funcionalidades que no son cruciales para el proyecto.
+    Revisión o Z, cada vez que entregamos el proyecto.
+
+    X.Y.Z
+
+Extraido de edtea

@@ -1,0 +1,4 @@
+VERSIÓN 1.0.0
+Se inicia el  versionado del sistema hazpatologia a partir del commit 101, de ahora en adelante
+se irán modificando las versiones del sistema.
+Ademas se agregaran los comentarios de los commits que involucran cada version nueva.
