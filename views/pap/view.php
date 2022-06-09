@@ -64,7 +64,6 @@ use yii\helpers\Html;
             'aspecto:ntext',
             'pavimentosas:ntext',
             'glandulares:ntext',
-            // 'id_plantilladiagnostico',
             'diagnostico:ntext',
             [
               'value'=> $model->estado->descripcion ,
@@ -76,8 +75,8 @@ use yii\helpers\Html;
         ],
     ]) ;
 
-        echo Html::a('<i class="fa fa-file-pdf-o"></i> Documento del informe', ['/pap/informe', 'id' => $model->id], [
-              'class'=>'btn btn-danger',
+        echo Html::a('<i class="fa fa-file-pdf-o"></i> Generar informe de pap', ['/pap/informe', 'id' => $model->id], [
+              'class'=>'btn btn-dark',
               'target'=>'_blank',
               'data-toggle'=>'tooltip',
               'title'=>'Se abrirá el archivo PDF generado en una nueva pestaña'

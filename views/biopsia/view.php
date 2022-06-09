@@ -97,7 +97,7 @@ use yii\helpers\Html;
  <?
 }
 
-      echo Html::a('<i class="fa fa-file-pdf-o"></i> Generar informe biopsia', ['/biopsia/informe', 'id' => $model->id], [
+      echo Html::a('<i class="fa fa-file-pdf-o"></i> Generar informe de biopsia', ['/biopsia/informe', 'id' => $model->id], [
             'class'=>'btn btn-dark',
             'target'=>'_blank',
             'data-toggle'=>'tooltip',

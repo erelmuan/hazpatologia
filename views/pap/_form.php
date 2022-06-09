@@ -380,7 +380,7 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
         <?= $form->field($model, 'frase')->textarea(['rows' => 3,'style'=> 'font-size:17px;','disabled'=>(isset($model->estado) && ($model->estado->descripcion=="LISTO" && !Usuario::isPatologo()))]) ?>
     </div>
     <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-        <?= Html::submitButton($model->isNewRecord ? 'Guardar' : 'Actualizar', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+        <?= Html::submitButton($model->isNewRecord ? 'Guardar' : 'Actualizar', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary','disabled'=>(isset($model->estado) && ($model->estado->descripcion=="LISTO" && !Usuario::isPatologo()))]) ?>
     </div>
     <? if (Usuario::isPatologo()) { ?>
     <div class="col-md-8 col-sm-12 col-xs-12 form-group">
@@ -390,7 +390,7 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
                 aria-required="true" aria-invalid="false">
         </div>
         <div class='col-sm-3'>
-            <?= $form->field($model, 'firmado')->checkBox(['label' => 'Firmar']); ?>
+            <?= $form->field($model, 'firmado')->checkBox()->label('FIRMAR (si el estado del estudio es EN PROCESO, se ignorara esta opción)'); ?>
         </div>
     </div>
     <? } ?>

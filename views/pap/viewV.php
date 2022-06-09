@@ -40,22 +40,11 @@ use yii\helpers\Html;
        'format' => ['date', 'd/M/Y'],
 
     ],
-        // 'eosinofilas',
-        // 'cianofilas',
-        // 'intermedias',
-        // 'parabasales',
-        // 'descripcion:ntext',
-        // 'calificacion:ntext',
+
         [
           'value'=> $model->indicepicnotico ,
           'label'=> 'Indice picnotico',
        ],
-      //  [
-      //    'value'=> $model->indicedemaduracion ,
-      //    'label'=> 'Indice de maduracion',
-      // ],
-        // 'plegamiento',
-        // 'agrupamiento',
         'leucocitos',
         'hematies',
         'histiocitos',
@@ -65,25 +54,23 @@ use yii\helpers\Html;
         'aspecto:ntext',
         'pavimentosas:ntext',
         'glandulares:ntext',
-        // 'id_plantilladiagnostico',
         'diagnostico:ntext',
         [
           'value'=> $model->estado->descripcion ,
           'label'=> 'Estado',
        ],
-        // 'observacion:ntext',
         'cantidad',
         'frase',
         ],
     ]);
 
-        echo Html::a('<i class="fa glyphicon glyphicon-hand-up"></i> Generar documento', ['/pap/informe', 'id' => $model->id], [
-              'class'=>'btn btn-info',
+        echo Html::a('<i class="fa fa-file-pdf-o"></i> Generar informe de pap', ['/pap/informe', 'id' => $model->id], [
+              'class'=>'btn btn-dark',
               'target'=>'_blank',
               'data-toggle'=>'tooltip',
               'title'=>'Se abrirá el archivo PDF generado en una nueva pestaña'
           ]);
-          
+
 
     ?>
 </div>

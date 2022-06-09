@@ -16,6 +16,8 @@ use app\models\Plantillamaterial;
 use yii\widgets\MaskedInput;
 use kartik\datecontrol\DateControl;
 use nex\chosen\Chosen;
+use app\models\Usuario;
+
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\SolicitudSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -27,7 +29,7 @@ CrudAsset::register($this);
 ?>
 
 <div id="w022" class="x_panel">
-  <div class="x_title"><h2><i class="glyphicon glyphicon-plus"></i> Nueva solicitud de biopsia </h2>
+  <div class="x_title"><h2><i class="glyphicon glyphicon-plus"></i> Nueva solicitud de biopsia <? if ((isset($model->estado) && ($model->estado->descripcion=="LISTO" && !Usuario::isPatologo()))) echo "(SOLO EL PATOLOGO PUEDE MODIFICAR LA SOLICITUD EN ESTADO LISTO)" ?></h2>
     <div class="clearfix"> <div class="nav navbar-right panel_toolbox"><?echo Html::button('<i class="glyphicon glyphicon-arrow-left"></i> Atrás',array('name' => 'btnBack','onclick'=>'js:history.go(-1);returnFalse;','id'=>'botonAtras')); ?></div>
 </div>
   </div>
@@ -72,7 +74,7 @@ CrudAsset::register($this);
           <div class='col-sm-3'>
             <b>
             <?
-            echo $form->field($model, 'protocolo')->textInput(['style'=> 'font-size:23px;color:red;']) ;
+            echo $form->field($model, 'protocolo')->textInput(['style'=> 'font-size:23px;color:red;','disabled'=>(isset($model->estado) && ($model->estado->descripcion=="LISTO" && !Usuario::isPatologo()))]) ;
 
           //   if( isset($protocolo_insertar)){
           //   echo $form->field($model, 'protocolo')->textInput(['readonly'=> true , 'value'=>$protocolo_insertar,'style'=> 'font-size:23px; color:red;']) ;
@@ -96,6 +98,7 @@ CrudAsset::register($this);
                             'options' => ['placeholder' => 'Ingrese fecha (opcional)',
                             'value'=> ($model->fecharealizacion)?$model->fecharealizacion:"" ,
                                     ],
+                            'disabled'=>(isset($model->estado) && ($model->estado->descripcion=="LISTO" && !Usuario::isPatologo())),
                             'type'=>DateControl::FORMAT_DATE,
                             'autoWidget'=>true,
                             'displayFormat' => 'php:d/m/Y',
@@ -110,16 +113,16 @@ CrudAsset::register($this);
                   <?= $form->field($model, 'estado')->textInput(['value'=>($model->estado)? $model->estado->descripcion:"PENDIENTE", 'readOnly'=>true])->label("Estado") ;?>
 
                   <?
+                  
+                  echo $form->field($model, 'id_procedencia')->widget(
+                    Chosen::className(), [
+                     'items' => $mapprocedencia,
+                     'clientOptions' => [
+                       'rtl'=> true,
+                         'search_contains' => true,
+                         'single_backstroke_delete' => false,
+                     ],])->label("Procedencia");
 
-           echo $form->field($model, 'id_procedencia')->widget(
-               Chosen::className(), [
-                   'items' => $mapprocedencia,
-                   'clientOptions' => [
-                     'rtl'=> true,
-                       'search_contains' => true,
-                       'single_backstroke_delete' => false,
-                   ],
-           ])->label("Procedencia");
            //Cuando se incorpore esta funcionalidad hay que cambiar la base de datos por NOT NULL
             echo $form->field($model, 'protocolo_automatico')->checkBox([
        'onclick' => 'cambioProtocoloAutomatico();', 'checked' => '1','value' => '0'])->hiddenInput()->label(false);
@@ -134,6 +137,7 @@ CrudAsset::register($this);
                                      'options' => ['placeholder' => 'Debe agregar una fecha',
                                      'value'=> ($model->fechadeingreso)?$model->fechadeingreso:"" ,
                                              ],
+                                    'disabled'=>(isset($model->estado) && ($model->estado->descripcion=="LISTO" && !Usuario::isPatologo())),
                                      'type'=>DateControl::FORMAT_DATE,
                                      'autoWidget'=>true,
                                      'displayFormat' => 'php:d/m/Y',
@@ -142,7 +146,7 @@ CrudAsset::register($this);
 
                    ?>
 
-                    <?=$form->field($model, "observacion")->textarea(["rows" => 4]) ; ?>
+                    <?=$form->field($model, "observacion")->textarea(["rows" => 4,'disabled'=>(isset($model->estado) && ($model->estado->descripcion=="LISTO" && !Usuario::isPatologo()))]) ; ?>
                   </div>
               </div>
           </div>
@@ -269,7 +273,7 @@ CrudAsset::register($this);
 
       <?  if (!Yii::$app->request->isAjax){ ?>
          <div class='pull-right'>
-            <?=Html::submitButton($model->isNewRecord ? 'Guardar' : 'Actualizar', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']); ?>
+            <?=Html::submitButton($model->isNewRecord ? 'Guardar' : 'Actualizar', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary','disabled'=>(isset($model->estado) && ($model->estado->descripcion=="LISTO" && !Usuario::isPatologo()))]); ?>
          </div>
       <? }
           $form = ActiveForm::end();

@@ -13,9 +13,9 @@ use yii\widgets\Pjax;
 use yii\helpers\ArrayHelper;
 use app\models\Procedencia;
 use yii\widgets\MaskedInput;
-
 use kartik\datecontrol\DateControl;
 use nex\chosen\Chosen;
+use app\models\Usuario;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\SolicitudSearch */
@@ -28,7 +28,7 @@ CrudAsset::register($this);
 ?>
 
 <div id="w0s" class="x_panel">
-  <div class="x_title"><h2><i class="glyphicon glyphicon-plus"></i> Nueva solicitud de pap </h2>
+  <div class="x_title"><h2><i class="glyphicon glyphicon-plus"></i> Nueva solicitud de pap <? if ((isset($model->estado) && ($model->estado->descripcion=="LISTO" && !Usuario::isPatologo()))) echo "(SOLO EL PATOLOGO PUEDE MODIFICAR LA SOLICITUD EN ESTADO LISTO)" ?> </h2>
     <div class="clearfix"> <div class="nav navbar-right panel_toolbox"><?echo Html::button('<i class="glyphicon glyphicon-arrow-left"></i> Atrás',array('name' => 'btnBack','onclick'=>'js:history.go(-1);returnFalse;','id'=>'botonAtras')); ?></div>
 </div>
   </div>
@@ -74,7 +74,7 @@ CrudAsset::register($this);
       //  }else {
       //    echo $form->field($model, 'protocolo')->textInput(['readonly'=> true ,'style'=> 'font-size:23px;color:red;']) ;
       // }
-      echo $form->field($model, 'protocolo')->textInput(['style'=> 'font-size:23px;color:red;']) ;
+      echo $form->field($model, 'protocolo')->textInput(['style'=> 'font-size:23px;color:red;','disabled'=>(isset($model->estado) && ($model->estado->descripcion=="LISTO" && !Usuario::isPatologo()))]) ;
 
        ?>
     </b>
@@ -99,6 +99,7 @@ CrudAsset::register($this);
                           'autoWidget'=>true,
                           'displayFormat' => 'php:d/m/Y',
                           'saveFormat' => 'php:Y-m-d',
+                          'disabled'=>(isset($model->estado) && ($model->estado->descripcion=="LISTO" && !Usuario::isPatologo()))
                         ])->label('Fecha de realización');
 
 
@@ -138,9 +139,10 @@ CrudAsset::register($this);
                             'autoWidget'=>true,
                             'displayFormat' => 'php:d/m/Y',
                             'saveFormat' => 'php:Y-m-d',
+                            'disabled'=>(isset($model->estado) && ($model->estado->descripcion=="LISTO" && !Usuario::isPatologo()))
                           ])->label('Fecha de ingreso');
                   ?>
-                <?=$form->field($model, "observacion")->textarea(["rows" => 4]) ; ?>
+                <?=$form->field($model, "observacion")->textarea(["rows" => 4 ,'disabled'=>(isset($model->estado) && ($model->estado->descripcion=="LISTO" && !Usuario::isPatologo()))]) ; ?>
 
               </div>
           </div>
@@ -264,7 +266,7 @@ CrudAsset::register($this);
 
       <?  if (!Yii::$app->request->isAjax){ ?>
          <div class='pull-right'>
-            <?=Html::submitButton($model->isNewRecord ? 'Guardar' : 'Actualizar', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']); ?>
+            <?=Html::submitButton($model->isNewRecord ? 'Guardar' : 'Actualizar', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary','disabled'=>(isset($model->estado) && ($model->estado->descripcion=="LISTO" && !Usuario::isPatologo()))]); ?>
          </div>
       <? }
           $form = ActiveForm::end();

@@ -279,7 +279,7 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
         <?= $form->field($model, 'frase')->textarea(['rows' => 4,'style'=> 'font-size:17px;', 'disabled'=>(isset($model->estado) && ($model->estado->descripcion=="LISTO" && !Usuario::isPatologo()))]) ?>
     </div>
     <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-        <?= Html::submitButton($model->isNewRecord ? 'Guardar' : 'Actualizar', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']);
+        <?= Html::submitButton($model->isNewRecord ? 'Guardar' : 'Actualizar', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary','disabled'=>(isset($model->estado) && ($model->estado->descripcion=="LISTO" && !Usuario::isPatologo()))]);
         if( !$model->isNewRecord &&  $model->ihq){
             if ($model->ihq && isset($model->inmunohistoquimicaEscaneada)){
               // echo Html::a('<i class="glyphicon glyphicon-arrow-right"></i> Ir inmunostoquimica',['/inmunohistoquimica/update', 'id'=>$model->inmunohistoquimica->id], ['class'=>'btn btn-success grid-button']) ;
