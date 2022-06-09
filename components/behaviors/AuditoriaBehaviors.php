@@ -13,7 +13,6 @@ use Yii;
 
 class AuditoriaBehaviors extends Behavior
 {
-  //  private $_oldattributes = array();
 
     public function beforeUpdate($event)
     {
@@ -23,8 +22,6 @@ class AuditoriaBehaviors extends Behavior
           $log=new Auditoria();
           $log->id_usuario= Yii::$app->user->identity->id_user;
           $log->accion= "MODIFICACIÓN";
-
-
           $tabla=str_replace("_", "-", $this->owner->tableName());
           $log->tabla= substr(get_class($this->owner),11);
           $log->fecha= date("d/m/Y");
@@ -34,14 +31,10 @@ class AuditoriaBehaviors extends Behavior
           $log->registro= $this->owner->getPrimaryKey();
 
           $model=strtolower($tabla);
-
                       // new attributes
               $newattributes = $this->owner->getAttributes();
               $oldattributes = $this->owner->getOldAttributes();
-
                       // compare old and new
-
-
              $changes="";
              foreach ($newattributes as $name => $value) {
                 if (!empty($oldattributes)) {
@@ -75,6 +68,7 @@ class AuditoriaBehaviors extends Behavior
       $log=new Auditoria();
       $log->id_usuario= Yii::$app->user->identity->id_user;
       $log->accion= "CREACIÓN";
+      $tabla=str_replace("_", "-", $this->owner->tableName());
       $tabla= substr(get_class($this->owner),11);
       $log->tabla=  $tabla;
       $log->fecha= date("d/m/Y");
@@ -84,7 +78,6 @@ class AuditoriaBehaviors extends Behavior
       $log->registro= $this->owner->getPrimaryKey();
 
       $model=strtolower($tabla);
-
 
       $log->cambios=       Html::a( "Registro creado", [$model."/view","id"=>  $this->owner->getPrimaryKey()]
 

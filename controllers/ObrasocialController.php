@@ -33,7 +33,7 @@ class ObrasocialController extends Controller {
         if ($request->isAjax) {
             Yii::$app
                 ->response->format = Response::FORMAT_JSON;
-            return ['title' => "Obrasocial #" . $id, 'content' => $this->renderAjax('view', ['model' => $this->findModel($id) , ]) , 'footer' => Html::button('Cerrar', ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) . Html::a('Editar', ['update', 'id' => $id], ['class' => 'btn btn-primary', 'role' => 'modal-remote']) ];
+            return ['title' => "Obrasocial #" . $id, 'content' => $this->renderAjax('view', ['model' => $this->findModel($id) , ]) , 'footer' => Html::button('Cerrar', ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) ];
         }
         else {
             return $this->render('view', ['model' => $this->findModel($id) , ]);
@@ -114,7 +114,7 @@ class ObrasocialController extends Controller {
             }
         }
     }
-    
+
     /**
      * Finds the Obrasocial model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.

@@ -6,6 +6,8 @@ use app\models\CarnetOsSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use \yii\web\Response;
+use yii\helpers\Html; 
 /**
  * CarnetOsController implements the CRUD actions for CarnetOs model.
  */
@@ -28,8 +30,24 @@ class CarnetOsController extends Controller {
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionView($id) {
-        return $this->render('view', ['model' => $this->findModel($id) , ]);
-    }
+      $request = Yii::$app->request;
+        if($request->isAjax){
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            return [
+                    'title'=> "CarnetOs #".$id,
+                    'content'=>$this->renderAjax('view', [
+                        'model' => $this->findModel($id),
+                    ]),
+                    'footer'=> Html::button('Close',['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
+                            Html::a('Edit',['update','id'=>$id],['class'=>'btn btn-primary','role'=>'modal-remote'])
+                ];
+        }else{
+            return $this->render('view', [
+                'model' => $this->findModel($id),
+            ]);
+        }
+      }
+
     /**
      * Creates a new CarnetOs model.
      * If creation is successful, the browser will be redirected to the 'view' page.

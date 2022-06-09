@@ -165,7 +165,7 @@ class PapController extends Controller {
                 $model->id_estado = 5;
                 return $this->render('_form', ['model' => $model, 'dataSol' => $_SESSION['solicitudp'], 'search' => $search, 'array' => $array, 'provider' => $provider, 'edadDelPaciente' => $this->calcular_edad($_SESSION['solicitudp']->id) , ]);
             }
-            $model->fechalisto = date("Y-m-d h:i:s");
+            $model->fechalisto = date("Y-m-d H:i:s");
             $model->id_usuario = $modelUsuario->id;
             $Solicitud = Solicitudpap::findOne($model->id_solicitudpap);
             $Solicitud->id_estado = $model->id_estado;
@@ -265,7 +265,7 @@ class PapController extends Controller {
             $Solicitud->id_estado = $post['Pap']['id_estado'];
             $Solicitud->save();
             //fecha cuando esta listo el informe de la pap
-            $model->fechalisto = date("Y-m-d  h:i:s");
+            $model->fechalisto = date("Y-m-d  H:i:s");
             $model->id_usuario = $modelUsuario->id;
         }
         if ($model->load($post) && $model->save()) {

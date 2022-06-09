@@ -157,7 +157,7 @@ class BiopsiaController extends Controller {
                 return $this->render('_form', ['model' => $model, 'dataSol' => $_SESSION['solicitudb'], 'search' => $search, 'array' => $array, 'provider' => $provider, 'edadDelPaciente' => Solicitudbiopsia::calcular_edad($_SESSION['solicitudb']->id) , ]);
             }
             //fecha cuando esta listo el informe de la biopsia
-            $model->fechalisto = date("Y-m-d  h:i:s");
+            $model->fechalisto = date("Y-m-d  H:i:s");
             $model->id_usuario = $modelUsuario->id;
             $Solicitud = Solicitudbiopsia::findOne($model->id_solicitudbiopsia);
             $Solicitud->id_estado = $model->id_estado;
@@ -244,7 +244,7 @@ class BiopsiaController extends Controller {
             $Solicitud->id_estado = $post['Biopsia']['id_estado'];
             $Solicitud->save();
             //fecha cuando esta listo el informe de la biopsia
-            $model->fechalisto = date("Y-m-d  h:i:s");
+            $model->fechalisto = date("Y-m-d  H:i:s");
             $model->id_usuario = $modelUsuario->id;
         }
         if ($model->load($post) && $model->save()) {
