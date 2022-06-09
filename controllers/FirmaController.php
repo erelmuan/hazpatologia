@@ -10,6 +10,8 @@ use \yii\web\Response;
 use yii\helpers\Html;
 use app\models\Usuario;
 use app\models\UsuarioSearch;
+use app\models\Biopsia;
+use app\models\Pap;
 use yii\web\UploadedFile;
 use yii\imagine\Image;
 use app\components\Metodos\Metodos;
@@ -116,13 +118,23 @@ class FirmaController extends Controller {
     public function actionUpdate($id) {
         $request = Yii::$app->request;
         $model = $this->findModel($id);
+        $modelbiopsia = Biopsia::find()->where(['and', 'biopsia.id_usuario = ' . $this->findModel($id)->id_usuario])->one();
+        $modelpap = Pap::find()->where(['and', 'pap.id_usuario = ' . $model->id_usuario])->one();
+        if (isset($modelbiopsia) || isset($modelpap)) {
+          Yii::$app->response->format = Response::FORMAT_JSON;
+            return ['title' => "Actualizar firma  #" . $id, 'content' => "No se puede modificar la firma porque esta asociada a estudios", 'footer' => Html::button('Cerrar', ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) ];
+        }
+
         $modelUsu = new Usuario();
         $searchModelUsu = new UsuarioSearch();
         $dataProviderUsu = $searchModelUsu->search(Yii::$app
             ->request
             ->queryParams);
-        $dataProviderUsu
-            ->pagination->pageSize = 7;
+        $dataProviderUsu->pagination->pageSize = 7;
+
+        if ($request->isAjax) {
+          return $this->redirect(['firma/update', 'id' => $model->id,'searchModelUsu' => $searchModelUsu, 'dataProviderUsu' => $dataProviderUsu, 'model' => $model ]);
+        }
         /*
          *   Process for non-ajax request
         */
@@ -178,6 +190,13 @@ class FirmaController extends Controller {
      */
     public function actionDelete($id) {
         $request = Yii::$app->request;
+        Yii::$app->response->format = Response::FORMAT_JSON;
+        $modelbiopsia = Biopsia::find()->where(['and', 'biopsia.id_usuario = ' . $this->findModel($id)->id_usuario])->one();
+        $modelpap = Pap::find()->where(['and', 'pap.id_usuario = ' . $this->findModel($id)->id_usuario])->one();
+        if (isset($modelbiopsia) || isset($modelpap)) {
+            return ['title' => "Eliminar firma  #" . $id, 'content' => "No se puede eliminar la firma porque esta asociada a estudios", 'footer' => Html::button('Cerrar', ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) ];
+        }
+
         $this->findModel($id)->delete();
         if ($request->isAjax) {
             /*
