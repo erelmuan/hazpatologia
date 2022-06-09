@@ -1,19 +1,23 @@
-VERSION 1.2.0
+VERSIÓN 1.2.1
+Vista carnet
+Se quita la opción editar de la vista carnet
+
+VERSIÓN 1.2.0
 Auditoria-fecha-vistas carnet
-Se corrigen en la auditoria, la modificacion en tablas que tenian guion bajo,
+Se corrigen en la auditoria, la modificación en tablas que tenian guion bajo,
 Se cambia la fecha Listo de los estudios para que se pueda guardar en formato 24hs
 Se agregan las vistas de carnet os, para que puedan visualizarse en la auditoria
 
 
-VERSION 1.1.0
+VERSIÓN 1.1.0
 Restricción solicitudes-modificaciones menores
-Se agrega la restriccion de modificar solicitudes en estado "LISTO" si
+Se agrega la restricción de modificar solicitudes en estado "LISTO" si
 el usuario no es patologo
-Se modifican los colores y descripcion del botón para generar el PDF de
+Se modifican los colores y descripción del botón para generar el PDF de
 los informes de PAP
 Se agrega la descripción de la firma( si esta en estado PROCESO se
 ignorara) form pap
-Se agrega el bloqueo del boton actualizar en las solicitudes y estudios
+Se agrega el bloqueo del botón actualizar en las solicitudes y estudios
 
 
 
