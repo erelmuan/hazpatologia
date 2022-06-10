@@ -263,7 +263,40 @@ class PacienteController extends Controller {
         }
     }
 
-    public function actionPuco() {
+    public function actionPuco($dni) {
+
+      $url = 'https://sisa.msal.gov.ar/sisa/services/rest/puco/'.$model->emdocume->emdcnumero;
+
+        $ch = curl_init( $url );
+        # Setup request to send json via POST.
+        $data = array(
+              'usuario' => Yii::$app->params['usuarioPuco'],
+              'clave' => Yii::$app->params['clavePuco']
+          );
+        $payload = json_encode($data );
+        curl_setopt( $ch, CURLOPT_POSTFIELDS, $payload );
+        curl_setopt( $ch, CURLOPT_HTTPHEADER, array('Content-Type:application/json'));
+        # Return response instead of printing.
+        curl_setopt( $ch, CURLOPT_RETURNTRANSFER, true);
+        # Send request.
+
+        $result = curl_exec($ch);
+        $oXML = new SimpleXMLElement($result);
+        curl_close($ch);
+
+        $items = "";
+        $cant=1;
+        $obrasoc=array();
+        foreach ($oXML->puco as $puco) {
+          if (!in_array(trim($puco[0]->coberturaSocial), $obrasoc)){
+              $obrasoc[$cant]=$puco[0]->coberturaSocial;
+            $items .="<b>Obra social </b>".$cant.": <br>";
+            $items .="Denominacion: ".$obrasoc[$cant]."<br>";
+            $cant ++;
+          }
+        }
+        // return $items;
+
         //fin
         return $this->render('puco');
     }

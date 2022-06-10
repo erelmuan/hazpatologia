@@ -53,6 +53,7 @@ $bundle = yiister\gentelella\assets\Asset::register($this);
       top: 40px;     }
      </style>
 </head>
+<link rel="shortcut icon" href="favicon.ico" />
 
 <body class="nav-<?= !empty($_COOKIE['menuIsCollapsed']) && $_COOKIE['menuIsCollapsed'] == 'true' ? 'sm' : 'md' ?>" >
 

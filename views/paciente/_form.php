@@ -80,16 +80,6 @@ use kartik\datecontrol\DateControl;
        </div>
        <div class="col-dm-2 pb-5">
          <?
-         // echo $form->field($model, 'fecha_nacimiento')->widget(MaskedInput::classname(),['name' => 'input-31',
-         //         'clientOptions' => ['alias' =>  'dd/mm/yyyy']])->widget(DatePicker::classname(), [
-         //         'options' => ['placeholder' => 'Ingrese fecha',
-         //
-         //       ],
-         //         'pluginOptions' => [
-         //             'autoclose'=>true,
-         //
-         //         ]
-         //     ]);
          echo $form->field($model, 'fecha_nacimiento')->widget(DateControl::classname(), [
            'options' => ['placeholder' => 'Debe agregar una fecha',
              'value'=> ($model->fecha_nacimiento )?$model->fecha_nacimiento:'' ,
@@ -117,22 +107,7 @@ use kartik\datecontrol\DateControl;
 
     </div>
     <div class="col-sm-4 pb-5">
-<?
-
-    // echo $form->field($model, 'id_localidad')->widget(DepDrop::classname(), [
-    //     'data'=> $localidades,
-    //     'options' => ['id'=>'id_localidad','placeholder' => 'Seleccionar ...'],
-    //     'type' => DepDrop::TYPE_SELECT2,
-    //     'select2Options' => ['pluginOptions' => ['allowClear' => true]],
-    //     'pluginOptions' => [
-    //         'depends'=>['paciente-id_provincia'],
-    //         'url'=>Url::to(['/paciente/subcat']),
-    //         'placeholder'=>'Seleccionar localidad...',
-    //         'loadingText' => 'Cargando localidades ...',
-    //     ]
-    // ])->label('Localidad');
-
-      echo $form->field($model, 'id_localidad')->widget(DepDrop::classname(), [
+<?      echo $form->field($model, 'id_localidad')->widget(DepDrop::classname(), [
           'data'=> $localidades,
           'options'=>['id'=>'id_localidad'],
           'select2Options'=>['pluginOptions'=>['allowClear'=>true]],
@@ -177,7 +152,17 @@ use kartik\datecontrol\DateControl;
       </div>
     </div>
 </div>
+<div class="row">
+  <div class="form-row mt-4">
+      <div class="col-sm-5 pb-5">
+        <div class="nav navbar-left panel_toolbox">
+              <button type="button" class="btn btn-primary btn-xs" onclick="pucoAjax()" ><i
+                      class="glyphicon glyphicon-plus"></i>Consultar al PUCO</button>
+        </div>
+      </div>
 
+    </div>
+</div>
 
 <?
 echo '<label class="control-label">Obra social</label>';
@@ -231,3 +216,28 @@ echo Select2::widget([
 
 </div>
 </div>
+<script>
+  function pucoAjax(val) {
+      var textArea = document.getElementById('paciente-num_documento');
+
+      $.ajax({
+          url: '<?php echo Url::to(['/paciente/puco']) ?>',
+          type: 'get',
+          data: {
+              id: val
+          },
+          success: function(data) {
+              var current_value = textArea.value;
+              var content = JSON.parse(data);
+              if (current_value.trim() == "") {
+                  document.getElementById("biopsia-macroscopia").value = content[0].macroscopia;
+              } else {
+                  document.getElementById("biopsia-macroscopia").value = current_value + "\r\n" + content[0]
+                      .macroscopia;
+              }
+          }
+
+      });
+  }
+
+</script>

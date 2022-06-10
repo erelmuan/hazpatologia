@@ -32,6 +32,8 @@ AppAsset::register($this);
 
 </head>
 <body >
+  <link rel="shortcut icon" href="favicon.ico" />
+
 <?php $this->beginBody() ?>
 
 <div class="wrap">
