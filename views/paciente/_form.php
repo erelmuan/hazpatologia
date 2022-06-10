@@ -153,12 +153,13 @@ use kartik\datecontrol\DateControl;
     </div>
 </div>
 <div class="row">
-  <div class="form-row mt-4">
-      <div class="col-sm-5 pb-5">
+  <div class="form-row mt-8">
+      <div class="col-lg-9 pb-5">
         <div class="nav navbar-left panel_toolbox">
               <button type="button" class="btn btn-primary btn-xs" onclick="pucoAjax()" ><i
                       class="glyphicon glyphicon-plus"></i>Consultar al PUCO</button>
         </div>
+        <textarea id="resultadoPuco"  class="form-control" name="resultado"  cols="50" rows="4" style="resize: both;" placeholder="Resultado puco"></textarea>
       </div>
 
     </div>
@@ -216,25 +217,24 @@ echo Select2::widget([
 
 </div>
 </div>
-<script>
-  function pucoAjax(val) {
-      var textArea = document.getElementById('paciente-num_documento');
+<?= Html::jsFile('@web/js/biopsia.js'); ?>
 
+<script>
+  function pucoAjax() {
+      var dni_paciente = document.getElementById('paciente-num_documento').value;
+      document.getElementById("resultadoPuco").value ="";
+      document.getElementById("resultadoPuco").placeholder ="Espere, buscando en el puco";
       $.ajax({
-          url: '<?php echo Url::to(['/paciente/puco']) ?>',
-          type: 'get',
+        url: '<?php echo Url::to(['/paciente/puco']) ?>',
+          type: 'post',
           data: {
-              id: val
+              dni: dni_paciente
           },
           success: function(data) {
-              var current_value = textArea.value;
+              document.getElementById("resultadoPuco").value="";
               var content = JSON.parse(data);
-              if (current_value.trim() == "") {
-                  document.getElementById("biopsia-macroscopia").value = content[0].macroscopia;
-              } else {
-                  document.getElementById("biopsia-macroscopia").value = current_value + "\r\n" + content[0]
-                      .macroscopia;
-              }
+                  document.getElementById("resultadoPuco").value = content[0];
+
           }
 
       });

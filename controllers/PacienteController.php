@@ -263,43 +263,59 @@ class PacienteController extends Controller {
         }
     }
 
-    public function actionPuco($dni) {
+    public function actionPuco() {
 
-      $url = 'https://sisa.msal.gov.ar/sisa/services/rest/puco/'.$model->emdocume->emdcnumero;
+      if (Yii::$app->request->isAjax) {
+        $out = [];
+        if (isset($_POST['dni'])  && $_POST['dni'] !=="") {
+            $data = Yii::$app->request->post();
+            $dni= explode(":", $data['dni']);
+            $dni= $dni[0];
+            $url = 'https://sisa.msal.gov.ar/sisa/services/rest/puco/'.$dni;
 
-        $ch = curl_init( $url );
-        # Setup request to send json via POST.
-        $data = array(
-              'usuario' => Yii::$app->params['usuarioPuco'],
-              'clave' => Yii::$app->params['clavePuco']
-          );
-        $payload = json_encode($data );
-        curl_setopt( $ch, CURLOPT_POSTFIELDS, $payload );
-        curl_setopt( $ch, CURLOPT_HTTPHEADER, array('Content-Type:application/json'));
-        # Return response instead of printing.
-        curl_setopt( $ch, CURLOPT_RETURNTRANSFER, true);
-        # Send request.
+            $ch = curl_init( $url );
+            # Setup request to send json via POST.
+            $data = array(
+                  'usuario' => Yii::$app->params['usuarioPuco'],
+                  'clave' => Yii::$app->params['clavePuco']
+              );
+            $payload = json_encode($data );
+            curl_setopt( $ch, CURLOPT_POSTFIELDS, $payload );
+            curl_setopt( $ch, CURLOPT_HTTPHEADER, array('Content-Type:application/json'));
+            # Return response instead of printing.
+            curl_setopt( $ch, CURLOPT_RETURNTRANSFER, true);
+            # Send request.
 
-        $result = curl_exec($ch);
-        $oXML = new SimpleXMLElement($result);
-        curl_close($ch);
+            $result = curl_exec($ch);
+            $oXML = new \SimpleXMLElement($result);
+            curl_close($ch);
 
-        $items = "";
-        $cant=1;
-        $obrasoc=array();
-        foreach ($oXML->puco as $puco) {
-          if (!in_array(trim($puco[0]->coberturaSocial), $obrasoc)){
-              $obrasoc[$cant]=$puco[0]->coberturaSocial;
-            $items .="<b>Obra social </b>".$cant.": <br>";
-            $items .="Denominacion: ".$obrasoc[$cant]."<br>";
-            $cant ++;
+            $items = "";
+            $cant=1;
+            $obrasoc=array();
+            if ($oXML->resultado == "OK"){
+              foreach ($oXML->puco as $puco) {
+                if (!in_array(trim($puco[0]->coberturaSocial), $obrasoc)){
+                    $obrasoc[$cant]=$puco[0]->coberturaSocial;
+                  $items .="Obra social ".$cant.": ".$obrasoc[$cant]."\r\n";
+                  $cant ++;
+                }
+              }
+              $out = $items;
+            }else {
+              $out = $oXML->resultado;
+            }
+
+            echo Json::encode([$out]);
+            return;
+
+          }else {
+            $out = "No se completo el campo Nº doc.";
+            echo Json::encode([$out]);
+            return;
           }
         }
-        // return $items;
-
-        //fin
-        return $this->render('puco');
-    }
+      }
     /**
      * Finds the Paciente model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.

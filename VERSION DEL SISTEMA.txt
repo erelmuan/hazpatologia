@@ -1,3 +1,10 @@
+VERSIÓN 1.3.0
+Consulta obras sociales - favicon
+Se agrega la consulta al puco (obras sociales) en el formulario paciente.
+Incorporación de otro favicon (este cambio se hizo en el commit anterior)
+Se ignora el archivo params.php, debido a que se guardaran las credenciales para conectarse al PUCO
+
+
 VERSIÓN 1.2.1
 Vista carnet
 Se quita la opción editar de la vista carnet
