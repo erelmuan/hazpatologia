@@ -10,11 +10,12 @@ use Yii;
  * @property int $id
  * @property string $descripcion
  * @property string $modelo
+ * @property string $codigo
  *
  * @property Materialsolicitud[] $materialsolicituds
  * @property Plantilladiagnostico[] $plantilladiagnosticos
  * @property Plantillafrase[] $plantillafrases
- * @property Plantillamaterial[] $plantillamaterials
+ * @property Solicitud[] $solicituds
  */
  use app\components\behaviors\AuditoriaBehaviors;
 
@@ -43,7 +44,7 @@ class Estudio extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['descripcion', 'modelo'], 'string'],
+            [['descripcion', 'modelo', 'codigo'], 'string'],
         ];
     }
 
@@ -56,6 +57,7 @@ class Estudio extends \yii\db\ActiveRecord
             'id' => 'ID',
             'descripcion' => 'Descripcion',
             'modelo' => 'Modelo',
+             'codigo' => 'Codigo',
         ];
     }
 
@@ -82,12 +84,9 @@ class Estudio extends \yii\db\ActiveRecord
     {
         return $this->hasMany(Plantillafrase::className(), ['id_estudio' => 'id']);
     }
+    public function getSolicituds()
+ 		   {
+ 		       return $this->hasMany(Solicitud::className(), ['id_estudio' => 'id']);
+ 		   }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getPlantillamaterials()
-    {
-        return $this->hasMany(Plantillamaterial::className(), ['id_estudio' => 'id']);
-    }
 }

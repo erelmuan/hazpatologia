@@ -6,13 +6,14 @@ use yii\widgets\DetailView;
 /* @var $model app\models\Estudio */
 ?>
 <div class="estudio-view">
- 
+
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
             'id',
             'descripcion',
             'modelo',
+            'codigo', 
         ],
     ]) ?>
 

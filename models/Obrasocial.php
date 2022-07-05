@@ -11,15 +11,13 @@ use Yii;
  * @property string $sigla
  * @property string $denominacion
  * @property string $direccion
- * @property int $telefono
- * @property int $id_localidad
+ * @property string $telefono
  * @property string $paginaweb
  * @property string $observaciones
  * @property string $correoelectronico
+ * @property string $codigo
  * @property CarnetOs[] $carnetOs
- *
  * @property CarnetOs[] $carnetOs
- 		* @property Localidad $localidad
  		* @property Provincia $provincia
  		* @property Paciente[] $pacientes
  */
@@ -50,14 +48,14 @@ class Obrasocial extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['telefono', 'id_localidad'], 'default', 'value' => null],
-            [['telefono', 'id_localidad'], 'integer'],
-            [['observaciones', 'correoelectronico'], 'string'],
+            [['telefono'], 'default', 'value' => null],
+            [['telefono'], 'integer'],
+            [['observaciones', 'correoelectronico', 'codigo'], 'string'],
             [['sigla'], 'string', 'max' => 15],
             [['denominacion'], 'string', 'max' => 60],
             [['direccion'], 'string', 'max' => 70],
             [['paginaweb'], 'string', 'max' => 35],
-            [['id_localidad'], 'exist', 'skipOnError' => true, 'targetClass' => Localidad::className(), 'targetAttribute' => ['id_localidad' => 'id']],
+
         ];
     }
 
@@ -72,20 +70,13 @@ class Obrasocial extends \yii\db\ActiveRecord
             'denominacion' => 'Denominacion',
             'direccion' => 'Direccion',
             'telefono' => 'Telefono',
-            'id_localidad' => 'Id_localidad',
             'paginaweb' => 'Pagina web',
             'observaciones' => 'Observaciones',
             'correoelectronico' => 'Correo electronico',
+             'codigo' => 'Código',
         ];
     }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getLocalidad()
-    {
-        return $this->hasOne(Localidad::className(), ['id' => 'id_localidad']);
-    }
 
 
     /**

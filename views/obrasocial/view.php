@@ -15,13 +15,10 @@ use yii\widgets\DetailView;
             'denominacion',
             'direccion',
             'telefono',
-            [
-            'value'=> ($model->localidad)?$model->localidad->nombre:'No definido',
-            'label'=> 'Localidad',
-           ],
             'paginaweb',
             'correoelectronico',
             'observaciones:ntext',
+             'codigo',
 
         ],
     ]) ?>

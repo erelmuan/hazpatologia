@@ -30,14 +30,13 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'telefono')->textInput() ?>
 
-    <?= $form->field($model, 'id_localidad')->textInput() ?>
-
     <?= $form->field($model, 'paginaweb')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'correoelectronico')->textInput() ?>
 
     <?= $form->field($model, 'observaciones')->textarea(['rows' => 6]) ?>
 
+    <?= $form->field($model, 'codigo')->textInput() ?>
 
 
 	<?php if (!Yii::$app->request->isAjax){ ?>

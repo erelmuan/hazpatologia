@@ -19,7 +19,7 @@ class EstudioSearch extends Estudio
     {
         return [
             [['id'], 'integer'],
-            [['descripcion', 'modelo'], 'safe'],
+            [['descripcion', 'modelo', 'codigo'], 'safe'],
         ];
     }
 
@@ -59,8 +59,9 @@ class EstudioSearch extends Estudio
             'id' => $this->id,
         ]);
 
-        $query->andFilterWhere(['like', 'descripcion', $this->descripcion])
-            ->andFilterWhere(['like', 'modelo', $this->modelo]);
+        $query->andFilterWhere(['ilike', 'descripcion', $this->descripcion])
+              ->andFilterWhere(['ilike', 'modelo', $this->modelo])
+              ->andFilterWhere(['ilike', 'codigo', $this->codigo]);
 
         return $dataProvider;
     }
