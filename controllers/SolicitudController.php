@@ -17,6 +17,7 @@ use app\models\MedicoSearch;
 use app\models\Medico;
 use app\models\Pap;
 use app\models\AnioProtocolo;
+use app\models\CarnetOs;
 use app\components\Metodos\Metodos;
 use yii\data\ActiveDataProvider;
 use yii\helpers\Json;
@@ -379,5 +380,26 @@ class SolicitudController extends Controller {
             $solicitud = $this->findModel($id);
             return $this->render('documento', ['model' => $solicitud, 'edad' => $this->calcular_edad($solicitud->id) ]);
         }
+    }
+    public function actionFos($id, $id_carnet=null) {
+        $request = Yii::$app->request;
+
+        $model = $this->findModel($id);
+        if ($model->estudio->modelo == "pap") {
+            $modelsolicitud = Solicitudpap::find()->where(['and', 'id = ' . $id])->one();
+        }
+        if ($model->estudio->modelo == "biopsia") {
+            $modelsolicitud = Solicitudbiopsia::find()->where(['and', 'id = ' . $id])->one();
+        }
+        if ($request->isAjax) {
+            Yii::$app->response->format = Response::FORMAT_JSON;
+                return ['title' => "Obra Social - FOS", 'content' => $this->renderAjax('fosobrasocial', ['solicitud' => $modelsolicitud, 'edad' => $modelsolicitud::calcular_edad($modelsolicitud->id)]) , 'footer' => Html::button('Cerrar', ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"])  ];
+          }
+        if ($id_carnet !=null && $modelsolicitud->estado->descripcion ==="LISTO"){
+
+          $carnet= CarnetOs::findOne($id_carnet);
+          return $this->render('fos', ['solicitud' => $modelsolicitud, 'edad' => $modelsolicitud::calcular_edad($modelsolicitud->id),'carnet' =>$carnet ]);
+        }
+
     }
 }

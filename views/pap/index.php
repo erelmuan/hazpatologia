@@ -84,7 +84,15 @@ $columns[]=
         'urlCreator' => function($action, $model, $key, $index) {
             return Url::to([$action,'id'=>$key]);
         },
+        'template'=> '{fos}{view}{update}{delete}',
+        'buttons'=>[
+          'fos' => function ($url, $model, $key) {
+            return Html::a(
+              "<button class='btn-warning btn-circle'><b>F</b></button>", ['solicitud/fos', 'id' => $model->solicitudpap->id,'id_carnet' => null], ['data-pjax'=>"0",'role'=>'modal-remote','title'=>"O.S - FOS"]) ;
+            },
+        ],
         'updateOptions'=>['title'=>'Actualizar', 'data-toggle'=>'tooltip','icon'=>"<button class='btn-primary btn-circle'><span class='glyphicon glyphicon-pencil'></span></button>"],
+        'options' => ['style' => 'width:7%'],
 
         'visibleButtons'=>[
             'view'=> ['view'],

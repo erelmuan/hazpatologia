@@ -39,6 +39,8 @@ use app\models\Obrasocial;
 use app\models\Nacionalidad;
 use app\models\Tipodoc;
 use app\models\Estado;
+use app\models\Estudio;
+
 use app\components\Seguridad\Seguridad;
 class SiteController extends Controller {
     /**
@@ -84,7 +86,8 @@ class SiteController extends Controller {
         $cantidadPaps = Pap::find()->count();
         $cantidadProcedencia = Procedencia::find()->count();
         $cantidadMedicos = Medico::find()->count();
-        return $this->render('index', ['cantidadBiopsias' => $cantidadBiopsias, 'cantidadSolicitudes' => $cantidadSolicitudes, 'cantidadBiopsias' => $cantidadBiopsias, 'cantidadPacientes' => $cantidadPacientes, 'cantidadPaps' => $cantidadPaps, 'cantidadProcedencia' => $cantidadProcedencia, 'cantidadMedicos' => $cantidadMedicos, ]);
+
+        return $this->render('index', ['cantidadBiopsias' => $cantidadBiopsias, 'cantidadSolicitudes' => $cantidadSolicitudes, 'cantidadBiopsias' => $cantidadBiopsias, 'cantidadPacientes' => $cantidadPacientes, 'cantidadPaps' => $cantidadPaps, 'cantidadProcedencia' => $cantidadProcedencia, 'cantidadMedicos' => $cantidadMedicos ]);
     }
     /**
      * Login action.
@@ -175,7 +178,9 @@ class SiteController extends Controller {
         $cantidadNacionalidad = Nacionalidad::find()->count();
         $cantidadTipoDoc = Tipodoc::find()->count();
         $cantidadEstado = Estado::find()->count();
-        return $this->render('extras', ['cantidadProcedencia' => $cantidadProcedencia, 'cantidadProvincia' => $cantidadProvincia, 'cantidadLocalidad' => $cantidadLocalidad, 'cantidadTipoProfesional' => $cantidadTipoProfesional, 'cantidadObrasocial' => $cantidadObrasocial, 'cantidadNacionalidad' => $cantidadNacionalidad, 'cantidadTipoDoc' => $cantidadTipoDoc, 'cantidadEstado' => $cantidadEstado, ]);
+        $cantidadEstudios = Estudio::find()->count();
+
+        return $this->render('extras', ['cantidadProcedencia' => $cantidadProcedencia, 'cantidadProvincia' => $cantidadProvincia, 'cantidadLocalidad' => $cantidadLocalidad, 'cantidadTipoProfesional' => $cantidadTipoProfesional, 'cantidadObrasocial' => $cantidadObrasocial, 'cantidadNacionalidad' => $cantidadNacionalidad, 'cantidadTipoDoc' => $cantidadTipoDoc, 'cantidadEstado' => $cantidadEstado,'cantidadEstudios' =>$cantidadEstudios ]);
     }
     public function actionPlantillasbiopsias() {
         $cantidadPlantillaDiag = Plantilladiagnostico::find()->count();

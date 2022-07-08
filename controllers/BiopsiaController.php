@@ -11,6 +11,7 @@ use app\models\PlantillafraseSearch;
 use app\models\Usuario;
 use app\models\Inmunostoquimica;
 use app\models\Solicitudbiopsia;
+use app\models\CarnetOs;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -389,10 +390,24 @@ class BiopsiaController extends Controller {
             ->compose()
             ->attachContent($path, ['fileName' => 'Invoice #sdas.pdf', 'contentType' => 'application/pdf']);
     }
-    public function actionFos($id) {
+    public function actionFos($id_biopsia, $id_carnet=null) {
         $request = Yii::$app->request;
-        $biopsia = $this->findModel($id);
-        return $this->render('fos', ['model' => $biopsia, 'edad' => Solicitudbiopsia::calcular_edad($biopsia->id_solicitudbiopsia) ]);
+        $biopsia = $this->findModel($id_biopsia);
+        if ($request->isAjax) {
+            Yii::$app->response->format = Response::FORMAT_JSON;
+                return ['title' => "Obra Social - FOS", 'content' => $this->renderAjax('fosobrasocial', ['biopsia' => $biopsia, 'edad' => Solicitudbiopsia::calcular_edad($biopsia->id_solicitudbiopsia)]) , 'footer' => Html::button('Cerrar', ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"])  ];
+          }
+        if ($id_carnet !=null && $biopsia->firmado){
+
+          $carnet= CarnetOs::findOne($id_carnet);
+          return $this->render('fos', ['biopsia' => $biopsia, 'edad' => Solicitudbiopsia::calcular_edad($biopsia->id_solicitudbiopsia),'carnet' =>$carnet ]);
+        }
+
+    }
+
+    public function actionFosobrasocial() {
+        $request = Yii::$app->request;
+        return $this->render('fosobrasocial', ['biopsia' => $biopsia ]);
 
     }
 }

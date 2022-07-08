@@ -1,3 +1,11 @@
+VERSIÓN 1.4.0
+Implementación de planilla del fos
+Previamente se modifico la base de datos, añadiendo el atributo código al estudio y a las obras sociales.
+Se implementa planilla del fos en los estudios de pap y biopsia a los estudios que están en estado LISTO
+añadiendo para tal fin un botón,
+se incorporo el acceso a los registro ESTUDIOS en tablas extras
+
+
 VERSIÓN 1.3.0
 Consulta obras sociales - favicon
 Se agrega la consulta al puco (obras sociales) en el formulario paciente.

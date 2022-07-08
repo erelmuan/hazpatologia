@@ -133,8 +133,18 @@ $this->title = 'Extras';
           <div class="count"><?=$cantidadEstado ?></div>
           <h3>ESTADOS</h3>
           <p>Estados de los estudios y solicitudes.</p>
-
-
+      </div>
+    </div>
+    </a>
+  </a>
+    <a href=<?=Yii::$app->homeUrl."?r=estudio"; ?>>
+    <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
+      <div class="tile-stats">
+          <div class="icon"><i class="fa fa-dashboard"></i>
+          </div>
+          <div class="count"><?=$cantidadEstudios ?></div>
+          <h3>ESTUDIOS</h3>
+          <p>Estudios.</p>
       </div>
     </div>
     </a>
