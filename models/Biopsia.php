@@ -127,7 +127,7 @@ class Biopsia extends \yii\db\ActiveRecord
               'class'=>'\kartik\grid\DataColumn',
               'attribute'=>'paciente',
               'width' => '170px',
-              'value' => 'getLink',
+              'value' => 'solicitudbiopsia.pacienteurl',
                'filterInputOptions' => ['class' => 'form-control',  'placeholder' => 'DNI o apellido'],
                'format' => 'raw',
 
@@ -136,7 +136,7 @@ class Biopsia extends \yii\db\ActiveRecord
               'class'=>'\kartik\grid\DataColumn',
               'attribute'=>'medico',
               'width' => '185px',
-              'value' => 'getLinkdos',
+              'value' => 'solicitudbiopsia.medicourl',
                'filterInputOptions' => ['class' => 'form-control','placeholder' => 'matricula o apellido'],
                'format' => 'raw',
 

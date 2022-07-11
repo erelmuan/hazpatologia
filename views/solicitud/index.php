@@ -17,33 +17,7 @@ CrudAsset::register($this);
 // porque la clase anonima en el metodo attributeColumns de la clase Biopsia
 // arrojaba un error de serializacion
 
-$index=0;
-foreach ($columns as $key => $value) {
 
-    if (isset($value["value"])&& $value["value"]=="getLink"){
-      $columns[$index]["value"]=function($dataProvider, $key, $index, $widget) {
-
-          return Html::a( $dataProvider->paciente->apellido  .' '.$dataProvider->paciente->nombre,["paciente/view","id"=> $dataProvider->paciente->id]
-            ,[    'class' => 'text-success','role'=>'modal-remote','title'=>'Datos del paciente','data-toggle'=>'tooltip']
-
-           );
-
-         };
-
-    }
-    $index ++;
-}
-  $index=0;
-  foreach ($columns as $key => $value) {
-      if (isset($value["value"])&& $value["value"]=="getLinkdos"){
-        $columns[$index]["value"]=function($dataProvider, $key, $index, $widget) {
-          return Html::a( $dataProvider->medico->apellido  .' '.$dataProvider->medico->nombre,["medico/view","id"=> $dataProvider->medico->id]
-            ,[    'class' => 'text-success','role'=>'modal-remote','title'=>'Datos del medico','data-toggle'=>'tooltip']
-           );
-         };
-        }
-        $index ++;
-}
   $export= ExportMenu::widget([
     'exportConfig' => [
       ExportMenu::FORMAT_TEXT => false,
@@ -64,11 +38,6 @@ $columns[]=
         'class' => 'kartik\grid\ActionColumn',
         'dropdown' => false,
         'vAlign'=>'middle',
-        // 'urlCreator' => function($action, $model, $key, $index) {
-        //     return Url::to([$action,'id'=>$key]);
-        // },
-
-
             'buttons' => [
               'view' => function ($url, $model, $key) {
                 return Html::a("<button class='btn-success btn-circle'><span class='glyphicon glyphicon-eye-open'></span></button>", [$model::tableName().$model->estudio->modelo.'/view',"id"=> $key]

@@ -4,6 +4,7 @@ namespace app\models;
 use kartik\grid\GridView;
 use yii\helpers\ArrayHelper;
 use Yii;
+use yii\helpers\Html;
 
 /**
  * This is the model class for table "solicitud".
@@ -144,24 +145,18 @@ class Solicitud extends \yii\db\ActiveRecord
                 'class'=>'\kartik\grid\DataColumn',
                 'attribute'=>'paciente',
                 'width' => '170px',
-                'value' => 'getLink',
+                'value' => 'pacienteurl',
                  'filterInputOptions' => ['class' => 'form-control','placeholder' => 'Ingrese DNI o apellido'],
                  'format' => 'raw',
 
 
             ],
-        //   [
-        //       'class'=>'\kartik\grid\DataColumn',
-        //       'attribute'=>'procedencia',
-        //       'label'=> 'Procedencia',
-        //       'value'=>'procedencia.nombre'
-        //   ],
 
           [
               'class'=>'\kartik\grid\DataColumn',
               'attribute'=>'medico',
               'width' => '170px',
-              'value' => 'getLinkdos',
+              'value' => 'medicourl',
                'filterInputOptions' => ['class' => 'form-control','placeholder' => 'Ingrese DNI o apellido'],
                'format' => 'raw',
 
@@ -340,4 +335,15 @@ class Solicitud extends \yii\db\ActiveRecord
     public function getAnioProtocolo() {
   	    return $this->hasOne(AnioProtocolo::className(), ['id' => 'id_anio_protocolo']);
        }
+     public function getPacienteurl(){
+         return Html::a( $this->paciente->nombre .' '.$this->paciente->apellido,['paciente/view',"id"=> $this->paciente->id]
+           ,[    'class' => 'text-success','role'=>'modal-remote','title'=>'Datos del paciente','data-toggle'=>'tooltip']
+          );
+       }
+     public function getMedicourl(){
+         return Html::a( $this->medico->nombre.' '.$this->medico->apellido ,['medico/view',"id"=> $this->medico->id]
+           ,[    'class' => 'text-success','role'=>'modal-remote','title'=>'Datos del medico','data-toggle'=>'tooltip']
+          );
+       }
+
 }
