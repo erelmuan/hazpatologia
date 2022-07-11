@@ -1,3 +1,11 @@
+VERSIÓN 1.4.2
+correcion auditoria
+Se corrige la auditoria para que guarde los modelos que se describen con guion bajo _ , ejemplo carnet_os
+VERSIÓN 1.4.1
+Correccion-optimizacion ( realizado en el comiit anterior)
+
+Se corrige el acceso al fos para los usuarios que no tienen permiso administrador.
+se implementa una mejora en la visualizacion del paciente y medico en la grilla de biopsia, pap y solicitudes.
 VERSIÓN 1.4.0
 Implementación de planilla del fos
 Previamente se modifico la base de datos, añadiendo el atributo código al estudio y a las obras sociales.
