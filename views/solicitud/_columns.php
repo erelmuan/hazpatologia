@@ -26,11 +26,7 @@ return [
        'attribute'=>'fecharealizacion',
        'format' => ['date', 'd/M/Y'],
    ],
-    // [
-    //     'class'=>'\kartik\grid\DataColumn',
-    //     'attribute'=>'fechadeingreso',
-    //    'exportMenuStyle' => ['numberFormat' => ['formatCode' => 'DD-MM-YYYY']] // formats a date
-    // ],
+
     [
         'class'=>'\kartik\grid\DataColumn',
         'label'=>'Paciente',
@@ -39,7 +35,7 @@ return [
          }
          ,
     ],
-  
+
 
     [
         'class'=>'\kartik\grid\DataColumn',
@@ -56,19 +52,6 @@ return [
          }
          ,
     ],
-    // [
-        // 'class'=>'\kartik\grid\DataColumn',
-        // 'attribute'=>'idplantillamaterialb',
-    // ],
-    // [
-        // 'class'=>'\kartik\grid\DataColumn',
-        // 'attribute'=>'fecharealizacion',
-    // ],
-
-    // [
-        // 'class'=>'\kartik\grid\DataColumn',
-        // 'attribute'=>'estudio',
-    // ],
 
     [
         'class'=>'\kartik\grid\DataColumn',
@@ -85,6 +68,14 @@ return [
         'attribute' => 'estado',
         'label' => 'Estado',
         'value' => 'estado.descripcion',
+    ],
+    [
+        'class'=>'\kartik\grid\DataColumn',
+        'attribute'=>'edad',
+        'value'=>function($model) {
+          return $model->calcular_edad(); },
+        'label'=> 'Edad al momento del estudio(años)',
+
     ],
     [
         'class' => 'kartik\grid\ActionColumn',

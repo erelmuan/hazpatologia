@@ -30,34 +30,26 @@ class SolicitudController extends Controller {
     public function actionIndex() {
         $model = new Solicitud();
         $searchModel = new SolicitudSearch();
-        $dataProvider = $searchModel->search(Yii::$app
-            ->request
-            ->queryParams);
-        $dataProvider
-            ->pagination->pageSize = 7;
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $dataProvider->pagination->pageSize = 7;
         $columnas = Metodos::obtenerColumnas($model);
         return $this->render('index', ['searchModel' => $searchModel, 'dataProvider' => $dataProvider, 'columns' => $columnas, ]);
     }
     public function actionSeleccionar() {
         $searchModel = $this->returnModelSearch();
         //En el modelo de solicitude de pap y biopsias solo busca la solicitudes que no tienen informes asociados
-        $dataProvider = $searchModel->search(Yii::$app
-            ->request
-            ->queryParams);
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         if (isset($_POST['idsol'])) {
             if ($_POST['idsol'] == '') {
                 $this->setearMensajeError('DEBE ELEGIR UNA OPCION');
                 return $this->redirect(['/' . $searchModel->tableName() . '/seleccionar']);
             }
             else {
-                $data = Yii::$app
-                    ->request
-                    ->post();
+                $data = Yii::$app->request->post();
                 $id = explode(":", $data['idsol']);
                 $id = $id[0];
                 $model = $this->findModel($id);
-                $modelestudio = $model
-                    ->estudio->modelo;
+                $modelestudio = $model->estudio->modelo;
                 //En caso que esten trabajando en forma concurrente, valida la apropiacin de la solicitud
                 //es decir si alguien hizo uso de la misma, otro no pueda reutilizarla
                 if ($model->$modelestudio !== null) {
@@ -71,23 +63,7 @@ class SolicitudController extends Controller {
         }
         return $this->render('/solicitud/seleccionar', ['searchModel' => $searchModel, 'dataProvider' => $dataProvider, ]);
     }
-    function calcular_edad($id) {
-        $Solicitud = Solicitud::findOne($id);
-        list($ano, $mes, $dia) = explode("-", $Solicitud
-            ->paciente
-            ->fecha_nacimiento);
-        list($anoR, $mesR, $diaR) = explode("-", $Solicitud->fechadeingreso);
-        $ano_diferencia = $anoR - $ano;
-        $mes_diferencia = $mesR - $mes;
-        $dia_diferencia = $diaR - $dia;
-        if ($mes_diferencia < 0) {
-            $ano_diferencia--;
-        }
-        elseif ($mes_diferencia == 0) {
-            if ($dia_diferencia < 0) $ano_diferencia--;
-        }
-        return $ano_diferencia;
-    }
+
     /**
      * Displays a single Solicitud model.
      * @param integer $id
@@ -96,27 +72,14 @@ class SolicitudController extends Controller {
     public function actionView($id) {
         $model = $this->findModel($id);
         $request = Yii::$app->request;
-        //Esto lo agregue el viernes 28 antes de ir a lo de mama :P
-        //esto se deberia corregir ya que no deberia acceder al modelo
-        //sino que desde el controlador de biopsia deberia hacer esta accion
-        //ESTE COMENTARIO ES POSTERIOR AL ESCRITO EN MINUSCULA, EN REALIDAD
-        //DEBERIA CREAR UN METODO EN BIOPSIAS E INVOCARLO DESDE EL MODELO
-        $edad = $this->calcular_edad($id);
         if ($request->isAjax) {
-            Yii::$app
-                ->response->format = Response::FORMAT_JSON;
+            Yii::$app->response->format = Response::FORMAT_JSON;
             return ['title' => "SOLICITUD " . $model
-                ->estudio->descripcion . " #" . $id, 'content' => $this->renderAjax('view', ['model' => $model, 'edad' => $edad,
-            //Esto lo agregue el viernes 28 antes de ir a lo de mama :P
-            //ESTO LO COMENTO UN 27 DE OCTUBRE DEL 2019
-            //ESTA MAL EL ID, TIENE QUE SER EL ID DE BIOPSIA NO DE Solicitud
-            //'idbiopsia'=>$id
-            //Esto lo modifico despues del partido de river q perdio con flamenco
-            ]) , 'footer' => Html::button('Cerrar', ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) ];
+                ->estudio->descripcion . " #" . $id, 'content' => $this->renderAjax('view', ['model' => $model ]) ,
+                'footer' => Html::button('Cerrar', ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) ];
         }
         else {
-            // return $this->render('viewV', [
-            return $this->render('view', ['model' => $model, 'edad' => $edad, ]);
+            return $this->render('view', ['model' => $model ]);
         }
     }
     public function validar($fecha) {
@@ -140,38 +103,25 @@ class SolicitudController extends Controller {
      * @return mixed
      */
     public function actionCreate() {
-        if (Yii::$app
-            ->user
-            ->identity->id_pantalla == 1) { //Principal
+        if (Yii::$app->user->identity->id_pantalla == 1) { //Principal
             $this->layout = 'main3';
         }
         $request = Yii::$app->request;
         $model = $this->returnModel();
-        // $model = new Solicitud();
         ////////////PACIENTE/////////////////
         $modelPac = new Paciente();
         $searchModelPac = new PacienteSearch();
-        $dataProviderPac = $searchModelPac->search(Yii::$app
-            ->request
-            ->queryParams);
-        $dataProviderPac
-            ->pagination->pageSize = 7;
+        $dataProviderPac = $searchModelPac->search(Yii::$app->request->queryParams);
+        $dataProviderPac->pagination->pageSize = 7;
         ////////////MEDICO/////////////////
         $modelMed = new Medico();
         $searchModelMed = new MedicoSearch();
-        $dataProviderMed = $searchModelMed->search(Yii::$app
-            ->request
-            ->queryParams);
-        $dataProviderMed
-            ->pagination->pageSize = 7;
+        $dataProviderMed = $searchModelMed->search(Yii::$app->request->queryParams);
+        $dataProviderMed->pagination->pageSize = 7;
         /*
          *   Process for non-ajax request
         */
-        //  $pacientemodel= new Paciente();
-        //  $dataProviderPac = $searchModelPac->search(Yii::$app->request->queryParams);
-        if ($this
-            ->request
-            ->isPost) {
+        if ($this->request->isPost) {
             //Si no valida
             if (!$this->validar($_POST[$model->classNameM() ]["fechadeingreso"])) {
                 return $this->redirect([$model->tableName() . "/create"]);
@@ -205,37 +155,26 @@ class SolicitudController extends Controller {
      * @return mixed
      */
     public function actionUpdate($id) {
-        if (Yii::$app
-            ->user
-            ->identity->id_pantalla == 1) { //Principal
+        if (Yii::$app->user->identity->id_pantalla == 1) { //Principal
             $this->layout = 'main3';
         }
         $request = Yii::$app->request;
         $model = $this->findModel($id);
-        $modelestudio = $model
-            ->estudio->modelo;
+        $modelestudio = $model->estudio->modelo;
         ////////////PACIENTE/////////////////
         $modelPac = new Paciente();
         $searchModelPac = new PacienteSearch();
-        $dataProviderPac = $searchModelPac->search(Yii::$app
-            ->request
-            ->queryParams);
-        $dataProviderPac
-            ->pagination->pageSize = 7;
+        $dataProviderPac = $searchModelPac->search(Yii::$app->request->queryParams);
+        $dataProviderPac->pagination->pageSize = 7;
         ////////////MEDICO/////////////////
         $modelMed = new Medico();
         $searchModelMed = new MedicoSearch();
-        $dataProviderMed = $searchModelMed->search(Yii::$app
-            ->request
-            ->queryParams);
-        $dataProviderMed
-            ->pagination->pageSize = 7;
+        $dataProviderMed = $searchModelMed->search(Yii::$app->request->queryParams);
+        $dataProviderMed->pagination->pageSize = 7;
         /*
          *   Process for non-ajax request
         */
-        if ($this
-            ->request
-            ->isPost) {
+        if ($this->request->isPost) {
             if (!$this->validar($_POST[$model->classNameM() ]["fechadeingreso"])) {
                 return $this->render('_form', ['model' => $model, 'searchModelPac' => $searchModelPac, 'dataProviderPac' => $dataProviderPac, 'modelPac' => $modelPac, 'searchModelMed' => $searchModelMed, 'dataProviderMed' => $dataProviderMed, 'modelMed' => $modelMed, ]);
             }
@@ -263,8 +202,7 @@ class SolicitudController extends Controller {
         $request = Yii::$app->request;
         $model = new Solicitud();
         if ($request->isAjax) {
-            Yii::$app
-                ->response->format = Response::FORMAT_JSON;
+            Yii::$app->response->format = Response::FORMAT_JSON;
             if (isset($_POST['seleccion'])) {
                 // recibo datos de lo seleccionado, reconstruyo columnas
                 $seleccion = $_POST['seleccion'];
@@ -322,20 +260,18 @@ class SolicitudController extends Controller {
         }
     }
     public function actionDelete($id) {
-        Yii::$app
-            ->response->format = Response::FORMAT_JSON;
+        Yii::$app->response->format = Response::FORMAT_JSON;
         $modelbiopsia = Biopsia::find()->where(['and', 'biopsia.id_solicitudbiopsia = ' . $id])->one();
         $modelpap = Pap::find()->where(['and', 'pap.id_solicitudpap = ' . $id])->one();
         if (isset($modelbiopsia) || isset($modelpap)) {
             return ['title' => "Eliminar solicitud  #" . $id, 'content' => "No se puede eliminar la solicitud porque tiene un informe asociado", 'footer' => Html::button('Cerrar', ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) ];
         }
         $model = $this->findModel($id);
-        if ($model
-            ->estudio->modelo == "pap") {
+        //Para que se refleje en la auditoria que tipo de solicitud se elimina
+        if ($model->estudio->modelo == "pap") {
             $modelsolicitud = Solicitudpap::find()->where(['and', 'id = ' . $id])->one();
         }
-        if ($model
-            ->estudio->modelo == "biopsia") {
+        if ($model->estudio->modelo == "biopsia") {
             $modelsolicitud = Solicitudbiopsia::find()->where(['and', 'id = ' . $id])->one();
         }
         $request = Yii::$app->request;
@@ -349,8 +285,7 @@ class SolicitudController extends Controller {
                 }
             }
             catch(yii\db\Exception $e) {
-                Yii::$app
-                    ->response->format = Response::FORMAT_HTML;
+                Yii::$app->response->format = Response::FORMAT_HTML;
                 throw new NotFoundHttpException('Error en la base de datos. La solicitud esta asociada a un estudio', 500);
             }
         }
@@ -378,7 +313,7 @@ class SolicitudController extends Controller {
         else {
             //Esto es correcto?? revisar el id
             $solicitud = $this->findModel($id);
-            return $this->render('documento', ['model' => $solicitud, 'edad' => $this->calcular_edad($solicitud->id) ]);
+            return $this->render('documento', ['model' => $solicitud ]);
         }
     }
     public function actionFos($id, $id_carnet=null) {
@@ -393,12 +328,12 @@ class SolicitudController extends Controller {
         }
         if ($request->isAjax) {
             Yii::$app->response->format = Response::FORMAT_JSON;
-                return ['title' => "Obra Social - FOS", 'content' => $this->renderAjax('fosobrasocial', ['solicitud' => $modelsolicitud, 'edad' => $modelsolicitud::calcular_edad($modelsolicitud->id)]) , 'footer' => Html::button('Cerrar', ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"])  ];
+                return ['title' => "Obra Social - FOS", 'content' => $this->renderAjax('fosobrasocial', ['solicitud' => $modelsolicitud, ]) , 'footer' => Html::button('Cerrar', ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"])  ];
           }
         if ($id_carnet !=null && $modelsolicitud->estado->descripcion ==="LISTO"){
 
           $carnet= CarnetOs::findOne($id_carnet);
-          return $this->render('fos', ['solicitud' => $modelsolicitud, 'edad' => $modelsolicitud::calcular_edad($modelsolicitud->id),'carnet' =>$carnet ]);
+          return $this->render('fos', ['solicitud' => $modelsolicitud, 'carnet' =>$carnet ]);
         }
 
     }

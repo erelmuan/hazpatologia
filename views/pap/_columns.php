@@ -85,42 +85,7 @@ return [
         'class'=>'\kartik\grid\DataColumn',
         'attribute'=>'calificacion',
     ],
-    // [
-        // 'class'=>'\kartik\grid\DataColumn',
-        // 'attribute'=>'indicepicnotico',
-    // ],
-    // [
-        // 'class'=>'\kartik\grid\DataColumn',
-        // 'attribute'=>'indicedemaduracion',
-    // ],
-    // [
-        // 'class'=>'\kartik\grid\DataColumn',
-        // 'attribute'=>'plegamiento',
-    // ],
-    // [
-        // 'class'=>'\kartik\grid\DataColumn',
-        // 'attribute'=>'agrupamiento',
-    // ],
-    // [
-        // 'class'=>'\kartik\grid\DataColumn',
-        // 'attribute'=>'leucocitos',
-    // ],
-    // [
-        // 'class'=>'\kartik\grid\DataColumn',
-        // 'attribute'=>'hematies',
-    // ],
-    // [
-        // 'class'=>'\kartik\grid\DataColumn',
-        // 'attribute'=>'histiocitos',
-    // ],
-    // [
-        // 'class'=>'\kartik\grid\DataColumn',
-        // 'attribute'=>'detritus',
-    // ],
-    // [
-        // 'class'=>'\kartik\grid\DataColumn',
-        // 'attribute'=>'citolisis',
-    // ],
+  
     [
         'class'=>'\kartik\grid\DataColumn',
         'attribute'=>'flora',
@@ -162,10 +127,14 @@ return [
          'format' => ['date', 'd/M/Y'],
      ],
 
-    // [
-        // 'class'=>'\kartik\grid\DataColumn',
-        // 'attribute'=>'observacion',
-    // ],
+    [
+        'class'=>'\kartik\grid\DataColumn',
+        'attribute'=>'edad',
+        'value'=>function($model) {
+          return $model->solicitudpap->calcular_edad(); },
+        'label'=> 'Edad al momento del estudio(años)',
+
+    ],
 
 
 ];

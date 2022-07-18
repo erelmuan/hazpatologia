@@ -35,10 +35,10 @@ $form = ActiveForm::begin(['options'=>['enctype'=>'multipart/form-data'],'type'=
          'columns'=>5,
          'attributes'=>[
          'Paciente'=>['label'=> "Paciente" ,'options'=>['value'=>$model->biopsia->solicitudbiopsia->paciente->apellido." ". $model->biopsia->solicitudbiopsia->paciente->nombre ,'readonly'=> true ,'url' => '#' ],'columnOptions'=>['class'=>'col-lg-3',],],
-           'DNI'=>['label'=>'DNI', 'options'=>['value'=>$model->biopsia->solicitudbiopsia->paciente->num_documento, 'placeholder'=>'Edad...','readonly'=> true],'columnOptions'=>['class'=>'col-sm-2']],
+           'DNI'=>['label'=>'DNI', 'options'=>['value'=>$model->biopsia->solicitudbiopsia->paciente->num_documento, 'placeholder'=>'documento...','readonly'=> true],'columnOptions'=>['class'=>'col-sm-2']],
            'Fecha_nacimiento'=>['label'=>'Fecha de nac.', 'options'=>['value'=> date("d/m/Y",strtotime("'".$model->biopsia->solicitudbiopsia->paciente->fecha_nacimiento."'")), 'placeholder'=>'Fecha de nacimiento...','readonly'=> true],'columnOptions'=>['class'=>'col-sm-2']],
 
-           'Edad'=>['label'=>'Edad', 'options'=>['value'=>$edadDelPaciente, 'placeholder'=>'Edad...','readonly'=> true],'columnOptions'=>['class'=>'col-sm-1']],
+           'Edad'=>['label'=>'Edad', 'options'=>['value'=>$model->biopsia->solicitudbiopsia->calcular_edad(),  'placeholder'=>'Edad...','readonly'=> true],'columnOptions'=>['class'=>'col-sm-1']],
 
         ]
     ]);

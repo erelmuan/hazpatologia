@@ -8,8 +8,7 @@ use yii\helpers\Html;
 <div class="inmunohistoquimica-update">
 
     <?= $this->render('_form', [
-        'model' => $model,
-        'edadDelPaciente'=>$edadDelPaciente
-    ]) ?>
+        'model' => $model
+        ]) ?>
 
 </div>

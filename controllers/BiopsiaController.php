@@ -32,11 +32,8 @@ class BiopsiaController extends Controller {
     public function actionIndex() {
         $model = new Biopsia();
         $searchModel = new BiopsiaSearch();
-        $dataProvider = $searchModel->search(Yii::$app
-            ->request
-            ->queryParams);
-        $dataProvider
-            ->pagination->pageSize = 7;
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $dataProvider->pagination->pageSize = 7;
         $columnas = Metodos::obtenerColumnas($model);
         return $this->render('index', ['searchModel' => $searchModel, 'dataProvider' => $dataProvider, 'columns' => $columnas, ]);
     }
@@ -48,14 +45,12 @@ class BiopsiaController extends Controller {
     public function actionView($id) {
         $request = Yii::$app->request;
         $biopsia = $this->findModel($id);
-        $edad = Solicitudbiopsia::calcular_edad($biopsia->id_solicitudbiopsia);
         if ($request->isAjax) {
-            Yii::$app
-                ->response->format = Response::FORMAT_JSON;
-            return ['title' => "Biopsia #" . $id, 'content' => $this->renderAjax('view', ['model' => $this->findModel($id) , 'edad' => $edad, ]) , 'footer' => Html::button('Cerrar', ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) ];
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            return ['title' => "Biopsia #" . $id, 'content' => $this->renderAjax('view', ['model' => $this->findModel($id)  ]) , 'footer' => Html::button('Cerrar', ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) ];
         }
         else {
-            return $this->render('viewV', ['model' => $this->findModel($id) , 'edad' => $edad, ]);
+            return $this->render('viewV', ['model' => $this->findModel($id)  ]);
         }
     }
     public function cargarEstructuras(&$search, &$array, &$provider, $id_estudio) {
@@ -63,33 +58,24 @@ class BiopsiaController extends Controller {
         ////////////Material/////////////////
         $searchModelMat = new PlantillamaterialSearch();
         $arraymaterial = $searchModelMat::find()->all();
-        $dataProviderMat = $searchModelMat->search(Yii::$app
-            ->request
-            ->queryParams);
-        $dataProviderMat
-            ->pagination->pageSize = 7;
+        $dataProviderMat = $searchModelMat->search(Yii::$app->request->queryParams);
+        $dataProviderMat->pagination->pageSize = 7;
         $search['searchModelMat'] = $searchModelMat;
         $array['arraymaterial'] = $arraymaterial;
         $provider['dataProviderMat'] = $dataProviderMat;
         ////////////Macroscopia/////////////////
         $searchModelMac = new PlantillamacroscopiaSearch();
         $arraymacroscopia = $searchModelMac::find()->all();
-        $dataProviderMac = $searchModelMac->search(Yii::$app
-            ->request
-            ->queryParams);
-        $dataProviderMac
-            ->pagination->pageSize = 7;
+        $dataProviderMac = $searchModelMac->search(Yii::$app->request->queryParams);
+        $dataProviderMac->pagination->pageSize = 7;
         $search['searchModelMac'] = $searchModelMac;
         $array['arraymacroscopia'] = $arraymacroscopia;
         $provider['dataProviderMac'] = $dataProviderMac;
         ////////////Microscopia/////////////////
         $searchModelMic = new PlantillamicroscopiaSearch();
         $arraymicroscopia = $searchModelMic::find()->all();
-        $dataProviderMic = $searchModelMic->search(Yii::$app
-            ->request
-            ->queryParams);
-        $dataProviderMic
-            ->pagination->pageSize = 7;
+        $dataProviderMic = $searchModelMic->search(Yii::$app->request->queryParams);
+        $dataProviderMic->pagination->pageSize = 7;
         $search['searchModelMic'] = $searchModelMic;
         $array['arraymicroscopia'] = $arraymicroscopia;
         $provider['dataProviderMic'] = $dataProviderMic;
@@ -97,10 +83,8 @@ class BiopsiaController extends Controller {
         $searchModelDiag = new PlantilladiagnosticoSearch();
         //id_estudio=2 es del estudio biopsia
         $arraydiagnostico = $searchModelDiag::find()->where(['id_estudio' => $id_estudio])->all();
-        $dataProviderDiag = $searchModelDiag->search(Yii::$app
-            ->request->queryParams, $id_estudio);
-        $dataProviderDiag
-            ->pagination->pageSize = 7;
+        $dataProviderDiag = $searchModelDiag->search(Yii::$app->request->queryParams, $id_estudio);
+        $dataProviderDiag->pagination->pageSize = 7;
         $search['searchModelDiag'] = $searchModelDiag;
         $array['arraydiagnostico'] = $arraydiagnostico;
         $provider['dataProviderDiag'] = $dataProviderDiag;
@@ -108,13 +92,23 @@ class BiopsiaController extends Controller {
         $searchModelFra = new PlantillafraseSearch();
         //id_estudio=2 es del estudio biopsia
         $arrayfrase = $searchModelFra::find()->where(['id_estudio' => $id_estudio])->all();
-        $dataProviderFra = $searchModelFra->search(Yii::$app
-            ->request->queryParams, $id_estudio);
-        $dataProviderFra
-            ->pagination->pageSize = 7;
+        $dataProviderFra = $searchModelFra->search(Yii::$app->request->queryParams, $id_estudio);
+        $dataProviderFra->pagination->pageSize = 7;
         $search['searchModelFra'] = $searchModelFra;
         $array['arrayfrase'] = $arrayfrase;
         $provider['dataProviderFra'] = $dataProviderFra;
+    }
+    public function validar($post) {
+        if (Yii::$app->user->identity->password <> md5($post['contrasenia'])) {
+            Yii::$app->getSession()->setFlash('warning', ['type' => 'danger', 'duration' => 5000, 'icon' => 'fa fa-warning', 'message' => "CONTRASEÑA INCORRECTA", 'title' => 'NOTIFICACIÓN', 'positonY' => 'top', 'positonX' => 'right']);
+            return false;
+        }
+        if ($post['Biopsia']['firmado'] !== "1") {
+            Yii::$app->getSession()->setFlash('warning', ['type' => 'danger', 'duration' => 5000, 'icon' => 'fa fa-warning', 'message' => "EN ESTADO LISTO, DEBE POSEER LA FIRMA", 'title' => 'NOTIFICACIÓN', 'positonY' => 'top', 'positonX' => 'right']);
+        }
+        else {
+            return true;
+        }
     }
     /**
      * Creates a new Biopsia model.
@@ -125,77 +119,41 @@ class BiopsiaController extends Controller {
     public function actionCreate() {
         $request = Yii::$app->request;
         $post = $request->post();
-        $modelUsuario = Usuario::find()->where(["id" => Yii::$app
-            ->user
-            ->identity
-            ->getId() ])
-            ->one();
         $model = new Biopsia();
-        // Obtengo la solicitud para mostrar los datos en la creacion de la bipsia
-        if (isset($_GET['idsol']) && $_GET['idsol'] != '') {
-            $Solicitud = Solicitudbiopsia::findOne($_GET['idsol']);
-            $_SESSION['solicitudb'] = $Solicitud;
-        }
-        $search = [];
-        $array = [];
-        $provider = [];
-        $this->cargarEstructuras($search, $array, $provider, $_SESSION['solicitudb']->id_estudio);
+        $Solicitud = Solicitudbiopsia::findOne($_GET['idsol']);
+        $search = [];  $array = [];  $provider = [];
+        $this->cargarEstructuras($search, $array, $provider, $Solicitud->id_estudio);
         if (isset($post['Biopsia']['id_estado']) && $post['Biopsia']['id_estado'] != 2) {
             unset($post['Biopsia']['firmado']);
         }
         if (Usuario::isPatologo() && isset($post['Biopsia']['id_estado']) && $post['Biopsia']['id_estado'] == 2) {
-            $model->load($post);
-            //validar contraseñar
-            if ($post['Biopsia']['firmado'] !== "1") {
-                $model->id_estado = 5;
-                Yii::$app->getSession()
-                    ->setFlash('warning', ['type' => 'danger', 'duration' => 5000, 'icon' => 'fa fa-warning', 'message' => "EN ESTADO LISTO, DEBE POSEER LA FIRMA", 'title' => 'NOTIFICACIÓN', 'positonY' => 'top', 'positonX' => 'right']);
+            if (!$this->validar($post)) {
                 unset($post['Biopsia']['id_estado']);
-                return $this->render('_form', ['model' => $model, 'dataSol' => $_SESSION['solicitudb'], 'search' => $search, 'array' => $array, 'provider' => $provider, 'edadDelPaciente' => Solicitudbiopsia::calcular_edad($_SESSION['solicitudb']->id) , ]);
+                $model->load($post);
+                return $this->render('_form', ['model' => $model, 'solicitud' => $Solicitud, 'search' => $search, 'array' => $array, 'provider' => $provider ]);
             }
-            if (!$this->validarContraseña($_POST["contrasenia"])) {
-                $model->id_estado = 5;
-                return $this->render('_form', ['model' => $model, 'dataSol' => $_SESSION['solicitudb'], 'search' => $search, 'array' => $array, 'provider' => $provider, 'edadDelPaciente' => Solicitudbiopsia::calcular_edad($_SESSION['solicitudb']->id) , ]);
-            }
-            //fecha cuando esta listo el informe de la biopsia
             $model->fechalisto = date("Y-m-d  H:i:s");
-            $model->id_usuario = $modelUsuario->id;
-            $Solicitud = Solicitudbiopsia::findOne($model->id_solicitudbiopsia);
-            $Solicitud->id_estado = $model->id_estado;
-            $Solicitud->save();
+            $model->id_usuario = Yii::$app->user->identity->getId();
         }
         if ($model->load($post) && $model->save()) {
-            // Estado EN PROCESO
-            if ($model->id_estado == 1) {
+            // cambio de estados
+            if ($Solicitud->id_estado !== $model->id_estado) {
                 $Solicitud->id_estado = $model->id_estado;
                 $Solicitud->save();
             }
-            //si tiene inmunohistoquimica se creara el estudio
             if ($model->ihq) {
                 return $this->redirect(['inmunohistoquimica-escaneada/create', 'id_biopsia' => $model->id]);
             }
             return $this->redirect(['view', 'id' => $model->id]);
         }
         else {
-            $edad = Solicitudbiopsia::calcular_edad($_SESSION['solicitudb']->id);
-            return $this->render('_form', ['model' => $model, 'search' => $search, 'array' => $array, 'provider' => $provider, 'dataSol' => $_SESSION['solicitudb'], 'edadDelPaciente' => $edad, ]);
+            return $this->render('_form', ['model' => $model, 'search' => $search, 'array' => $array, 'provider' => $provider, 'solicitud' => $Solicitud]);
         }
     }
-    public function validarContraseña($contrasenia) {
-        $modelUsuario = Usuario::find()->where(["id" => Yii::$app
-            ->user
-            ->identity
-            ->getId() ])
-            ->one();
-        if ($modelUsuario->contrasenia <> md5($contrasenia)) {
-            Yii::$app->getSession()
-                ->setFlash('warning', ['type' => 'danger', 'duration' => 5000, 'icon' => 'fa fa-warning', 'message' => "CONTRASEÑA INCORRECTA", 'title' => 'NOTIFICACIÓN', 'positonY' => 'top', 'positonX' => 'right']);
-            return false;
-        }
-        else {
-            return true;
-        }
-    }
+
+
+
+
     /**
      * Updates an existing Biopsia model.
      * For ajax request will return json object
@@ -207,51 +165,30 @@ class BiopsiaController extends Controller {
         $request = Yii::$app->request;
         $model = $this->findModel($id);
         $post = $request->post();
-        $search = [];
-        $array = [];
-        $provider = [];
-        $modelUsuario = Usuario::find()->where(["id" => Yii::$app
-            ->user
-            ->identity
-            ->getId() ])
-            ->one();
-        $this->cargarEstructuras($search, $array, $provider, $model
-            ->solicitudbiopsia
-            ->estudio
-            ->id);
-            //Se agrego la validacion !Usuario::isPatologo(), para que aunque se edite el html el diagnostico sea cambiado solo por el patologo
-        if ($model->estado->descripcion == 'LISTO' && !Usuario::isPatologo()) {
-            unset($post['Biopsia']['diagnostico']);
-        }
+        $search = [];  $array = [];  $provider = [];
+        $this->cargarEstructuras($search, $array, $provider, $model->solicitudbiopsia->estudio->id);
         if (isset($post['Biopsia']['id_estado']) && $post['Biopsia']['id_estado'] != 2) {
             unset($post['Biopsia']['firmado']);
         }
         //si esta el estudio  en estado listo, ['Biopsia']['id_estado'] no estara definido por lo tanto no entra al if
         if (Usuario::isPatologo() && isset($post['Biopsia']['id_estado']) && $post['Biopsia']['id_estado'] == 2) {
-            if (!$this->validarContraseña($_POST["contrasenia"])) {
+            if (!$this->validar($post)) {
                 unset($post['Biopsia']['id_estado']);
                 $model->load($post);
-                return $this->render('_form', ['model' => $model, 'dataSol' => $_SESSION['solicitudb'], 'search' => $search, 'array' => $array, 'provider' => $provider, 'edadDelPaciente' => Solicitudbiopsia::calcular_edad($_SESSION['solicitudb']->id) , ]);
+                return $this->render('_form', ['model' => $model, 'solicitud' => $model->solicitudbiopsia, 'search' => $search, 'array' => $array, 'provider' => $provider ]);
             }
-            if ($post['Biopsia']['firmado'] !== "1") {
-                Yii::$app->getSession()
-                    ->setFlash('warning', ['type' => 'danger', 'duration' => 5000, 'icon' => 'fa fa-warning', 'message' => "EN ESTADO LISTO, DEBE POSEER LA FIRMA", 'title' => 'NOTIFICACIÓN', 'positonY' => 'top', 'positonX' => 'right']);
-                unset($post['Biopsia']['id_estado']);
-                $model->load($post);
-                return $this->render('_form', ['model' => $model, 'dataSol' => $_SESSION['solicitudb'], 'search' => $search, 'array' => $array, 'provider' => $provider, 'edadDelPaciente' => Solicitudbiopsia::calcular_edad($_SESSION['solicitudb']->id) , ]);
-            }
-            $Solicitud = Solicitudbiopsia::findOne($model->id_solicitudbiopsia);
-            //puede pasar a estado en proceso
-            $Solicitud->id_estado = $post['Biopsia']['id_estado'];
-            $Solicitud->save();
             //fecha cuando esta listo el informe de la biopsia
             $model->fechalisto = date("Y-m-d  H:i:s");
-            $model->id_usuario = $modelUsuario->id;
+            $model->id_usuario = Yii::$app->user->identity->getId();
         }
         if ($model->load($post) && $model->save()) {
+          // cambio de estados
+            if ($model->solicitudbiopsia->id_estado !== $model->id_estado) {
+                $model->solicitudbiopsia->id_estado = $model->id_estado;
+                $model->solicitudbiopsia->save();
+            }
             if ($model->ihq && isset($model->inmunohistoquimicaEscaneada)) {
-                return $this->redirect(['inmunohistoquimica-escaneada/update', 'id' => $model
-                    ->inmunohistoquimicaEscaneada->id]);
+                return $this->redirect(['inmunohistoquimica-escaneada/update', 'id' => $model->inmunohistoquimicaEscaneada->id]);
             }
             elseif ($model->ihq) {
                 return $this->redirect(['inmunohistoquimica-escaneada/create', 'id_biopsia' => $model->id]);
@@ -259,10 +196,7 @@ class BiopsiaController extends Controller {
             return $this->redirect(['view', 'id' => $model->id]);
         }
         else {
-            if (isset($_GET['idsol']) && $_GET['idsol'] != '') $Solicitud = Solicitudbiopsia::findOne($_GET['idsol']);
-            else $Solicitud = Solicitudbiopsia::findOne($model->id_solicitudbiopsia);
-            $_SESSION['solicitudb'] = $Solicitud;
-            return $this->render('_form', ['model' => $model, 'dataSol' => $_SESSION['solicitudb'], 'search' => $search, 'array' => $array, 'provider' => $provider, 'edadDelPaciente' => Solicitudbiopsia::calcular_edad($_SESSION['solicitudb']->id) , ]);
+            return $this->render('_form', ['model' => $model, 'solicitud' =>$model->solicitudbiopsia, 'search' => $search, 'array' => $array, 'provider' => $provider ]);
         }
     }
     /**
@@ -273,22 +207,16 @@ class BiopsiaController extends Controller {
      * @return mixed
      */
     public function actionDelete($id) {
-        Yii::$app
-            ->response->format = Response::FORMAT_JSON;
+        Yii::$app->response->format = Response::FORMAT_JSON;
         $model = $this->findModel($id);
         if ($model->estado->descripcion == 'LISTO') {
             return ['title' => "Eliminar informe Biopsia #" . $id, 'content' => "No se puede eliminar informe en estado listo", 'footer' => Html::button('Cerrar', ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) ];
         }
         $request = Yii::$app->request;
-        $clonedModel = clone $model->solicitudbiopsia;
-        $solicitud = $model->solicitudbiopsia;
-        $solicitud->id_estado = 5; //Vuelve al estado PENDIENTE
-        $solicitud->save();
-        AuditoriaBehaviors::actualizarEstadosolicitud($clonedModel, $solicitud, "solicitudbiopsia");
+        $model->solicitudbiopsia->id_estado=5;//Vuelve al estado PENDIENTE
+        $model->solicitudbiopsia->save();
         if (isset($model->inmunohistoquimicaEscaneada)) {
-            $model
-                ->inmunohistoquimicaEscaneada
-                ->delete();
+            $model->inmunohistoquimicaEscaneada->delete();
         }
         $model->delete();
         if ($request->isAjax) {
@@ -371,13 +299,12 @@ class BiopsiaController extends Controller {
         // Si entra en el if es porque el estudio esta en estado EN_PROCESO
         //Ver el view de biopsia donde se accde al informe
         if ($request->isAjax) {
-            Yii::$app
-                ->response->format = Response::FORMAT_JSON;
+            Yii::$app->response->format = Response::FORMAT_JSON;
             return ['forceReload' => '#crud-datatable-pjax', 'title' => "AVISO!", 'content' => 'EL SIGUIENTE DOCUMENTO TIENE UN ESTADO <b>EN PROCESO</b> (NO ESTA VERIFICADO) CONFIRME SI DESEA GENERAR EL DOCUMENTO', 'footer' => Html::button('Cerrar', ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) . Html::a('<i class="fa glyphicon glyphicon-hand-up"></i> Confirmar', ['/biopsia/informe', 'id' => $id], ['class' => 'btn btn-primary', 'data-toggle' => 'tooltip', 'target' => '_blank', 'title' => 'Se abrirá el archivo PDF generado en una nueva ventana']) ];
         }
         else {
             $biopsia = $this->findModel($id);
-            return $this->render('informePatologia', ['model' => $biopsia, 'edad' => Solicitudbiopsia::calcular_edad($biopsia->id_solicitudbiopsia) ]);
+            return $this->render('informePatologia', ['model' => $biopsia ]);
         }
     }
     public function actionEnviarcorreo($id) {
@@ -385,29 +312,7 @@ class BiopsiaController extends Controller {
         // $mpdf->WriteHTML($this->renderPartial('pdf',['model' => $model])); //pdf is a name of view file responsible for this pdf document
         // $path = $mpdf->Output('', 'S');
         $path = $this->actionInforme($id);
-        Yii::$app
-            ->mailer
-            ->compose()
-            ->attachContent($path, ['fileName' => 'Invoice #sdas.pdf', 'contentType' => 'application/pdf']);
-    }
-    public function actionFos($id_biopsia, $id_carnet=null) {
-        $request = Yii::$app->request;
-        $biopsia = $this->findModel($id_biopsia);
-        if ($request->isAjax) {
-            Yii::$app->response->format = Response::FORMAT_JSON;
-                return ['title' => "Obra Social - FOS", 'content' => $this->renderAjax('fosobrasocial', ['biopsia' => $biopsia, 'edad' => Solicitudbiopsia::calcular_edad($biopsia->id_solicitudbiopsia)]) , 'footer' => Html::button('Cerrar', ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"])  ];
-          }
-        if ($id_carnet !=null && $biopsia->firmado){
-
-          $carnet= CarnetOs::findOne($id_carnet);
-          return $this->render('fos', ['biopsia' => $biopsia, 'edad' => Solicitudbiopsia::calcular_edad($biopsia->id_solicitudbiopsia),'carnet' =>$carnet ]);
-        }
-
+        Yii::$app->mailer->compose()->attachContent($path, ['fileName' => 'Invoice #sdas.pdf', 'contentType' => 'application/pdf']);
     }
 
-    public function actionFosobrasocial() {
-        $request = Yii::$app->request;
-        return $this->render('fosobrasocial', ['biopsia' => $biopsia ]);
-
-    }
 }

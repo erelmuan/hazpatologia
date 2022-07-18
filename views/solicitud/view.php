@@ -16,7 +16,7 @@ use yii\helpers\Html;
            'label'=> 'Paciente',
         ],
         [
-          'value'=> $edad,
+          'value'=> $model->calcular_edad(),
           'label'=> 'Edad del paciente (años)',
        ],
         [

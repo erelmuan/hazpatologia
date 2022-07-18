@@ -19,7 +19,7 @@ use yii\helpers\Html;
                'label'=> 'Paciente',
             ],
             [
-              'value'=> $edad,
+              'value'=>$model->solicitudpap->calcular_edad(),
               'label'=> 'Edad del paciente (años)',
            ],
            [
@@ -40,21 +40,11 @@ use yii\helpers\Html;
           'value'=> $model->solicitudpap->procedencia->nombre ,
           'label'=> 'Procedencia',
        ],
-            // 'eosinofilas',
-             // 'cianofilas',
-             // 'intermedias',
-             // 'parabasales',
 
             [
               'value'=> $model->indicepicnotico ,
               'label'=> 'Indice picnotico',
            ],
-          //  [
-          //    'value'=> $model->indicedemaduracion ,
-          //    'label'=> 'Indice de maduracion',
-          // ],
-            // 'plegamiento',
-            // 'agrupamiento',
             'leucocitos',
             'hematies',
             'histiocitos',

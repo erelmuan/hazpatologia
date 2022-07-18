@@ -1,3 +1,12 @@
+VERSIÓN 1.5.1
+refactorizacion
+Se refactoriza el metodo create y update de biopsia y pap,
+Quite el metodo actualizarestadosolicitud , se refactorizo el metodo eliminar
+No se dispone mas del edad como variable, sino que se encuentra como metodo en la solicitud, esto impactara en todos las vistas (view, fos)
+Se quita los atributos comentados en pap _columns.php
+Se elimina seleccionarp y seleccionarmod, createres
+
+
 VERSIÓN 1.4.2
 correcion auditoria
 Se corrige la auditoria para que guarde los modelos que se describen con guion bajo _ , ejemplo carnet_os

@@ -15,37 +15,7 @@ $this->title = 'Solicitudes de biopsias';
 $this->params['breadcrumbs'][] = $this->title;
 
 CrudAsset::register($this);
-// Reemplazo la columna donde el valor es getlink por la funcion anonima, este artilugio es necesario
-// porque la clase anonima en el metodo attributeColumns de la clase Biopsia
-// arrojaba un error de serializacion
 
-$index=0;
-foreach ($columns as $key => $value) {
-
-    if (isset($value["value"])&& $value["value"]=="getLink"){
-      $columns[$index]["value"]=function($dataProvider, $key, $index, $widget) {
-
-          return Html::a( $dataProvider->paciente->apellido  .' '.$dataProvider->paciente->nombre,["paciente/view","id"=> $dataProvider->paciente->id]
-            ,[    'class' => 'text-success','role'=>'modal-remote','title'=>'Datos del paciente','data-toggle'=>'tooltip']
-
-           );
-
-         };
-
-    }
-    $index ++;
-}
-  $index=0;
-  foreach ($columns as $key => $value) {
-      if (isset($value["value"])&& $value["value"]=="getLinkdos"){
-        $columns[$index]["value"]=function($dataProvider, $key, $index, $widget) {
-          return Html::a( $dataProvider->medico->apellido  .' '.$dataProvider->medico->nombre,["medico/view","id"=> $dataProvider->medico->id]
-            ,[    'class' => 'text-success','role'=>'modal-remote','title'=>'Datos del medico','data-toggle'=>'tooltip']
-           );
-         };
-        }
-        $index ++;
-}
   $export= ExportMenu::widget([
     'exportConfig' => [
       ExportMenu::FORMAT_TEXT => false,

@@ -135,42 +135,6 @@ class AuditoriaBehaviors extends Behavior
         $this->_oldattributes=$value;
     }
 
-    public function actualizarEstadosolicitud($cloneModel ,$model ,$tabla){
-
-      $log=new Auditoria();
-      $log->id_usuario= Yii::$app->user->identity->id_user;
-      $log->accion= "MODIFICACIÓN";
-      $log->tabla=  $tabla;
-      $log->fecha= date("d/m/Y");
-      $log->hora= date("H:i:s");
-      $log->ip=  $_SERVER['REMOTE_ADDR'];
-      $log->informacion_usuario= $_SERVER['HTTP_USER_AGENT'];
-      $log->registro= $model->id;
-
-        // new attributes
-          $newattributes = $model->getAttributes();
-          $oldattributes = $cloneModel->getOldAttributes();
-        // compare old and new
-         $changes="";
-         foreach ($newattributes as $name => $value) {
-            if (!empty($oldattributes)) {
-                $old = $oldattributes[$name];
-                } else {
-                      $old = '';
-                }
-                if ($value != $old) {
-                   $changes = $changes .$name .' (Antes)='.$old.'</br>'.$name.' (Después)='. $value.'</br>';
-                  }
-          }
-
-        $registro=  Html::a( "Ver", [$tabla."/view","id"=>  $model->getPrimaryKey()]
-
-            ,[    'class' => 'text-success','title'=>'Datos', 'target'=>'_blank','data-toggle'=>'tooltip' ]
-           ).'</br>';
-
-      $log->cambios= "Registro modificado: " .$registro.$changes;
-
-      $log->save();
-    }
+  
 }
 ?>

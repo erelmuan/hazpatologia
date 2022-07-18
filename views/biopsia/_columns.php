@@ -114,5 +114,13 @@ return [
         'attribute'=>'fechalisto',
         'format' => ['date', 'd/M/Y'],
     ],
+    [
+        'class'=>'\kartik\grid\DataColumn',
+        'attribute'=>'edad',
+        'value'=>function($model) {
+          return $model->solicitudbiopsia->calcular_edad(); },
+        'label'=> 'Edad al momento del estudio(años)',
+
+    ]
 
 ];

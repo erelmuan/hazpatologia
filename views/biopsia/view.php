@@ -21,7 +21,7 @@ use yii\helpers\Html;
           'label'=> 'Paciente',
        ],
        [
-         'value'=> $edad,
+         'value'=>$model->solicitudbiopsia->calcular_edad(),
          'label'=> 'Edad del paciente (años)',
       ],
       [

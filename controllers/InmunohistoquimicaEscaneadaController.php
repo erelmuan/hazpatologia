@@ -98,15 +98,11 @@ class InmunohistoquimicaEscaneadaController extends Controller {
                     return $this->redirect(['biopsia/view', 'id' => $model->id_biopsia]);
                 }
                 else {
-                    return $this->render('create', ['model' => $model, 'edadDelPaciente' => Solicitud::calcular_edad($model
-                        ->biopsia
-                        ->id_solicitudbiopsia) ]);
+                    return $this->render('create', ['model' => $model]);
                 }
             }
             else {
-                return $this->render('create', ['model' => $model, 'edadDelPaciente' => Solicitud::calcular_edad($model
-                    ->biopsia
-                    ->id_solicitudbiopsia) ]);
+                return $this->render('create', ['model' => $model ]);
             }
         }
     }
@@ -148,16 +144,12 @@ class InmunohistoquimicaEscaneadaController extends Controller {
                     return $this->redirect(['biopsia/view', 'id' => $model->id_biopsia]);
                 }
                 else {
-                    return $this->render('update', ['model' => $model, 'edadDelPaciente' => Solicitud::calcular_edad($model
-                        ->biopsia
-                        ->id_solicitudbiopsia) ]);
+                    return $this->render('update', ['model' => $model ]);
                 }
             }
         }
         else {
-            return $this->render('update', ['model' => $model, 'edadDelPaciente' => Solicitud::calcular_edad($model
-                ->biopsia
-                ->id_solicitudbiopsia) ]);
+            return $this->render('update', ['model' => $model]);
         }
     }
     public function actionInforme($id) {

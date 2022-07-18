@@ -9,7 +9,6 @@ use yii\helpers\Html;
 ?>
 <div class="inmunohistoquimica-escaneada-create">
   <?= $this->render('_form', [
-      'model' => $model,
-      'edadDelPaciente'=>$edadDelPaciente
+      'model' => $model
   ]) ?>
 </div>

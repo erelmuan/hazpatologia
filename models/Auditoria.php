@@ -29,7 +29,7 @@ class Auditoria extends \yii\db\ActiveRecord {
      */
     public function rules() {
         return [[['id_usuario', 'registro'], 'default', 'value' => null],
-        [['id_usuario', 'registro'], 'integer'], [['fecha'], 'safe'],
+        [['id_usuario','registro'], 'integer'], [['fecha'], 'safe'],
         [['hora', 'informacion_usuario', 'cambios', 'accion'], 'string'],
         [['tabla'], 'string', 'max' => 50], [['ip'], 'string', 'max' => 15],
         [['id_usuario'], 'exist', 'skipOnError' => true, 'targetClass' => Usuario::className() , 'targetAttribute' => ['id_usuario' => 'id']], ];

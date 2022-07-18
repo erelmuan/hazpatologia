@@ -273,22 +273,7 @@ class Solicitud extends \yii\db\ActiveRecord
         return $protocolo+ 1;
 
     }
-    // public function estados() {
-    //     //PATRON STATE;
-    //     if (!isset ($this->estado)){
-    //       //Estado pendiente por defecto
-    //         $this->id_estado=5;
-    //     }
-    //     $namespace="app\models\\";
-    //     if ($this->estado->descripcion=="EN PROCESO"){
-    //       $e= $namespace."EN_PROCESO";
-    //
-    //     }else {
-    //       $e= $namespace.$this->estado->descripcion;
-    //     }
-    //     $estado= new $e();
-    //     return $estado->estadosSolicitud();
-    // }
+
 
     public function idEstudio(){
         $estudio=Estudio::find()->where(['modelo'=>$this->modelo()])->all();
@@ -309,13 +294,9 @@ class Solicitud extends \yii\db\ActiveRecord
          }
     }
     //la fecha tiene que estar en formato d-m-y
-    function calcular_edad($id){
-
-        $solicitud =  Solicitud::findOne($id);
-        list($ano,$mes,$dia) = explode("-",$solicitud->paciente->fecha_nacimiento);
-        list($anoR,$mesR,$diaR) = explode("-",$solicitud->fechadeingreso);
-
-
+    function calcular_edad(){
+        list($ano,$mes,$dia) = explode("-",$this->paciente->fecha_nacimiento);
+        list($anoR,$mesR,$diaR) = explode("-",$this->fechadeingreso);
         $ano_diferencia  = $anoR - $ano;
         $mes_diferencia = $mesR - $mes;
         $dia_diferencia   = $diaR - $dia;

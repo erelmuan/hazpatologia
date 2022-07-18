@@ -139,7 +139,7 @@ $pdf->Text(43,$Inicio ,utf8_decode($model->solicitudpap->procedencia->nombre));
 $pdf->SetFont('Times','B',10);
 $pdf->Text(120,$Inicio,"EDAD:");
 $pdf->SetFont('Times','',10);
- $pdf->Text(133,$Inicio,$edad);
+ $pdf->Text(133,$Inicio,$model->solicitudpap->calcular_edad());
 //////////////////////////////
 
 

@@ -44,13 +44,10 @@ $export= ExportMenu::widget([
         ],
         [
             'class'=>'\kartik\grid\DataColumn',
-            'attribute'=>'usuario.usuario',
+            'attribute'=>'usuario',
             'width' => '170px',
-            'value' => function($dataProvider, $key, $index, $widget) {
-                $key = str_replace("[","",$key);
-                $key = str_replace("]","",$key);
-                //var_dump ($key);
-              return Html::a( $dataProvider->usuario->usuario, ['usuario/view',"id"=> $dataProvider->usuario->id]
+            'value' => function($model) {
+              return Html::a( $model->usuario->usuario, ['usuario/view',"id"=> $model->usuario->id]
 
                 ,[    'class' => 'text-success','role'=>'modal-remote','title'=>'Datos del paciente','data-toggle'=>'tooltip']
                );
@@ -58,7 +55,7 @@ $export= ExportMenu::widget([
              }
              ,
 
-             'filterInputOptions' => ['placeholder' => 'Ingrese Dni,HC o nombre'],
+             'filterInputOptions' => [ 'class' => 'form-control','placeholder' => 'Nombre de usuario'],
              'format' => 'raw',
         ],
         [

@@ -12,6 +12,8 @@ use app\models\Auditoria;
  */
 class AuditoriaSearch extends Auditoria
 {
+  public $usuario;
+
     /**
      * @inheritdoc
      */
@@ -19,7 +21,7 @@ class AuditoriaSearch extends Auditoria
     {
         return [
             [['id', 'id_usuario'], 'integer'],
-            [[ 'tabla','accion', 'fecha', 'hora', 'ip', 'informacion_usuario', 'cambios'], 'safe'],
+            [['usuario' ,'tabla','accion', 'fecha', 'hora', 'ip', 'informacion_usuario', 'cambios'], 'safe'],
         ];
     }
 
@@ -41,7 +43,8 @@ class AuditoriaSearch extends Auditoria
      */
     public function search($params)
     {
-        $query = Auditoria::find()->orderBy(['id'=>SORT_DESC]);
+        $query = Auditoria::find()->innerJoinWith('usuario', true)
+        ->orderBy(['id'=>SORT_DESC]);
 
 
         $dataProvider = new ActiveDataProvider([
@@ -58,7 +61,6 @@ class AuditoriaSearch extends Auditoria
 
         $query->andFilterWhere([
             'id' => $this->id,
-            'id_usuario' => $this->id_usuario,
             'fecha' => $this->fecha,
             'hora' => $this->hora,
         ]);
@@ -66,6 +68,7 @@ class AuditoriaSearch extends Auditoria
         $query->andFilterWhere(['ilike', 'accion', $this->accion])
             ->andFilterWhere(['ilike', 'tabla', $this->tabla])
             ->andFilterWhere(['ilike', 'ip', $this->ip])
+            ->andFilterWhere(['ilike', 'usuario', $this->usuario])
             ->andFilterWhere(['ilike', 'informacion_usuario', $this->informacion_usuario])
             ->andFilterWhere(['ilike', 'cambios', $this->cambios]);
 

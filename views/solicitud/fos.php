@@ -118,7 +118,7 @@ if($solicitud->paciente->sexo =="F"){
 }
 
 $pdf->SetFont('Arial','B',10);
-$pdf->Cell(21,7.5,$edad,1,1,'C');
+$pdf->Cell(21,7.5,$solicitud->calcular_edad(),1,1,'C');
 $pdf->SetFont('Arial','B',8);
 $pdf->Cell(205,3.5,'','LBR',1,'C');
 $pdf->Cell(187,6,utf8_decode('TIPO DE ATENCIÓN.'),'LB',0,'C');

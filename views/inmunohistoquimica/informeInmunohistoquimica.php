@@ -128,7 +128,7 @@ $pdf->Text(30,$Inicio ,$model->biopsia->solicitudbiopsia->medico->nombre.' '.$mo
 $pdf->SetFont('Times','B',10);
 $pdf->Text(120,$Inicio,"EDAD:");
 $pdf->SetFont('Times','',10);
- $pdf->Text(133,$Inicio,$edad);
+ $pdf->Text(133,$Inicio,$model->biopsia->solicitudbiopsia->calcular_edad());
 
 $Inicio=$Inicio +8;
 $pdf->SetFont('Times','B',10);
