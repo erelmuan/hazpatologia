@@ -1,3 +1,8 @@
+VERSIÓN 1.5.2
+Informe titulo
+
+se agrega el titulo a los informes de estudios
+
 VERSIÓN 1.5.1
 refactorizacion
 Se refactoriza el metodo create y update de biopsia y pap,

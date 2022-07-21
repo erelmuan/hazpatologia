@@ -66,8 +66,8 @@ $bundle = yiister\gentelella\assets\Asset::register($this);
       }
 
      </style>
+     <?=$this->registerLinkTag(['rel' => 'icon', 'type' => 'image/ico', 'href' => 'favicon.ico']); ?>
 </head>
-    <link rel="shortcut icon" href="favicon.ico" />
 <body class="nav-<?= !empty($_COOKIE['menuIsCollapsed']) && $_COOKIE['menuIsCollapsed'] == 'true' ? 'sm' : 'md' ?>" >
 
 
@@ -82,7 +82,7 @@ $bundle = yiister\gentelella\assets\Asset::register($this);
             <div class="left_col scroll-view">
 
                 <div class="navbar nav_title" style="border: 0;">
-                    <center class="site_title"><i class="fa fa-flask"></i> <span>hazpatologia</span> </center><center id="version" style="color:white; font-size: 10px;"> <b>Version: 1.5.1 </b></center>
+                    <center class="site_title"><i class="fa fa-flask"></i> <span>hazpatologia</span> </center><center id="version" style="color:white; font-size: 10px;"> <b>Version: 1.5.2 </b></center>
                 </div>
                 <div class="clearfix"></div>
 

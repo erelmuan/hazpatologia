@@ -5,7 +5,7 @@ $db = require __DIR__ . '/db.php';
 
 $config = [
     'id' => 'basic',
-    'name' => 'HAZ QUIROFANO',
+    'name' => 'HAZ PATOLOGIA',
     // set source language to be English
     'sourceLanguage' => 'en-US',
     'language' => 'es-ES',
@@ -71,7 +71,7 @@ $config = [
         //             'class' => 'Swift_SmtpTransport',
         //             'host' => 'smtp.gmail.com',
         //             'username' => 'eliasrelmuan',
-        //             'password' => 'daiana25',
+        //             'password' => '',
         //             'port' => '587',
         //             'encryption' => 'tls',
         //                         ],

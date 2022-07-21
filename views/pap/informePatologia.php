@@ -27,6 +27,8 @@ public function setEstado($e){
 // Cabecera de página
 function Header()
 {
+  $this->SetTitle('Informe pap');
+
    ///////////////////MARCA DE AGUA//////////////////////
    if ($this->estado =='EN PROCESO'){
     $this->SetFont('Arial','B',50);

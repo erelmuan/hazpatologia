@@ -1,8 +1,6 @@
 
 <?
-//$path1 = Yii::getAlias("@vendor/setasign/fpdf/fpdf.php");
 $path2 = Yii::getAlias("@vendor/setasign/fpdf/rotation.php");
-
 //require_once($path1);
 require_once($path2);
 
@@ -28,6 +26,7 @@ public function setEstado($e){
 // Cabecera de página
 function Header()
 {
+  $this->SetTitle('Informe biopsia');
     ///////////////////MARCA DE AGUA//////////////////////
       if ($this->estado =='EN PROCESO'){
         $this->SetFont('Arial','B',50);
@@ -211,6 +210,7 @@ $color = array(0,0,0);
 
 $pdf->Output("I","BIOPSIA --- ".utf8_decode($model->solicitudbiopsia->paciente->apellido." ". $model->solicitudbiopsia->paciente->nombre).".pdf");
 // $pdf->Output("F","BIOPSIA --- ".utf8_decode($model->solicitudbiopsia->paciente->apellido." ". $model->solicitudbiopsia->paciente->nombre));
+
 
 
 exit;
