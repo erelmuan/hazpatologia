@@ -59,9 +59,9 @@ class BiopsiaSearch extends Biopsia
     public function search($params)
     {
         $query = Biopsia::find()->innerJoinWith('solicitudbiopsia', true)
-        ->leftJoin('paciente', 'paciente.id = solicitudbiopsia.id_paciente')
-      ->leftJoin('procedencia', 'procedencia.id = solicitudbiopsia.id_procedencia')
-      ->leftJoin('medico', 'medico.id = solicitudbiopsia.id_medico')
+      ->innerJoin('paciente', 'paciente.id = solicitudbiopsia.id_paciente')
+      ->innerJoin('procedencia', 'procedencia.id = solicitudbiopsia.id_procedencia')
+      ->innerJoin('medico', 'medico.id = solicitudbiopsia.id_medico')
       ->innerJoinWith('estado', 'estado.id = biopsia.id_estado');
         $dataProvider = new ActiveDataProvider([
             'query' => $query,

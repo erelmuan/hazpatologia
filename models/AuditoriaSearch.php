@@ -13,6 +13,7 @@ use app\models\Auditoria;
 class AuditoriaSearch extends Auditoria
 {
   public $usuario;
+  public $registro;
 
     /**
      * @inheritdoc
@@ -21,7 +22,7 @@ class AuditoriaSearch extends Auditoria
     {
         return [
             [['id', 'id_usuario'], 'integer'],
-            [['usuario' ,'tabla','accion', 'fecha', 'hora', 'ip', 'informacion_usuario', 'cambios'], 'safe'],
+            [['usuario' ,'tabla','accion','registro', 'fecha', 'hora', 'ip', 'informacion_usuario', 'cambios'], 'safe'],
         ];
     }
 
@@ -60,8 +61,9 @@ class AuditoriaSearch extends Auditoria
         }
 
         $query->andFilterWhere([
-            'id' => $this->id,
+            'auditoria.id' => $this->id,
             'fecha' => $this->fecha,
+            'registro' => $this->registro,
             'hora' => $this->hora,
         ]);
 

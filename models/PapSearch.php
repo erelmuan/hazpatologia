@@ -60,9 +60,9 @@ class PapSearch extends Pap
     public function search($params)
     {
         $query = Pap::find()->innerJoinWith('solicitudpap', true)
-       ->leftJoin('paciente', 'paciente.id = solicitudpap.id_paciente')
-       ->leftJoin('medico', 'medico.id = solicitudpap.id_medico')
-      ->leftJoin('procedencia', 'procedencia.id = solicitudpap.id_procedencia')
+       ->innerJoin('paciente', 'paciente.id = solicitudpap.id_paciente')
+       ->innerJoin('medico', 'medico.id = solicitudpap.id_medico')
+      ->innerJoin('procedencia', 'procedencia.id = solicitudpap.id_procedencia')
       ->innerJoinWith('estado', 'estado.id = pap.id_estado');
 
        $dataProvider = new ActiveDataProvider([
