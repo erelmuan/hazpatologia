@@ -4,7 +4,7 @@ use yii\helpers\Html;
 return [
         [
         'class'=>'\kartik\grid\DataColumn',
-        'attribute'=>'biopsia.id',
+        'attribute'=>'id',
     ],
     [
         'attribute' => 'protocolo',

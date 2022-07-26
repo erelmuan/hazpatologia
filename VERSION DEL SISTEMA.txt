@@ -1,3 +1,13 @@
+VERSIÓN 1.5.4
+correccion de columna- se agrega numero de version
+Se corrige columnas de biopsias , se incorpora nueva version.
+
+VERSIÓN 1.5.3
+Obtencion de registros - join
+
+Se modifica la obtencion de registro, reemplazando la sentencia left join, por inner join, no produciria ningun cambio significativo pero es la manera correcta de obtener los datos. se agrega en auditoria la posibilidad de buscar por registro.
+
+se agrega el titulo a los informes de estudios
 VERSIÓN 1.5.2
 Informe titulo
 
