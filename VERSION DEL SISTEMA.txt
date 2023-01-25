@@ -1,3 +1,7 @@
+
+VERSIÓN 1.6.2
+Se corrige columna de codigo cie 10 en el modelo de planilla de diagnostico, cambiando cie10 por Cie10
+
 VERSIÓN 1.6.1
 - Se incorpora la codificacion cie 10 en las planillas de diagnosticos, junto con el campo id cie 10 en los estudios
 - Se crea una tabla cie 10 , modificaion de las tablas de pap y biopsia junto con la tabla planilladiagnostico.

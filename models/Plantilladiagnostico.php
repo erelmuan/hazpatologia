@@ -16,7 +16,7 @@ use Yii;
  * @property Biopsia[] $biopsias
  * @property Pap[] $paps
  * @property Estudio $estudio
- * @property cie10 $cie10
+ * @property Cie10 $cie10
  */
  use app\components\behaviors\AuditoriaBehaviors;
 
@@ -50,7 +50,7 @@ class Plantilladiagnostico extends \yii\db\ActiveRecord
             [['id_estudio', 'id_cie10'], 'default', 'value' => null],
             [['id_estudio', 'id_cie10'], 'integer'],
             [['codigo'], 'string', 'max' => 18],
-            [['id_cie10'], 'exist', 'skipOnError' => true, 'targetClass' => cie10::className(), 'targetAttribute' => ['id_cie10' => 'id']],
+            [['id_cie10'], 'exist', 'skipOnError' => true, 'targetClass' => Cie10::className(), 'targetAttribute' => ['id_cie10' => 'id']],
             [['id_estudio'], 'exist', 'skipOnError' => true, 'targetClass' => Estudio::className(), 'targetAttribute' => ['id_estudio' => 'id']],
         ];
     }
@@ -74,10 +74,10 @@ class Plantilladiagnostico extends \yii\db\ActiveRecord
  		*/
     public function getcie10()
       {
-        return $this->hasOne(cie10::className(), ['id' => 'id_cie10']);
+        return $this->hasOne(Cie10::className(), ['id' => 'id_cie10']);
      }
      public function getcie10s() {
-         return ArrayHelper::map(cie10::find()->all(), 'id','descripcion','codigo');
+         return ArrayHelper::map(Cie10::find()->all(), 'id','descripcion','codigo');
      }
     /**
      * @return \yii\db\ActiveQuery
