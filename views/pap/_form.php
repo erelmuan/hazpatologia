@@ -9,17 +9,6 @@ use johnitvn\ajaxcrud\CrudAsset;
 use johnitvn\ajaxcrud\BulkButtonWidget;
 ///////////////////
 use yii\helpers\ArrayHelper;
-use app\models\Plantillatopografia;
-use app\models\Plantilladiagnostico;
-use app\models\Plantillamicroscopia;
-use app\models\Plantillamacroscopia;
-use app\models\Plantillamaterialb;
-use app\models\Plantillafrase;
-use app\models\Procedencias;
-use app\models\Plantillaflora;
-use app\models\Plantillaaspecto;
-use app\models\Plantillapavimentosa;
-use app\models\Plantillaglandular;
 use kartik\widgets\DatePicker;
 use kartik\select2\Select2;
 use kartik\widgets\TypeaheadBasic;
@@ -121,7 +110,6 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
 
                 <?
                 echo Form::widget([ // fields with labels
-                  //  'contentBefore'=>'<legend class="text-info"><small>Datos del paciente</small></legend>',
                     'model'=>$model,
                     'form'=>$form,
                      'columns'=>4,
@@ -169,7 +157,8 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
                 class="glyphicon glyphicon-minus"></i></button>
         <?
       }
-        $mapFlora= ArrayHelper::map(plantillaflora::find()->all() , 'id',  'codigo' );
+        $mapFlora= ArrayHelper::map($array['arrayflora'], 'id',  'codigo' );
+
         echo Chosen::widget([
               'name' => 'ChosenTest',
               'items' => $mapFlora,
@@ -200,15 +189,13 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
                 class="glyphicon glyphicon-minus"></i></button>
         <?
         }
-       $mapAspecto= ArrayHelper::map(Plantillaaspecto::find()->all() , 'id',  'codigo' );
+       $mapAspecto= ArrayHelper::map($array['arrayaspecto'], 'id',  'codigo' );
 
        echo Chosen::widget([
              'name' => 'ChosenTest',
              'items' => $mapAspecto,
              'allowDeselect' => true,
-
              'placeholder' => 'Seleccionar código..',
-
              'clientOptions' => [
                  'search_contains' => true,
                  'no_results_text'=>"Oops, nothing found!",
@@ -233,7 +220,7 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
                 class="glyphicon glyphicon-minus"></i></button>
         <?
         }
-     $mapPavimentosa= ArrayHelper::map(Plantillapavimentosa::find()->all() , 'id',  'codigo' );
+        $mapPavimentosa= ArrayHelper::map($array['arraypavimentosa'], 'id',  'codigo' );
      echo Chosen::widget([
            'name' => 'ChosenTest',
            'items' => $mapPavimentosa,
@@ -265,7 +252,7 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
                   class="glyphicon glyphicon-minus"></i></button>
         <?
       }
-      $mapglandular = ArrayHelper::map(Plantillaglandular::find()->all() , 'id',  'codigo'  );
+      $mapglandular= ArrayHelper::map($array['arrayglandular'], 'id',  'codigo' );
         echo Chosen::widget([
               'name' => 'ChosenTest',
               'items' => $mapglandular,
@@ -316,9 +303,18 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
           ]);
 
       ?>
-        </br> </br> </br> </br> </br> </br>
-        <?
-      echo (Html::label('Código frase', 'frase', ['class' => 'form-group field-pap-frase has-success'])) ;
+    </br> </br>
+    <?= (Html::label('Código CIE10', 'codigo diagnostico', ['class' => 'form-group field-pap-diagnostico has-success'])); ?>
+
+    <button type="button" class="btn btn-primary btn-xs" onclick="quitarSeleccion()" data-toggle="modal"
+        data-target=".bs-cie10-modal-lg" style="margin-left: 10px;"><i
+            class="glyphicon glyphicon-plus"></i></button>
+    <button type="button" class="btn btn-danger btn-xs" onclick="quitarCie10()"><i
+            class="glyphicon glyphicon-minus"></i></button>
+    <?= $form->field($model, 'id_cie10')->hiddenInput()->label(false); ?>
+    <input type="text" id="pap-cie10" class="form-control" value='<?=($model->cie10)?$model->cie10->codigo:''; ?>'style="width:30%" aria-invalid="false" readonly>
+    </br>
+    <?  echo (Html::label('Código frase', 'frase', ['class' => 'form-group field-pap-frase has-success'])) ;
       if( !isset($model->estado) || $model->estado->descripcion!=="LISTO" || Usuario::isPatologo()){
     ?>
         <button type="button" class="btn btn-primary btn-xs" onclick="quitarSeleccion()" data-toggle="modal"
@@ -358,7 +354,6 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
             echo  $form->field($model, 'estado')->input("text",['readonly' => true , "value"=>$model->estado->descripcion])->label('Estado');
 
           }?>
-        <?//= $form->field($model, 'observacion')->textarea(['rows' => 7,'style'=> 'font-size:17px;']) ?>
     </div>
 
     <div class="col-md-8 col-sm-12 col-xs-12 form-group">
@@ -518,6 +513,8 @@ function onEnviarDiag(val) {
         success: function(data) {
             var current_value = textArea.value;
             var content = JSON.parse(data);
+            document.getElementById("pap-cie10").value = content[1];
+            document.getElementById("pap-id_cie10").value = content[0].id_cie10;
             if (current_value.trim() == "") {
                 document.getElementById("pap-diagnostico").value = content[0].diagnostico;
             } else {

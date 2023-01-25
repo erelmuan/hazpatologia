@@ -37,14 +37,13 @@ use Yii;
  * @property int $cantidad
  * @property int $id
  * @property int $id_solicitudpap
- * @property int $id_plantilladiagnostico
+ * @property int $id_cie10
  * @property string $fechalisto
- * @property string $observacion
  * @property int $id_estado
  * @property string $frase
 
  * @property Estado $estado
- * @property Plantilladiagnostico $plantilladiagnostico
+ * @property Cie10 $cie10
  * @property Solicitudpap $solicitudpap
  * @property Solicitudpap $solicitudpap0
  * @property Usuario $usuario
@@ -76,16 +75,16 @@ class Pap extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['descripcion', 'calificacion', 'hormonal', 'flora', 'aspecto', 'pavimentosas', 'glandulares', 'diagnostico', 'observaciones', 'topografia', 'observacion','frase'], 'string'],
-            [['eosinofilas', 'cianofilas', 'intermedias', 'parabasales', 'indicepicnotico', 'cantidad', 'id_solicitudpap', 'id_plantilladiagnostico', 'id_estado', 'id_usuario' ], 'default', 'value' => null],
-            [['eosinofilas', 'cianofilas', 'intermedias', 'parabasales', 'indicepicnotico', 'cantidad', 'id_solicitudpap', 'id_plantilladiagnostico', 'id_estado', 'id_usuario'], 'integer'],
+            [['descripcion', 'calificacion', 'hormonal', 'flora', 'aspecto', 'pavimentosas', 'glandulares', 'diagnostico', 'observaciones', 'topografia', 'frase'], 'string'],
+            [['eosinofilas', 'cianofilas', 'intermedias', 'parabasales', 'indicepicnotico', 'cantidad', 'id_solicitudpap', 'id_cie10', 'id_estado', 'id_usuario' ], 'default', 'value' => null],
+            [['eosinofilas', 'cianofilas', 'intermedias', 'parabasales', 'indicepicnotico', 'cantidad', 'id_solicitudpap', 'id_cie10', 'id_estado', 'id_usuario'], 'integer'],
             [['firmado', 'Pagado'], 'boolean'],
             [['fechalisto'], 'safe'],
             [[ 'indicedemaduracion'], 'string', 'max' => 8],
             [['plegamiento', 'agrupamiento', 'leucocitos', 'hematies', 'histiocitos', 'detritus', 'citolisis'], 'string', 'max' => 4],
             [['id_solicitudpap'], 'unique'],
             [['id_estado'], 'exist', 'skipOnError' => true, 'targetClass' => Estado::className(), 'targetAttribute' => ['id_estado' => 'id']],
-            [['id_plantilladiagnostico'], 'exist', 'skipOnError' => true, 'targetClass' => Plantilladiagnostico::className(), 'targetAttribute' => ['id_plantilladiagnostico' => 'id']],
+            [['id_cie10'], 'exist', 'skipOnError' => true, 'targetClass' => Cie10::className(), 'targetAttribute' => ['id_cie10' => 'id']],
             [['id_solicitudpap'], 'exist', 'skipOnError' => true, 'targetClass' => Solicitudpap::className(), 'targetAttribute' => ['id_solicitudpap' => 'id']],
             [['id_solicitudpap'], 'exist', 'skipOnError' => true, 'targetClass' => Solicitudpap::className(), 'targetAttribute' => ['id_solicitudpap' => 'id']],
            [['id_usuario'], 'exist', 'skipOnError' => true, 'targetClass' => Usuario::className(), 'targetAttribute' => ['id_usuario' => 'id']],
@@ -126,9 +125,8 @@ class Pap extends \yii\db\ActiveRecord
             'cantidad' => 'Cantidad',
             'id' => 'ID',
             'id_solicitudpap' => 'Id Solicitudpap',
-            'id_plantilladiagnostico' => 'Id Plantilladiagnostico',
+            'id_cie10' => 'Id Cie10',
             'fechalisto' => 'Fechalisto',
-            'observacion' => 'Observacion',
             'id_estado' => 'Estado',
             'frase' => 'Frase',
             'fecharealizacion' => 'Fecha de realizacion',
@@ -257,9 +255,9 @@ class Pap extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getPlantilladiagnostico()
+    public function getCie10()
     {
-        return $this->hasOne(Plantilladiagnostico::className(), ['id' => 'id_plantilladiagnostico']);
+        return $this->hasOne(Cie10::className(), ['id' => 'id_cie10']);
     }
 
     /**

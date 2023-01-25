@@ -27,7 +27,7 @@ use app\models\Plantillaflora;
 use app\models\Plantillapavimentosa;
 use app\models\Plantillaglandular;
 use app\models\Plantillaaspecto;
-use app\models\Plantilladiagnosticop;
+use app\models\Cie10;
 use app\models\Usuario;
 use app\models\Auditoria;
 use app\models\Rol;
@@ -179,8 +179,11 @@ class SiteController extends Controller {
         $cantidadTipoDoc = Tipodoc::find()->count();
         $cantidadEstado = Estado::find()->count();
         $cantidadEstudios = Estudio::find()->count();
+        $cantidadCie10 = Cie10::find()->count();
 
-        return $this->render('extras', ['cantidadProcedencia' => $cantidadProcedencia, 'cantidadProvincia' => $cantidadProvincia, 'cantidadLocalidad' => $cantidadLocalidad, 'cantidadTipoProfesional' => $cantidadTipoProfesional, 'cantidadObrasocial' => $cantidadObrasocial, 'cantidadNacionalidad' => $cantidadNacionalidad, 'cantidadTipoDoc' => $cantidadTipoDoc, 'cantidadEstado' => $cantidadEstado,'cantidadEstudios' =>$cantidadEstudios ]);
+
+        return $this->render('extras', ['cantidadProcedencia' => $cantidadProcedencia, 'cantidadProvincia' => $cantidadProvincia, 'cantidadLocalidad' => $cantidadLocalidad, 'cantidadTipoProfesional' => $cantidadTipoProfesional, 'cantidadObrasocial' => $cantidadObrasocial, 'cantidadNacionalidad' => $cantidadNacionalidad, 'cantidadTipoDoc' => $cantidadTipoDoc, 'cantidadEstado' => $cantidadEstado
+        ,'cantidadEstudios' =>$cantidadEstudios,'cantidadCie10' =>$cantidadCie10 ]);
     }
     public function actionPlantillasbiopsias() {
         $cantidadPlantillaDiag = Plantilladiagnostico::find()->count();

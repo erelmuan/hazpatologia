@@ -17,7 +17,9 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'id_estudio')->dropDownList($model->getEstudios())->label('Estudios') ;?>
 
-  
+    <?= $form->field($model, 'id_cie10')->dropDownList($model->getCie10s())->label('CIE 10') ;?>
+
+
 	<?php if (!Yii::$app->request->isAjax){ ?>
 	  	<div class="form-group">
 	        <?= Html::submitButton($model->isNewRecord ? 'Crear' : 'Actualizar', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
@@ -25,5 +27,5 @@ use yii\widgets\ActiveForm;
 	<?php } ?>
 
     <?php ActiveForm::end(); ?>
-    
+
 </div>

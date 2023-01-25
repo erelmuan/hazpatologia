@@ -30,8 +30,8 @@ class BiopsiaSearch extends Biopsia
     public function rules()
     {
         return [
-            [['id', 'id_solicitudbiopsia', 'protocolo', 'id_plantilladiagnostico', 'id_estado'], 'integer'],
-            [['fecha_desde','fecha_hasta','sexo','material','macroscopia', 'microscopia', 'ihq', 'diagnostico', 'ubicacion', 'observacion','fechalisto'], 'safe'],
+            [['id', 'id_solicitudbiopsia', 'protocolo', 'id_cie10', 'id_estado'], 'integer'],
+            [['fecha_desde','fecha_hasta','sexo','material','macroscopia', 'microscopia', 'ihq', 'diagnostico',  'observacion','fechalisto'], 'safe'],
             ['fecharealizacion', 'date', 'format' => 'dd/MM/yyyy'],
             ['fechadeingreso', 'date', 'format' => 'dd/MM/yyyy'],
 
@@ -95,7 +95,7 @@ class BiopsiaSearch extends Biopsia
             'id_solicitudbiopsia' => $this->id_solicitudbiopsia,
             //Esto es solo posble porque se agrego una variable a la clase
             'solicitudbiopsia.protocolo' => $this->protocolo,
-            'id_plantilladiagnostico' => $this->id_plantilladiagnostico,
+            'id_cie10' => $this->id_cie10,
             'fechalisto' => $this->fechalisto,
         ]);
         if (is_numeric($this->paciente)){
@@ -122,7 +122,6 @@ class BiopsiaSearch extends Biopsia
             ->andFilterWhere(['ilike', 'estado.descripcion', $this->estado])
             ->andFilterWhere(['ilike', 'procedencia.nombre', $this->procedencia])
             ->andFilterWhere(['ilike', 'diagnostico', $this->diagnostico])
-            ->andFilterWhere(['ilike', 'ubicacion', $this->ubicacion])
             ->andFilterWhere(['ilike', 'observacion', $this->observacion]);
             $query->andFilterWhere(['=', 'fecharealizacion', $this->fecharealizacion]);
             $query->andFilterWhere(['=', 'fechadeingreso', $this->fechadeingreso]);

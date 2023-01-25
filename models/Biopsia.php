@@ -21,14 +21,13 @@ use Yii;
  * @property int $id
  * @property int $id_solicitudbiopsia
  * @property int $id_plantillamaterial
- * @property int $id_plantilladiagnostico
+ * @property int $id_cie10
  * @property string $fechalisto
- * @property string $ubicacion
  * @property string $observacion
  * @property int $id_estado
  	* @property int $id_usuario Se registra el usuario con rol de patologo, cuando el mismo pasa de estado pendiente a LISTO.
  * @property Estado $estado
- * @property Plantilladiagnostico $plantilladiagnostico
+ * @property Cie10 $cie10
  * @property Plantillamaterial $plantillamaterial
  * @property Solicitudbiopsia $solicitudbiopsia
  * @property Usuario $usuario
@@ -64,15 +63,15 @@ class Biopsia extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['material', 'macroscopia', 'microscopia',  'diagnostico', 'ubicacion', 'observacion', 'frase'], 'string'],
+            [['material', 'macroscopia', 'microscopia',  'diagnostico',  'observacion', 'frase'], 'string'],
            [['ihq', 'firmado', 'Pagado'], 'boolean'],
-           [['id_solicitudbiopsia', 'id_plantillamaterial', 'id_plantilladiagnostico', 'id_estado', 'id_usuario'], 'default', 'value' => null],
-            [['id_solicitudbiopsia', 'id_plantillamaterial', 'id_plantilladiagnostico', 'id_estado', 'id_usuario'], 'integer'],
+           [['id_solicitudbiopsia', 'id_plantillamaterial', 'id_cie10', 'id_estado', 'id_usuario'], 'default', 'value' => null],
+            [['id_solicitudbiopsia', 'id_plantillamaterial', 'id_cie10', 'id_estado', 'id_usuario'], 'integer'],
             [['fechalisto'], 'safe'],
             // [['ID_Diagnostico'], 'string', 'max' => 55],
             [['id_solicitudbiopsia'], 'unique'],
             [['id_estado'], 'exist', 'skipOnError' => true, 'targetClass' => Estado::className(), 'targetAttribute' => ['id_estado' => 'id']],
-            [['id_plantilladiagnostico'], 'exist', 'skipOnError' => true, 'targetClass' => Plantilladiagnostico::className(), 'targetAttribute' => ['id_plantilladiagnostico' => 'id']],
+            [['id_cie10'], 'exist', 'skipOnError' => true, 'targetClass' => Cie10::className(), 'targetAttribute' => ['id_cie10' => 'id']],
             [['id_plantillamaterial'], 'exist', 'skipOnError' => true, 'targetClass' => Plantillamaterial::className(), 'targetAttribute' => ['id_plantillamaterial' => 'id']],
             [['id_solicitudbiopsia'], 'exist', 'skipOnError' => true, 'targetClass' => Solicitudbiopsia::className(), 'targetAttribute' => ['id_solicitudbiopsia' => 'id']],
             [['id_usuario'], 'exist', 'skipOnError' => true, 'targetClass' => Usuario::className(), 'targetAttribute' => ['id_usuario' => 'id']],
@@ -97,9 +96,8 @@ class Biopsia extends \yii\db\ActiveRecord
             'id' => 'ID',
             'id_solicitudbiopsia' => 'Id Solicitudbiopsia',
             'id_plantillamaterial' => 'Id Plantillamaterial',
-            'id_plantilladiagnostico' => 'Id Plantilladiagnostico',
+            'id_cie10' => 'Id Cie10',
             'fechalisto' => 'Fechalisto',
-            'ubicacion' => 'Ubicacion',
             'observacion' => 'Observacion',
             'id_estado' => 'Estado',
             'frase' => 'Frase',
@@ -227,9 +225,9 @@ class Biopsia extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getPlantilladiagnostico()
+    public function getCie10()
     {
-        return $this->hasOne(Plantilladiagnostico::className(), ['id' => 'id_plantilladiagnostico']);
+        return $this->hasOne(Cie10::className(), ['id' => 'id_cie10']);
     }
 
     /**

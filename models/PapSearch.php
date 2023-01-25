@@ -31,8 +31,8 @@ class PapSearch extends Pap
     public function rules()
     {
         return [
-            [['id', 'id_solicitudpap','protocolo', 'sexo',  'indicepicnotico', 'id_plantilladiagnostico', 'cantidad', 'id_estado'], 'integer'],
-            [['descripcion', 'calificacion', 'indicedemaduracion', 'plegamiento', 'agrupamiento', 'leucocitos', 'hematies', 'histiocitos', 'detritus', 'citolisis', 'flora', 'aspecto', 'pavimentosas', 'glandulares', 'diagnostico',  'fechalisto', 'observacion','fecha_desde','fecha_hasta','fecharealizacion'], 'safe'],
+            [['id', 'id_solicitudpap','protocolo', 'sexo',  'indicepicnotico', 'id_cie10', 'cantidad', 'id_estado'], 'integer'],
+            [['descripcion', 'calificacion', 'indicedemaduracion', 'plegamiento', 'agrupamiento', 'leucocitos', 'hematies', 'histiocitos', 'detritus', 'citolisis', 'flora', 'aspecto', 'pavimentosas', 'glandulares', 'diagnostico',  'fechalisto', 'fecha_desde','fecha_hasta','fecharealizacion'], 'safe'],
             //Se agrego para permitir la habilitacion del filtro en la grilla
             [['paciente','medico','procedencia','estado'], 'safe'],
             ['fecharealizacion', 'date', 'format' => 'dd/MM/yyyy'],
@@ -89,7 +89,7 @@ class PapSearch extends Pap
             'id_solicitudpap' => $this->id_solicitudpap,
             'indicepicnotico' => $this->indicepicnotico,
             'protocolo' => $this->protocolo,
-            'id_plantilladiagnostico' => $this->id_plantilladiagnostico,
+            'id_cie10' => $this->id_cie10,
             'fechalisto' => $this->fechalisto,
             'cantidad' => $this->cantidad,
             'pap.id_estado' => $this->id_estado,
@@ -125,9 +125,7 @@ class PapSearch extends Pap
             ->andFilterWhere(['ilike', 'glandulares', $this->glandulares])
             ->andFilterWhere(['ilike', 'diagnostico', $this->diagnostico])
             ->andFilterWhere(['ilike', 'procedencia.nombre', $this->procedencia])
-            ->andFilterWhere(['ilike', 'estado.descripcion', $this->estado])
-
-            ->andFilterWhere(['ilike', 'observacion', $this->observacion]);
+            ->andFilterWhere(['ilike', 'estado.descripcion', $this->estado]);
             $query->andFilterWhere(['=', 'fecharealizacion', $this->fecharealizacion]);
             $query->andFilterWhere(['=', 'fechadeingreso', $this->fechadeingreso]);
             $query->andFilterWhere(['>=', 'fechadeingreso', $this->fecha_desde]);

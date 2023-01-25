@@ -17,10 +17,7 @@ return [
         'class'=>'\kartik\grid\DataColumn',
         'attribute'=>'diagnostico',
     ],
-    // [
-    //     'class'=>'\kartik\grid\DataColumn',
-    //     'attribute'=>'id_estudio',
-    // ],
+
     [
         'attribute' => 'id_estudio',
         'label' => 'Estudio',
@@ -33,6 +30,10 @@ return [
             'pluginOptions' => ['allowClear' => true],
         ],
     ],
+    [
+        'attribute' => 'cie10.codigo',
+        'label'=> 'CODIGO CIE10',
+     ],
     [
         'class' => 'kartik\grid\ActionColumn',
         'dropdown' => false,

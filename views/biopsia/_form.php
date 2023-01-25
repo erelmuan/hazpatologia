@@ -3,8 +3,6 @@
 use yii\helpers\Html;
 //use yii\widgets\ActiveForm;
 use kartik\grid\GridView;
-
-
 ///////////////////////////
 use yii\helpers\Url;
 use yii\bootstrap\Modal;
@@ -198,7 +196,7 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
         <?}
      $mapdiagnostico = ArrayHelper::map($array['arraydiagnostico'] , 'id',  'codigo'  );
      echo Chosen::widget([
-           'name' => 'id_diagnostico',
+           'name' => 'Biopsia[id_plantilladiagnostico]',
            'items' => $mapdiagnostico,
            'allowDeselect' => true,
 
@@ -214,10 +212,18 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
 
                  ],
        ]);
+  ?></br> </br>
+    <?= (Html::label('Código CIE10', 'codigo diagnostico', ['class' => 'form-group field-pap-diagnostico has-success'])); ?>
 
-  ?></br> </br></br> </br></br></br>
-        <?
-
+      <button type="button" class="btn btn-primary btn-xs" onclick="quitarSeleccion()" data-toggle="modal"
+          data-target=".bs-cie10-modal-lg" style="margin-left: 10px;"><i
+              class="glyphicon glyphicon-plus"></i></button>
+      <button type="button" class="btn btn-danger btn-xs" onclick="quitarCie10()"><i
+          class="glyphicon glyphicon-minus"></i></button>
+      <?= $form->field($model, 'id_cie10')->hiddenInput()->label(false); ?>
+      <input type="text" id="biopsia-cie10" class="form-control" value='<?=($model->cie10)?$model->cie10->codigo:''; ?>' style="width:30%" aria-invalid="false" readonly>
+  </br>
+    <?
       echo (Html::label('Código frase', 'frase', ['class' => 'form-group field-biopsias-frase has-success'])) ;
       if( !isset($model->estado) || $model->estado->descripcion!=="LISTO" || Usuario::isPatologo()){
       ?>
@@ -338,6 +344,9 @@ function onEnviarDiag(val) {
         success: function(data) {
             var current_value = textArea.value;
             var content = JSON.parse(data);
+             document.getElementById("biopsia-cie10").value = content[1];
+             document.getElementById("biopsia-id_cie10").value = content[0].id_cie10;
+
             if (current_value.trim() == "") {
                 document.getElementById("biopsia-diagnostico").value = content[0].diagnostico;
             } else {

@@ -185,4 +185,30 @@ class PlantilladiagnosticoController extends Controller {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
+
+    //sirve para la creacion de las biopsias y los paps
+    public function actionBuscaregistro()  {
+      if (Yii::$app->request->isAjax) {
+        $out = [];
+        if (isset($_POST['id'])) {
+            $data = Yii::$app->request->post();
+            $id= explode(":", $data['id']);
+            $id= $id[0];
+            if ($id != null) {
+              if (($this->findModel($id)) !== null) {
+                $plantilladiagnostico = $this->findModel($id);
+                $cie10= $plantilladiagnostico->cie10->codigo;
+                echo Json::encode([$plantilladiagnostico,$cie10]);
+                return;
+              } else {
+                  throw new NotFoundHttpException('The requested page does not exist.');
+                  }
+            }
+        }
+     }
+  }
+
+
+
+
 }

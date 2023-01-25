@@ -9,6 +9,7 @@ use app\models\PlantillaglandularSearch;
 use app\models\PlantillapavimentosaSearch;
 use app\models\PlantilladiagnosticoSearch;
 use app\models\PlantillafraseSearch;
+use app\models\Cie10Search;
 use app\models\Usuario;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -103,6 +104,14 @@ class PapController extends Controller {
         $search['searchModelFra'] = $searchModelFra;
         $array['arrayfrase'] = $arrayfrase;
         $provider['dataProviderFra'] = $dataProviderFra;
+        ////////////Cie10/////////////////
+        $searchModelCie = new Cie10Search();
+        $arraycie10 = $searchModelCie::find()->all();
+        $dataProviderCie = $searchModelCie->search(Yii::$app->request->queryParams);
+        $dataProviderCie->pagination->pageSize = 7;
+        $search['searchModelCie'] = $searchModelCie;
+        $array['arraycie10'] = $arraycie10;
+        $provider['dataProviderCie'] = $dataProviderCie;
     }
     public function validar($post) {
         if (Yii::$app->user->identity->password <> md5($post['contrasenia'])) {

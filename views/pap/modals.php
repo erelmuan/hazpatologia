@@ -94,6 +94,24 @@ $columnsFlora=
           'attribute'=>'frase',
       ],
       ];
+      $columnsCie10=[
+        [
+            'class' => '\kartik\grid\RadioColumn',
+            'width' => '20px',
+        ],
+      [
+          'class'=>'\kartik\grid\DataColumn',
+          'attribute'=>'id',
+      ],
+      [
+          'class'=>'\kartik\grid\DataColumn',
+          'attribute'=>'codigo',
+      ],
+      [
+          'class'=>'\kartik\grid\DataColumn',
+          'attribute'=>'descripcion',
+      ],
+      ];
 
 ?>
         <div class="x_content">
@@ -306,4 +324,38 @@ $columnsFlora=
             </div>
           </div>
       </div>
+</div>
+<div class="x_content">
+    <div class="modal fade bs-cie10-modal-lg" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="cie10-index">
+                        <div id="ajaxCrudDatatable">
+                            <?=GridView::widget([
+                                'id'=>'crud-cie10',
+                                'dataProvider' => $provider['dataProviderCie'],
+                                'filterModel' => $search['searchModelCie'],
+                                'pjax'=>true,
+                                'columns' => $columnsCie10,
+                                'toolbar'=> [
+
+                                ],
+                                'panel' => [
+                                    'type' => 'primary',
+                                    'heading'=> false,
+                                ]
+                            ])
+                            ?>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                        <button type="button" onclick='agregarFormularioCie10();' class="btn btn-primary">Agregar al
+                            formulario</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

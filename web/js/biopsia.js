@@ -125,6 +125,8 @@ function agregarFormularioDiag() {
 
 function quitarDiagnostico() {
     $("textarea#biopsia-diagnostico.form-control").val('');
+    $("#biopsia-cie10.form-control").val('');
+    $("#biopsia-id_cie10.form-control").val('');
 
 }
 
@@ -156,4 +158,26 @@ function agregarFormularioFra() {
 function quitarFrase() {
     $("textarea#biopsia-frase.form-control").val('');
 
+}
+function agregarFormularioCie10() {
+    if ($("tr.success").find("td:eq(1)").text() != "") {
+        $("#biopsia-cie10").val($("tr.success").find("td:eq(2)").text());
+        $("#biopsia-id_cie10").val($("tr.success").find("td:eq(1)").text());
+        //vacias el contenido de la variable para que no se anexe con otra eleccion de otro campo
+        $('span.kv-clear-radio').click();
+        $('button.btn.btn-default').click();
+
+    } else {
+        swal(
+            'No se ha seleccionado a ningún registro',
+            'PRESIONAR OK',
+            'error'
+        );
+    }
+
+}
+
+function quitarCie10() {
+    $("#biopsia-cie10.form-control").val('');
+    $("#biopsia-id_cie10.form-control").val('');
 }

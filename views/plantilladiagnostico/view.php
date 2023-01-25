@@ -6,7 +6,7 @@ use yii\widgets\DetailView;
 /* @var $model app\models\Plantilladiagnostico */
 ?>
 <div class="plantilladiagnostico-view">
- 
+
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
@@ -17,6 +17,10 @@ use yii\widgets\DetailView;
                 'value'=> $model->estudio->descripcion ,
                 'label'=> 'Estudio',
              ],
+             [
+                 'value'=> $model->cie10->codigo ,
+                 'label'=> 'CODIGO CIE10',
+              ],
         ],
     ]) ?>
 
