@@ -317,12 +317,12 @@ class Solicitud extends \yii\db\ActiveRecord
   	    return $this->hasOne(AnioProtocolo::className(), ['id' => 'id_anio_protocolo']);
        }
      public function getPacienteurl(){
-         return Html::a( $this->paciente->nombre .' '.$this->paciente->apellido,['paciente/view',"id"=> $this->paciente->id]
+         return Html::a( $this->paciente->apellido.' '. $this->paciente->nombre ,['paciente/view',"id"=> $this->paciente->id]
            ,[    'class' => 'text-success','role'=>'modal-remote','title'=>'Datos del paciente','data-toggle'=>'tooltip']
           );
        }
      public function getMedicourl(){
-         return Html::a( $this->medico->nombre.' '.$this->medico->apellido ,['medico/view',"id"=> $this->medico->id]
+         return Html::a( $this->medico->apellido.' '. $this->medico->nombre,['medico/view',"id"=> $this->medico->id]
            ,[    'class' => 'text-success','role'=>'modal-remote','title'=>'Datos del medico','data-toggle'=>'tooltip']
           );
        }
