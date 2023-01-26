@@ -1,4 +1,8 @@
 
+VERSIÓN 1.6.3
+cambio de fecha planilla fos
+Se cambia la fecha de ingreso de la planilla del fos, por la fecha de listo
+
 VERSIÓN 1.6.2
 Se corrige columna de codigo cie 10 en el modelo de planilla de diagnostico, cambiando cie10 por Cie10
 

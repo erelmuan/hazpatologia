@@ -1,12 +1,7 @@
 
 <?
 $path2 = Yii::getAlias("@vendor/setasign/fpdf/rotation.php");
-//require_once($path1);
 require_once($path2);
-
-
-// $pathqr = Yii::getAlias("@vendor/qrcode/qrcode.class.php");
-// require_once($pathqr);
 $estado = $model->estado->descripcion;
 global $estado;
 
@@ -49,27 +44,12 @@ function Header()
   $this->SetFont('Times','BI');
   $this->Cell(0,5,'Informe Anatomo Patologico',0,0,'C');
 
-//  $this->Cell(0,10,'Orden de Compra -- N� ' . substr($_GET['Ord'],0,strlen($_GET['Ord'])-2) . " / " . substr($_GET['Ord'],strlen($_GET['Ord'])-2,2),0,0,'C');
   $this->Ln(11);
 }
 
 // Pie de página
 function Footer()
 {
-  // Posición: a 1,5 cm del final
-        //  $this->SetY(-15);
-          // Arial italic 8
-        //  $this->SetFont('Arial','I',8);
-          /* Cell(ancho, alto, txt, border, ln, alineacion)
-           * ancho=0, extiende el ancho de celda hasta el margen de la derecha
-           * alto=10, altura de la celda a 10
-           * txt= Texto a ser impreso dentro de la celda
-           * border=T Pone margen en la posición Top (arriba) de la celda
-           * ln=0 Indica dónde sigue el texto después de llamada a Cell(), en este caso con 0, enseguida de nuestro texto
-           * alineación=C Texto alineado al centro
-           */
-        //  $this->Cell(0,10,utf8_decode ('Hospital "Artémides ZATTI" - Rivadavia 391 - (8500) Viedma - Río Negro'),'T',0,'C');
-
 
         //Posici�n: a 3,5 cm del final
         $this->SetY(-20);
@@ -83,12 +63,7 @@ function Footer()
         $this->Cell(0,10,utf8_decode('Hospital "Artémides ZATTI" - Rivadavia 391 - (8500) Viedma - Río Negro'),0,0,'C');
         $this->Ln(3);
         $this->Cell(0,10,'Tel. 02920 - 427843 | Fax 02920 - 429916 / 423780',0,0,'C');
-      //  $this->Ln(5);
-      //  $this->SetTextColor(150,150,150);
-      //  $this->SetFont('Times','I','7');
-    //    $this->Cell(0,10,'Desarrollado por: ',0,0,'C');
-
-}
+  }
 }
 
 // Creación del objeto de la clase heredada
@@ -100,7 +75,6 @@ $pdf->AddPage();
 $pdf->SetFont('Times','',12);
 
 $pdf->SetFont('Courier','B',8);
-//$pdf->SetTextColor(0,0,0);
 $pdf->SetFillColor(255,255,255);
 $pdf->Cell(0,36,'',1,1,'L',1);
 
@@ -177,7 +151,6 @@ $pdf->SetFont('Times','',10);
 $pdf->SetXY(30, $Inicio +1 );
 $pdf->MultiCell(0,5, utf8_decode($model->diagnostico));
 
-// 				$pdf->Image($Fir->firma,151,$Inicio - 18,49 ); 250
 $Inicio = $pdf->GetY() + 2;
 
 if($model->firmado){
@@ -190,28 +163,16 @@ $pdf->SetFont('Times','B',10);
 $pdf->SetFont('Times','',10);
    // Imprimimos el texto justificado
 $pdf->SetXY(30, $Inicio +1 );
-
-
 $pdf->MultiCell(0,5, utf8_decode($model->frase));
-
-
 $pdf->Ln();
-
 $Inicio = 49;
-
-
 
 $x = 100;
 $y = 200;
 $s = 50;
 $background = array(250,250,250);
 $color = array(0,0,0);
-// $qrcode->displayFPDF($pdf, $x, $y, $s, $background, $color);
-
 $pdf->Output("I","BIOPSIA --- ".utf8_decode($model->solicitudbiopsia->paciente->apellido." ". $model->solicitudbiopsia->paciente->nombre).".pdf");
-// $pdf->Output("F","BIOPSIA --- ".utf8_decode($model->solicitudbiopsia->paciente->apellido." ". $model->solicitudbiopsia->paciente->nombre));
-
-
 
 exit;
 ?>
