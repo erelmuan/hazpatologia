@@ -9,6 +9,7 @@ use app\models\PlantillamicroscopiaSearch;
 use app\models\PlantilladiagnosticoSearch;
 use app\models\PlantillafraseSearch;
 use app\models\Cie10Search;
+use app\models\Biopsiacie10;
 use app\models\Usuario;
 use app\models\Inmunostoquimica;
 use app\models\Solicitudbiopsia;
@@ -119,6 +120,15 @@ class BiopsiaController extends Controller {
             return true;
         }
     }
+    public function saveBiopsiacie10($id_cie10,$id_biopsia){
+        $biopsiacie10= new Biopsiacie10();
+        $biopsiacie10->id_cie10= ($id_cie10==null)?1:$id_cie10 ;
+        $biopsiacie10->verificado= false;
+        $biopsiacie10->id_usuario=Yii::$app->user->identity->getId();
+        $biopsiacie10->id_estudio=2;
+        $biopsiacie10->id_biopsia=$id_biopsia;
+        $biopsiacie10->save();
+    }
     /**
      * Creates a new Biopsia model.
      * For ajax request will return json object
@@ -145,10 +155,16 @@ class BiopsiaController extends Controller {
             $model->id_usuario = Yii::$app->user->identity->getId();
         }
         if ($model->load($post) && $model->save()) {
+
             // cambio de estados
             if ($Solicitud->id_estado !== $model->id_estado) {
                 $Solicitud->id_estado = $model->id_estado;
                 $Solicitud->save();
+
+            }
+            if($model->fechalisto !=null){
+              //Creacion de biopsiacie10
+            //  $this->saveBiopsiacie10($post['Biopsia']['id_cie10'],$model->id);
             }
             if ($model->ihq) {
                 return $this->redirect(['inmunohistoquimica-escaneada/create', 'id_biopsia' => $model->id]);
@@ -195,6 +211,10 @@ class BiopsiaController extends Controller {
             if ($model->solicitudbiopsia->id_estado !== $model->id_estado) {
                 $model->solicitudbiopsia->id_estado = $model->id_estado;
                 $model->solicitudbiopsia->save();
+            }
+            if($model->fechalisto !=null){
+              //Creacion de biopsiacie10
+              // $this->saveBiopsiacie10($post['Biopsia']['id_cie10'],$model->id);
             }
             if ($model->ihq && isset($model->inmunohistoquimicaEscaneada)) {
                 return $this->redirect(['inmunohistoquimica-escaneada/update', 'id' => $model->inmunohistoquimicaEscaneada->id]);

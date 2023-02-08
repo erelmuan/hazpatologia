@@ -6,7 +6,7 @@ use yii\widgets\ActiveForm;
 use kartik\widgets\DatePicker;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\BiopsiaSearch */
+/* @var $model app\models\PapSearch */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 

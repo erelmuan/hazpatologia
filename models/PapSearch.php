@@ -31,7 +31,7 @@ class PapSearch extends Pap
     public function rules()
     {
         return [
-            [['id', 'id_solicitudpap','protocolo', 'sexo',  'indicepicnotico', 'id_cie10', 'cantidad', 'id_estado'], 'integer'],
+            [['id', 'id_solicitudpap','protocolo', 'sexo',  'indicepicnotico', 'cantidad', 'id_estado'], 'integer'],
             [['descripcion', 'calificacion', 'indicedemaduracion', 'plegamiento', 'agrupamiento', 'leucocitos', 'hematies', 'histiocitos', 'detritus', 'citolisis', 'flora', 'aspecto', 'pavimentosas', 'glandulares', 'diagnostico',  'fechalisto', 'fecha_desde','fecha_hasta','fecharealizacion'], 'safe'],
             //Se agrego para permitir la habilitacion del filtro en la grilla
             [['paciente','medico','procedencia','estado'], 'safe'],
@@ -89,24 +89,32 @@ class PapSearch extends Pap
             'id_solicitudpap' => $this->id_solicitudpap,
             'indicepicnotico' => $this->indicepicnotico,
             'protocolo' => $this->protocolo,
-            'id_cie10' => $this->id_cie10,
             'fechalisto' => $this->fechalisto,
             'cantidad' => $this->cantidad,
             'pap.id_estado' => $this->id_estado,
         ]);
-        if (is_numeric($this->paciente)){
-            $query->orFilterWhere(["paciente.num_documento"=>$this->paciente]);
+        $paciente= trim($this->paciente);
+        if (is_numeric($paciente)){
+
+            $query->orFilterWhere(["paciente.num_documento"=>$paciente]);
              }
         else {
-            $query->andFilterWhere(['ilike', '("paciente"."apellido")',strtolower($this->paciente)]);
-
+            $apellidonombreP = explode(",", $paciente);
+            $query->andFilterWhere(['ilike', '("paciente"."apellido")',strtolower(trim($apellidonombreP[0]))]);
+            if (isset($apellidonombreP[1])){
+              $query->andFilterWhere(['ilike', '("paciente"."nombre")',strtolower(trim($apellidonombreP[1]))]);
+            }
         }
-        if (is_numeric($this->medico)){
-            $query->orFilterWhere(["medico.matricula"=>$this->medico]);
+        $medico= trim($this->medico);
+        if (is_numeric($medico)){
+            $query->orFilterWhere(["medico.matricula"=>$medico]);
              }
         else {
-            $query->andFilterWhere(['ilike', '("medico"."apellido")',strtolower($this->medico)]);
-
+            $apellidonombreM = explode(",", $medico);
+            $query->andFilterWhere(['ilike', '("medico"."apellido")',strtolower(trim($apellidonombreM[0]))]);
+            if (isset($apellidonombreM[1])){
+              $query->andFilterWhere(['ilike', '("medico"."nombre")',strtolower(trim($apellidonombreM[1]))]);
+            }
         }
 
         $query->andFilterWhere(['ilike', 'descripcion', $this->descripcion])

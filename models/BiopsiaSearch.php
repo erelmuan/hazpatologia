@@ -30,7 +30,7 @@ class BiopsiaSearch extends Biopsia
     public function rules()
     {
         return [
-            [['id', 'id_solicitudbiopsia', 'protocolo', 'id_cie10', 'id_estado'], 'integer'],
+            [['id', 'id_solicitudbiopsia', 'protocolo', 'id_estado'], 'integer'],
             [['fecha_desde','fecha_hasta','sexo','material','macroscopia', 'microscopia', 'ihq', 'diagnostico',  'observacion','fechalisto'], 'safe'],
             ['fecharealizacion', 'date', 'format' => 'dd/MM/yyyy'],
             ['fechadeingreso', 'date', 'format' => 'dd/MM/yyyy'],
@@ -95,22 +95,30 @@ class BiopsiaSearch extends Biopsia
             'id_solicitudbiopsia' => $this->id_solicitudbiopsia,
             //Esto es solo posble porque se agrego una variable a la clase
             'solicitudbiopsia.protocolo' => $this->protocolo,
-            'id_cie10' => $this->id_cie10,
             'fechalisto' => $this->fechalisto,
         ]);
-        if (is_numeric($this->paciente)){
-            $query->orFilterWhere(["paciente.num_documento"=>$this->paciente]);
+        $paciente= trim($this->paciente);
+        if (is_numeric($paciente)){
+            $query->orFilterWhere(["paciente.num_documento"=>$paciente]);
              }
         else {
-            $query->andFilterWhere(['ilike', '("paciente"."apellido")',strtolower($this->paciente)]);
+            $apellidonombreP = explode(",", $paciente);
+            $query->andFilterWhere(['ilike', '("paciente"."apellido")',strtolower(trim($apellidonombreP[0]))]);
+            if (isset($apellidonombreP[1])){
+              $query->andFilterWhere(['ilike', '("paciente"."nombre")',strtolower(trim($apellidonombreP[1]))]);
 
+            }
         }
-        if (is_numeric($this->medico)){
-            $query->orFilterWhere(["medico.matricula"=>$this->medico]);
+        $medico= trim($this->medico);
+        if (is_numeric($medico)){
+            $query->orFilterWhere(["medico.matricula"=>$medico]);
              }
         else {
-            $query->andFilterWhere(['ilike', '("medico"."apellido")',strtolower($this->medico)]);
-
+            $apellidonombreM = explode(",", $medico);
+            $query->andFilterWhere(['ilike', '("medico"."apellido")',strtolower(trim($apellidonombreM[0]))]);
+            if (isset($apellidonombreM[1])){
+              $query->andFilterWhere(['ilike', '("medico"."nombre")',strtolower(trim($apellidonombreM[1]))]);
+            }
         }
 
         $query->andFilterWhere(['ilike', 'material', $this->material])

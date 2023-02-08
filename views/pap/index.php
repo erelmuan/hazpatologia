@@ -88,6 +88,7 @@ $columns[]=
     <div id="ajaxCrudDatatable">
         <?=GridView::widget([
             'id'=>'crud-datatable',
+            'tableOptions' => ['class' => 'table table-striped table-bordered table-responsive'],
             'dataProvider' => $dataProvider,
             'filterModel' => $searchModel,
             'pjax'=>true,

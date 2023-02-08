@@ -37,16 +37,15 @@ use Yii;
  * @property int $cantidad
  * @property int $id
  * @property int $id_solicitudpap
- * @property int $id_cie10
  * @property string $fechalisto
  * @property int $id_estado
  * @property string $frase
 
  * @property Estado $estado
- * @property Cie10 $cie10
  * @property Solicitudpap $solicitudpap
  * @property Solicitudpap $solicitudpap0
  * @property Usuario $usuario
+ * @property papcie10[] $papcie10s
  */
  use app\components\behaviors\AuditoriaBehaviors;
 
@@ -76,15 +75,14 @@ class Pap extends \yii\db\ActiveRecord
     {
         return [
             [['descripcion', 'calificacion', 'hormonal', 'flora', 'aspecto', 'pavimentosas', 'glandulares', 'diagnostico', 'observaciones', 'topografia', 'frase'], 'string'],
-            [['eosinofilas', 'cianofilas', 'intermedias', 'parabasales', 'indicepicnotico', 'cantidad', 'id_solicitudpap', 'id_cie10', 'id_estado', 'id_usuario' ], 'default', 'value' => null],
-            [['eosinofilas', 'cianofilas', 'intermedias', 'parabasales', 'indicepicnotico', 'cantidad', 'id_solicitudpap', 'id_cie10', 'id_estado', 'id_usuario'], 'integer'],
+            [['eosinofilas', 'cianofilas', 'intermedias', 'parabasales', 'indicepicnotico', 'cantidad', 'id_solicitudpap', 'id_estado', 'id_usuario' ], 'default', 'value' => null],
+            [['eosinofilas', 'cianofilas', 'intermedias', 'parabasales', 'indicepicnotico', 'cantidad', 'id_solicitudpap',  'id_estado', 'id_usuario'], 'integer'],
             [['firmado', 'Pagado'], 'boolean'],
             [['fechalisto'], 'safe'],
             [[ 'indicedemaduracion'], 'string', 'max' => 8],
             [['plegamiento', 'agrupamiento', 'leucocitos', 'hematies', 'histiocitos', 'detritus', 'citolisis'], 'string', 'max' => 4],
             [['id_solicitudpap'], 'unique'],
             [['id_estado'], 'exist', 'skipOnError' => true, 'targetClass' => Estado::className(), 'targetAttribute' => ['id_estado' => 'id']],
-            [['id_cie10'], 'exist', 'skipOnError' => true, 'targetClass' => Cie10::className(), 'targetAttribute' => ['id_cie10' => 'id']],
             [['id_solicitudpap'], 'exist', 'skipOnError' => true, 'targetClass' => Solicitudpap::className(), 'targetAttribute' => ['id_solicitudpap' => 'id']],
             [['id_solicitudpap'], 'exist', 'skipOnError' => true, 'targetClass' => Solicitudpap::className(), 'targetAttribute' => ['id_solicitudpap' => 'id']],
            [['id_usuario'], 'exist', 'skipOnError' => true, 'targetClass' => Usuario::className(), 'targetAttribute' => ['id_usuario' => 'id']],
@@ -125,7 +123,6 @@ class Pap extends \yii\db\ActiveRecord
             'cantidad' => 'Cantidad',
             'id' => 'ID',
             'id_solicitudpap' => 'Id Solicitudpap',
-            'id_cie10' => 'Id Cie10',
             'fechalisto' => 'Fechalisto',
             'id_estado' => 'Estado',
             'frase' => 'Frase',
@@ -252,13 +249,6 @@ class Pap extends \yii\db\ActiveRecord
         return $this->hasOne(Estado::className(), ['id' => 'id_estado']);
     }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getCie10()
-    {
-        return $this->hasOne(Cie10::className(), ['id' => 'id_cie10']);
-    }
 
     /**
     		    * @return \yii\db\ActiveQuery
@@ -291,5 +281,17 @@ class Pap extends \yii\db\ActiveRecord
     public function estadoSinRestriccion() {
         return Estado::estadosEstudioAdminYpat();
     }
+    /**
+      * @return \yii\db\ActiveQuery
+      */
+     public function getPapcie10s()
+     {
+         return $this->hasMany(papcie10::className(), ['id_pap' => 'id']);
+     }
+     public function getPapcie10()
+    {
+      return $this->hasOne(Papcie10::className(), ['id_pap' => 'id']);
+    }
+
 
 }

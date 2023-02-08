@@ -157,7 +157,7 @@ class Solicitud extends \yii\db\ActiveRecord
               'attribute'=>'medico',
               'width' => '170px',
               'value' => 'medicourl',
-               'filterInputOptions' => ['class' => 'form-control','placeholder' => 'Ingrese DNI o apellido'],
+               'filterInputOptions' => ['class' => 'form-control','placeholder' => 'Ingrese Matricula o apellido'],
                'format' => 'raw',
 
           ],
@@ -285,8 +285,8 @@ class Solicitud extends \yii\db\ActiveRecord
         return ArrayHelper::map(Materialsolicitud::find()->where(['id_estudio' => $id_estudio])->orderBy(['id' => SORT_ASC])->all(), 'id','descripcion');
 
     }
-    public function getSolicitudesAnio($nio) {
-        $cantidad= Solicitud::find()->andWhere(['and' ,' "fechadeingreso"::text  like '. "'%".$nio."%'"])->count();
+    public function getSolicitudesAnio($anio) {
+        $cantidad= Solicitud::find()->andWhere(['and' ,' "fechadeingreso"::text  like '. "'%".$anio."%'"])->count();
         if ($cantidad >0){
           return true;
         }else {
@@ -317,12 +317,12 @@ class Solicitud extends \yii\db\ActiveRecord
   	    return $this->hasOne(AnioProtocolo::className(), ['id' => 'id_anio_protocolo']);
        }
      public function getPacienteurl(){
-         return Html::a( $this->paciente->apellido.' '. $this->paciente->nombre ,['paciente/view',"id"=> $this->paciente->id]
+         return Html::a( $this->paciente->apellido.', '. $this->paciente->nombre ,['paciente/view',"id"=> $this->paciente->id]
            ,[    'class' => 'text-success','role'=>'modal-remote','title'=>'Datos del paciente','data-toggle'=>'tooltip']
           );
        }
      public function getMedicourl(){
-         return Html::a( $this->medico->apellido.' '. $this->medico->nombre,['medico/view',"id"=> $this->medico->id]
+         return Html::a( $this->medico->apellido.', '. $this->medico->nombre,['medico/view',"id"=> $this->medico->id]
            ,[    'class' => 'text-success','role'=>'modal-remote','title'=>'Datos del medico','data-toggle'=>'tooltip']
           );
        }

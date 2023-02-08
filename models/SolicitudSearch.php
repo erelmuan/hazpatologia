@@ -6,6 +6,9 @@ use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use app\models\Solicitud;
+use app\models\AnioProtocolo;
+
+
 
 /**
  * SolicitudSearch represents the model behind the search form about `app\models\Solicitud`.
@@ -56,30 +59,14 @@ class SolicitudSearch extends Solicitud
      */
     public function search($params )
     {
-        //HACER CONDICIONALES SI ES UN PAP BIOPSIA O SI NO SE ENVIA NADA.
-      //  $query = Solicitud::find();
-    //   if ($estudio=='biopsia'){
-    //    $query = Solicitud::find()
-    //    ->leftJoin('procedencia', 'procedencia.id = solicitud.id_procedencia')
-    //    ->leftJoin('biopsia', 'solicitud.id = biopsia.id_solicitud')
-    //    ->where(['and', "biopsia.id is NULL", "solicitud.estado='PENDIENTE'","solicitud.estudio='BIOPSIA'"]);
-    //  }
-    //  elseif ($estudio=='pap'){
-    //    $query = Solicitud::find()
-    //    ->leftJoin('procedencia', 'procedencia.id = solicitud.id_procedencia')
-    //    ->leftJoin('pap', 'solicitud.id = pap.id_solicitud')
-    //    ->where(['and', "pap.id is NULL", "solicitud.estado='PENDIENTE'","solicitud.estudio='PAP'"]);
-    //  }else {
-       // $query = Solicitud::find()
-       // ->orderBy(['fechadeingreso' => SORT_DESC,]);
+
        $query = Solicitud::find()->innerJoinWith('procedencia', true)
        ->innerJoinWith('paciente', 'paciente.id = solicitud.id_paciente')
        ->innerJoinWith('medico', 'medico.id = solicitud.id_medico')
        ->innerJoinWith('estado', 'estado.id = solicitud.id_estado')
        ->innerJoinWith('estudio', 'estudio.id = solicitud.id_estudio');
-
-
-        $dataProvider = new ActiveDataProvider([
+       
+       $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'sort' => ['attributes' => ['protocolo','id']]
 
@@ -96,30 +83,31 @@ class SolicitudSearch extends Solicitud
         $query->andFilterWhere([
             'solicitud.id' => $this->id,
             'protocolo' => $this->protocolo,
-
-            // 'id_paciente' => $this->id_paciente,
-             // 'procedencia' => $this->procedencia,
-            // 'id_medico' => $this->id_medico,
             'id_materialsolicitud' => $this->id_materialsolicitud,
-            // 'fecharealizacion' => $this->fecharealizacion,
-            // 'fechadeingreso' => $this->fechadeingreso,
         ]) ;
           $query->andFilterWhere(['=', 'fecharealizacion', $this->fecharealizacion]);
           $query->andFilterWhere(['=', 'fechadeingreso', $this->fechadeingreso]);
-
-        if (is_numeric($this->paciente)){
-            $query->orFilterWhere(["paciente.num_documento"=>$this->paciente]);
+          $paciente= trim($this->paciente);
+        if (is_numeric($paciente)){
+            $query->orFilterWhere(["paciente.num_documento"=>$paciente]);
              }
         else {
-            $query->andFilterWhere(['ilike', '("paciente"."apellido")',strtolower($this->paciente)]);
-
+            $apellidonombreP = explode(",", $paciente);
+            $query->andFilterWhere(['ilike', '("paciente"."apellido")',strtolower(trim($apellidonombreP[0]))]);
+            if (isset($apellidonombreP[1])){
+              $query->andFilterWhere(['ilike', '("paciente"."nombre")',strtolower(trim($apellidonombreP[1]))]);
+            }
         }
-        if (is_numeric($this->medico)){
-            $query->orFilterWhere(["medico.num_documento"=>$this->medico]);
+        $medico= trim($this->medico);
+        if (is_numeric($medico)){
+            $query->orFilterWhere(["medico.matricula"=>$medico]);
              }
         else {
-            $query->andFilterWhere(['ilike', '("medico"."apellido")',strtolower($this->medico)]);
-
+            $apellidonombreM = explode(",", $medico);
+            $query->andFilterWhere(['ilike', '("medico"."apellido")',strtolower(trim($apellidonombreM[0]))]);
+            if (isset($apellidonombreM[1])){
+              $query->andFilterWhere(['ilike', '("medico"."nombre")',strtolower(trim($apellidonombreM[1]))]);
+            }
         }
 
         $query->andFilterWhere(['ilike', 'observacion', $this->observacion])

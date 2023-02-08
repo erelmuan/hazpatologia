@@ -17,7 +17,7 @@ return [
         'label'=> 'Paciente',
         'width' => '170px',
         'value' => function($model) {
-          return Html::a( $model->solicitudbiopsia->paciente->nombre .' '.$model->solicitudbiopsia->paciente->apellido,['paciente/view',"id"=> $model->solicitudbiopsia->paciente->id]
+          return Html::a( $model->solicitudbiopsia->paciente->apellido .', '.$model->solicitudbiopsia->paciente->nombre,['paciente/view',"id"=> $model->solicitudbiopsia->paciente->id]
 
             ,[    'class' => 'text-success','role'=>'modal-remote','title'=>'Datos del paciente','data-toggle'=>'tooltip']
            );
@@ -55,7 +55,7 @@ return [
             'label'=> 'Medico',
               'width' => '185px',
             'value' => function($model) {
-              return Html::a( $model->solicitudbiopsia->medico->nombre .' '.$model->solicitudbiopsia->medico->apellido,['paciente/view',"id"=> $model->solicitudbiopsia->medico->id]
+              return Html::a( $model->solicitudbiopsia->medico->apellido .', '.$model->solicitudbiopsia->medico->nombre,['paciente/view',"id"=> $model->solicitudbiopsia->medico->id]
 
                 ,[    'class' => 'text-success','role'=>'modal-remote','title'=>'Datos del paciente','data-toggle'=>'tooltip']
                );

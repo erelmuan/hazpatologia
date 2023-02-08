@@ -19,9 +19,7 @@ class AnioProtocoloController extends Controller {
      */
     public function actionIndex() {
         $searchModel = new AnioProtocoloSearch();
-        $dataProvider = $searchModel->search(Yii::$app
-            ->request
-            ->queryParams);
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         return $this->render('index', ['searchModel' => $searchModel, 'dataProvider' => $dataProvider, ]);
     }
     /**
@@ -79,7 +77,7 @@ class AnioProtocoloController extends Controller {
     }
     public function validar($valor_enviado, $model) {
         if ($valor_enviado["activo"] == false && $model->activo == true) {
-            $this->setearMensajeError('NO SE PUEDE DESELECCIONAR DIRECTAMENTE EL ACTIVO, DEBE SELECCIONAR ACTIVO OTRA AÑO ');
+            $this->setearMensajeError('NO SE PUEDE DESELECCIONAR DIRECTAMENTE EL ACTIVO, DEBE SELECCIONAR ACTIVO OTRO AÑO ');
             return false;
         }
         if ($valor_enviado["activo"] == true && $model->activo == false) {
@@ -99,9 +97,7 @@ class AnioProtocoloController extends Controller {
     public function actionUpdate($id) {
         $request = Yii::$app->request;
         $model = $this->findModel($id);
-        if ($this
-            ->request
-            ->isPost) {
+        if ($this->request->isPost) {
             //Si no se valida entonces mostrar $mensaje
             if (!$this->validar($_POST["AnioProtocolo"], $model)) {
                 return $this->render('update', ['model' => $model, ]);

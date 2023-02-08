@@ -22,7 +22,7 @@ use app\models\Usuario;
 use nex\chosen\Chosen;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\Biopsias */
+/* @var $model app\models\Paps */
 /* @var $form yii\widgets\ActiveForm */
 
 ?>
@@ -208,7 +208,7 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
          ]);
 
       ?>
-        </br> </br> </br> </br> </br> </br>
+        </br> </br> </br> </br>
         <?  echo (Html::label('Código pavimentosa', 'pavimentosa', ['class' => 'form-group field-pap-pavimentosa has-success']));
         if( !isset($model->estado) || $model->estado->descripcion!=="LISTO" || Usuario::isPatologo()){
          ?>
@@ -240,7 +240,7 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
        ]);
 
              ?>
-        </br> </br> </br> </br> </br>
+        </br> </br> </br> </br>
         <?
            echo (Html::label('Código glandular', 'glandular', ['class' => 'form-group field-pap-glandular has-success']));
        if( !isset($model->estado) || $model->estado->descripcion!=="LISTO" || Usuario::isPatologo()){
@@ -311,8 +311,10 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
             class="glyphicon glyphicon-plus"></i></button>
     <button type="button" class="btn btn-danger btn-xs" onclick="quitarCie10()"><i
             class="glyphicon glyphicon-minus"></i></button>
-    <?= $form->field($model, 'id_cie10')->hiddenInput()->label(false); ?>
-    <input type="text" id="pap-cie10" class="form-control" value='<?=($model->cie10)?$model->cie10->codigo:''; ?>'style="width:30%" aria-invalid="false" readonly>
+    <!-- <input type="hidden" id="pap-id_cie10"  name =Papcie10[id_cie10]> -->
+    <!-- <input type="text" id="pap-cie10" class="form-control" value='<?=($model->papcie10)?$model->papcie10->cie10->codigo:''; ?>' style="width:30%" aria-invalid="false" readonly> -->
+    <input type="text" id="pap-cie10" class="form-control"  style="width:30%" aria-invalid="false" readonly>
+
     </br>
     <?  echo (Html::label('Código frase', 'frase', ['class' => 'form-group field-pap-frase has-success'])) ;
       if( !isset($model->estado) || $model->estado->descripcion!=="LISTO" || Usuario::isPatologo()){
@@ -372,6 +374,7 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
       <?= $form->field($model, 'diagnostico')->textarea(['rows' => 3,'style'=> 'font-size:17px;','disabled'=>(isset($model->estado) && ($model->estado->descripcion=="LISTO" && !Usuario::isPatologo()))]) ?>
     </div>
     <div class="col-md-8 col-sm-12 col-xs-12 form-group">
+        </br>
         <?= $form->field($model, 'frase')->textarea(['rows' => 3,'style'=> 'font-size:17px;','disabled'=>(isset($model->estado) && ($model->estado->descripcion=="LISTO" && !Usuario::isPatologo()))]) ?>
     </div>
     <div class="col-md-12 col-sm-12 col-xs-12 form-group">

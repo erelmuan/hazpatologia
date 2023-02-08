@@ -1,3 +1,13 @@
+VERSIÓN 1.6.5
+*El menú resalta los items seleccionados ( se agrega /index en el menu del main.php)
+*La búsqueda en el paciente y el medico se puede también realizar por nombre
+ingresando primero el apellido seguido de una coma y luego el nombre (ej perez,juan)
+Se agrega una coma entre el apellido y nombre
+*Refactorización Cie10
+  -Eliminación de id_cie10 de las biopsias y los Paps
+  -creación de las tablas biopsiacie10 papcie10, las mismas servirán para establecer una estadística
+
+
 VERSIÓN 1.6.4
 Cambio de orden
 Ingreso el apellido y segundo el nombre del paciente en las grillas.
@@ -10,8 +20,12 @@ VERSIÓN 1.6.2
 Se corrige columna de codigo cie 10 en el modelo de planilla de diagnostico, cambiando cie10 por Cie10
 
 VERSIÓN 1.6.1
-- Se incorpora la codificacion cie 10 en las planillas de diagnosticos, junto con el campo id cie 10 en los estudios
-- Se crea una tabla cie 10 , modificaion de las tablas de pap y biopsia junto con la tabla planilladiagnostico.
+- Se incorpora la codificación cie 10 en las planillas de diagnosticos, junto con el campo id cie 10 en los estudios
+- Se crea una tabla cie 10 , modificación de las tablas de pap y biopsia junto con la tabla planilladiagnostico.
+BASE DE DATOS:
+Agrego clave foranea a biopsia, pap y planilladiagnostico - id_cie10
+Creación de la tabla Cie10
+
 
 
 VERSIÓN 1.5.4

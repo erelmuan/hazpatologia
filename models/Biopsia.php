@@ -21,16 +21,15 @@ use Yii;
  * @property int $id
  * @property int $id_solicitudbiopsia
  * @property int $id_plantillamaterial
- * @property int $id_cie10
  * @property string $fechalisto
  * @property string $observacion
  * @property int $id_estado
  	* @property int $id_usuario Se registra el usuario con rol de patologo, cuando el mismo pasa de estado pendiente a LISTO.
  * @property Estado $estado
- * @property Cie10 $cie10
  * @property Plantillamaterial $plantillamaterial
  * @property Solicitudbiopsia $solicitudbiopsia
  * @property Usuario $usuario
+ * @property biopsiacie10[] $biopsiacie10s
  * @property Inmunohistoquimica $inmunohistoquimica
 * @property InmunohistoquimicaEscaneada $inmunohistoquimicaEscaneada
  */
@@ -65,13 +64,12 @@ class Biopsia extends \yii\db\ActiveRecord
         return [
             [['material', 'macroscopia', 'microscopia',  'diagnostico',  'observacion', 'frase'], 'string'],
            [['ihq', 'firmado', 'Pagado'], 'boolean'],
-           [['id_solicitudbiopsia', 'id_plantillamaterial', 'id_cie10', 'id_estado', 'id_usuario'], 'default', 'value' => null],
-            [['id_solicitudbiopsia', 'id_plantillamaterial', 'id_cie10', 'id_estado', 'id_usuario'], 'integer'],
+           [['id_solicitudbiopsia', 'id_plantillamaterial',  'id_estado', 'id_usuario'], 'default', 'value' => null],
+            [['id_solicitudbiopsia', 'id_plantillamaterial', 'id_estado', 'id_usuario'], 'integer'],
             [['fechalisto'], 'safe'],
             // [['ID_Diagnostico'], 'string', 'max' => 55],
             [['id_solicitudbiopsia'], 'unique'],
             [['id_estado'], 'exist', 'skipOnError' => true, 'targetClass' => Estado::className(), 'targetAttribute' => ['id_estado' => 'id']],
-            [['id_cie10'], 'exist', 'skipOnError' => true, 'targetClass' => Cie10::className(), 'targetAttribute' => ['id_cie10' => 'id']],
             [['id_plantillamaterial'], 'exist', 'skipOnError' => true, 'targetClass' => Plantillamaterial::className(), 'targetAttribute' => ['id_plantillamaterial' => 'id']],
             [['id_solicitudbiopsia'], 'exist', 'skipOnError' => true, 'targetClass' => Solicitudbiopsia::className(), 'targetAttribute' => ['id_solicitudbiopsia' => 'id']],
             [['id_usuario'], 'exist', 'skipOnError' => true, 'targetClass' => Usuario::className(), 'targetAttribute' => ['id_usuario' => 'id']],
@@ -96,7 +94,6 @@ class Biopsia extends \yii\db\ActiveRecord
             'id' => 'ID',
             'id_solicitudbiopsia' => 'Id Solicitudbiopsia',
             'id_plantillamaterial' => 'Id Plantillamaterial',
-            'id_cie10' => 'Id Cie10',
             'fechalisto' => 'Fechalisto',
             'observacion' => 'Observacion',
             'id_estado' => 'Estado',
@@ -115,6 +112,8 @@ class Biopsia extends \yii\db\ActiveRecord
           [
               'class'=>'\kartik\grid\DataColumn',
               'attribute'=>'id',
+              'contentOptions'=>['style'=>'width:80px;'] ,
+
           ],
           [
               'attribute' => 'protocolo',
@@ -140,7 +139,6 @@ class Biopsia extends \yii\db\ActiveRecord
 
           ],
           [
-              //nombre
               'class'=>'\kartik\grid\DataColumn',
               'attribute'=>'fecharealizacion',
               'label'=> 'Fecha de realización',
@@ -158,7 +156,6 @@ class Biopsia extends \yii\db\ActiveRecord
 
           ],
           [
-              //nombre
               'class'=>'\kartik\grid\DataColumn',
               'attribute'=>'fechadeingreso',
               'label'=> 'Fecha de ingreso',
@@ -222,13 +219,7 @@ class Biopsia extends \yii\db\ActiveRecord
         return $this->hasOne(Estado::className(), ['id' => 'id_estado']);
     }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getCie10()
-    {
-        return $this->hasOne(Cie10::className(), ['id' => 'id_cie10']);
-    }
+
 
     /**
      * @return \yii\db\ActiveQuery
@@ -265,11 +256,23 @@ class Biopsia extends \yii\db\ActiveRecord
         return $this->hasOne(Inmunohistoquimica::className(), ['id_biopsia' => 'id']);
      }
      /**
-   		    * @return \yii\db\ActiveQuery
-   		    */
-   		   public function getInmunohistoquimicaEscaneada()
-   		   {
-   		       return $this->hasOne(InmunohistoquimicaEscaneada::className(), ['id_biopsia' => 'id']);
-   		   }
-
+   		 * @return \yii\db\ActiveQuery
+       */
+	   public function getInmunohistoquimicaEscaneada()
+	   {
+	       return $this->hasOne(InmunohistoquimicaEscaneada::className(), ['id_biopsia' => 'id']);
+	   }
+         /**
+     * @return \yii\db\ActiveQuery
+     */
+     public function getBiopsiacie10s()
+    {
+         return $this->hasMany(Biopsiacie10::className(), ['id_biopsia' => 'id']);
+    }
+    public function getBiopsiacie10()
+   {
+     return $this->hasOne(Biopsiacie10::className(), ['id_biopsia' => 'id']);
    }
+
+
+  }

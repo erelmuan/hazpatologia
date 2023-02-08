@@ -213,15 +213,17 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
                  ],
        ]);
   ?></br> </br>
-    <?= (Html::label('Código CIE10', 'codigo diagnostico', ['class' => 'form-group field-pap-diagnostico has-success'])); ?>
+    <?= (Html::label('Código CIE10', 'codigo diagnostico', ['class' => 'form-group field-biopsia-diagnostico has-success'])); ?>
 
       <button type="button" class="btn btn-primary btn-xs" onclick="quitarSeleccion()" data-toggle="modal"
           data-target=".bs-cie10-modal-lg" style="margin-left: 10px;"><i
               class="glyphicon glyphicon-plus"></i></button>
       <button type="button" class="btn btn-danger btn-xs" onclick="quitarCie10()"><i
           class="glyphicon glyphicon-minus"></i></button>
-      <?= $form->field($model, 'id_cie10')->hiddenInput()->label(false); ?>
-      <input type="text" id="biopsia-cie10" class="form-control" value='<?=($model->cie10)?$model->cie10->codigo:''; ?>' style="width:30%" aria-invalid="false" readonly>
+      <!-- <input type="hidden" id="biopsia-id_cie10" name =Biopsia[id_cie10]> -->
+      <!-- <input type="text" id="biopsia-cie10" class="form-control" value='<?=($model->biopsiacie10)?$model->biopsiacie10->cie10->codigo:''; ?>' style="width:30%" aria-invalid="false" readonly> -->
+      <input type="text" id="biopsia-cie10" class="form-control"  style="width:30%" aria-invalid="false" readonly>
+
   </br>
     <?
       echo (Html::label('Código frase', 'frase', ['class' => 'form-group field-biopsias-frase has-success'])) ;
@@ -279,6 +281,9 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
         <?= $form->field($model, 'microscopia')->textarea(['rows' => 4,'style'=> 'font-size:17px;', 'disabled'=>(isset($model->estado) && ($model->estado->descripcion=="LISTO" && !Usuario::isPatologo()))]) ?>
     </div>
     <div class="col-md-8 col-sm-12 col-xs-12 form-group">
+          </br>
+          </br>
+          </br>
           <?= $form->field($model, 'diagnostico')->textarea(['rows' => 4,'style'=> 'font-size:17px;', 'disabled'=>(isset($model->estado) && ($model->estado->descripcion=="LISTO" && !Usuario::isPatologo()))]) ?>
     </div>
     <div class="col-md-8 col-sm-12 col-xs-12 form-group">
@@ -302,7 +307,7 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
     <? if (Usuario::isPatologo()) { ?>
     <div class="col-md-8 col-sm-12 col-xs-12 form-group">
         <div class='col-sm-5'>
-            <label class="control-label" for="pap-contrseña">Contraseña</label>
+            <label class="control-label" for="biopsia-contraseña">Contraseña</label>
             <input type="password" id="contraseña" class="form-control" name="contrasenia" style="width:50%; "
                 aria-required="true" aria-invalid="false">
         </div>

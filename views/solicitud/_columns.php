@@ -31,7 +31,7 @@ return [
         'class'=>'\kartik\grid\DataColumn',
         'label'=>'Paciente',
         'value' => function($model) {
-          return $model->paciente->nombre .' '.$model->paciente->apellido;
+          return $model->paciente->apellido .', '.$model->paciente->nombre;
          }
          ,
     ],
@@ -48,7 +48,7 @@ return [
         'class'=>'\kartik\grid\DataColumn',
         'label'=>'Medico',
         'value' => function($model) {
-          return $model->medico->nombre .' '.$model->medico->apellido;
+          return $model->medico->apellido .', '.$model->medico->nombre;
          }
          ,
     ],

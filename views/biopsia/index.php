@@ -5,6 +5,7 @@ use yii\bootstrap\Modal;
 use kartik\grid\GridView;
 use johnitvn\ajaxcrud\CrudAsset;
 use johnitvn\ajaxcrud\BulkButtonWidget;
+use yii\widgets\Pjax;
 use kartik\export\ExportMenu;
 use yii\bootstrap\Collapse;
 use kartik\widgets\AlertBlock;
@@ -93,7 +94,6 @@ $columns[]=
             'pjax'=>true,
             //Para que no busque automaticamente, sino que espere a que se teclee ENTER
             'filterOnFocusOut'=>false,
-
             'columns' => $columns,
             'toolbar'=> [
                 ['content'=>

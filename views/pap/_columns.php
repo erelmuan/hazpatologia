@@ -20,7 +20,7 @@ return [
         'label'=> 'Paciente',
         'width' => '170px',
         'value' => function($model) {
-          return Html::a( $model->solicitudpap->paciente->nombre .' '.$model->solicitudpap->paciente->apellido,['paciente/view',"id"=> $model->solicitudpap->paciente->id]
+          return Html::a( $model->solicitudpap->paciente->apellido .', '.$model->solicitudpap->paciente->nombre,['paciente/view',"id"=> $model->solicitudpap->paciente->id]
 
             ,[    'class' => 'text-success','role'=>'modal-remote','title'=>'Datos del paciente','data-toggle'=>'tooltip']
            );
@@ -60,7 +60,7 @@ return [
           'label'=> 'Medico',
             'width' => '185px',
           'value' => function($model) {
-            return Html::a( $model->solicitudpap->medico->nombre .' '.$model->solicitudpap->medico->apellido,['paciente/view',"id"=> $model->solicitudpap->medico->id]
+            return Html::a( $model->solicitudpap->medico->apellido .', '.$model->solicitudpap->medico->nombre,['paciente/view',"id"=> $model->solicitudpap->medico->id]
 
               ,[    'class' => 'text-success','role'=>'modal-remote','title'=>'Datos del paciente','data-toggle'=>'tooltip']
              );
@@ -85,7 +85,7 @@ return [
         'class'=>'\kartik\grid\DataColumn',
         'attribute'=>'calificacion',
     ],
-  
+
     [
         'class'=>'\kartik\grid\DataColumn',
         'attribute'=>'flora',
