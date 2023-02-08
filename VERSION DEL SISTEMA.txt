@@ -1,3 +1,7 @@
+VERSIÓN 1.6.6
+diagnostico cie10
+Se comentta la asignacion de los codigos cie10, en esta etapa no son funcionales,
+estaban produciendo un error al no cargar los diagnosticos en el formulario del estudio
 VERSIÓN 1.6.5
 *El menú resalta los items seleccionados ( se agrega /index en el menu del main.php)
 *La búsqueda en el paciente y el medico se puede también realizar por nombre

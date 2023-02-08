@@ -349,8 +349,8 @@ function onEnviarDiag(val) {
         success: function(data) {
             var current_value = textArea.value;
             var content = JSON.parse(data);
-             document.getElementById("biopsia-cie10").value = content[1];
-             document.getElementById("biopsia-id_cie10").value = content[0].id_cie10;
+          //   document.getElementById("biopsia-cie10").value = content[1];
+        //     document.getElementById("biopsia-id_cie10").value = content[0].id_cie10;
 
             if (current_value.trim() == "") {
                 document.getElementById("biopsia-diagnostico").value = content[0].diagnostico;
