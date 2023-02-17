@@ -516,8 +516,8 @@ function onEnviarDiag(val) {
         success: function(data) {
             var current_value = textArea.value;
             var content = JSON.parse(data);
-            document.getElementById("pap-cie10").value = content[1];
-            document.getElementById("pap-id_cie10").value = content[0].id_cie10;
+      //      document.getElementById("pap-cie10").value = content[1];
+        //    document.getElementById("pap-id_cie10").value = content[0].id_cie10;
             if (current_value.trim() == "") {
                 document.getElementById("pap-diagnostico").value = content[0].diagnostico;
             } else {
