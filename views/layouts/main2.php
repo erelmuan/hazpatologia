@@ -22,11 +22,9 @@ AppAsset::register($this);
     <?= Html::csrfMetaTags() ?>
     <title><?= Html::encode($this->title) ?></title>
     <?php $this->head() ?>
-  <?php  $this->registerCssFile("/patologia/web/css/custom.css"); ?>
-<?php  $this->registerCssFile("/patologia/web/css/animate.min.css"); ?>
-<?php  $this->registerCssFile("/patologia/web/css/green.css", [
-  'media' => 'print',
-], 'css-print-theme'); ?>
+  <?//php  $this->registerCssFile("/hazpatologia/web/css/custom.css"); ?>
+<?php  $this->registerCssFile("/hazpatologia/web/css/animate.min.css"); ?>
+
 <!-- en esta plantilla estan cargados estilos de login plantillas intro y demas -->
 <?= Html::cssFile('@web/css/plantillas-intro.css') ?>
 
