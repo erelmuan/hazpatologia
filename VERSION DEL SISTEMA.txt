@@ -1,10 +1,12 @@
-<<<<<<< HEAD
 
-VERSIÓN 1.6.6
+VERSIÓN 1.6.8
+quita  de links
+se quita links en el main que estaban sin uso
+
+VERSIÓN 1.6.7
 Incorporacion de vista
 Se incorpora vista par ala busqueda de estudios patologicos
 
-=======
 VERSIÓN 1.6.6
 diagnostico cie10
 Se comentta la asignacion de los codigos cie10, en esta etapa no son funcionales,
