@@ -56,7 +56,7 @@ $columns[]=
   </div>
 <p>
 
-    <?= Html::a('Nueva Solicitud de biopsia', "?r=solicitudbiopsia/create", ['class' => 'btn btn-success']) ?>
+    <?= Html::a('Nueva Solicitud de biopsia', "solicitudbiopsia/create", ['class' => 'btn btn-success']) ?>
 </p>
 <?=$export; ?>
 <div class="solicitud-index">

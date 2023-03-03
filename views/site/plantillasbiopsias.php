@@ -27,7 +27,7 @@ background: #E6FDBD;
   <div class="body-content">
   <div class="row">
     <div class="row top_tiles">
-      <a href=<?=Yii::$app->homeUrl."?r=plantilladiagnostico"; ?>>
+      <a href=<?=Yii::$app->homeUrl."plantilladiagnostico"; ?>>
       <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
         <div class="tile-stats">
             <div class="icon"><i class="fa fa-file-text-o"></i>
@@ -38,7 +38,7 @@ background: #E6FDBD;
         </div>
       </div>
       </a>
-      <a href=<?=Yii::$app->homeUrl."?r=plantillamicroscopia"; ?>>
+      <a href=<?=Yii::$app->homeUrl."plantillamicroscopia"; ?>>
       <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
         <div class="tile-stats">
           <div class="icon"><i class="fa fa-square"></i>
@@ -50,7 +50,7 @@ background: #E6FDBD;
         </div>
       </div>
       </a>
-      <a href=<?=Yii::$app->homeUrl."?r=plantillamacroscopia"; ?>>
+      <a href=<?=Yii::$app->homeUrl."plantillamacroscopia"; ?>>
       <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
         <div class="tile-stats">
           <div class="icon"><i class="fa fa-square"></i>
@@ -62,7 +62,7 @@ background: #E6FDBD;
         </div>
       </div>
       </a>
-      <a href=<?=Yii::$app->homeUrl."?r=plantillamaterial"; ?>>
+      <a href=<?=Yii::$app->homeUrl."plantillamaterial"; ?>>
       <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
         <div class="tile-stats">
           <div class="icon"><i class="fa fa-flask"></i>
@@ -74,7 +74,7 @@ background: #E6FDBD;
         </div>
       </div>
       </a>
-      <a href=<?=Yii::$app->homeUrl."?r=plantillafrase"; ?>>
+      <a href=<?=Yii::$app->homeUrl."plantillafrase"; ?>>
       <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12" >
         <div class="tile-stats">
           <div class="icon"><i class="fa fa-comment"></i>

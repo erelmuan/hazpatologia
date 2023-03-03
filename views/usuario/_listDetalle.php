@@ -46,7 +46,7 @@ use kartik\grid\GridView;
                 'class' => 'kartik\grid\ActionColumn',
                 'vAlign'=>'middle',
                 'contentOptions' =>['width'=>'75px', 'style'=>'text-align:center;'],
-                'header' => Html::a('Agregar', 'index.php?r=usuario/addrol&id_maestro='.$id_maestro, [
+                'header' => Html::a('Agregar', 'usuario/addrol?id_maestro='.$id_maestro, [
                     'title' => 'Agregar registro',
                     'class' => 'btn btn-success',
                     'style' => ['width'=>'75px', 'height'=>'30px','padding-top'=>'4px'],
@@ -74,7 +74,7 @@ use kartik\grid\GridView;
                     //     return $url;
                     // }
                     if ($action === 'deleteDetalle') {
-                        $url ='index.php?r=usuario/deletedetalle&id_detalle='.$searchModel->id.'&id_maestro='.$searchModel->id_usuario;
+                        $url ='usuario/deletedetalle?id_detalle='.$searchModel->id.'&id_maestro='.$searchModel->id_usuario;
                         return $url;
                     }
                 }

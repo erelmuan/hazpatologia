@@ -309,16 +309,11 @@ class UsuarioController extends Controller {
     public function actionDeletedetalle($id_detalle, $id_maestro) {
         //detalle=usuariorol
         //maestro =usuario
-        Yii::$app
-            ->response->format = Response::FORMAT_JSON;
-        if (Yii::$app
-            ->user
-            ->identity->id == $id_maestro) {
+        Yii::$app->response->format = Response::FORMAT_JSON;
+        if (Yii::$app->user->identity->id == $id_maestro) {
             return ['title' => "Eliminar Rol #" . $id_maestro, 'content' => "No puede eliminarse el rol usted mismo", 'footer' => Html::button('Cerrar', ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) ];
         }
-        $model = Usuariorol::findOne(['id_usuario' => Yii::$app
-            ->user
-            ->identity->id, 'id_rol' => 1, //id rol admin
+        $model = Usuariorol::findOne(['id_usuario' => Yii::$app->user->identity->id, 'id_rol' => 1, //id rol admin
         ]);
         if ($model == null) {
             return ['title' => "Eliminar Rol #" . $id, 'content' => "No puede eliminar un rol si no es administrador", 'footer' => Html::button('Cerrar', ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) ];
@@ -326,7 +321,8 @@ class UsuarioController extends Controller {
         try {
             if ($modelUsuarioRol = Usuariorol::findOne($id_detalle)) {
                 // borro registro en este caso por que es una relacion NN
-                if ($modelUsuarioRol->delete()) return ['forceClose' => true, 'success' => 'reloadDetalle(' . $id_maestro . ')'];
+                if ($modelUsuarioRol->delete())
+                return ['forceClose' => true, 'success' => 'reloadDetalle(' . $id_maestro . ')'];
             }
         }
         catch(yii\db\Exception $e) {

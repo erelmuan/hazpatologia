@@ -22,6 +22,9 @@ $config = [
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => 'dfsdddfgf3asdfsdfssdfsd4353443534se',
+            'parsers' => [
+                'application/json' => 'yii\web\JsonParser',
+            ]
         ],
         'cache' => [
             'class' => 'yii\caching\FileCache',
@@ -88,6 +91,15 @@ $config = [
         ],
 
         'db' => $db,
+        'urlManager' => [
+             'enablePrettyUrl' => true,
+             'showScriptName' => false,
+             'rules' => [
+                 // '' => 'web/site/index',
+                 // '<action>'=>'site/<action>',
+               ['class'=>'yii\rest\UrlRule', 'controller' =>'vistaestudios']
+               ],
+         ],
         /*
         'urlManager' => [
             'enablePrettyUrl' => true,

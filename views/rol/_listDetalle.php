@@ -72,7 +72,7 @@ use kartik\grid\GridView;
                 'class' => 'kartik\grid\ActionColumn',
                 'vAlign'=>'middle',
                 'contentOptions' =>['width'=>'75px', 'style'=>'text-align:center;'],
-                'header' => Html::a('Agregar', 'index.php?r=rol/createdetalle&id_maestro='.$id_maestro, [
+                'header' => Html::a('Agregar', 'rol/createdetalle?id_maestro='.$id_maestro, [
                     'title' => 'Agregar registro',
                     'class' => 'btn btn-success',
                     'style' => ['width'=>'75px', 'height'=>'30px','padding-top'=>'4px'],
@@ -99,11 +99,11 @@ use kartik\grid\GridView;
                     ],
                     'urlCreator' => function ($action, $searchModel) {
                     if ($action === 'addAccion') {
-                        $url ='index.php?r=rol/addaccion&id_permiso='.$searchModel->id;
+                        $url ='rol/addaccion?id_permiso='.$searchModel->id;
                         return $url;
                     }
                     if ($action === 'deleteDetalle') {
-                        $url ='index.php?r=rol/deletedetalle&id_detalle='.$searchModel->id.'&id_maestro='.$searchModel->id;
+                        $url ='rol/deletedetalle?id_detalle='.$searchModel->id.'&id_maestro='.$searchModel->id_rol;
                         return $url;
                     }
                 }

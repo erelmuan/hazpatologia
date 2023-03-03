@@ -182,13 +182,13 @@ $bundle = yiister\gentelella\assets\Asset::register($this);
 
                 <!-- /menu footer buttons -->
                 <div class="sidebar-footer hidden-small">
-                    <a href=<?=Yii::$app->homeUrl."?r=site/administracion"; ?> data-toggle="tooltip" data-placement="top" title="Administración">
+                    <a href=<?=Yii::$app->homeUrl."site/administracion"; ?> data-toggle="tooltip" data-placement="top" title="Administración">
                         <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
                     </a>
                     <a data-toggle="tooltip" data-placement="top" title="Ayuda">
                         <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
                     </a>
-                    <a href=<?=Yii::$app->homeUrl."?r=usuario/perfil"; ?> data-toggle="tooltip" data-placement="top" title="Perfil">
+                    <a href=<?=Yii::$app->homeUrl."usuario/perfil"; ?> data-toggle="tooltip" data-placement="top" title="Perfil">
                         <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
                     </a>
                     <?
@@ -230,7 +230,7 @@ $bundle = yiister\gentelella\assets\Asset::register($this);
                                 <span class=" fa fa-angle-down"></span>
                             </a>
                             <ul class="dropdown-menu dropdown-usermenu pull-right">
-                                <li><a href=<?=Yii::$app->homeUrl."?r=usuario/perfil"; ?>> Perfil</a>
+                                <li><a href=<?=Yii::$app->homeUrl."usuario/perfil"; ?>> Perfil</a>
                                 </li>
                                 <li>
                                     <a href="javascript:;">

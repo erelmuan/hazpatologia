@@ -42,7 +42,7 @@ $this->title = 'Administración';
   <div class="row">
 
     <div class="row top_tiles">
-      <a href=<?=Yii::$app->homeUrl."?r=usuario"; ?>>
+      <a href=<?=Yii::$app->homeUrl."usuario"; ?>>
       <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
         <div class="tile-stats">
             <div class="icon"><i class="fa fa-user"></i>
@@ -56,7 +56,7 @@ $this->title = 'Administración';
       </div>
       </a>
 
-      <a href=<?=Yii::$app->homeUrl."?r=site/permisos"; ?>>
+      <a href=<?=Yii::$app->homeUrl."site/permisos"; ?>>
       <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
         <div class="tile-stats">
           <div class="icon"><i class="fa fa-key"></i>
@@ -68,7 +68,7 @@ $this->title = 'Administración';
         </div>
       </div>
     </a>
-    <a href=<?=Yii::$app->homeUrl."?r=auditoria"; ?>>
+    <a href=<?=Yii::$app->homeUrl."auditoria"; ?>>
     <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
       <div class="tile-stats">
           <div class="icon"><i class="fa fa-book"></i>
@@ -81,7 +81,7 @@ $this->title = 'Administración';
       </div>
     </div>
     </a>
-    <a href=<?=Yii::$app->homeUrl."?r=firma"; ?>>
+    <a href=<?=Yii::$app->homeUrl."firma"; ?>>
     <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
       <div class="tile-stats">
           <div class="icon"><i class="fa fa-edit"></i>

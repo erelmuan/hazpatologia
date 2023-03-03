@@ -42,7 +42,7 @@ $this->title = 'Inicio';
     <div class="row top_tiles">
       <?  if (Yii::$app->user->identity->id_pantalla==2){ ?>
 
-      <a href=<?=Yii::$app->homeUrl."?r=site/plantillas"; ?>>
+      <a href=<?=Yii::$app->homeUrl."site/plantillas"; ?>>
       <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
         <div class="tile-stats">
             <div class="icon"><i class="icon-pastealt"></i>
@@ -55,7 +55,7 @@ $this->title = 'Inicio';
         </div>
       </div>
       </a>
-      <a href=<?=Yii::$app->homeUrl."?r=site/extras"; ?>>
+      <a href=<?=Yii::$app->homeUrl."site/extras"; ?>>
         <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
           <div class="tile-stats">
             <div class="icon"><i class="fa fa-table"></i>
@@ -67,7 +67,7 @@ $this->title = 'Inicio';
           </div>
         </div>
       </a>
-      <a href=<?=Yii::$app->homeUrl."?r=paciente"; ?>>
+      <a href=<?=Yii::$app->homeUrl."paciente"; ?>>
       <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
         <div class="tile-stats">
           <div class="icon"><i class="fa fa-group"></i>
@@ -79,7 +79,7 @@ $this->title = 'Inicio';
         </div>
       </div>
       </a>
-      <a href=<?=Yii::$app->homeUrl."?r=medico"; ?>>
+      <a href=<?=Yii::$app->homeUrl."medico"; ?>>
       <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
         <div class="tile-stats">
           <div class="icon"><i class="fa fa-user-md"></i>
@@ -91,7 +91,7 @@ $this->title = 'Inicio';
         </div>
       </div>
     </a>
-      <a href=<?=Yii::$app->homeUrl."?r=biopsia/index&sort=-id"; ?>>
+      <a href=<?=Yii::$app->homeUrl."biopsia/index?sort=-id"; ?>>
       <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
         <div class="tile-stats">
           <div class="icon"> <?  echo Icon::show('microscope', ['class'=>'fa-2x', 'framework' => Icon::WHHG]); ?>
@@ -104,7 +104,7 @@ $this->title = 'Inicio';
         </div>
       </div>
       </a>
-      <a href=<?=Yii::$app->homeUrl."?r=pap/index&sort=-id"; ?>>
+      <a href=<?=Yii::$app->homeUrl."pap/index?sort=-id"; ?>>
       <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
         <div class="tile-stats">
           <div class="icon"><i class="fa fa-flask"></i>
@@ -116,7 +116,7 @@ $this->title = 'Inicio';
         </div>
       </div>
       </a>
-      <a href=<?=Yii::$app->homeUrl."?r=solicitud/index&sort=-id"; ?>>
+      <a href=<?=Yii::$app->homeUrl."solicitud/index?sort=-id"; ?>>
       <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
         <div class="tile-stats">
           <div class="icon"><i class="fa fa-file-text-o"></i>
@@ -129,7 +129,7 @@ $this->title = 'Inicio';
       </div>
       </a>
 
-     <a href=<?=Yii::$app->homeUrl."?r=site/administracion"; ?>>
+     <a href=<?=Yii::$app->homeUrl."site/administracion"; ?>>
       <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
         <div class="tile-stats">
           <div class="icon"><i class="fa fa-gears"></i>
@@ -142,7 +142,7 @@ $this->title = 'Inicio';
       </div>
     </a>
   <? }  else {  ?>
-      <a href=<?=Yii::$app->homeUrl."?r=biopsia"; ?>>
+      <a href=<?=Yii::$app->homeUrl."biopsia"; ?>>
       <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
         <div class="tile-stats">
           <div class="icon"> <?  echo Icon::show('microscope', ['class'=>'fa-2x', 'framework' => Icon::WHHG]); ?>
@@ -155,7 +155,7 @@ $this->title = 'Inicio';
         </div>
       </div>
       </a>
-      <a href=<?=Yii::$app->homeUrl."?r=pap"; ?>>
+      <a href=<?=Yii::$app->homeUrl."pap"; ?>>
       <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
         <div class="tile-stats">
           <div class="icon"><i class="fa fa-flask"></i>

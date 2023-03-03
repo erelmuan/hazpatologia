@@ -77,8 +77,8 @@ $columns[]=
   </div>
 <p>
 
-    <?= Html::a('Nueva Solicitud biopsia', "?r=solicitudbiopsia/create", ['class' => 'btn btn-success']) ?>
-    <?= Html::a('Nueva Solicitud pap', "?r=solicitudpap/create", ['class' => 'btn btn-success']) ?>
+    <?= Html::a('Nueva Solicitud biopsia', Yii::$app->homeUrl."solicitudbiopsia/create", ['class' => 'btn btn-success']) ?>
+    <?= Html::a('Nueva Solicitud pap', Yii::$app->homeUrl."solicitudpap/create", ['class' => 'btn btn-success']) ?>
 
 </p>
 <?=$export; ?>

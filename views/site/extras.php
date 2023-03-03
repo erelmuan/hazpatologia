@@ -37,7 +37,7 @@ $this->title = 'Extras';
 
   <div class="row">
     <div class="row top_tiles">
-      <a href=<?=Yii::$app->homeUrl."?r=procedencia"; ?>>
+      <a href=<?=Yii::$app->homeUrl."procedencia"; ?>>
       <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
         <div class="tile-stats">
             <div class="icon"><i class="fa fa-location-arrow"></i>
@@ -49,7 +49,7 @@ $this->title = 'Extras';
       </div>
       </a>
 
-      <a href=<?=Yii::$app->homeUrl."?r=provincia"; ?>>
+      <a href=<?=Yii::$app->homeUrl."provincia"; ?>>
       <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
         <div class="tile-stats">
           <div class="icon"><i class="fa fa-map-marker"></i>
@@ -61,7 +61,7 @@ $this->title = 'Extras';
         </div>
       </div>
     </a>
-    <a href=<?=Yii::$app->homeUrl."?r=localidad"; ?>>
+    <a href=<?=Yii::$app->homeUrl."localidad"; ?>>
     <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
       <div class="tile-stats">
           <div class="icon"><i class="fa fa-map-marker"></i>
@@ -75,7 +75,7 @@ $this->title = 'Extras';
       </div>
     </div>
     </a>
-    <a href=<?=Yii::$app->homeUrl."?r=tipoprofesional"; ?>>
+    <a href=<?=Yii::$app->homeUrl."tipoprofesional"; ?>>
     <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
       <div class="tile-stats">
           <div class="icon"><i class="fa fa-mortar-board"></i>
@@ -86,7 +86,7 @@ $this->title = 'Extras';
       </div>
     </div>
     </a>
-    <a href=<?=Yii::$app->homeUrl."?r=obrasocial"; ?>>
+    <a href=<?=Yii::$app->homeUrl."obrasocial"; ?>>
     <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
       <div class="tile-stats">
           <div class="icon"><i class="fa fa-book"></i>
@@ -99,7 +99,7 @@ $this->title = 'Extras';
       </div>
     </div>
     </a>
-    <a href=<?=Yii::$app->homeUrl."?r=tipodoc"; ?>>
+    <a href=<?=Yii::$app->homeUrl."tipodoc"; ?>>
     <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
       <div class="tile-stats">
           <div class="icon"><i class="fa fa-book"></i>
@@ -112,7 +112,7 @@ $this->title = 'Extras';
       </div>
     </div>
     </a>
-    <a href=<?=Yii::$app->homeUrl."?r=nacionalidad"; ?>>
+    <a href=<?=Yii::$app->homeUrl."nacionalidad"; ?>>
     <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
       <div class="tile-stats">
           <div class="icon"><i class="fa fa-flag"></i>
@@ -125,7 +125,7 @@ $this->title = 'Extras';
       </div>
     </div>
     </a>
-    <a href=<?=Yii::$app->homeUrl."?r=estado"; ?>>
+    <a href=<?=Yii::$app->homeUrl."estado"; ?>>
     <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
       <div class="tile-stats">
           <div class="icon"><i class="fa fa-dashboard"></i>
@@ -137,7 +137,7 @@ $this->title = 'Extras';
     </div>
     </a>
   </a>
-    <a href=<?=Yii::$app->homeUrl."?r=estudio"; ?>>
+    <a href=<?=Yii::$app->homeUrl."estudio"; ?>>
     <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
       <div class="tile-stats">
           <div class="icon"><i class="fa fa-dashboard"></i>
@@ -148,7 +148,7 @@ $this->title = 'Extras';
       </div>
     </div>
     </a>
-    <a href=<?=Yii::$app->homeUrl."?r=cie10"; ?>>
+    <a href=<?=Yii::$app->homeUrl."cie10"; ?>>
     <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
       <div class="tile-stats">
           <div class="icon"><i class="fa fa-dashboard"></i>

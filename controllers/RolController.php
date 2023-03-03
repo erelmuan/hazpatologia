@@ -196,8 +196,7 @@ class RolController extends Controller {
         }
     }
     public function actionDeletedetalle($id_detalle, $id_maestro) {
-        Yii::$app
-            ->response->format = Response::FORMAT_JSON;
+        Yii::$app->response->format = Response::FORMAT_JSON;
         try {
             if ($modelpermiso = Permiso::findOne($id_detalle)) {
                 // borro registro en este caso por que es una relacion NN

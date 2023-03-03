@@ -43,7 +43,7 @@ $this->title = 'Permisos';
   <div class="body-content">
   <div class="row">
     <div class="row top_tiles">
-      <a href=<?=Yii::$app->homeUrl."?r=rol"; ?>>
+      <a href=<?=Yii::$app->homeUrl."rol"; ?>>
       <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
         <div class="tile-stats">
             <div class="icon"><i class="fa fa-users"></i>
@@ -57,7 +57,7 @@ $this->title = 'Permisos';
       </div>
       </a>
 
-      <a href=<?=Yii::$app->homeUrl."?r=modulo"; ?>>
+      <a href=<?=Yii::$app->homeUrl."modulo"; ?>>
       <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
         <div class="tile-stats">
           <div class="icon"><i class="fa fa-bars"></i>
@@ -69,7 +69,7 @@ $this->title = 'Permisos';
         </div>
       </div>
     </a>
-    <a href=<?=Yii::$app->homeUrl."?r=accion"; ?>>
+    <a href=<?=Yii::$app->homeUrl."accion"; ?>>
     <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
       <div class="tile-stats">
           <div class="icon"><i class="fa fa-asterisk"></i>

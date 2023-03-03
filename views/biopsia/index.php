@@ -81,7 +81,7 @@ $columns[]=
   </div>
 <p>
   <?  if (Yii::$app->user->identity->id_pantalla==2 ){
-      echo Html::a('Nueva Biopsia', "?r=solicitudbiopsia/seleccionar", ['class' => 'btn btn-success']);
+      echo Html::a('Nueva Biopsia', Yii::$app->homeUrl."solicitudbiopsia/seleccionar", ['class' => 'btn btn-success']);
     } ?>
 </p>
 <?=$export; ?>

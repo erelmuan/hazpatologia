@@ -60,7 +60,7 @@ $columns[]=
   </div>
 <p>
 
-    <?= Html::a('Nueva Solicitud de pap', "?r=solicitudpap/create", ['class' => 'btn btn-success']) ?>
+    <?= Html::a('Nueva Solicitud de pap', "solicitudpap/create", ['class' => 'btn btn-success']) ?>
 </p>
 <?=$export; ?>
 <div class="solicitud-index">

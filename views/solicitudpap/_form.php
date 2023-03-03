@@ -322,7 +322,7 @@ function cambioProtocoloAutomatico(){
 function pacienteba(){
 
   $.ajax({
-        url: '<?php echo Yii::$app->request->baseUrl. '/index.php?r=paciente/search' ?>',
+        url: '<?php echo Yii::$app->request->baseUrl. '/paciente/search' ?>',
         type: 'get',
         data: {
               "PacienteSearch[num_documento]":$("#pacientebuscar").val() ,
@@ -354,7 +354,7 @@ function pacienteba(){
 function medicoba(){
 
   $.ajax({
-        url: '<?php echo Yii::$app->request->baseUrl. '/index.php?r=medico/search' ?>',
+        url: '<?php echo Yii::$app->request->baseUrl. '/medico/search' ?>',
         type: 'get',
         data: {
               "MedicoSearch[matricula]":$("#medicobuscar").val() ,

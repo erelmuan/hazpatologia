@@ -80,7 +80,7 @@ $columns[]=
   </div>
 <p>
   <?  if (Yii::$app->user->identity->id_pantalla==2 ){
-      echo Html::a('Nuevo Pap', "?r=solicitudpap/seleccionar", ['class' => 'btn btn-success']);
+      echo Html::a('Nuevo Pap', Yii::$app->homeUrl."solicitudpap/seleccionar", ['class' => 'btn btn-success']);
     } ?>
 </p>
 <?=$export; ?>

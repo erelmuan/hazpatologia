@@ -1,7 +1,7 @@
 <?php
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
-$this->registerJsFile('../components/jquery-ui.js', ['position' => \yii\web\View::POS_BEGIN]);
+$this->registerJsFile('../../components/jquery-ui.js', ['position' => \yii\web\View::POS_BEGIN]);
 ?>
 <style>
 #sortable{

@@ -4,7 +4,7 @@ use yii\helpers\Html;
 use yii\bootstrap\Modal;
 use kartik\grid\GridView;
 // use johnitvn\ajaxcrud\CrudAsset;
-use johnitvn\ajaxcrud\BulkButtonWidget;
+use johnitvn\ajaxcrud\BulkButtonWidget; 
  use quidu\ajaxcrud\CrudAsset;
 
 /* @var $this yii\web\View */

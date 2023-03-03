@@ -1,3 +1,7 @@
+VERSIÓN 1.7.0
+URL y SERVICE REST
+Implementacion de url amigables
+habilitacion de los servicios rest para los estudios (Vista estudios)
 
 VERSIÓN 1.6.8
 quita  de links
