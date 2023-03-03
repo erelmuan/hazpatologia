@@ -4,6 +4,6 @@
     use Yii;
     class VistaestudiosController extends ActiveController
     {
-      public $modelClass='app\models\viewestudio';
+      public $modelClass='app\models\Viewestudio';
     }
 ?>
