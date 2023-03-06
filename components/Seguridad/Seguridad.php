@@ -28,22 +28,23 @@ class Seguridad {
        if(Yii::$app->user->isGuest)
           return false;
 
+       //
+       // if (empty($accion)){
+       //     $accion=$_GET['r'];
+       // }
 
-       if (empty($accion)){
-           $accion=$_GET['r'];
-       }
 
+       // $array = explode("/",$accion);
+       // if (count($array)==1) {
+       //         $controller = $accion;
+       //         $accion = 'index';
+       // }else {
+       //         $controller = $array[0];
+       //         $accion = $array[1];
+       // }
 
-       // var_dump($_GET['r']);
-       $array = explode("/",$accion);
-       if (count($array)==1) {
-               $controller = $accion;
-               $accion = 'index';
-       }else {
-               $controller = $array[0];
-               $accion = $array[1];
-       }
-
+       $accion=Yii::$app->controller->action->id;
+       $controller=Yii::$app->controller->id;
 
        $id_usuario=Yii::$app->user->identity->getId();
        $rolesusuario = \app\models\Usuariorol::findall(['id_usuario' => $id_usuario]);

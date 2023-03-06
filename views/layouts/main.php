@@ -9,12 +9,8 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 use kartik\widgets\Alert;
 use kartik\widgets\Growl;
-// use kartik\icons\Icon;
 use kartik\widgets\SwitchInput;
-
 use app\models\AnioProtocolo;
-
-
 $bundle = yiister\gentelella\assets\Asset::register($this);
 
 ?>
@@ -203,9 +199,7 @@ $bundle = yiister\gentelella\assets\Asset::register($this);
                     . Html::endForm()
                     . '</li>';
                     ?>
-                    <!-- <a data-toggle="tooltip" data-placement="top" title="Salir">
-                        <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
-                    </a> -->
+
                 </div>
 
                 <!-- /menu footer buttons -->
@@ -262,15 +256,9 @@ $bundle = yiister\gentelella\assets\Asset::register($this);
 
 
                         <div id="fecha">
-                          <!-- <h2> -->
                      <b>   <input type="text" class="form-control is-invalid" value = <?= (AnioProtocolo::find()->where(['activo'=>true])->one()!== NULL)? AnioProtocolo::find()->where(['activo'=>true])->one()->anio:'INACTIVOS'  ?> readonly>  </b>
 
                       <?= Html::a('<i class="glyphicon glyphicon-pencil"></i> Modificar Año-Protocolo', ['/anio-protocolo/index'], ['class'=>'btn btn-success grid-button']) ?>
-
-                         <!-- <p id="demo"></p> -->
-                       <!-- </h2> -->
-
-
                        </div>
 
                     </ul>
@@ -364,14 +352,7 @@ $( document ).ready(function() {
 });
 
 </script>
-<script>
-// var myVar = setInterval(myTimer, 1000);
-//
-// function myTimer() {
-//     var d = new Date();
-//     document.getElementById("demo").innerHTML = d.toLocaleTimeString();
-// }
-</script>
+
 </body>
 </html>
 <?php $this->endPage(); ?>
