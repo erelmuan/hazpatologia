@@ -4,7 +4,7 @@ use yii\helpers\Html;
 use yii\bootstrap\Modal;
 use johnitvn\ajaxcrud\CrudAsset;
 use kartik\widgets\FileInput;
-
+use yii\helpers\Url;
 $this->title = 'Perfil';
 $this->params['breadcrumbs'][] = $this->title;
 
@@ -49,8 +49,7 @@ CrudAsset::register($this);
                 <div class="col-md-4">
                     <div class="x_panel">
                       <?php  if (true) {
-                         echo '<img src=uploads/avatar/sqr_'.Yii::$app->user->identity->imagen.' class="img-circle profile_img"   alt="..." >';
-
+                         echo '<img src='.Url::base(true).'/uploads/avatar/sqr_'.Yii::$app->user->identity->imagen.' class="img-circle profile_img"   alt="..." >';
                               }?>
                     </div>
                 </div>

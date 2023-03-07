@@ -1,3 +1,9 @@
+
+VERSIÓN 1.7.2
+(la version 1.7.1 se salteo)
+Se corrige la imagen en el perfil
+se corrige la url de las imagenes de perfiles de los usuarios
+
 VERSIÓN 1.7.0
 URL y SERVICE REST
 Implementacion de url amigables
