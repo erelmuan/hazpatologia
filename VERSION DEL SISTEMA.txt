@@ -1,4 +1,4 @@
-VERSIÓN 1.7.1
+VERSIÓN 1.7.3
 favicon
 Se corrige la url del icon de la pestaña
 VERSIÓN 1.7.2
