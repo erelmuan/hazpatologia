@@ -62,7 +62,7 @@ $bundle = yiister\gentelella\assets\Asset::register($this);
       }
 
      </style>
-     <?=$this->registerLinkTag(['rel' => 'icon', 'type' => 'image/ico', 'href' => 'favicon.ico']); ?>
+     <?=$this->registerLinkTag(['rel' => 'icon', 'type' => 'image/ico', 'href' => Url::base(true).'/favicon.ico']); ?>
 </head>
 <body class="nav-<?= !empty($_COOKIE['menuIsCollapsed']) && $_COOKIE['menuIsCollapsed'] == 'true' ? 'sm' : 'md' ?>" >
 
