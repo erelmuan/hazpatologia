@@ -8,18 +8,19 @@ use Yii;
  * This is the model class for table "viewestudio".
  *
  * @property int $id_solicitud
- * @property int $id_biopsia
- * @property int $id_pap
+ * @property int $id_estudio_modelo
  * @property string $modelo
  * @property int $protocolo
  * @property string $fechadeingreso
- * @property string $paciente
+ * @property string $pacientenomb
+ * @property string $pacienteapel
  * @property string $tipo_documento
  * @property string $num_documento
  * @property string $procedencia
  * @property string $estudio
  * @property string $estado
- * @property string $medico
+ * @property string $mediconomb
+ * @property string $medicoeapel
  */
 class Viewestudio extends \yii\db\ActiveRecord
 {
@@ -41,9 +42,10 @@ class Viewestudio extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id_solicitud', 'id_biopsia', 'id_pap', 'protocolo'], 'default', 'value' => null],
-            [['id_solicitud', 'id_biopsia', 'id_pap', 'protocolo'], 'integer'],
-            [['modelo', 'paciente', 'tipo_documento', 'num_documento', 'estudio', 'estado', 'medico'], 'string'],
+          [['id_solicitud', 'id_estudio_modelo', 'protocolo'], 'default', 'value' => null],
+     		  [['id_solicitud', 'id_estudio_modelo', 'protocolo'], 'integer'],
+     		   [['modelo', 'pacientenomb', 'pacienteapel', 'tipo_documento',
+             'num_documento', 'estudio', 'estado', 'mediconomb', 'medicoeapel'], 'string'],
             [['fechadeingreso'], 'safe'],
             [['procedencia'], 'string', 'max' => 18],
         ];
@@ -56,18 +58,19 @@ class Viewestudio extends \yii\db\ActiveRecord
     {
         return [
             'id_solicitud' => 'Id Solicitud',
-            'id_biopsia' => 'Id Biopsia',
-            'id_pap' => 'Id Pap',
+            'id_estudio_modelo' => 'Id Estudio Modelo',
             'modelo' => 'Modelo',
             'protocolo' => 'Protocolo',
             'fechadeingreso' => 'Fechadeingreso',
-            'paciente' => 'Paciente',
+            'pacientenomb' => 'Pacientenomb',
+            'pacienteapel' => 'Pacienteapel',
             'tipo_documento' => 'Tipo Documento',
             'num_documento' => 'Num Documento',
             'procedencia' => 'Procedencia',
             'estudio' => 'Estudio',
             'estado' => 'Estado',
-            'medico' => 'Medico',
+            'mediconomb' => 'Mediconomb',
+		        'medicoeapel' => 'Medicoeapel',
         ];
     }
 }

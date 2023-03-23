@@ -1,0 +1,49 @@
+<?php
+    namespace app\controllers;
+    use yii\rest\ActiveController;
+    use Yii;
+    use app\models\Biopsia;
+    use yii\web\NotFoundHttpException;
+    use yii\filters\auth\HttpBearerAuth;
+
+  class BiopsiarestController extends  \yii\rest\ActiveController
+    {
+// https://localhost/hazpatologia/web/biopsiarests/informe?id=12851
+public $modelClass='app\models\BiopsiaSearch';
+
+
+
+      public function behaviors() {
+             $behaviors = parent::behaviors();
+             $behaviors['authenticator'] = [
+                'class' => HttpBearerAuth::className(),
+              'except' => ['ACCION1', 'accion2'],
+             ];
+             return $behaviors;
+      }
+
+      public function actionInforme($id)
+      {
+        $biopsia = $this->findModel($id);
+        return $this->render('/biopsia/informePatologia', ['model' => $biopsia ]);
+      }
+      protected function findModel($id) {
+          if (($model = Biopsia::findOne($id)) !== null) {
+              return $model;
+          }
+          else {
+              throw new NotFoundHttpException('The requested page does not exist.');
+          }
+      }
+     public function actions()
+     {
+         $actions = parent::actions();
+         $actions['index']['dataFilter'] = [
+             'class' => \yii\data\ActiveDataFilter::class,
+             'searchModel' => $this->modelClass,
+         ];
+         return $actions;
+     }
+
+
+}

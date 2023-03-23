@@ -30,8 +30,8 @@ $config = [
             'class' => 'yii\caching\FileCache',
         ],
         'user' => [
-            'identityClass' => 'app\models\User',
-            'enableAutoLogin' => false,
+            'identityClass' => 'app\models\Usuario',
+            'enableAutoLogin' => true,
         ]
         ,
      //    'formatter' => [
@@ -97,7 +97,18 @@ $config = [
              'rules' => [
                  // '' => 'web/site/index',
                  // '<action>'=>'site/<action>',
-               ['class'=>'yii\rest\UrlRule', 'controller' =>'vistaestudios']
+               ['class'=>'yii\rest\UrlRule', 'controller' =>'vistaestudio'],
+               ['class'=>'yii\rest\UrlRule', 'controller' =>'biopsiarest',
+               // 'pluralize'=>false,
+               'extraPatterns'=>['OPTIONS informe'=>'informe','GET informe'=>'informe' ]],
+               ['class'=>'yii\rest\UrlRule',
+                   'controller' => 'userrest',
+                    'pluralize'=>false,
+                    'extraPatterns'=>['POST authenticate'=>'authenticate',
+                            'OPTIONS authenticate'=>'authenticate',
+                      ],
+               ]
+
                ],
          ],
         /*

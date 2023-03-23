@@ -7,18 +7,14 @@ return [
         'class' => 'kartik\grid\SerialColumn',
         'width' => '30px',
     ],
-    //     [
-    //     'class'=>'\kartik\grid\DataColumn',
-    //     'attribute'=>'id_solicitud',
-    // ],
-    // [
-    //     'class'=>'\kartik\grid\DataColumn',
-    //     'attribute'=>'id_biopsia',
-    // ],
+        [
+        'class'=>'\kartik\grid\DataColumn',
+        'attribute'=>'id_solicitud',
+    ],
     [
         'class'=>'\kartik\grid\DataColumn',
-        'attribute'=>'id_pap',
-    ],
+       'attribute'=>'id_estudio_modelo',
+         ],
     [
         'class'=>'\kartik\grid\DataColumn',
         'attribute'=>'modelo',
@@ -32,33 +28,41 @@ return [
         'attribute'=>'fechadeingreso',
     ],
     [
-        'class'=>'\kartik\grid\DataColumn',
-        'attribute'=>'paciente',
-    ],
-    [
-        'class'=>'\kartik\grid\DataColumn',
-        'attribute'=>'tipo_documento',
-    ],
-    [
-        'class'=>'\kartik\grid\DataColumn',
-        'attribute'=>'num_documento',
-    ],
-    [
-        'class'=>'\kartik\grid\DataColumn',
-        'attribute'=>'procedencia',
-    ],
-    [
-        'class'=>'\kartik\grid\DataColumn',
-        'attribute'=>'estudio',
-    ],
-    [
-        'class'=>'\kartik\grid\DataColumn',
-        'attribute'=>'estado',
-    ],
-    [
-        'class'=>'\kartik\grid\DataColumn',
-        'attribute'=>'medico',
-    ],
+      'class'=>'\kartik\grid\DataColumn',
+      'attribute'=>'pacientenomb',
+  ],
+  [
+      'class'=>'\kartik\grid\DataColumn',
+      'attribute'=>'pacienteapel',
+  ],
+  [
+      'class'=>'\kartik\grid\DataColumn',
+      'attribute'=>'tipo_documento',
+  ],
+  [
+      'class'=>'\kartik\grid\DataColumn',
+      'attribute'=>'num_documento',
+  ],
+  [
+      'class'=>'\kartik\grid\DataColumn',
+      'attribute'=>'procedencia',
+  ],
+  [
+      'class'=>'\kartik\grid\DataColumn',
+      'attribute'=>'estudio',
+  ],
+  [
+      'class'=>'\kartik\grid\DataColumn',
+      'attribute'=>'estado',
+  ],
+  [
+      'class'=>'\kartik\grid\DataColumn',
+      'attribute'=>'mediconomb',
+  ],
+  [
+      'class'=>'\kartik\grid\DataColumn',
+      'attribute'=>'medicoeapel',
+  ],
     [
         'class' => 'kartik\grid\ActionColumn',
         'dropdown' => false,

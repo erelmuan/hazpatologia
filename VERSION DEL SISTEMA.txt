@@ -1,3 +1,13 @@
+VERSIÓN 1.8.0
+cambio de identityClass - servicio REST
+Se cambia identityClass en la configuracion, mas adelante prescindir del modelo user.
+incorporacion de los servicio REST de usuario y biopsia. a modo de prueba.
+Se agrega el id a la grilla estado
+Se incorpora de ahora en adelante, los scripts de las modificaicones a las base de datos.
+Correcciones en los controladores y demas archivos que fueron impactados por el cambio de identityClass
+
+
+
 VERSIÓN 1.7.3
 favicon
 Se corrige la url del icon de la pestaña

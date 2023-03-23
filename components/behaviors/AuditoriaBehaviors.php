@@ -20,7 +20,7 @@ class AuditoriaBehaviors extends Behavior
       $differences =  array_diff_assoc($this->owner->getOldAttributes(), $this->owner->getAttributes());
       if (!empty($differences)){
           $log=new Auditoria();
-          $log->id_usuario= Yii::$app->user->identity->id_user;
+          $log->id_usuario= Yii::$app->user->identity->id;
           $log->accion= "MODIFICACIÓN";
           $tabla=str_replace("_", "-", $this->owner->tableName());
           $log->tabla= substr(get_class($this->owner),11);
@@ -66,7 +66,7 @@ class AuditoriaBehaviors extends Behavior
     {
 
       $log=new Auditoria();
-      $log->id_usuario= Yii::$app->user->identity->id_user;
+      $log->id_usuario= Yii::$app->user->identity->id;
       $log->accion= "CREACIÓN";
       $tabla=str_replace("_", "-", $this->owner->tableName());
       $log->tabla= substr(get_class($this->owner),11);
@@ -97,7 +97,7 @@ class AuditoriaBehaviors extends Behavior
     {
       $oldattributes = $this->owner->getOldAttributes();
       $log=new Auditoria();
-      $log->id_usuario= Yii::$app->user->identity->id_user;
+      $log->id_usuario= Yii::$app->user->identity->id;
       $log->accion= "ELIMINACIÓN";
       $tabla= substr(get_class($this->owner), 11);
       $log->tabla= $tabla;
@@ -135,6 +135,6 @@ class AuditoriaBehaviors extends Behavior
         $this->_oldattributes=$value;
     }
 
-  
+
 }
 ?>

@@ -6,23 +6,24 @@ use yii\widgets\DetailView;
 /* @var $model app\models\Viewestudio */
 ?>
 <div class="viewestudio-view">
- 
+
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
             'id_solicitud',
-            'id_biopsia',
-            'id_pap',
+            'id_estudio_modelo',
             'modelo',
             'protocolo',
             'fechadeingreso',
-            'paciente:ntext',
+            'pacientenomb:ntext',
+            'pacienteapel:ntext',
             'tipo_documento',
             'num_documento',
             'procedencia',
             'estudio',
             'estado',
-            'medico:ntext',
+            'mediconomb:ntext',
+            'medicoeapel:ntext',
         ],
     ]) ?>
 

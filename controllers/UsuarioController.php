@@ -33,11 +33,8 @@ class UsuarioController extends Controller {
             ->queryParams);
         $request = Yii::$app->request;
         if ($request->isAjax) { // modal para cambiar contraseña
-            Yii::$app
-                ->response->format = Response::FORMAT_JSON;
-            $model = Usuariorol::findOne(['id_usuario' => Yii::$app
-                ->user
-                ->identity->id, 'id_rol' => 1, //id rol admin
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            $model = Usuariorol::findOne(['id_usuario' => Yii::$app->user->identity->id, 'id_rol' => 1, //id rol admin
             ]);
             if ($model == null) {
                 return ['title' => "Cambiar contraseña #", 'content' => "No puede cambiar una contraseña si no es administrador", 'footer' => Html::button('Cerrar', ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) ];
@@ -134,10 +131,8 @@ class UsuarioController extends Controller {
             /*
              *   Process for ajax request
             */
-            Yii::$app
-                ->response->format = Response::FORMAT_JSON;
-            $modeluser = Usuariorol::findOne(['id_usuario' => Yii::$app
-                ->user
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            $modeluser = Usuariorol::findOne(['id_usuario' => Yii::$app->user
                 ->identity->id, 'id_rol' => 1, //id rol admin
             ]);
             if ($modeluser == null) {
@@ -173,15 +168,11 @@ class UsuarioController extends Controller {
      * @return mixed
      */
     public function actionDelete($id) {
-        Yii::$app
-            ->response->format = Response::FORMAT_JSON;
-        if (Yii::$app
-            ->user
-            ->identity->id == $id) {
+        Yii::$app->response->format = Response::FORMAT_JSON;
+        if (Yii::$app->user->identity->id == $id) {
             return ['title' => "Eliminar Rol #" . $id, 'content' => "No puede eliminarse a si mismo", 'footer' => Html::button('Cerrar', ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) ];
         }
-        $model = Usuariorol::findOne(['id_usuario' => Yii::$app
-            ->user
+        $model = Usuariorol::findOne(['id_usuario' => Yii::$app->user
             ->identity->id, 'id_rol' => 1, //id rol admin
         ]);
         if ($model == null) {
@@ -346,14 +337,10 @@ class UsuarioController extends Controller {
     }
     public function actionPerfil() {
         $request = Yii::$app->request;
-        $id = Yii::$app
-            ->user
-            ->identity
-            ->getId();
+        $id = Yii::$app->user->identity->getId();
         $model = $this->findModel($id);
         if ($request->isAjax) { // modal para cambiar contraseña
-            Yii::$app
-                ->response->format = Response::FORMAT_JSON;
+            Yii::$app->response->format = Response::FORMAT_JSON;
             if ($dato = $request->post()) {
                 $model->pass_ctrl = $dato['Usuario']['pass_ctrl'];
                 $model->pass_new = $dato['Usuario']['pass_new'];
@@ -409,9 +396,7 @@ class UsuarioController extends Controller {
                         ->generateRandomString() . ".{$ext}";
                     // $path = Yii::$app->params['uploadPath'] . $nombreEncriptadoImagen;
                     $path = Yii::$app->params['uploadPath'] . $nombreEncriptadoImagen;
-                    $model->id = Yii::$app
-                        ->user
-                        ->getId();
+                    $model->id = Yii::$app->user->getId();
                     $model->imagen = $nombreEncriptadoImagen;
                     $image->saveAs($path);
                     //Redimensionar

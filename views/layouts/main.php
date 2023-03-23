@@ -78,7 +78,7 @@ $bundle = yiister\gentelella\assets\Asset::register($this);
             <div class="left_col scroll-view">
 
                 <div class="navbar nav_title" style="border: 0;">
-                    <center class="site_title"><i class="fa fa-flask"></i> <span>hazpatologia</span> </center><center id="version" style="color:white; font-size: 10px;"> <b>Version: 1.7.3 </b></center>
+                    <center class="site_title"><i class="fa fa-flask"></i> <span>hazpatologia</span> </center><center id="version" style="color:white; font-size: 10px;"> <b>Version: 1.8.0 </b></center>
                 </div>
                 <div class="clearfix"></div>
 
@@ -162,7 +162,7 @@ $bundle = yiister\gentelella\assets\Asset::register($this);
                         <? if(empty($_SESSION['mostrar']) || $_SESSION['mostrar']=="bienvenido" ){  ?>
                         <div id="loader-out">
                           <div id="loader-container">
-                            <p id="loading-text">BIENVENIDO <?=Yii::$app->user->identity->username ?> </p>
+                            <p id="loading-text">BIENVENIDO <?=Yii::$app->user->identity->usuario ?> </p>
                           </div>
                         </div>
                         <?
@@ -220,7 +220,7 @@ $bundle = yiister\gentelella\assets\Asset::register($this);
                         <li class="">
                             <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
                               <? echo '<img src='.Url::base(true).'/uploads/avatar/sm_'.Yii::$app->user->identity->imagen.'   alt="..." >';?>
-                              <?=Yii::$app->user->identity->username ?>
+                              <?=Yii::$app->user->identity->usuario ?>
                                 <span class=" fa fa-angle-down"></span>
                             </a>
                             <ul class="dropdown-menu dropdown-usermenu pull-right">

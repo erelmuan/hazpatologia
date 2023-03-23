@@ -114,7 +114,7 @@ class PapController extends Controller {
         $provider['dataProviderCie'] = $dataProviderCie;
     }
     public function validar($post) {
-        if (Yii::$app->user->identity->password <> md5($post['contrasenia'])) {
+        if (Yii::$app->user->identity->contrasenia <> md5($post['contrasenia'])) {
             Yii::$app->getSession()->setFlash('warning', ['type' => 'danger', 'duration' => 5000, 'icon' => 'fa fa-warning', 'message' => "CONTRASEÑA INCORRECTA", 'title' => 'NOTIFICACIÓN', 'positonY' => 'top', 'positonX' => 'right']);
             return false;
         }

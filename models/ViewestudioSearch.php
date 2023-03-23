@@ -18,8 +18,9 @@ class ViewestudioSearch extends Viewestudio
     public function rules()
     {
         return [
-            [['id_solicitud', 'id_biopsia', 'id_pap', 'protocolo'], 'integer'],
-            [['modelo', 'fechadeingreso', 'paciente', 'tipo_documento', 'num_documento', 'procedencia', 'estudio', 'estado', 'medico'], 'safe'],
+          [['id_solicitud', 'id_estudio_modelo', 'protocolo'], 'integer'],
+            [['modelo', 'fechadeingreso', 'pacientenomb', 'pacienteapel', 'tipo_documento', 'num_documento',
+             'procedencia', 'estudio', 'estado', 'mediconomb', 'medicoeapel'], 'safe'],
         ];
     }
 
@@ -57,20 +58,21 @@ class ViewestudioSearch extends Viewestudio
 
         $query->andFilterWhere([
             'id_solicitud' => $this->id_solicitud,
-            'id_biopsia' => $this->id_biopsia,
-            'id_pap' => $this->id_pap,
+            'id_estudio_modelo' => $this->id_estudio_modelo,
             'protocolo' => $this->protocolo,
             'fechadeingreso' => $this->fechadeingreso,
         ]);
 
         $query->andFilterWhere(['like', 'modelo', $this->modelo])
-            ->andFilterWhere(['like', 'paciente', $this->paciente])
+            ->andFilterWhere(['like', 'pacientenomb', $this->pacientenomb])
+            ->andFilterWhere(['like', 'pacienteapel', $this->pacienteapel])
             ->andFilterWhere(['like', 'tipo_documento', $this->tipo_documento])
             ->andFilterWhere(['like', 'num_documento', $this->num_documento])
             ->andFilterWhere(['like', 'procedencia', $this->procedencia])
             ->andFilterWhere(['like', 'estudio', $this->estudio])
             ->andFilterWhere(['like', 'estado', $this->estado])
-            ->andFilterWhere(['like', 'medico', $this->medico]);
+            ->andFilterWhere(['like', 'mediconomb', $this->mediconomb])
+		        ->andFilterWhere(['like', 'medicoeapel', $this->medicoeapel]);
 
         return $dataProvider;
     }

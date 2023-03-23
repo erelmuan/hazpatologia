@@ -28,17 +28,52 @@ use Yii;
  use yii\filters\AccessControl;
  use app\components\behaviors\AuditoriaBehaviors;
 
-class Usuario extends \yii\db\ActiveRecord
+class Usuario extends \yii\db\ActiveRecord  implements \yii\web\IdentityInterface
 {
-  public function behaviors()
+  public $authKey;
+
+  public function findByUsername($username)
   {
 
-    return array(
-           'AuditoriaBehaviors'=>array(
-                  'class'=>AuditoriaBehaviors::className(),
-                  ),
-      );
- }
+      $usuario= Usuario::findOne(['usuario'=>$username]);
+
+      return new static($model);
+  }
+
+  public static function findIdentity($id)
+  {
+      $usuario= Usuario::findOne($id);
+
+      if ($usuario){
+
+          $model=new Usuario();
+          $model->id=$usuario->id;
+          $model->usuario=$usuario->usuario;
+          $model->nombre=$usuario->nombre;
+          $model->contrasenia=$usuario->contrasenia;
+          $model->activo=$usuario->activo;
+          $model->imagen=$usuario->imagen;
+          $model->id_pantalla=$usuario->id_pantalla;
+        //  $model->administrador=$usuario->administrador;
+
+          return new static($model);
+      }
+      return null;
+
+  }
+  public function behaviors()
+    {
+
+      return array(
+             'AuditoriaBehaviors'=>array(
+                    'class'=>AuditoriaBehaviors::className(),
+                    ),
+        );
+   }
+   public static function findIdentityByAccessToken($token, $type = null) {
+                   return self::findOne(['token' => $token]);
+
+     }
     /**
      * {@inheritdoc}
      */
@@ -174,7 +209,7 @@ class Usuario extends \yii\db\ActiveRecord
          return $this->hasMany(Pap::className(), ['id_usuario' => 'id']);
      }
 
-     
+
      /**
      * @return \yii\db\ActiveQuery
       */
@@ -197,5 +232,26 @@ class Usuario extends \yii\db\ActiveRecord
 
          }
 
+         /**
+          * @inheritdoc
+          */
+         public function getId()
+         {
+             return $this->id;
+         }
+         /**
+          * @inheritdoc
+          */
+         public function getAuthKey()
+         {
+             return $this->authKey;
+         }
+         /**
+          * @inheritdoc
+          */
+         public function validateAuthKey($authKey)
+         {
+             return $this->authKey === $authKey;
+         }
 
 }
