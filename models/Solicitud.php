@@ -148,8 +148,7 @@ class Solicitud extends \yii\db\ActiveRecord
                 'value' => 'pacienteurl',
                  'filterInputOptions' => ['class' => 'form-control','placeholder' => 'Ingrese DNI o apellido'],
                  'format' => 'raw',
-
-
+                 'contentOptions' => ['style' => 'white-space: nowrap;'],
             ],
 
           [
@@ -159,7 +158,7 @@ class Solicitud extends \yii\db\ActiveRecord
               'value' => 'medicourl',
                'filterInputOptions' => ['class' => 'form-control','placeholder' => 'Ingrese Matricula o apellido'],
                'format' => 'raw',
-
+               'contentOptions' => ['style' => 'white-space: nowrap;'],
           ],
 
           [

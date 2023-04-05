@@ -54,6 +54,7 @@ use yii\helpers\Html;
         'aspecto:ntext',
         'pavimentosas:ntext',
         'glandulares:ntext',
+        'vph:boolean',
         'diagnostico:ntext',
         [
           'value'=> $model->estado->descripcion ,
@@ -62,16 +63,50 @@ use yii\helpers\Html;
         'cantidad',
         'frase',
         ],
-    ]);
+    ]);?>
+       <? if ($model->vph ){ ?>
+      <div id="w0ss" class="x_panel">
+      <div class="x_title"><h2><i class="fa fa-table"></i> ESTUDIO vph  </h2>
+      <div class="clearfix"> <div class="nav navbar-right panel_toolbox"></div>
+      </div>
+    </div>
+    <?
+     if ($model->vph && isset($model->vphEscaneado)){
+        echo DetailView::widget([
+            'model' => $model,
+            'attributes' => [
 
+            [
+              'value'=> Html::a('<i class="fa fa-file-pdf-o"></i> Generar informe vph', ['/vph-escaneado/informe', 'id' => $model->vphEscaneado->id], [
+                    'class'=>'btn btn-primary',
+                    // 'role'=>'modal-remote',
+                    'target'=>'_blank',
+                    'data-toggle'=>'tooltip',
+                    'title'=>'Se abrirá el archivo PDF generado en una nueva pestaña'
+                ]) ,
+              'label'=> 'Documento',
+              'format'=>'raw',
+           ],
+           [
+             'value'=> $model->vphEscaneado->observacion ,
+             'label'=> 'Observacion',
+          ] ,
+
+            ],
+        ]) ;
+      }
+      else {
+          echo "ESTA ACTIVA LA OPCIÓN VPH PERO NO SE CARGO NINGÚN ESTUDIO";
+      }
+    ?>
+    </div>
+    <? }
         echo Html::a('<i class="fa fa-file-pdf-o"></i> Generar informe de pap', ['/pap/informe', 'id' => $model->id], [
               'class'=>'btn btn-dark',
               'target'=>'_blank',
               'data-toggle'=>'tooltip',
               'title'=>'Se abrirá el archivo PDF generado en una nueva pestaña'
           ]);
-
-
     ?>
 </div>
 </div>

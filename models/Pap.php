@@ -32,7 +32,7 @@ use Yii;
  * @property string $diagnostico
  * @property string $observaciones
 * @property bool $firmado
- * @property bool $Pagado
+ * @property bool $vph
  * @property string $topografia
  * @property int $cantidad
  * @property int $id
@@ -40,12 +40,12 @@ use Yii;
  * @property string $fechalisto
  * @property int $id_estado
  * @property string $frase
-
  * @property Estado $estado
  * @property Solicitudpap $solicitudpap
  * @property Solicitudpap $solicitudpap0
  * @property Usuario $usuario
  * @property papcie10[] $papcie10s
+ * @property VphEscaneado $vphEscaneado
  */
  use app\components\behaviors\AuditoriaBehaviors;
 
@@ -77,7 +77,7 @@ class Pap extends \yii\db\ActiveRecord
             [['descripcion', 'calificacion', 'hormonal', 'flora', 'aspecto', 'pavimentosas', 'glandulares', 'diagnostico', 'observaciones', 'topografia', 'frase'], 'string'],
             [['eosinofilas', 'cianofilas', 'intermedias', 'parabasales', 'indicepicnotico', 'cantidad', 'id_solicitudpap', 'id_estado', 'id_usuario' ], 'default', 'value' => null],
             [['eosinofilas', 'cianofilas', 'intermedias', 'parabasales', 'indicepicnotico', 'cantidad', 'id_solicitudpap',  'id_estado', 'id_usuario'], 'integer'],
-            [['firmado', 'Pagado'], 'boolean'],
+            [['firmado', 'vph'], 'boolean'],
             [['fechalisto'], 'safe'],
             [[ 'indicedemaduracion'], 'string', 'max' => 8],
             [['plegamiento', 'agrupamiento', 'leucocitos', 'hematies', 'histiocitos', 'detritus', 'citolisis'], 'string', 'max' => 4],
@@ -118,7 +118,7 @@ class Pap extends \yii\db\ActiveRecord
             'diagnostico' => 'Diagnostico',
             'observaciones' => 'Observaciones',
             'firmado' => 'Firmado',
-            'Pagado' => 'Pagado',
+            'vph' => 'vph',
             'topografia' => 'Topografia',
             'cantidad' => 'Cantidad',
             'id' => 'ID',
@@ -153,7 +153,7 @@ class Pap extends \yii\db\ActiveRecord
               'value' => 'solicitudpap.pacienteurl',
                'filterInputOptions' => [ 'class' => 'form-control','placeholder' => 'DNI o apellido'],
                'format' => 'raw',
-
+               'contentOptions' => ['style' => 'white-space: nowrap;'],
           ],
           [
               'class'=>'\kartik\grid\DataColumn',
@@ -162,7 +162,7 @@ class Pap extends \yii\db\ActiveRecord
               'value' => 'solicitudpap.medicourl',
                'filterInputOptions' => ['class' => 'form-control' ,'placeholder' => 'matricula o apellido'],
                'format' => 'raw',
-
+               'contentOptions' => ['style' => 'white-space: nowrap;'],
           ],
           [
               //nombre
@@ -233,6 +233,10 @@ class Pap extends \yii\db\ActiveRecord
               'attribute'=>'diagnostico',
           ],
           [
+              'class'=>'\kartik\grid\BooleanColumn',
+              'attribute'=>'vph',
+          ],
+          [
             'class'=>'\kartik\grid\DataColumn',
             'attribute' => 'estado',
             'label' => 'Estado',
@@ -251,20 +255,20 @@ class Pap extends \yii\db\ActiveRecord
 
 
     /**
-    		    * @return \yii\db\ActiveQuery
-    		    */
-    		   public function getSolicitudpap()
-    		   {
-    		       return $this->hasOne(Solicitudpap::className(), ['id' => 'id_solicitudpap']);
-    		   }
+     * @return \yii\db\ActiveQuery
+    */
+    public function getSolicitudpap()
+     {
+        return $this->hasOne(Solicitudpap::className(), ['id' => 'id_solicitudpap']);
+     }
 
-    		   /**
-    		    * @return \yii\db\ActiveQuery
-    		    */
-    		   public function getUsuario()
-    		   {
-    		       return $this->hasOne(Usuario::className(), ['id' => 'id_usuario']);
-    		   }
+      /**
+    	   * @return \yii\db\ActiveQuery
+      */
+    public function getUsuario()
+    	 {
+         return $this->hasOne(Usuario::className(), ['id' => 'id_usuario']);
+       }
 
 
     public function estados() {
@@ -293,5 +297,11 @@ class Pap extends \yii\db\ActiveRecord
       return $this->hasOne(Papcie10::className(), ['id_pap' => 'id']);
     }
 
-
+     /**
+      * @return \yii\db\ActiveQuery
+      */
+     public function getVphEscaneado()
+     {
+         return $this->hasOne(VphEscaneado::className(), ['id_pap' => 'id']);
+     }
 }

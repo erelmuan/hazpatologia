@@ -157,6 +157,9 @@ class PapController extends Controller {
               $Solicitud->id_estado = $model->id_estado;
               $Solicitud->save();
           }
+          if ($model->vph) {
+              return $this->redirect(['vph-escaneado/create', 'id_pap' => $model->id]);
+          }
             return $this->redirect(['view', 'id' => $model->id]);
         }
         else {
@@ -195,6 +198,16 @@ class PapController extends Controller {
             if ($model->solicitudpap->id_estado !== $model->id_estado) {
                 $model->solicitudpap->id_estado = $model->id_estado;
                 $model->solicitudpap->save();
+            }
+            if (!$model->vph && isset($model->vphEscaneado)) {
+                $model->vphEscaneado->baja_logica=true;
+                $model->vphEscaneado->save();
+            }
+            if ($model->vph && isset($model->vphEscaneado)) {
+                return $this->redirect(['vph-escaneado/update', 'id' => $model->vphEscaneado->id]);
+            }
+            elseif ($model->vph) {
+                return $this->redirect(['vph-escaneado/create', 'id_pap' => $model->id]);
             }
             return $this->redirect(['view', 'id' => $model->id]);
         }

@@ -127,7 +127,7 @@ class Biopsia extends \yii\db\ActiveRecord
               'value' => 'solicitudbiopsia.pacienteurl',
                'filterInputOptions' => ['class' => 'form-control',  'placeholder' => 'DNI o apellido'],
                'format' => 'raw',
-
+               'contentOptions' => ['style' => 'white-space: nowrap;'],
           ],
           [
               'class'=>'\kartik\grid\DataColumn',
@@ -136,7 +136,7 @@ class Biopsia extends \yii\db\ActiveRecord
               'value' => 'solicitudbiopsia.medicourl',
                'filterInputOptions' => ['class' => 'form-control','placeholder' => 'matricula o apellido'],
                'format' => 'raw',
-
+               'contentOptions' => ['style' => 'white-space: nowrap;'],
           ],
           [
               'class'=>'\kartik\grid\DataColumn',
@@ -175,7 +175,8 @@ class Biopsia extends \yii\db\ActiveRecord
               'class'=>'\kartik\grid\DataColumn',
               'attribute'=>'sexo',
               'label'=> 'Sexo',
-              'value'=>'solicitudbiopsia.paciente.sexo'
+              'value'=>'solicitudbiopsia.paciente.sexo',
+
           ],
           [
               'class'=>'\kartik\grid\DataColumn',

@@ -26,9 +26,7 @@ class InmunohistoquimicaEscaneadaController extends Controller {
      */
     public function actionIndex() {
         $searchModel = new InmunohistoquimicaEscaneadaSearch();
-        $dataProvider = $searchModel->search(Yii::$app
-            ->request
-            ->queryParams);
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         return $this->render('index', ['searchModel' => $searchModel, 'dataProvider' => $dataProvider, ]);
     }
     /**
@@ -39,13 +37,36 @@ class InmunohistoquimicaEscaneadaController extends Controller {
     public function actionView($id) {
         $request = Yii::$app->request;
         if ($request->isAjax) {
-            Yii::$app
-                ->response->format = Response::FORMAT_JSON;
+            Yii::$app->response->format = Response::FORMAT_JSON;
             return ['title' => "InmunohistoquimicaEscaneada #" . $id, 'content' => $this->renderAjax('view', ['model' => $this->findModel($id) , ]) , 'footer' => Html::button('Close', ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) . Html::a('Edit', ['update', 'id' => $id], ['class' => 'btn btn-primary', 'role' => 'modal-remote']) ];
         }
         else {
             return $this->render('view', ['model' => $this->findModel($id) , ]);
         }
+    }
+    function subirDocumento($model, $file){
+        $directorio = Yii::$app->basePath . '/web/uploads/inmunohistoquimicas/';
+        $ext = (explode(".", $file->name));
+        $ext = end($ext);
+        $nombreDocumento = "ihq-".$model->biopsia->solicitudbiopsia->protocolo."-".
+        $model->biopsia->solicitudbiopsia->fechadeingreso."-".$model->biopsia->solicitudbiopsia->paciente->apellido." ".
+        $model->biopsia->solicitudbiopsia->paciente->nombre. ".{$ext}";
+        $model->documento = $nombreDocumento;
+        $model->nombre_archivo = $file->name;
+
+        // Verificar si el archivo ya existe en la carpeta
+        if (file_exists($directorio.$nombreDocumento)) {
+            $i = 1;
+            while (file_exists($directorio.$nombreDocumento."(".$i .")" )) {
+                $i++;
+            }
+            $resguardo =  $nombreDocumento ."(".$i .")" ;
+            // Renombrar el archivo, rename (nombre_actual, nombre nuevo)
+            rename($directorio. $nombreDocumento,$directorio.$resguardo);
+        }
+
+        $file->saveAs($directorio. $nombreDocumento);
+
     }
     /**
      * Creates a new InmunohistoquimicaEscaneada model.
@@ -57,43 +78,11 @@ class InmunohistoquimicaEscaneadaController extends Controller {
         $request = Yii::$app->request;
         $model = new InmunohistoquimicaEscaneada();
         $model->id_biopsia = $id_biopsia;
-        if ($request->isAjax) {
-            /*
-             *   Process for ajax request
-            */
-            Yii::$app
-                ->response->format = Response::FORMAT_JSON;
-            if ($request->isGet) {
-                return ['title' => "Create new InmunohistoquimicaEscaneada", 'content' => $this->renderAjax('create', ['model' => $model, ]) , 'footer' => Html::button('Close', ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) . Html::button('Save', ['class' => 'btn btn-primary', 'type' => "submit"]) ];
-            }
-            else if ($model->load($request->post()) && $model->save()) {
-                return ['forceReload' => '#crud-datatable-pjax', 'title' => "Create new InmunohistoquimicaEscaneada", 'content' => '<span class="text-success">Create InmunohistoquimicaEscaneada success</span>', 'footer' => Html::button('Close', ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) . Html::a('Create More', ['create'], ['class' => 'btn btn-primary', 'role' => 'modal-remote']) ];
-            }
-            else {
-                return ['title' => "Create new InmunohistoquimicaEscaneada", 'content' => $this->renderAjax('create', ['model' => $model, ]) , 'footer' => Html::button('Close', ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) . Html::button('Save', ['class' => 'btn btn-primary', 'type' => "submit"]) ];
-            }
-        }
-        else {
-            /*
-             *   Process for non-ajax request
-            */
-            if ($model->load(Yii::$app
-                ->request
-                ->post())) {
-                // $image = UploadedFile::getInstances($model, 'imagen')[0];
-                // unset($post['Firma']['imagen']);
+            if ($model->load(Yii::$app->request->post()) && ! empty(UploadedFile::getInstances($model, 'documento') [0])) {
                 $file = UploadedFile::getInstances($model, 'documento') [0];;
-                // store the source file name
-                $ext = (explode(".", $file->name));
-                $ext = end($ext);
-                // $ext = end((explode(".", $file->name)));
-                Yii::$app->params['uploadPath'] = Yii::$app->basePath . '/web/uploads/inmunohistoquimicas/';
-                $nombreEncriptadoImagen = Yii::$app
-                    ->security
-                    ->generateRandomString() . ".{$ext}";
-                $path = Yii::$app->params['uploadPath'] . '/' . $nombreEncriptadoImagen;
-                $model->documento = $nombreEncriptadoImagen;
-                $file->saveAs($path);
+                $this->subirDocumento($model, $file);
+                $model->baja_logica=false;
+
                 if ($model->save()) {
                     return $this->redirect(['biopsia/view', 'id' => $model->id_biopsia]);
                 }
@@ -104,7 +93,6 @@ class InmunohistoquimicaEscaneadaController extends Controller {
             else {
                 return $this->render('create', ['model' => $model ]);
             }
-        }
     }
     /**
      * Updates an existing InmunohistoquimicaEscaneada model.
@@ -116,30 +104,18 @@ class InmunohistoquimicaEscaneadaController extends Controller {
     public function actionUpdate($id) {
         $request = Yii::$app->request;
         $model = $this->findModel($id);
-        if ($this
-            ->request
-            ->isPost) {
+        if ($this->request->isPost) {
             $post = $request->post();
-            //verificar porque hay que agregar el indice [0] a diferencia cuando se sube una imagen de perfil
+            //verificar porque hay que agregar el indice [0] a diferencia cuando se sube un Documento
             $file = UploadedFile::getInstance($model, 'documento');
             if (empty($file)) {
                 unset($post['InmunohistoquimicaEscaneada']['documento']);
             }
             if ($model->load($post)) {
                 if (!is_null($file) && !empty($file) && $file->name != "") {
-                    // $file = UploadedFile::getInstances($model, 'documento')[0];
-                    // store the source file name
-                    $ext = (explode(".", $file->name));
-                    $ext = end($ext);
-                    // $ext = end((explode(".", $file->name)));
-                    Yii::$app->params['uploadPath'] = Yii::$app->basePath . '/web/uploads/inmunohistoquimicas/';
-                    $nombreEncriptadoImagen = Yii::$app
-                        ->security
-                        ->generateRandomString() . ".{$ext}";
-                    $path = Yii::$app->params['uploadPath'] . '/' . $nombreEncriptadoImagen;
-                    $model->documento = $nombreEncriptadoImagen;
-                    $file->saveAs($path);
+                    $this->subirDocumento($model, $file);
                 }
+                $model->baja_logica=false;
                 if ($model->save()) {
                     return $this->redirect(['biopsia/view', 'id' => $model->id_biopsia]);
                 }
@@ -147,6 +123,7 @@ class InmunohistoquimicaEscaneadaController extends Controller {
                     return $this->render('update', ['model' => $model ]);
                 }
             }
+
         }
         else {
             return $this->render('update', ['model' => $model]);

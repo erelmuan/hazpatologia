@@ -1,3 +1,18 @@
+VERSIÓN 2.0.0
+Modificacion del login
+Incorporación de iconos al menu del usuario
+Se Modifico el boton salir usando js
+BAJA LOGICA A LAS HIQ Y VPH, AGREGA UN CAMPO, solamente esto se da en las actualizacioones
+deee hiq y vph, no se puede dar en la creacion
+ACTUALIZAR A TODOS LOS VALORES NULOS A FALSE EN LOS PAPS VPH
+agregue en InmunohistoquimicaEscaneada el campo nombre_archivo y baja logica
+cree una tabla vphEscaneado
+ajuste el tamaño de la columna de las biopsias, paps y solicitudes
+Modificacion desde la bd los nombres de las Inmunohistoquimica
+
+
+
+
 VERSIÓN 1.8.0
 cambio de identityClass - servicio REST
 Se cambia identityClass en la configuracion, mas adelante prescindir del modelo user.

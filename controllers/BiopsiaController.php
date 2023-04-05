@@ -155,7 +155,6 @@ class BiopsiaController extends Controller {
             $model->id_usuario = Yii::$app->user->identity->getId();
         }
         if ($model->load($post) && $model->save()) {
-
             // cambio de estados
             if ($Solicitud->id_estado !== $model->id_estado) {
                 $Solicitud->id_estado = $model->id_estado;
@@ -212,9 +211,9 @@ class BiopsiaController extends Controller {
                 $model->solicitudbiopsia->id_estado = $model->id_estado;
                 $model->solicitudbiopsia->save();
             }
-            if($model->fechalisto !=null){
-              //Creacion de biopsiacie10
-              // $this->saveBiopsiacie10($post['Biopsia']['id_cie10'],$model->id);
+            if (!$model->ihq && isset($model->inmunohistoquimicaEscaneada)) {
+                $model->inmunohistoquimicaEscaneada->baja_logica=true;
+                $model->inmunohistoquimicaEscaneada->save();
             }
             if ($model->ihq && isset($model->inmunohistoquimicaEscaneada)) {
                 return $this->redirect(['inmunohistoquimica-escaneada/update', 'id' => $model->inmunohistoquimicaEscaneada->id]);

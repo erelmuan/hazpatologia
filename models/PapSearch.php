@@ -37,6 +37,7 @@ class PapSearch extends Pap
             [['paciente','medico','procedencia','estado'], 'safe'],
             ['fecharealizacion', 'date', 'format' => 'dd/MM/yyyy'],
             ['fechadeingreso', 'date', 'format' => 'dd/MM/yyyy'],
+            [['firmado', 'vph'], 'boolean'],
 
         ];
     }
@@ -88,6 +89,7 @@ class PapSearch extends Pap
             'pap.id' => $this->id,
             'id_solicitudpap' => $this->id_solicitudpap,
             'indicepicnotico' => $this->indicepicnotico,
+            'vph' => $this->vph,
             'protocolo' => $this->protocolo,
             'fechalisto' => $this->fechalisto,
             'cantidad' => $this->cantidad,

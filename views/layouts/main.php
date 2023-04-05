@@ -22,6 +22,7 @@ $bundle = yiister\gentelella\assets\Asset::register($this);
     <meta charset="<?= Yii::$app->charset ?>" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="<?= Yii::$app->request->baseUrl ?>/assets/fontawesome/css/all.min.css">
     <?= Html::csrfMetaTags() ?>
     <title><?= Html::encode($this->title) ?></title>
     <?php $this->head() ?>
@@ -33,12 +34,10 @@ $bundle = yiister\gentelella\assets\Asset::register($this);
     <!--Plantilla para modificar el link logout-->
      <?= Html::cssFile('@web/css/botonlogout.css') ?>
      <?= Html::cssFile('@web/css/plantillas-intro.css') ?>
-
      <!-- efecto sobre los modulos  -->
      <?= Html::cssFile('@web/css/animate.min.css') ?>
      <?= Html::jsFile('@web/js/jquery.min.js') ?>
      <!-- Modal para que muestra el protocolo -->
-
      <?= Html::jsFile('@web/js/sweetalert2.all.min.js') ?>
      <?= Html::jsFile('@web/js/flashjs/dist/flash.min.js') ?>
      <style>
@@ -78,7 +77,7 @@ $bundle = yiister\gentelella\assets\Asset::register($this);
             <div class="left_col scroll-view">
 
                 <div class="navbar nav_title" style="border: 0;">
-                    <center class="site_title"><i class="fa fa-flask"></i> <span>hazpatologia</span> </center><center id="version" style="color:white; font-size: 10px;"> <b>Version: 1.8.0 </b></center>
+                    <center class="site_title"><i class="fa fa-flask"></i> <span>hazpatologia</span> </center><center id="version" style="color:white; font-size: 10px;"> <b>Version: 2.0.0 </b></center>
                 </div>
                 <div class="clearfix"></div>
 
@@ -149,7 +148,7 @@ $bundle = yiister\gentelella\assets\Asset::register($this);
                                         ],
                                     ],
                                     ["label" => "Pacientes", "url" => ["/paciente/index"], "icon" => "fa fa-group"],
-                                    [ 'separator' => '<br>',"label" => "Biopsias",   "url" => ["/biopsia/index","sort"=>"-id"],  'icon' =>"fa fa-plus-square"],
+                                    [ 'separator' => '<br>',"label" => "Biopsias",   "url" => ["/biopsia/index","sort"=>"-id"],  'icon' =>"fa fa-microscope"],
                                     ["label" => "Paps","url" => ["/pap/index","sort"=>"-id"], "icon" => "fa fa-flask"],
                                     ["label" => "Solicitudes", "url" => ["/solicitud/index","sort"=>"-id"], "icon" => "fa fa-file-text-o"],
 
@@ -158,15 +157,21 @@ $bundle = yiister\gentelella\assets\Asset::register($this);
                             ]
                         );
                       }
-                        ?>
-                        <? if(empty($_SESSION['mostrar']) || $_SESSION['mostrar']=="bienvenido" ){  ?>
+                      // Obtener la instancia de la sesión
+                      $session = Yii::$app->session;
+                      // Iniciar la sesión si no está iniciada aún
+                      if (!$session->isActive) {
+                          $session->open();
+                      }
+
+                      if($session->get('mensajeDelSistema')=="bienvenido" ){  ?>
                         <div id="loader-out">
                           <div id="loader-container">
                             <p id="loading-text">BIENVENIDO <?=Yii::$app->user->identity->usuario ?> </p>
                           </div>
                         </div>
                         <?
-                        $_SESSION['mostrar']="nomostrar";
+                        $session->set('mensajeDelSistema', 'adios');
                         }
                         ?>
 
@@ -187,18 +192,9 @@ $bundle = yiister\gentelella\assets\Asset::register($this);
                     <a href=<?=Yii::$app->homeUrl."usuario/perfil"; ?> data-toggle="tooltip" data-placement="top" title="Perfil">
                         <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
                     </a>
-                    <?
-                    echo Html::beginForm(['/site/logout'], 'post')
-                    . Html::submitButton(
-                        '<span  class="glyphicon glyphicon-off"  aria-hidden="true"></span>' .'<i data-toggle="tooltip" data-placement="top" title="" data-original-title="Ayuda" aria-hidden="true"   style="padding-top: 3px;"></i>',
-                        ['class' => 'boton_3',
-                        'title'=>"Salir"
-
-                      ]
-                    )
-                    . Html::endForm()
-                    . '</li>';
-                    ?>
+                    <a href="#" onclick="cerrarSesion()" data-toggle="tooltip" data-placement="top" title="Salir">
+                        <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
+                    </a>
 
                 </div>
 
@@ -224,30 +220,21 @@ $bundle = yiister\gentelella\assets\Asset::register($this);
                                 <span class=" fa fa-angle-down"></span>
                             </a>
                             <ul class="dropdown-menu dropdown-usermenu pull-right">
-                                <li><a href=<?=Yii::$app->homeUrl."usuario/perfil"; ?>> Perfil</a>
+                                <li><a href=<?=Yii::$app->homeUrl."usuario/perfil"; ?>> <i class="fa fa-user-circle-o pull-left" ></i>Perfil</a>
                                 </li>
                                 <li>
                                     <a href="javascript:;">
                                         <span class="badge bg-red pull-right">50%</span>
-                                        <span>Configuración</span>
+                                        <span><i class="fa fa-gears pull-left" ></i>Configuración</span>
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="javascript:;">Ayuda</a>
+                                    <a href="javascript:;"><i class="fa fa-question pull-left" ></i>Ayuda</a>
                                 </li>
                               </li>
-                                <?=
-                                '<li>'
-                                . Html::beginForm(['/site/logout'], 'post')
-                                . Html::submitButton(
-                                  'Salir'.  '<i class="fa fa-sign-out pull-right" style="padding-top: 3px;"></i>',
-                                    ['class' => 'boton_2']
-                                )
-                                . Html::endForm()
-                                . '</li>'
-
-                                ?>
-
+                                 <li>
+                                    <a href="#" onclick="cerrarSesion()"><i class="fa fa-sign-out pull-left" ></i>Salir</a>
+                                 </li>
 
                               </li>
                             </ul>
@@ -350,6 +337,13 @@ $( document ).ready(function() {
     $('#loader-out').fadeOut();
   }, 1300);
 });
+  function cerrarSesion(){
+    $.ajax({
+        url: '<?php echo Url::to(['/site/logout']) ?>',
+        type: 'post',
+    });
+  }
+
 
 </script>
 

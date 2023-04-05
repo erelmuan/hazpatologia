@@ -28,6 +28,7 @@ AppAsset::register($this);
 <!-- en esta plantilla estan cargados estilos de login plantillas intro y demas -->
 <?= Html::cssFile('@web/css/plantillas-intro.css') ?>
 
+
 </head>
 <body >
   <link rel="shortcut icon" href="favicon.ico" />
@@ -38,10 +39,26 @@ AppAsset::register($this);
 
     <div class="container">
 
-        <?= Alert::widget() ?>
-        <?= $content ?>
-    <!-- variable session para mostrar la pantalla de bievenida -->
-        <? $_SESSION['mostrar']="bienvenido";?>
+        <?
+        // Obtener la instancia de la sesión
+        $session = Yii::$app->session;
+        // Iniciar la sesión si no está iniciada aún
+        if (!$session->isActive) {
+            $session->open();
+        }
+
+        if($session->get('mensajeDelSistema')=="adios" ){  ?>
+          <div id="loader-out">
+            <div id="loader-container">
+              <p id="loading-text">ADIÓS <?=$session->get('usuario_salida');?>  </p>
+            </div>
+          </div>
+        <? }
+
+        echo $content ;
+        // Almacenar un valor en la variable de sesión
+        $session->set('mensajeDelSistema', 'bienvenido');
+         ?>
 
     </div>
 </div>
@@ -58,3 +75,11 @@ AppAsset::register($this);
 </body>
 </html>
 <?php $this->endPage() ?>
+<script>
+$( document ).ready(function() {
+  // Handler for .ready() called.
+  setTimeout(function(){
+    $('#loader-out').fadeOut();
+  }, 1300);
+});
+</script>

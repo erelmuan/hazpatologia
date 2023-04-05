@@ -103,12 +103,6 @@ use yii\helpers\Html;
             'data-toggle'=>'tooltip',
             'title'=>'Se abrirá el archivo PDF generado en una nueva pestaña'
         ]);
-        // echo Html::a('<i class="fa fa-file-pdf-o"></i> Generar ANEXO II', ['/biopsia/fos', 'id' => $model->id], [
-        //       'class'=>'btn btn-dark',
-        //       'target'=>'_blank',
-        //       'data-toggle'=>'tooltip',
-        //       'title'=>'Se abrirá el archivo PDF generado en una nueva pestaña'
-        //   ]);
 
   ?>
 

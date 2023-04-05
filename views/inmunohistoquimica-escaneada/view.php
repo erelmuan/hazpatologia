@@ -14,6 +14,8 @@ use yii\widgets\DetailView;
             'documento',
             'id_biopsia',
             'observacion:ntext',
+            'nombre_archivo',
+            'baja_logica:boolean',
         ],
     ]) ?>
 

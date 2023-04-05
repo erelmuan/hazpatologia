@@ -19,7 +19,8 @@ class InmunohistoquimicaEscaneadaSearch extends InmunohistoquimicaEscaneada
     {
         return [
             [['id', 'id_biopsia'], 'integer'],
-            [['documento', 'observacion'], 'safe'],
+            [['documento', 'observacion', 'nombre_archivo'], 'safe'],
+            [['baja_logica'], 'boolean'],
         ];
     }
 
@@ -58,10 +59,12 @@ class InmunohistoquimicaEscaneadaSearch extends InmunohistoquimicaEscaneada
         $query->andFilterWhere([
             'id' => $this->id,
             'id_biopsia' => $this->id_biopsia,
+            'baja_logica' => $this->baja_logica, 
         ]);
 
-        $query->andFilterWhere(['like', 'documento', $this->documento])
-            ->andFilterWhere(['like', 'observacion', $this->observacion]);
+        $query->andFilterWhere(['ilike', 'documento', $this->documento])
+          ->andFilterWhere(['ilike', 'observacion', $this->observacion])
+          ->andFilterWhere(['ilike', 'nombre_archivo', $this->nombre_archivo]);
 
         return $dataProvider;
     }

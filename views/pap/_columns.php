@@ -30,7 +30,7 @@ return [
 
          'filterInputOptions' => ['placeholder' => 'DNI o apellido'],
          'format' => 'raw',
-
+         'contentOptions' => ['style' => 'white-space: nowrap;'],
     ],
 
     [
@@ -70,6 +70,7 @@ return [
 
            'filterInputOptions' => ['placeholder' => 'matricula o apellido'],
            'format' => 'raw',
+           'contentOptions' => ['style' => 'white-space: nowrap;'],
 
   ],
 
@@ -126,7 +127,10 @@ return [
          'attribute'=>'fechalisto',
          'format' => ['date', 'd/M/Y'],
      ],
-
+     [
+         'class'=>'\kartik\grid\BooleanColumn',
+         'attribute'=>'vph',
+     ],
     [
         'class'=>'\kartik\grid\DataColumn',
         'attribute'=>'edad',

@@ -27,7 +27,7 @@ return [
 
          'filterInputOptions' => ['placeholder' => 'DNI o apellido'],
          'format' => 'raw',
-
+         'contentOptions' => ['style' => 'white-space: nowrap;'],
     ],
     [
       'class'=>'\kartik\grid\DataColumn',
@@ -65,7 +65,7 @@ return [
 
              'filterInputOptions' => ['placeholder' => 'matricula o apellido'],
              'format' => 'raw',
-
+             'contentOptions' => ['style' => 'white-space: nowrap;'],
     ],
 
     [

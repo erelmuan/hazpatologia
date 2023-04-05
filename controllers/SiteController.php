@@ -52,9 +52,7 @@ class SiteController extends Controller {
         'actions' => ['administracion'], 'allow' => true,
         //Usuarios autenticados, el signo ? es para invitados
         'roles' => ['@'], 'matchCallback' => function ($rule, $action) {
-            if (Yii::$app
-                ->user
-                ->identity->id_pantalla == 1) {
+            if (Yii::$app->user->identity->id_pantalla == 1) {
                 return false;
             }
             else {
@@ -96,9 +94,7 @@ class SiteController extends Controller {
      */
     public function actionLogin() {
         $this->layout = 'main2';
-        if (!Yii::$app
-            ->user
-            ->isGuest) {
+        if (!Yii::$app->user->isGuest) {
             /* Al entrar al sistema aparecera la pagina de login (return $this->render('login'),puesto
             que no entra a este if y tampoco al siguiente ( porque no esta logueado
             y por lo tanto  es invitado ni valida el post)*/
@@ -109,16 +105,9 @@ class SiteController extends Controller {
             return $this->goHome();
         }
         $model = new LoginForm();
-        if ($model->load(Yii::$app
-            ->request
-            ->post()) && $model->login()) {
-            if (!Yii::$app
-                ->user
-                ->identity
-                ->activo) {
-                Yii::$app
-                    ->user
-                    ->logout();
+        if ($model->load(Yii::$app->request->post()) && $model->login()) {
+            if (!Yii::$app->user->identity->activo) {
+                Yii::$app->user->logout();
             }
             return $this->goBack();
         }
@@ -131,9 +120,18 @@ class SiteController extends Controller {
      * @return Response
      */
     public function actionLogout() {
-        Yii::$app
-            ->user
-            ->logout();
+        // Obtener la instancia de la sesión
+        $session = Yii::$app->session;
+        // Iniciar la sesión si no está iniciada aún
+        if (!$session->isActive) {
+            $session->open();
+        }
+        $usuario=Yii::$app->user->identity->usuario;
+        Yii::$app->user->logout();
+        // Almacenar un valor en la variable de sesión
+        $session->set('mensajeDelSistema', 'adios');
+        $session->set('usuario_salida',$usuario  );
+
         return $this->goHome();
     }
     /**
@@ -143,12 +141,8 @@ class SiteController extends Controller {
      */
     public function actionContact() {
         $model = new ContactForm();
-        if ($model->load(Yii::$app
-            ->request
-            ->post()) && $model->contact(Yii::$app->params['adminEmail'])) {
-            Yii::$app
-                ->session
-                ->setFlash('contactFormSubmitted');
+        if ($model->load(Yii::$app->request->post()) && $model->contact(Yii::$app->params['adminEmail'])) {
+            Yii::$app->session->setFlash('contactFormSubmitted');
             return $this->refresh();
         }
         return $this->render('contact', ['model' => $model, ]);

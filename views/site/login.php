@@ -1,10 +1,10 @@
 <style>
 body {
-  /* background-image: url("img/lab.jpg"); */
+   background-image: url('/hazpatologia/web/img/laboratorio1.jpg');;
   background-color: #cccccc;
   background-position: center; /* Center the image */
-   background-size: cover;
-    backdrop-filter: blur(6px);
+   background-size: 200% 300%;
+    backdrop-filter: blur(1px);
     /* -webkit-filter: blur(5px);
 -moz-filter: blur(5px);
 -o-filter: blur(5px);
@@ -15,7 +15,10 @@ width: 100%;
 height: 100%; */
 /* top: 0;
 left: 0; */
-z-index: -5;
+z-index:-100;
+}
+.panel-default{
+    opacity: 0.9;
 }
 </style>
 
@@ -40,8 +43,6 @@ $this->params['breadcrumbs'][] = $this->title;
 </ul></div></div></nav>
 
 
-
-
 <div id="fullscreen_bg" />
     <div class="site-login">
         <!-- <p>Please fill out the following fields to login:</p> -->
@@ -49,14 +50,12 @@ $this->params['breadcrumbs'][] = $this->title;
             <div class="col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <h3 class="panel-title"><?= Html::encode($this->title) ?></h3>
+                        <h3 class="panel-title"><b><?= Html::encode($this->title) ?></b></h3>
                     </div>
                     <div class="panel-body">
                       <?php $form = ActiveForm::begin([
                           'id' => 'login-form',
                           'fieldConfig' => [
-                            //  'template' => "{label}\n<div class=\"col-lg-3\">{input}</div>\n<div class=\"col-lg-8\">{error}</div>",
-                          //    'labelOptions' => ['class' => 'col-lg-1 control-label'],
                           ],
                       ]); ?>
 

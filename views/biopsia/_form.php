@@ -1,27 +1,21 @@
 <?php
-
+/* @var $this yii\web\View */
+/* @var $model app\models\Biopsias */
+/* @var $form yii\widgets\ActiveForm */
 use yii\helpers\Html;
-//use yii\widgets\ActiveForm;
 use kartik\grid\GridView;
-///////////////////////////
 use yii\helpers\Url;
 use yii\bootstrap\Modal;
 use johnitvn\ajaxcrud\CrudAsset;
 use johnitvn\ajaxcrud\BulkButtonWidget;
-///////////////////
 use yii\helpers\ArrayHelper;
 use kartik\widgets\DatePicker;
 use kartik\select2\Select2;
 use kartik\widgets\TypeaheadBasic;
-///////////////
 use kartik\widgets\DepDrop;
 use yii\web\JsExpression;
-//////////////
 use kartik\builder\Form;
 use kartik\widgets\ActiveForm;
-/* @var $this yii\web\View */
-/* @var $model app\models\Biopsias */
-/* @var $form yii\widgets\ActiveForm */
 use kartik\datecontrol\DateControl;
 use app\models\Usuario;
 use kartik\widgets\SwitchInput;
@@ -53,7 +47,6 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
         <div class="x_content" style="display: block;">
             <?
     echo Form::widget([ // fields with labels
-      //  'contentBefore'=>'<legend class="text-info"><small>Datos del paciente</small></legend>',
         'model'=>$model,
         'form'=>$form,
          'columns'=>5,
@@ -183,7 +176,9 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
       'disabled'=>isset($model->estado) && ($model->estado->descripcion=="LISTO" && !Usuario::isPatologo()),
 
     ]))->label('Estudio inmunostoquimica');
-      ?></br>
+      ?>
+      </br>
+      </br>
         <?
       echo (Html::label('Código diagnostico', 'codigo diagnostico', ['class' => 'form-group field-biopsias-diagnostico has-success']));
       if( !isset($model->estado) || $model->estado->descripcion!=="LISTO" || Usuario::isPatologo()){
@@ -213,17 +208,19 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
                  ],
        ]);
   ?></br> </br>
-    <?= (Html::label('Código CIE10', 'codigo diagnostico', ['class' => 'form-group field-biopsia-diagnostico has-success'])); ?>
+    <!-- <?//= (Html::label('Código CIE10', 'codigo diagnostico', ['class' => 'form-group field-biopsia-diagnostico has-success'])); ?>
 
       <button type="button" class="btn btn-primary btn-xs" onclick="quitarSeleccion()" data-toggle="modal"
           data-target=".bs-cie10-modal-lg" style="margin-left: 10px;"><i
               class="glyphicon glyphicon-plus"></i></button>
       <button type="button" class="btn btn-danger btn-xs" onclick="quitarCie10()"><i
           class="glyphicon glyphicon-minus"></i></button>
-      <!-- <input type="hidden" id="biopsia-id_cie10" name =Biopsia[id_cie10]> -->
+       <input type="hidden" id="biopsia-id_cie10" name =Biopsia[id_cie10]> -->
       <!-- <input type="text" id="biopsia-cie10" class="form-control" value='<?=($model->biopsiacie10)?$model->biopsiacie10->cie10->codigo:''; ?>' style="width:30%" aria-invalid="false" readonly> -->
-      <input type="text" id="biopsia-cie10" class="form-control"  style="width:30%" aria-invalid="false" readonly>
+      <!-- <input type="text" id="biopsia-cie10" class="form-control"  style="width:30%" aria-invalid="false" readonly> -->
 
+  </br>
+  </br>
   </br>
     <?
       echo (Html::label('Código frase', 'frase', ['class' => 'form-group field-biopsias-frase has-success'])) ;
@@ -293,11 +290,8 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
         <?= Html::submitButton($model->isNewRecord ? 'Guardar' : 'Actualizar', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary','disabled'=>(isset($model->estado) && ($model->estado->descripcion=="LISTO" && !Usuario::isPatologo()))]);
         if( !$model->isNewRecord &&  $model->ihq){
             if ($model->ihq && isset($model->inmunohistoquimicaEscaneada)){
-              // echo Html::a('<i class="glyphicon glyphicon-arrow-right"></i> Ir inmunostoquimica',['/inmunohistoquimica/update', 'id'=>$model->inmunohistoquimica->id], ['class'=>'btn btn-success grid-button']) ;
               echo Html::a('<i class="glyphicon glyphicon-arrow-right"></i> Ir inmunostoquimica',['/inmunohistoquimica-escaneada/update', 'id'=>$model->inmunohistoquimicaEscaneada->id], ['class'=>'btn btn-success grid-button']) ;
-
             }else {
-              // echo Html::a('<i class="glyphicon glyphicon-arrow-right"></i> Crear inmunostoquimica',['/inmunohistoquimica/create', 'id_biopsia'=>$model->id], ['class'=>'btn btn-success grid-button']) ;
               echo Html::a('<i class="glyphicon glyphicon-arrow-right"></i> Crear inmunostoquimica',['/inmunohistoquimica-escaneada/create', 'id_biopsia'=>$model->id], ['class'=>'btn btn-success grid-button']) ;
             }
 

@@ -199,16 +199,7 @@ $bundle = yiister\gentelella\assets\Asset::register($this);
                             ]
                         )
                         ?>
-                        <? if(empty($_SESSION['mostrar']) || $_SESSION['mostrar']=="bienvenido" ){  ?>
-                        <div id="loader-out">
-                          <div id="loader-container">
-                            <p id="loading-text">BIENVENIDO <?=Yii::$app->user->identity->username ?> </p>
-                          </div>
-                        </div>
-                        <?
-                        $_SESSION['mostrar']="nomostrar";
-                        }
-                        ?>
+                      
 
 
                     </div>

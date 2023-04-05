@@ -27,6 +27,14 @@ return [
         'attribute'=>'observacion',
     ],
     [
+      'class'=>'\kartik\grid\DataColumn',
+      'attribute'=>'nombre_archivo',
+    ],
+    [
+        'class'=>'\kartik\grid\DataColumn',
+        'attribute'=>'baja_logica',
+    ],
+    [
         'class' => 'kartik\grid\ActionColumn',
         'dropdown' => false,
         'vAlign'=>'middle',

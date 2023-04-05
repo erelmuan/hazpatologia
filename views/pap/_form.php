@@ -20,6 +20,8 @@ use kartik\builder\Form;
 use kartik\widgets\ActiveForm;
 use app\models\Usuario;
 use nex\chosen\Chosen;
+use kartik\widgets\SwitchInput;
+
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Paps */
@@ -304,17 +306,14 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
 
       ?>
     </br> </br>
-    <?= (Html::label('Código CIE10', 'codigo diagnostico', ['class' => 'form-group field-pap-diagnostico has-success'])); ?>
+    <?  echo ( $form->field($model, 'vph')->widget(SwitchInput::classname(), [    'pluginOptions' => [
+      'onText' => 'Si',
+      'offText' => 'No',
+    ],
+    'disabled'=>isset($model->estado) && ($model->estado->descripcion=="LISTO" && !Usuario::isPatologo()),
+    ]))->label('Estudio Virus del papiloma humano');
 
-    <button type="button" class="btn btn-primary btn-xs" onclick="quitarSeleccion()" data-toggle="modal"
-        data-target=".bs-cie10-modal-lg" style="margin-left: 10px;"><i
-            class="glyphicon glyphicon-plus"></i></button>
-    <button type="button" class="btn btn-danger btn-xs" onclick="quitarCie10()"><i
-            class="glyphicon glyphicon-minus"></i></button>
-    <!-- <input type="hidden" id="pap-id_cie10"  name =Papcie10[id_cie10]> -->
-    <!-- <input type="text" id="pap-cie10" class="form-control" value='<?=($model->papcie10)?$model->papcie10->cie10->codigo:''; ?>' style="width:30%" aria-invalid="false" readonly> -->
-    <input type="text" id="pap-cie10" class="form-control"  style="width:30%" aria-invalid="false" readonly>
-
+    ?>
     </br>
     <?  echo (Html::label('Código frase', 'frase', ['class' => 'form-group field-pap-frase has-success'])) ;
       if( !isset($model->estado) || $model->estado->descripcion!=="LISTO" || Usuario::isPatologo()){
@@ -379,6 +378,15 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
     </div>
     <div class="col-md-12 col-sm-12 col-xs-12 form-group">
         <?= Html::submitButton($model->isNewRecord ? 'Guardar' : 'Actualizar', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary','disabled'=>(isset($model->estado) && ($model->estado->descripcion=="LISTO" && !Usuario::isPatologo()))]) ?>
+        <?if( !$model->isNewRecord &&  $model->vph){
+            if ($model->vph && isset($model->vphEscaneado)){
+              echo Html::a('<i class="glyphicon glyphicon-arrow-right"></i> Ir vph',['/vph-escaneado/update', 'id'=>$model->vphEscaneado->id], ['class'=>'btn btn-success grid-button']) ;
+            }else {
+              echo Html::a('<i class="glyphicon glyphicon-arrow-right"></i> Crear vph',['/vph-escaneado/create', 'id_pap'=>$model->id], ['class'=>'btn btn-success grid-button']) ;
+            }
+        }
+        ?>
+
     </div>
     <? if (Usuario::isPatologo()) { ?>
     <div class="col-md-8 col-sm-12 col-xs-12 form-group">

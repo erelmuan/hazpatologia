@@ -11,6 +11,8 @@ use Yii;
  * @property string $documento
  * @property int $id_biopsia
  * @property string $observacion
+ * @property string $nombre_archivo
+ * @property bool $baja_logica
  *
  * @property Biopsia $biopsia
  */
@@ -42,10 +44,11 @@ class InmunohistoquimicaEscaneada extends \yii\db\ActiveRecord
     {
         return [
             // [['documento', 'observacion'], 'string'],
-             [['observacion'], 'string'],
+            [['observacion', 'nombre_archivo'], 'string'],
             [['id_biopsia'], 'default', 'value' => null],
             [['id_biopsia'], 'integer'],
             [['id_biopsia'], 'unique'],
+            [['baja_logica'], 'boolean'],
             [['documento'], 'unique'],
             [['documento'], 'file', 'skipOnEmpty' => true, 'extensions'=>'pdf'],
             [['id_biopsia'], 'exist', 'skipOnError' => true, 'targetClass' => Biopsia::className(), 'targetAttribute' => ['id_biopsia' => 'id']],
@@ -62,6 +65,8 @@ class InmunohistoquimicaEscaneada extends \yii\db\ActiveRecord
             'documento' => 'Documento',
             'id_biopsia' => 'Id Biopsia',
             'observacion' => 'Observacion',
+            'nombre_archivo' => 'Nombre Archivo',
+            'baja_logica' => 'Baja Logica', 
         ];
     }
 
