@@ -56,6 +56,10 @@ $config = [
                 ],
             ],
         ],
+        'catchAll' => [
+              'class' => 'yii\web\ErrorAction',
+          'site/error'
+      ],
         'errorHandler' => [
             'errorAction' => 'site/error',
         ],

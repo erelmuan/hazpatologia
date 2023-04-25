@@ -1,27 +1,18 @@
 <?php
 
-/* @var $this yii\web\View */
-/* @var $name string */
-/* @var $message string */
-/* @var $exception Exception */
-
 use yii\helpers\Html;
+use yii\web\HttpException;
 
-$this->title = $name;
 ?>
-<div class="site-error">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+<div class="notfound">
 
-    <div class="alert alert-danger">
-        <?= nl2br(Html::encode($message)) ?>
-    </div>
-
-    <p>
-El error anterior ocurrió mientras el servidor web estaba procesando su solicitud.
-    </p>
-    <p>
-Póngase en contacto con nosotros si cree que esto es un error del servidor. Gracias.
-    </p>
-
-</div>
+  <div class="notfound-404">
+    <h1><?= Html::encode($exception->statusCode) ?> </h1>
+  </div>
+  <h2><?= Html::encode($exception->getMessage()) ?></h2>
+  <p>
+  Póngase en contacto con nosotros si cree que esto es un error del servidor. Gracias.
+  </p>
+    <a href=<?=Yii::$app->homeUrl ?>>Pagina principal</a>
+  </div>

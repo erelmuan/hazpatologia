@@ -33,6 +33,7 @@ CrudAsset::register($this);
 </div>
   </div>
       </br>
+      <div class='row'>
       <div class="x_panel" >
         <legend class="text-info"><small>CABECERA DE LA SOLICITUD</small></legend>
       <div class='row'>
