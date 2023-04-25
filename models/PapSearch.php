@@ -31,10 +31,10 @@ class PapSearch extends Pap
     public function rules()
     {
         return [
-            [['id', 'id_solicitudpap','protocolo', 'sexo',  'indicepicnotico', 'cantidad', 'id_estado'], 'integer'],
+            [['id', 'id_solicitudpap','protocolo',   'indicepicnotico', 'cantidad', 'id_estado'], 'integer'],
             [['descripcion', 'calificacion', 'indicedemaduracion', 'plegamiento', 'agrupamiento', 'leucocitos', 'hematies', 'histiocitos', 'detritus', 'citolisis', 'flora', 'aspecto', 'pavimentosas', 'glandulares', 'diagnostico',  'fechalisto', 'fecha_desde','fecha_hasta','fecharealizacion'], 'safe'],
             //Se agrego para permitir la habilitacion del filtro en la grilla
-            [['paciente','medico','procedencia','estado'], 'safe'],
+            [['paciente','medico','procedencia','estado','sexo'], 'safe'],
             ['fecharealizacion', 'date', 'format' => 'dd/MM/yyyy'],
             ['fechadeingreso', 'date', 'format' => 'dd/MM/yyyy'],
             [['firmado', 'vph'], 'boolean'],

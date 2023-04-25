@@ -13,15 +13,18 @@ use kartik\widgets\AlertBlock;
 /* @var $searchModel app\models\BiopsiaSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Biopsias';
- echo Collapse::widget([
+$this->title = 'Biopsias'; ?>
+<div class="col-xs-3">
+ <? echo Collapse::widget([
     'items' => [
         [
             'label' => 'Buscar por rango de fecha',
             'content' => $this->render('_search', ['model' => $searchModel]) ,
         ],
     ]
-]);
+]);?>
+</div>
+<?
 
 $this->params['breadcrumbs'][] = $this->title;
 
@@ -118,17 +121,14 @@ $columns[]=
     </div>
 </div>
 </div>
-<? //var_dump($parametros); ?>
 <?php Modal::begin([
     "id"=>"ajaxCrudModal",
     "footer"=>"",// always need it for jquery plugin
 ])?>
 <?php Modal::end(); ?>
-
-
-<script>
-function enter(){
-
+<style>
+.panel-default > .panel-heading {
+    background-color: #40adce;
+    color: white;
 }
-
-</script>
+</style>

@@ -5,31 +5,7 @@ use kartik\grid\GridView;
 
 ?>
 
-<style>
-    .expanded-row > td {
-        background-color: #a4cea9;
-    }
-    .expanded-row > tr {
-        background-color: #beedc0;
-    }
-    .detalle-expand .table-striped > tbody > tr:nth-of-type(2n+1) > td {
-        background-color: #f9f9f9; !important;
-        padding: 6px;!important;
-    }
-    .detalle-expand .table-striped > tbody > tr:nth-of-type(2n) > td {
-        background-color: #ffffff; !important;
-        padding: 6px;!important;
-    }
-    .detalle-expand .table-striped > thead > tr > th {
-        padding-top: 2px; !important;
-        padding-left: 6px; !important;
-        padding-right: 6px; !important;
-        padding-bottom: 2px; !important;
-    }
-    .detalle-expand .glyphicon {
-        /*color: #6cb475;*/
-    }
-</style>
+
 
 <div class="detalle-expand" style="padding-left: 20px;padding-right: 20px;">
 

@@ -87,9 +87,7 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
             'name' => 'id_material',
             'items' => $mapMaterial,
             'allowDeselect' => true,
-
             'placeholder' => 'Seleccionar código..',
-
             'clientOptions' => [
                 'search_contains' => true,
                 'no_results_text'=>"Oops, nothing found!",
@@ -118,9 +116,7 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
                    'name' => 'id_macroscopia',
                    'items' => $mapMacroscopia,
                    'allowDeselect' => true,
-
                    'placeholder' => 'Seleccionar código..',
-
                    'clientOptions' => [
                        'search_contains' => true,
                        'no_results_text'=>"Oops, nothing found!",
@@ -150,9 +146,7 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
                    'name' => 'id_microscopia',
                    'items' => $mapMicroscopia,
                    'allowDeselect' => true,
-
                    'placeholder' => 'Seleccionar código..',
-
                    'clientOptions' => [
                        'search_contains' => true,
                        'no_results_text'=>"Oops, nothing found!",
@@ -170,11 +164,8 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
       echo ( $form->field($model, 'ihq')->widget(SwitchInput::classname(), [    'pluginOptions' => [
         'onText' => 'Si',
         'offText' => 'No',
-
-
       ],
       'disabled'=>isset($model->estado) && ($model->estado->descripcion=="LISTO" && !Usuario::isPatologo()),
-
     ]))->label('Estudio inmunostoquimica');
       ?>
       </br>
@@ -194,9 +185,7 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
            'name' => 'Biopsia[id_plantilladiagnostico]',
            'items' => $mapdiagnostico,
            'allowDeselect' => true,
-
            'placeholder' => 'Seleccionar código..',
-
            'clientOptions' => [
                'search_contains' => true,
                'no_results_text'=>"Oops, nothing found!",
@@ -238,9 +227,7 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
             'name' => 'ChosenTest',
             'items' => $mapFrases,
             'allowDeselect' => true,
-
             'placeholder' => 'Seleccionar código..',
-
             'clientOptions' => [
                 'search_contains' => true,
                 'no_results_text'=>"Oops, nothing found!",

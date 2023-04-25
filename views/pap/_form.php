@@ -165,9 +165,7 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
               'name' => 'ChosenTest',
               'items' => $mapFlora,
               'allowDeselect' => true,
-
               'placeholder' => 'Seleccionar código..',
-
               'clientOptions' => [
                   'search_contains' => true,
                   'no_results_text'=>"Oops, nothing found!",
@@ -227,9 +225,7 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
            'name' => 'ChosenTest',
            'items' => $mapPavimentosa,
            'allowDeselect' => true,
-
            'placeholder' => 'Seleccionar código..',
-
            'clientOptions' => [
                'search_contains' => true,
                'no_results_text'=>"Oops, nothing found!",
@@ -259,9 +255,7 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
               'name' => 'ChosenTest',
               'items' => $mapglandular,
               'allowDeselect' => true,
-
               'placeholder' => 'Seleccionar código..',
-
               'clientOptions' => [
                   'search_contains' => true,
                   'no_results_text'=>"Oops, nothing found!",
@@ -291,9 +285,7 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
               'name' => 'ChosenTest',
               'items' => $mapdiagnostico,
               'allowDeselect' => true,
-
               'placeholder' => 'Seleccionar código..',
-
               'clientOptions' => [
                   'search_contains' => true,
                   'no_results_text'=>"Oops, nothing found!",
@@ -330,9 +322,7 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
           'name' => 'ChosenTest',
           'items' => $mapFrases,
           'allowDeselect' => true,
-
           'placeholder' => 'Seleccionar código..',
-
           'clientOptions' => [
               'search_contains' => true,
               'no_results_text'=>"Oops, nothing found!",

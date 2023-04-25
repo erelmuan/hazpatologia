@@ -80,7 +80,7 @@ $bundle = yiister\gentelella\assets\Asset::register($this);
                     </div>
                     <div class="profile_info">
                         <span>BIENVENIDO,</span>
-                        <h2><?=Yii::$app->user->identity->username ?></h2>
+                        <h2><?=Yii::$app->user->identity->usuario ?></h2>
                     </div>
                 </div>
                 <!-- /menu prile quick info -->
@@ -199,7 +199,7 @@ $bundle = yiister\gentelella\assets\Asset::register($this);
                             ]
                         )
                         ?>
-                      
+
 
 
                     </div>
@@ -252,7 +252,7 @@ $bundle = yiister\gentelella\assets\Asset::register($this);
                         <li class="">
                             <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
                               <? echo '<img src=uploads/avatar/sm_'.Yii::$app->user->identity->imagen.'   alt="..." >';?>
-                              <?=Yii::$app->user->identity->username ?>
+                              <?=Yii::$app->user->identity->usuario ?>
                                 <span class=" fa fa-angle-down"></span>
                             </a>
                             <ul class="dropdown-menu dropdown-usermenu pull-right">

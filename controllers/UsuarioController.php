@@ -1,6 +1,7 @@
 <?php
 namespace app\controllers;
 use Yii;
+use Yii\helpers\ArrayHelper;
 use app\models\Firma;
 use app\models\Auditoria;
 use app\models\Usuario;
@@ -18,6 +19,9 @@ use app\components\Metodos\Metodos;
 use yii\web\UploadedFile;
 use yii\helpers\Url;
 use yii\imagine\Image;
+use app\models\Tema;
+use app\models\Menu;
+use app\models\Configuracion;
 /**
  * UsuarioController implements the CRUD actions for Usuario model.
  */
@@ -28,9 +32,7 @@ class UsuarioController extends Controller {
      */
     public function actionIndex() {
         $searchModel = new UsuarioSearch();
-        $dataProvider = $searchModel->search(Yii::$app
-            ->request
-            ->queryParams);
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         $request = Yii::$app->request;
         if ($request->isAjax) { // modal para cambiar contraseña
             Yii::$app->response->format = Response::FORMAT_JSON;
@@ -80,6 +82,13 @@ class UsuarioController extends Controller {
             return $this->render('view', ['model' => $this->findModel($id) , ]);
         }
     }
+
+    public function crearConfiguracion(){
+        $configuracion= new Configuracion();
+        $configuracion->loadDefaultValues();
+        $configuracion->save();
+        return $configuracion;
+    }
     /**
      * Creates a new Usuario model.
      * For ajax request will return json object
@@ -90,26 +99,26 @@ class UsuarioController extends Controller {
         $request = Yii::$app->request;
         $model = new Usuario();
         if ($request->isAjax) {
-            /*
-             *   Process for ajax request
-            */
-            Yii::$app
-                ->response->format = Response::FORMAT_JSON;
+            Yii::$app->response->format = Response::FORMAT_JSON;
             if ($request->isGet) {
                 return ['title' => "Crear nuevo Usuario", 'content' => $this->renderAjax('create', ['model' => $model, ]) , 'footer' => Html::button('Cerrar', ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) . Html::button('Guardar', ['class' => 'btn btn-primary', 'type' => "submit"]) ];
             }
-            else if ($model->load($request->post()) && $model->save()) {
-                return ['forceReload' => '#crud-datatable-pjax', 'title' => "Crear nuevo Usuario", 'content' => '<span class="text-success">Create Usuario success</span>', 'footer' => Html::button('Cerrar', ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) . Html::a('Crear más', ['create'], ['class' => 'btn btn-primary', 'role' => 'modal-remote']) ];
+            else if ($model->load($request->post()) ) {
+                  $configuracion=$this->crearConfiguracion();
+                  $model->id_configuracion= $configuracion->id;
+                if($model->save())
+                  return ['forceReload' => '#crud-datatable-pjax', 'title' => "Crear nuevo Usuario", 'content' => '<span class="text-success">Create Usuario success</span>', 'footer' => Html::button('Cerrar', ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) . Html::a('Crear más', ['create'], ['class' => 'btn btn-primary', 'role' => 'modal-remote']) ];
             }
             else {
                 return ['title' => "Crear nuevo Usuario", 'content' => $this->renderAjax('create', ['model' => $model, ]) , 'footer' => Html::button('Cerrar', ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) . Html::button('Guardar', ['class' => 'btn btn-primary', 'type' => "submit"]) ];
             }
         }
         else {
-            /*
-             *   Process for non-ajax request
-            */
-            if ($model->load($request->post()) && $model->save()) {
+
+            if ($model->load($request->post())) {
+              $configuracion=$this->crearConfiguracion();
+              $model->id_configuracion= $configuracion->id;
+              if($model->save())
                 return $this->redirect(['view', 'id' => $model->id]);
             }
             else {
@@ -128,9 +137,6 @@ class UsuarioController extends Controller {
         $request = Yii::$app->request;
         $model = $this->findModel($id);
         if ($request->isAjax) {
-            /*
-             *   Process for ajax request
-            */
             Yii::$app->response->format = Response::FORMAT_JSON;
             $modeluser = Usuariorol::findOne(['id_usuario' => Yii::$app->user
                 ->identity->id, 'id_rol' => 1, //id rol admin
@@ -149,9 +155,6 @@ class UsuarioController extends Controller {
             }
         }
         else {
-            /*
-             *   Process for non-ajax request
-            */
             if ($model->load($request->post()) && $model->save()) {
                 return $this->redirect(['view', 'id' => $model->id]);
             }
@@ -172,8 +175,7 @@ class UsuarioController extends Controller {
         if (Yii::$app->user->identity->id == $id) {
             return ['title' => "Eliminar Rol #" . $id, 'content' => "No puede eliminarse a si mismo", 'footer' => Html::button('Cerrar', ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) ];
         }
-        $model = Usuariorol::findOne(['id_usuario' => Yii::$app->user
-            ->identity->id, 'id_rol' => 1, //id rol admin
+        $model = Usuariorol::findOne(['id_usuario' => Yii::$app->user->identity->id, 'id_rol' => 1, //id rol admin
         ]);
         if ($model == null) {
             return ['title' => "Eliminar Rol #" . $id, 'content' => "No puede eliminar usuario si no es administrador", 'footer' => Html::button('Cerrar', ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) ];
@@ -189,56 +191,18 @@ class UsuarioController extends Controller {
             }
         $this->findModel($id)->delete();
         if ($request->isAjax) {
-            /*
-             *   Process for ajax request
-            */
             return ['forceClose' => true, 'forceReload' => '#crud-datatable-pjax'];
         }
         else {
-            /*
-             *   Process for non-ajax request
-            */
             return $this->redirect(['index']);
         }
     }
-    /**
-     * Delete multiple existing Usuario model.
-     * For ajax request will return json object
-     * and for non-ajax request if deletion is successful, the browser will be redirected to the 'index' page.
-     * @param integer $id
-     * @return mixed
-     */
-    public function actionBulkDelete() {
-        $request = Yii::$app->request;
-        $pks = explode(',', $request->post('pks')); // Array or selected records primary keys
-        foreach ($pks as $pk) {
-            $model = $this->findModel($pk);
-            $model->delete();
-        }
-        if ($request->isAjax) {
-            /*
-             *   Process for ajax request
-            */
-            Yii::$app
-                ->response->format = Response::FORMAT_JSON;
-            return ['forceClose' => true, 'forceReload' => '#crud-datatable-pjax'];
-        }
-        else {
-            /*
-             *   Process for non-ajax request
-            */
-            return $this->redirect(['index']);
-        }
-    }
+
     public function actionListdetalle() {
         if (isset($_POST['expandRowKey'])) {
             $searchModel = new UsuariorolSearch();
-            $dataProvider = $searchModel->search(Yii::$app
-                ->request
-                ->queryParams);
-            $dataProvider
-                ->query
-                ->where(['id_usuario' => $_POST['expandRowKey']]);
+            $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+            $dataProvider->query->where(['id_usuario' => $_POST['expandRowKey']]);
             $dataProvider->setPagination(false);
             $dataProvider->setSort(false);
             return $this->renderPartial('_listDetalle', ['id_maestro' => $_POST['expandRowKey'], 'searchModel' => $searchModel, 'dataProvider' => $dataProvider, ]);
@@ -275,9 +239,7 @@ class UsuarioController extends Controller {
         }
         $modelDetalle = new Rol();
         $searchModel = new RolSearch();
-        $dataProvider = $searchModel->search(Yii::$app
-            ->request
-            ->queryParams);
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         $columnas = Metodos::obtenerColumnas($modelDetalle);
         // Respuesta para el GET de filter y sort
         // if (isset($_GET['_pjax'])) {
@@ -378,23 +340,15 @@ class UsuarioController extends Controller {
             }
             $post = $request->post();
             $image = UploadedFile::getInstance($model, 'imagen');
-            // unset($post[s'Usuario']['imagen']);
             if ($model->load($post) && $model->save()) {
                 if (!is_null($image) && $image !== "") {
                     // save with image
-                    // store the source file name
-                    //  $model->imagen = $image->name;
                     $ext = (explode(".", $image->name));
                     $ext = end($ext);
-                    // generate a unique file name to prevent duplicate filenames
-                    //  $model->avatar = Yii::$app->security->generateRandomString().".{$ext}";
-                    // the path to save file, you can set an uploadPath
-                    // in Yii::$app->params (as used in example below)
                     Yii::$app->params['uploadPath'] = Yii::$app->basePath . '/web/uploads/avatar/';
                     $nombreEncriptadoImagen = Yii::$app
                         ->security
                         ->generateRandomString() . ".{$ext}";
-                    // $path = Yii::$app->params['uploadPath'] . $nombreEncriptadoImagen;
                     $path = Yii::$app->params['uploadPath'] . $nombreEncriptadoImagen;
                     $model->id = Yii::$app->user->getId();
                     $model->imagen = $nombreEncriptadoImagen;
@@ -412,4 +366,27 @@ class UsuarioController extends Controller {
             return $this->render('perfil', ['model' => $model, ]);
         }
     }
+
+      public function actionConfiguracion() {
+          $temas= ArrayHelper::map(Tema::find()->all(), 'id','descripcion');
+          $menus= ArrayHelper::map(Menu::find()->all(), 'id','tipo');
+
+          $request = Yii::$app->request;
+          $id = Yii::$app->user->identity->getId();
+          $model = $this->findModel($id);
+          if ($model->configuracion->load($request->post())  && $model->configuracion->save()) {
+            Yii::$app->getSession()->setFlash('success', ['type' => 'success', 'duration' => 5000, 'icon' => 'fa fa-success', 'message' => "Datos guardados correctamente", 'title' => 'NOTIFICACIÓN', 'positonY' => 'top', 'positonX' => 'right']);
+              return $this->goHome();
+          }else {
+            return $this->render('configuracion', ['model' => $model,  'temas'=>$temas , 'menus'=>$menus]);
+
+          }
+
+      }
+
+
+
+
+
+
 }

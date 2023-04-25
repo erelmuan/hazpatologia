@@ -1,14 +1,36 @@
+VERSIÓN 2.1.0
+modificación de la tabla de usuarios (corrección campo usuario -unique)
+creación de tabla de configuración, tema y menú - para personalizar por usuario el tema oscuro o claro
+o el menú vertical u horizontal.
+incorporación de pantalla de ayuda (manual de usuario)
+Modificación en el CONTROLLER base (este se cambia de forma manual)
+Cuando se crea un usuario se asocia (da de alta) una registro de configuración pre determinado
+Selector activo e inactivo, se reemplaza por "si" y "no"
+Modificación del formato de búsqueda por fecha
+Refactorización de grilla CIE10
+listDetalle modificado el style
+Modificación de los iconos
+Cambio de idioma en el selector Choosen de las solicitudes
+Incorporación de dos hojas de style - claro y oscuro
+Se añade fondo negro al menú verticial
+Modificaciones en los stilos de varias vistas, para adaptarlas a los styles claro y oscuro
+Modificacion manual de el archivo ThemeBuildAsset del template gentelella,
+se comenta       // '/hazpatologia/web/css/custom.orig.css',
+
+
+
 VERSIÓN 2.0.0
-Modificacion del login
-Incorporación de iconos al menu del usuario
-Se Modifico el boton salir usando js
+modificación de la tabla usuario - campo usuario unique
+Modificación del login
+Incorporación de iconos al menú del usuario
+Se Modifico el botón salir usando js
 BAJA LOGICA A LAS HIQ Y VPH, AGREGA UN CAMPO, solamente esto se da en las actualizacioones
-deee hiq y vph, no se puede dar en la creacion
+deee hiq y vph, no se puede dar en la creación
 ACTUALIZAR A TODOS LOS VALORES NULOS A FALSE EN LOS PAPS VPH
 agregue en InmunohistoquimicaEscaneada el campo nombre_archivo y baja logica
 cree una tabla vphEscaneado
 ajuste el tamaño de la columna de las biopsias, paps y solicitudes
-Modificacion desde la bd los nombres de las Inmunohistoquimica
+Modificación desde la bd los nombres de las Inmunohistoquimica
 
 
 

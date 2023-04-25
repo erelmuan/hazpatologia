@@ -279,8 +279,7 @@ class BiopsiaController extends Controller {
         $request = Yii::$app->request;
         $model = new Biopsia();
         if ($request->isAjax) {
-            Yii::$app
-                ->response->format = Response::FORMAT_JSON;
+            Yii::$app->response->format = Response::FORMAT_JSON;
             if (isset($_POST['seleccion'])) {
                 // recibo datos de lo seleccionado, reconstruyo columnas
                 $seleccion = $_POST['seleccion'];
@@ -297,12 +296,10 @@ class BiopsiaController extends Controller {
                     }
                 }
                 // guardo esa informacion, sin controles ni excepciones, no es importante
-                $vista = \app\models\Vista::findOne(['id_usuario' => Yii::$app
-                    ->user->id, 'modelo' => $model->classname() ]);
+                $vista = \app\models\Vista::findOne(['id_usuario' => Yii::$app->user->id, 'modelo' => $model->classname() ]);
                 if ($vista == null) {
                     $vista = new \app\models\Vista();
-                    $vista->id_usuario = Yii::$app
-                        ->user->id;
+                    $vista->id_usuario = Yii::$app->user->id;
                     $vista->modelo = $model->classname();
                 }
                 $vista->columna = serialize($columnas);

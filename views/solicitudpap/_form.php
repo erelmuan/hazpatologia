@@ -114,6 +114,7 @@ CrudAsset::register($this);
              echo $form->field($model, 'id_procedencia')->widget(
                  Chosen::className(), [
                      'items' => $mapprocedencia,
+                     'placeholder' => 'Selecciona una opción',
                      'clientOptions' => [
                        'rtl'=> true,
                          'search_contains' => true,

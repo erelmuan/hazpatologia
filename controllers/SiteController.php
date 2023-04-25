@@ -78,6 +78,7 @@ class SiteController extends Controller {
      * @return string
      */
     public function actionIndex() {
+
         $cantidadBiopsias = Biopsia::find()->count();
         $cantidadSolicitudes = Solicitud::find()->count();
         $cantidadPacientes = Paciente::find()->count();
@@ -215,5 +216,8 @@ class SiteController extends Controller {
     }
     public function actionConstruccion() {
         return $this->render('construccion');
+    }
+    public function actionAyuda() {
+        return $this->render('ayuda');
     }
 }

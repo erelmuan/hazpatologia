@@ -5,14 +5,15 @@
  * @var \yii\web\View $this
  */
 
+use \yii\web\View ;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use kartik\widgets\Alert;
 use kartik\widgets\Growl;
 use kartik\widgets\SwitchInput;
 use app\models\AnioProtocolo;
-$bundle = yiister\gentelella\assets\Asset::register($this);
-
+  // Registra el AssetBundle de Gentelella
+   $bundle = yiister\gentelella\assets\Asset::register($this);
 ?>
 <?php $this->beginPage(); ?>
 <!DOCTYPE html>
@@ -26,13 +27,6 @@ $bundle = yiister\gentelella\assets\Asset::register($this);
     <?= Html::csrfMetaTags() ?>
     <title><?= Html::encode($this->title) ?></title>
     <?php $this->head() ?>
-    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-    <!--[if lt IE 9]>
-    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif]-->
-    <!--Plantilla para modificar el link logout-->
-     <?= Html::cssFile('@web/css/botonlogout.css') ?>
      <?= Html::cssFile('@web/css/plantillas-intro.css') ?>
      <!-- efecto sobre los modulos  -->
      <?= Html::cssFile('@web/css/animate.min.css') ?>
@@ -40,34 +34,12 @@ $bundle = yiister\gentelella\assets\Asset::register($this);
      <!-- Modal para que muestra el protocolo -->
      <?= Html::jsFile('@web/js/sweetalert2.all.min.js') ?>
      <?= Html::jsFile('@web/js/flashjs/dist/flash.min.js') ?>
-     <style>
-      #demo{
-        position:absolute;
-        right:123px;
-      top: 40px;     }
-      .panel-primary > .panel-heading {
-          color: #fff;
-          background-color: #333;
-          border-color: #977979;
-      }
-      .btn-circle {
-          width: 25px;
-          height: 25px;
-          /* padding: 6px 0px; */
-          border-radius: 15px;
-          text-align: center;
-          font-size: 12px;
-          line-height: 1.42857;
-      }
-
-     </style>
+     <link href="/hazpatologia/web/css/custom.<?=Yii::$app->user->identity->configuracion->tema->descripcion?>.css" rel="stylesheet" id="estilo-original">
      <?=$this->registerLinkTag(['rel' => 'icon', 'type' => 'image/ico', 'href' => Url::base(true).'/favicon.ico']); ?>
 </head>
 <body class="nav-<?= !empty($_COOKIE['menuIsCollapsed']) && $_COOKIE['menuIsCollapsed'] == 'true' ? 'sm' : 'md' ?>" >
 
-
 <?php $this->beginBody(); ?>
-
 <div class="container body">
 
     <div class="main_container">
@@ -77,7 +49,7 @@ $bundle = yiister\gentelella\assets\Asset::register($this);
             <div class="left_col scroll-view">
 
                 <div class="navbar nav_title" style="border: 0;">
-                    <center class="site_title"><i class="fa fa-flask"></i> <span>hazpatologia</span> </center><center id="version" style="color:white; font-size: 10px;"> <b>Version: 2.0.0 </b></center>
+                    <center class="site_title"><i class="fa fa-flask"></i> <span>hazpatologia</span> </center><center id="version" style="color:white; font-size: 10px;"> <b>Version: 2.1.0 </b></center>
                 </div>
                 <div class="clearfix"></div>
 
@@ -183,14 +155,14 @@ $bundle = yiister\gentelella\assets\Asset::register($this);
 
                 <!-- /menu footer buttons -->
                 <div class="sidebar-footer hidden-small">
-                    <a href=<?=Yii::$app->homeUrl."site/administracion"; ?> data-toggle="tooltip" data-placement="top" title="Administración">
-                        <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
-                    </a>
-                    <a data-toggle="tooltip" data-placement="top" title="Ayuda">
-                        <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
-                    </a>
                     <a href=<?=Yii::$app->homeUrl."usuario/perfil"; ?> data-toggle="tooltip" data-placement="top" title="Perfil">
                         <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+                    </a>
+                    <a href=<?=Yii::$app->homeUrl."usuario/configuracion"; ?> data-toggle="tooltip" data-placement="top" title="Configuración">
+                        <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
+                    </a>
+                    <a href=<?=Yii::$app->homeUrl."site/ayuda"; ?> data-toggle="tooltip" data-placement="top" title="Ayuda">
+                        <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
                     </a>
                     <a href="#" onclick="cerrarSesion()" data-toggle="tooltip" data-placement="top" title="Salir">
                         <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
@@ -216,20 +188,20 @@ $bundle = yiister\gentelella\assets\Asset::register($this);
                         <li class="">
                             <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
                               <? echo '<img src='.Url::base(true).'/uploads/avatar/sm_'.Yii::$app->user->identity->imagen.'   alt="..." >';?>
-                              <?=Yii::$app->user->identity->usuario ?>
+                               <b style="color:#403d3d;"><?=Yii::$app->user->identity->usuario ?> </b>
                                 <span class=" fa fa-angle-down"></span>
                             </a>
                             <ul class="dropdown-menu dropdown-usermenu pull-right">
                                 <li><a href=<?=Yii::$app->homeUrl."usuario/perfil"; ?>> <i class="fa fa-user-circle-o pull-left" ></i>Perfil</a>
                                 </li>
                                 <li>
-                                    <a href="javascript:;">
+                                    <a href=<?=Yii::$app->homeUrl."usuario/configuracion"; ?>>
                                         <span class="badge bg-red pull-right">50%</span>
                                         <span><i class="fa fa-gears pull-left" ></i>Configuración</span>
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="javascript:;"><i class="fa fa-question pull-left" ></i>Ayuda</a>
+                                    <a href=<?=Yii::$app->homeUrl."site/ayuda"; ?>><i class="fa fa-question pull-left" ></i>Ayuda</a>
                                 </li>
                               </li>
                                  <li>
@@ -259,23 +231,6 @@ $bundle = yiister\gentelella\assets\Asset::register($this);
 
         <!-- page content -->
         <div class="right_col" role="main">
-            <?php if (isset($this->params['h1'])): ?>
-                <div class="page-title">
-                    <div class="title_left">
-                        <h1><?= $this->params['h1'] ?></h1>
-                    </div>
-                    <div class="title_right">
-                        <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
-                            <div class="input-group">
-                                <input type="text" class="form-control" placeholder="Search for...">
-                                <span class="input-group-btn">
-                                <button class="btn btn-default" type="button">Go!</button>
-                            </span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            <?php endif; ?>
 
             <?php foreach (Yii::$app->session->getAllFlashes() as $message):; ?>
                         <?php
@@ -299,17 +254,13 @@ $bundle = yiister\gentelella\assets\Asset::register($this);
                     <?php endforeach; ?>
 
             <div class="clearfix"></div>
-
             <?= $content ?>
-
-
         </div>
         <!-- /page content -->
         <!-- footer content -->
-
         <footer>
             <div id="datosHospital">
-                Hospital "Artémides ZATTI" - Rivadavia 391 - (8500) Viedma - Río Negro <br />
+                Hospital "Artémides ZATTI" - Rivadavia 391 - (8500) Viedma - Río Negro  (<?= date('Y') ?>)<br />
                 Tel. 02920 - 427843 | Fax 02920 - 429916 / 423780
             </div>
             <div class="clearfix"></div>
@@ -319,18 +270,10 @@ $bundle = yiister\gentelella\assets\Asset::register($this);
 
 </div>
 
-<div id="custom_notifications" class="custom-notifications dsp_none">
-    <ul class="list-unstyled notifications clearfix" data-tabbed_notifications="notif-group">
-    </ul>
-    <div class="clearfix"></div>
-    <div id="notif-group" class="tabbed_notifications"></div>
-</div>
-
 <!-- /footer content -->
 <?php $this->endBody(); ?>
 
 <script>
-
 $( document ).ready(function() {
   // Handler for .ready() called.
   setTimeout(function(){

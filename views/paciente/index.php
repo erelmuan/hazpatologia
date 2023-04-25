@@ -14,27 +14,6 @@ $this->params['breadcrumbs'][] = $this->title;
 
 CrudAsset::register($this);
 
-//me genera error con las obras sociales
-// $configexport=[
-//
-//         GridView::EXCEL => [
-//           'export'=> true,
-//         'iconOptions' => ['class' => 'text-success'],
-//         'showHeader' => true,
-//         'showPageSummary' => false,
-//         'showFooter' => true,
-//          'options' => ['title' => ( 'Microsoft Excel 95+')],
-//         'config'=>true,
-//         'showCaption' => true,
-//           'mime' => 'application/vnd.ms-excel',
-//           'config' => [
-//               'cssFile' => ''
-//           ]
-//
-// ],
-//
-//
-// ] ;
 ?>
 
 <div id="w0p" class="x_panel">
@@ -61,8 +40,7 @@ CrudAsset::register($this);
                     ['role'=>'modal-remote','title'=> 'Crear un paciente','class'=>'btn btn-default']).
                     Html::a('<i class="glyphicon glyphicon-repeat"></i>', [''],
                     ['data-pjax'=>1, 'class'=>'btn btn-default', 'title'=>'Refrescar'])//.
-                    // '{toggleData}'.
-                    //  '{export}'
+
                 ],
                    'exportContainer' => ['class' => 'btn-group-sm']
 

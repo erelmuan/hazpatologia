@@ -3,12 +3,6 @@ use yii\helpers\Html;
 use kartik\grid\GridView;
 ?>
 
-<style>
-    .detalle-seleccionado > td {
-        background-color: #bee0bf;!important;
-    }
-</style>
-
 <?php
 // agrego acciones a $columns
 $columns[]=

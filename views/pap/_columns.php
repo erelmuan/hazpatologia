@@ -130,6 +130,8 @@ return [
      [
          'class'=>'\kartik\grid\BooleanColumn',
          'attribute'=>'vph',
+         'trueLabel' => 'Sí',
+         'falseLabel' => 'No',
      ],
     [
         'class'=>'\kartik\grid\DataColumn',

@@ -208,6 +208,8 @@ class Biopsia extends \yii\db\ActiveRecord
         [
             'class'=>'\kartik\grid\BooleanColumn',
             'attribute'=>'ihq',
+            'trueLabel' => 'Sí',
+            'falseLabel' => 'No',
         ],
         ];
     }

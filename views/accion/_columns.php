@@ -6,19 +6,27 @@ return [
     [
         'class'=>'\kartik\grid\BooleanColumn',
         'attribute'=>'index',
-        'label'=>'Index/ver'
+        'label'=>'Index/ver',
+        'trueLabel' => 'Sí',
+        'falseLabel' => 'No',
     ],
     [
         'class'=>'\kartik\grid\BooleanColumn',
         'attribute'=>'create',
+        'trueLabel' => 'Sí',
+        'falseLabel' => 'No',
     ],
     [
         'class'=>'\kartik\grid\BooleanColumn',
         'attribute'=>'delete',
+        'trueLabel' => 'Sí',
+        'falseLabel' => 'No',
     ],
     [
         'class'=>'\kartik\grid\BooleanColumn',
         'attribute'=>'update',
+        'trueLabel' => 'Sí',
+        'falseLabel' => 'No',
     ],
     // [
         // 'class'=>'\kartik\grid\DataColumn',
@@ -27,6 +35,8 @@ return [
     [
         'class'=>'\kartik\grid\BooleanColumn',
         'attribute'=>'listdetalle',
+        'trueLabel' => 'Sí',
+        'falseLabel' => 'No',
     ],
     [
         'class' => 'kartik\grid\ActionColumn',
@@ -35,7 +45,7 @@ return [
         'urlCreator' => function($action, $model, $key, $index) {
                 return Url::to([$action,'id'=>$key]);
         },
-      
+
     ],
 
 ];

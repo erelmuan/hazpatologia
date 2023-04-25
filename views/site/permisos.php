@@ -1,24 +1,4 @@
-<style>
 
-.x_title h2 {
-    margin: 5px 0 6px;
-    float: left;
-    display: block;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    white-space: nowrap;
-}
-.x_title {
-  border-bottom: 2px solid #D5EBD5;
-  padding: 0px;
-  margin-bottom: 10px;
-  height:45;
-}
-.tile-stats{
-background: #D5EBD5;
-}
-
-</style>
 <?php
 use kartik\icons\Icon;
 use yii\helpers\Html;
@@ -45,7 +25,7 @@ $this->title = 'Permisos';
     <div class="row top_tiles">
       <a href=<?=Yii::$app->homeUrl."rol"; ?>>
       <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
-        <div class="tile-stats">
+        <div class="tile-stats permisos">
             <div class="icon"><i class="fa fa-users"></i>
             </div>
             <div class="count"><?=$cantidadRoles?></div>
@@ -59,7 +39,7 @@ $this->title = 'Permisos';
 
       <a href=<?=Yii::$app->homeUrl."modulo"; ?>>
       <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
-        <div class="tile-stats">
+        <div class="tile-stats permisos">
           <div class="icon"><i class="fa fa-bars"></i>
           </div>
           <div class="count"><?=$cantidadModulos?></div>
@@ -71,7 +51,7 @@ $this->title = 'Permisos';
     </a>
     <a href=<?=Yii::$app->homeUrl."accion"; ?>>
     <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
-      <div class="tile-stats">
+      <div class="tile-stats permisos">
           <div class="icon"><i class="fa fa-asterisk"></i>
           </div>
           <div class="count"><?=$cantidadAcciones?></div>

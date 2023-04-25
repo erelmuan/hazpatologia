@@ -47,7 +47,7 @@ CrudAsset::register($this);
             <?   echo  Html::a('<i class="glyphicon glyphicon-plus"> Crear paciente</i>', ['paciente/create'],
              ['role'=>'modal-remote','title'=> 'Crear nuevo paciente','class'=>'btn btn-primary btn-xs']); ?>
           </label>
-          <input type="text" id="pacientebuscar" name="PacienteSearch[num_documento]"  placeholder="Ingresar DNI del paciente" >
+          <input  type="text" id="pacientebuscar" name="PacienteSearch[num_documento]"  placeholder="Ingresar DNI del paciente" >
           <button id="button_paciente" type="button" class ="btn btn-primary btn-xs" onclick='pacienteba();'>Buscar y añadir</button>
 
           </br>
@@ -117,7 +117,9 @@ CrudAsset::register($this);
                   echo $form->field($model, 'id_procedencia')->widget(
                     Chosen::className(), [
                      'items' => $mapprocedencia,
+                      'placeholder' => 'Selecciona una opción',
                      'clientOptions' => [
+                       'language' => 'es',
                        'rtl'=> true,
                          'search_contains' => true,
                          'single_backstroke_delete' => false,

@@ -66,19 +66,7 @@ $config = [
             // for the mailer to send real emails.
             'useFileTransport' => true,
         ],
-        // 'mailer' => [
-        //         'class' => 'yii\swiftmailer\Mailer',
-        //         'viewPath' => '@app/mailer',
-        //         'useFileTransport' => false,
-        //         'transport' => [
-        //             'class' => 'Swift_SmtpTransport',
-        //             'host' => 'smtp.gmail.com',
-        //             'username' => 'eliasrelmuan',
-        //             'password' => '',
-        //             'port' => '587',
-        //             'encryption' => 'tls',
-        //                         ],
-        //     ],
+
 
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,
@@ -151,8 +139,9 @@ $config = [
            'class' => '\kartik\datecontrol\Module'
        ],
           'gridview' => ['class' => 'kartik\grid\Module'],
-          'i18n' => [    'class' => 'yii\i18n\PhpMessageSource',
-    'basePath' => '@kvgrid/messages/es',
+          'i18n' => [
+            'class' => 'yii\i18n\PhpMessageSource',
+            'basePath' => '@kvgrid/messages/es',
     'forceTranslation' => false]
       ] ,
     'params' => $params,

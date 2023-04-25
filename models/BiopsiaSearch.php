@@ -31,10 +31,10 @@ class BiopsiaSearch extends Biopsia
     {
         return [
             [['id', 'id_solicitudbiopsia', 'protocolo', 'id_estado'], 'integer'],
-            [['fecha_desde','fecha_hasta','sexo','material','macroscopia', 'microscopia', 'ihq', 'diagnostico',  'observacion','fechalisto'], 'safe'],
+            [['fecha_desde','fecha_hasta','sexo','material','macroscopia', 'microscopia', 'diagnostico',  'observacion','fechalisto'], 'safe'],
             ['fecharealizacion', 'date', 'format' => 'dd/MM/yyyy'],
             ['fechadeingreso', 'date', 'format' => 'dd/MM/yyyy'],
-
+            [['firmado', 'ihq'], 'boolean'],
             //Se agrego para permitir la habilitacion del filtro en la grilla
             [['paciente','medico','procedencia','estado'], 'safe'],
         ];

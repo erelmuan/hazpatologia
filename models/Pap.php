@@ -235,6 +235,8 @@ class Pap extends \yii\db\ActiveRecord
           [
               'class'=>'\kartik\grid\BooleanColumn',
               'attribute'=>'vph',
+              'trueLabel' => 'Sí',
+              'falseLabel' => 'No',
           ],
           [
             'class'=>'\kartik\grid\DataColumn',

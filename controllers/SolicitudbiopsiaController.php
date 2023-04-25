@@ -17,13 +17,12 @@ use app\components\Metodos\Metodos;
  * SolicitudbiopsiaController implements the CRUD actions for Solicitudbiopsia model.
  */
 class SolicitudbiopsiaController extends SolicitudController {
+  
     public function actionIndex() {
         $model = new Solicitudbiopsia();
         $searchModel = new SolicitudbiopsiaSearch();
-        $dataProvider = $searchModel->search(Yii::$app
-            ->request->queryParams, '');
-        $dataProvider
-            ->pagination->pageSize = 7;
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams, '');
+        $dataProvider->pagination->pageSize = 7;
         $columnas = Metodos::obtenerColumnas($model);
         return $this->render('index', ['searchModel' => $searchModel, 'dataProvider' => $dataProvider, 'columns' => $columnas, ]);
     }

@@ -6,17 +6,7 @@ Icon::map($this, Icon::WHHG);
 // Maps the Elusive icon font framework/* @var $this yii\web\View */
 
 $this->title = 'Plantillas';
-?>
-<style>
-.tile-stats{
-background: #E6FDBD;
-}
-
-
-</style>
-
-  <?php
-  use derekisbusy\panel\PanelWidget;
+use derekisbusy\panel\PanelWidget;
   ?>
   <div id="w0" class="x_panel">
   <div class="x_title"><h2><i class="icon-pastealt"></i> PLANTILLAS  </h2>
@@ -32,7 +22,7 @@ background: #E6FDBD;
     <div class="row top_tiles">
     <a href=<?=Yii::$app->homeUrl."plantillaflora"; ?>>
     <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
-      <div class="tile-stats">
+      <div class="tile-stats planillas">
         <div class="icon"><i class="fa fa-square"></i>
         </div>
         <div class="count"><?=$cantidadPlantillaflora ?></div>
@@ -44,7 +34,7 @@ background: #E6FDBD;
     </a>
     <a href=<?=Yii::$app->homeUrl."plantillaaspecto"; ?>>
     <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
-      <div class="tile-stats">
+      <div class="tile-stats planillas">
         <div class="icon"><i class="fa fa-square"></i>
         </div>
         <div class="count"><?=$cantidadPlantillaAsp ?></div>
@@ -56,7 +46,7 @@ background: #E6FDBD;
     </a>
     <a href=<?=Yii::$app->homeUrl."plantillapavimentosa"; ?>>
     <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
-      <div class="tile-stats">
+      <div class="tile-stats planillas">
         <div class="icon"><i class="fa fa-square"></i>
         </div>
         <div class="count"><?=$cantidadPlantillaPav ?></div>
@@ -68,7 +58,7 @@ background: #E6FDBD;
     </a>
     <a href=<?=Yii::$app->homeUrl."plantillaglandular"; ?>>
     <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
-      <div class="tile-stats">
+      <div class="tile-stats planillas">
         <div class="icon"><i class="fa fa-square"></i>
         </div>
         <div class="count"><?=$cantidadPlantillaGla ?></div>
@@ -80,7 +70,7 @@ background: #E6FDBD;
     </a>
     <a href=<?=Yii::$app->homeUrl."plantilladiagnostico"; ?>>
     <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
-      <div class="tile-stats">
+      <div class="tile-stats planillas">
         <div class="icon"><i class="fa fa-square"></i>
         </div>
         <div class="count"><?=$cantidadPlantillaDiagP ?></div>
@@ -92,7 +82,7 @@ background: #E6FDBD;
     </a>
     <a href=<?=Yii::$app->homeUrl."plantillafrase"; ?>>
     <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12" >
-      <div class="tile-stats">
+      <div class="tile-stats planillas">
         <div class="icon"><i class="fa fa-comment"></i>
         </div>
         <div class="count"><?=$cantidadPlantillaFra?></div>

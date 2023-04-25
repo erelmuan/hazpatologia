@@ -1,19 +1,4 @@
-<style>
-  .x_title h2 {
-      margin: 5px 0 6px;
-      float: left;
-      display: block;
-      text-overflow: ellipsis;
-      overflow: hidden;
-      white-space: nowrap;
-  }
-  .x_title {
-    border-bottom: 2px solid #E6E9ED;
-    padding: 0px;
-    margin-bottom: 10px;
-    height:45;
-}
-</style>
+
 
 <?php
 use kartik\icons\Icon;
@@ -63,14 +48,14 @@ $this->title = 'Inicio';
             <div class="count">8</div>
 
             <h3>TABLAS-EXTRAS</h3>
-            <p>Permisos-cambio de clave-roles.</p>
+            <p>Tablas complementarias parametrizables.</p>
           </div>
         </div>
       </a>
       <a href=<?=Yii::$app->homeUrl."paciente"; ?>>
       <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
         <div class="tile-stats">
-          <div class="icon"><i class="fa fa-group"></i>
+          <div class="icon"><i class="fa fa-users"></i>
           </div>
           <div class="count"><?=$cantidadPacientes ?></div>
 
@@ -100,7 +85,7 @@ $this->title = 'Inicio';
           <div class="count"><?=$cantidadBiopsias ?></div>
 
           <h3>BIOPSIAS</h3>
-          <p>Información de las biopsias - Informe.</p>
+          <p>Información de las biopsias - Informe - ABM.</p>
         </div>
       </div>
       </a>
@@ -112,14 +97,14 @@ $this->title = 'Inicio';
           <div class="count"><?=$cantidadPaps ?></div>
 
           <h3>PAPS</h3>
-          <p>Información de los paps - Informe..</p>
+          <p>Información de los paps - Informe - ABM</p>
         </div>
       </div>
       </a>
       <a href=<?=Yii::$app->homeUrl."solicitud/index?sort=-id"; ?>>
       <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
         <div class="tile-stats">
-          <div class="icon"><i class="fa fa-file-text-o"></i>
+          <div class="icon"><i class="fa fa-file-text"></i>
           </div>
           <div class="count"><?=$cantidadSolicitudes ?></div>
 
@@ -132,7 +117,7 @@ $this->title = 'Inicio';
      <a href=<?=Yii::$app->homeUrl."site/administracion"; ?>>
       <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
         <div class="tile-stats">
-          <div class="icon"><i class="fa fa-gears"></i>
+          <div class="icon"><i class="fa fa-wrench"></i>
           </div>
           <div class="count">4</div>
 

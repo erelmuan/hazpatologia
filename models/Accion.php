@@ -51,12 +51,12 @@ class Accion extends \yii\db\ActiveRecord {
     }
     public function attributeColumns() {
         return [['class' => '\kartik\grid\DataColumn', 'attribute' => 'id', ],
-        ['class' => 'kartik\grid\BooleanColumn', 'label' => 'Index/Ver', 'attribute' => 'index', ],
-        ['class' => 'kartik\grid\BooleanColumn', 'label' => 'Alta', 'attribute' => 'create', ],
-        ['class' => 'kartik\grid\BooleanColumn', 'label' => 'Borrar', 'attribute' => 'delete', ],
-        ['class' => 'kartik\grid\BooleanColumn', 'label' => 'Modificar', 'attribute' => 'update', ],
-        ['class' => 'kartik\grid\BooleanColumn', 'label' => 'Exportar', 'attribute' => 'export', ],
-        ['class' => 'kartik\grid\BooleanColumn', 'label' => 'Listar', 'attribute' => 'listdetalle', ]];
+        ['class' => 'kartik\grid\BooleanColumn', 'label' => 'Index/Ver', 'trueLabel' => 'Sí','falseLabel' => 'No', 'attribute' => 'index', ],
+        ['class' => 'kartik\grid\BooleanColumn', 'label' => 'Alta','trueLabel' => 'Sí','falseLabel' => 'No', 'attribute' => 'create', ],
+        ['class' => 'kartik\grid\BooleanColumn', 'label' => 'Borrar','trueLabel' => 'Sí','falseLabel' => 'No', 'attribute' => 'delete', ],
+        ['class' => 'kartik\grid\BooleanColumn', 'label' => 'Modificar','trueLabel' => 'Sí','falseLabel' => 'No', 'attribute' => 'update', ],
+        ['class' => 'kartik\grid\BooleanColumn', 'label' => 'Exportar', 'trueLabel' => 'Sí','falseLabel' => 'No','attribute' => 'export', ],
+        ['class' => 'kartik\grid\BooleanColumn', 'label' => 'Listar', 'trueLabel' => 'Sí','falseLabel' => 'No','attribute' => 'listdetalle', ]];
     }
     /**
      * @return \yii\db\ActiveQuery

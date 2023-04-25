@@ -26,7 +26,6 @@ use yii\helpers\ArrayHelper;
  * @property string $hc
  * @property int $id_nacionalidad
  * @property int $id_tipodoc
- *
  * @property CarnetOs[] $carnetOs
  * @property Localidad $localidad
  * @property Nacionalidad $nacionalidad
@@ -75,7 +74,7 @@ class Paciente extends \yii\db\ActiveRecord
             [[ 'afiliado'], 'string', 'max' => 15],
             [['cp'], 'string', 'max' => 8],
             [['apellido'], 'string', 'max' => 60],
-           [['id_tipodoc', 'num_documento'], 'unique', 'targetAttribute' => ['id_tipodoc', 'num_documento']], 
+           [['id_tipodoc', 'num_documento'], 'unique', 'targetAttribute' => ['id_tipodoc', 'num_documento']],
             [['id_localidad'], 'exist', 'skipOnError' => true, 'targetClass' => Localidad::className(), 'targetAttribute' => ['id_localidad' => 'id']],
             [['id_nacionalidad'], 'exist', 'skipOnError' => true, 'targetClass' => Nacionalidad::className(), 'targetAttribute' => ['id_nacionalidad' => 'id']],
             [['id_provincia'], 'exist', 'skipOnError' => true, 'targetClass' => Provincia::className(), 'targetAttribute' => ['id_provincia' => 'id']],

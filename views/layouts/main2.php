@@ -65,7 +65,7 @@ AppAsset::register($this);
 
 <footer class="footer">
     <div class="container">
-      <p class="pull-left">&copy; Departamento de informática Artémides Zatti <?//= date('Y') ?></p>
+      <p class="pull-left">&copy; Departamento de informática Artémides Zatti - <?= date('Y') ?></p>
 
         <p class="pull-right"><?= Yii::powered() ?></p>
     </div>

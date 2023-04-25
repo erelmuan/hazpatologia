@@ -6,16 +6,7 @@ Icon::map($this, Icon::WHHG);
 // Maps the Elusive icon font framework/* @var $this yii\web\View */
 
 $this->title = 'Plantillas';
-?>
-<style>
-.tile-stats{
-background: #E6FDBD;
-}
 
-
-</style>
-
-  <?php
   use derekisbusy\panel\PanelWidget;
   ?>
   <div id="w0" class="x_panel">
@@ -32,7 +23,7 @@ background: #E6FDBD;
     <div class="row top_tiles">
       <a href=<?=Yii::$app->homeUrl."site/plantillasbiopsias"; ?>>
       <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
-        <div class="tile-stats">
+        <div class="tile-stats planillas">
             <div class="icon"><i class="fa fa-file-text-o"></i>
             </div>
             <div class="count">5</div>
@@ -43,7 +34,7 @@ background: #E6FDBD;
       </a>
       <a href=<?=Yii::$app->homeUrl."site/plantillaspaps"; ?>>
       <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
-        <div class="tile-stats">
+        <div class="tile-stats planillas">
           <div class="icon"><i class="fa fa-square"></i>
           </div>
           <div class="count">5</div>

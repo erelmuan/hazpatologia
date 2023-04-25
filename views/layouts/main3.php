@@ -3,13 +3,18 @@
 
 /* @var $this \yii\web\View */
 /* @var $content string */
-
+use \yii\web\View ;
 use app\widgets\Alert;
 use yii\helpers\Html;
-use yii\bootstrap\Nav;
 use yii\bootstrap\NavBar;
 use yii\widgets\Breadcrumbs;
 use app\assets\AppAsset;
+use app\models\AnioProtocolo;
+
+use yii\bootstrap\Nav;
+use yii\helpers\Url;
+use rmrevin\yii\fontawesome\FontAwesome;
+// $bundle = yiister\gentelella\assets\Asset::register($this);
 
 AppAsset::register($this);
 ?>
@@ -19,37 +24,17 @@ AppAsset::register($this);
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
   <meta charset="<?= Yii::$app->charset ?>" />
-  <!-- <meta http-equiv="X-UA-Compatible" content="IE=edge" /> -->
-  <!-- <meta name="viewport" content="width=device-width, initial-scale=1" /> -->
+  <link rel="stylesheet" href="<?= Yii::$app->request->baseUrl ?>/assets/fontawesome/css/all.min.css">
   <?= Html::csrfMetaTags() ?>
   <title><?= Html::encode($this->title) ?></title>
   <?php $this->head() ?>
-  <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-  <!--[if lt IE 9]>
-  <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-  <![endif]-->
-  <!--Plantilla para modificar el link logout-->
-   <?= Html::cssFile('@web/css/botonlogout.css') ?>
    <?= Html::cssFile('@web/css/plantillas-intro.css') ?>
-   <!-- para que funcione e wizard form -->
-   <?//= Html::cssFile('@web/css/icheck/flat/green.css') ?>
-   <?//= Html::cssFile('@web/css/custom.css') ?>
    <!-- efecto sobre los modulos  -->
    <?= Html::cssFile('@web/css/animate.min.css') ?>
    <?= Html::jsFile('@web/js/jquery.min.js') ?>
-   <!-- Modal para que muestra el protocolo -->
-
-
-   <?//= Html::cssFile('@web/css/icheck/flat/green.css') ?>
-   <?//= Html::cssFile('@web/css/custom.css') ?>
    <?= Html::jsFile('@web/js/sweetalert2.all.min.js') ?>
-
-   <style>
-    #demo{
-      position:absolute;
-      right:123px;      }
-   </style>
+   <link href="/hazpatologia/web/css/custom.<?=Yii::$app->user->identity->configuracion->tema->descripcion?>.css" rel="stylesheet" id="estilo-original">
+   <?=$this->registerLinkTag(['rel' => 'icon', 'type' => 'image/ico', 'href' => Url::base(true).'/favicon.ico']); ?>
 </head>
 <body class="nav-<?= !empty($_COOKIE['menuIsCollapsed']) && $_COOKIE['menuIsCollapsed'] == 'true' ? 'sm' : 'md' ?>" >
 
@@ -58,7 +43,7 @@ AppAsset::register($this);
 <div class="wrap">
     <?php
     NavBar::begin([
-        'brandLabel' => Yii::$app->name,
+        'brandLabel' => FontAwesome::icon('fa fa-microscope') ." ".Yii::$app->name ." (v 2.1.0)",
         'brandUrl' => Yii::$app->homeUrl,
         'options' => [
             'class' => 'navbar-inverse navbar-fixed-top',
@@ -68,63 +53,131 @@ AppAsset::register($this);
     echo Nav::widget([
         'options' => ['class' => 'navbar-nav navbar-right'],
         'items' => [
-            ["label" => "Notificaciones", "url" => ["/usuario/perfil"], "icon" => "fa fa-file-text-o"],
-            ["label" => "Perfil", "url" => ["/usuario/perfil"], "icon" => "fa fa-file-text-o"],
+            ["label" => FontAwesome::icon('fa fa-home') ." Inicio", "url" => ["/site/index"]],
+            [   "label" => FontAwesome::icon('fa fa-paste') ." Plant. biopsia",
+                "url" => "#",
+                "items" => [
+                    ["label" => "Diagnostico", "url" => ["/plantilladiagnostico/index"]],
+                    ["label" => "Microscopia  ", "url" => ["/plantillamicroscopia/index"]],
+                    ["label" => "Macroscopia", "url" => ["/plantillamacroscopia/index"]],
+                    ["label" => "Material", "url" => ["/plantillamaterial/index"]],
+                    ["label" => "Frases", "url" => ["/plantillafrase/index"]],
+                    ["label" => "Material de solicitud", "url" => ["/materialsolicitud/index"]],
 
-          Yii::$app->user->isGuest ? (
-              ['label' => 'Login', 'url' => ['/site/login']]
-          ) : (
-              '<li>'
-              . Html::beginForm(['/site/logout'], 'post')
-              . Html::submitButton(
-                  'Logout (' . Yii::$app->user->identity->username . ')',
-                  ['class' => 'btn btn-link logout']
-              )
-              . Html::endForm()
-              . '</li>'
-          )
-        ],
+                ],
+            ],
+            [   "label" => FontAwesome::icon('fa fa-paste') ." Plant. pap",
+                "url" => "#",
+                "items" => [
+                    ["label" => "Diagnostico", "url" => ["/plantilladiagnostico/index"]],
+                    ["label" => "Flora", "url" => ["/plantillaflora/index"]],
+                    ["label" => "Aspecto", "url" => ["/plantillaaspecto/index"]],
+                    ["label" => "Pavimentosa  ", "url" => ["/plantillapavimentosa/index"]],
+                    ["label" => "Glandular", "url" => ["/plantillaglandular/index"]],
+                    ["label" => "Frases", "url" => ["/plantillafrase/index"]],
+                    ["label" => "Material de solicitud", "url" => ["/materialsolicitud/index"]],
+
+                ],
+            ],
+            ["label" =>FontAwesome::icon('fa fa-users') . " Pacientes", "url" => ["/paciente/index"]],
+            [ 'separator' => '<br>',"label" => FontAwesome::icon('fa fa-microscope') ." Biopsias",   "url" => ["/biopsia/index","sort"=>"-id"]],
+            ["label" =>FontAwesome::icon('fa fa-flask') . " Paps","url" => ["/pap/index","sort"=>"-id"]],
+            ["label" => FontAwesome::icon('fa fa-file-text') ." Solicitudes", "url" => ["/solicitud/index","sort"=>"-id"]],
+            ["label" => (AnioProtocolo::find()->where(['activo'=>true])->one()!== NULL)? AnioProtocolo::find()->where(['activo'=>true])->one()->anio:'INACTIVOS', "url" => ["/anio-protocolo/index"],'options' => ['class' => 'btn-success' ]],
+
+            [   "label" => Yii::$app->user->identity->usuario,
+              'options' => ['class' => 'btn-primary', ],
+                "icon" => "fa fa-files-o",
+                "url" => "#",
+                "items" => [
+                    ["label" => FontAwesome::icon('glyphicon glyphicon-user') ." Perfil", "url" => ["/usuario/perfil"]],
+                    ["label" => FontAwesome::icon('glyphicon glyphicon-cog') ." Configuración", "url" => ["/usuario/configuracion"]],
+                    ["label" => FontAwesome::icon('glyphicon glyphicon-question-sign') ." Ayuda", "url" => ["/site/ayuda"]],
+                ],
+            ],
+
+            ["label" => "SALIR", "url" => "#", "icon" => "fa fa-file-text-o" ,'options' => ['class' => 'btn-danger'],'linkOptions' => [ 'onclick' => 'cerrarSesion()'] ],
+
+        ]
+        ,'encodeLabels' => false,
     ]);
+
     NavBar::end();
+    // Obtener la instancia de la sesión
+    $session = Yii::$app->session;
+    // Iniciar la sesión si no está iniciada aún
+    if (!$session->isActive) {
+        $session->open();
+    }
+
+    if($session->get('mensajeDelSistema')=="bienvenido" ){  ?>
+      <div id="loader-out">
+        <div id="loader-container">
+          <p id="loading-text">BIENVENIDO <?=Yii::$app->user->identity->usuario ?> </p>
+        </div>
+      </div>
+      <?
+      $session->set('mensajeDelSistema', 'adios');
+      }
+      ?>
+
     ?>
 
     <div class="container">
-        <?= Breadcrumbs::widget([
-            'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
-        ]) ?>
-        <?= Alert::widget() ?>
+
+        <?php foreach (Yii::$app->session->getAllFlashes() as $message):; ?>
+                    <?php
+                    echo \kartik\widgets\Growl::widget([
+                        'type' => (!empty($message['type'])) ? $message['type'] : 'danger',
+                        'title' => (!empty($message['title'])) ? Html::encode($message['title']) : 'Title Not Set!',
+                        'icon' => (!empty($message['icon'])) ? $message['icon'] : 'fa fa-info',
+                        'body' => (!empty($message['message'])) ? Html::encode($message['message']) : 'Message Not Set!',
+                        'showSeparator' => true,
+                        'delay' => 0, //This delay is how long before the message shows
+                        'pluginOptions' => [
+                          'showProgressbar' => true,
+                            'delay' => (!empty($message['duration'])) ? $message['duration'] : 3000, //This delay is how long the message shows for
+                            'placement' => [
+                                'from' => (!empty($message['positonY'])) ? $message['positonY'] : 'top',
+                                'align' => (!empty($message['positonX'])) ? $message['positonX'] : 'right',
+                            ]
+                        ]
+                    ]);
+                    ?>
+                <?php endforeach; ?>
+
+        <div class="clearfix"></div>
         <?= $content ?>
     </div>
 </div>
 
-<footer class="footer">
-    <div class="container">
-        <p class="pull-left">&copy; Hospital Artemides Zatti (Viedma-RN) <?= date('Y') ?></p>
-
-        <p class="pull-right"><?= Yii::powered() ?></p>
+<!-- footer content -->
+<footer style="margin-left:auto">
+    <div id="datosHospital">
+        Hospital "Artémides ZATTI" - Rivadavia 391 - (8500) Viedma - Río Negro  (<?= date('Y') ?>)<br />
+        Tel. 02920 - 427843 | Fax 02920 - 429916 / 423780
     </div>
+    <div class="clearfix"></div>
 </footer>
-<? if(empty($_SESSION['mostrar']) || $_SESSION['mostrar']=="bienvenido" ){  ?>
-<div id="loader-out">
-  <div id="loader-container">
-    <p id="loading-text">BIENVENIDO <?=Yii::$app->user->identity->username ?> </p>
-  </div>
-</div>
-<?
-$_SESSION['mostrar']="nomostrar";
-}
-?>
-<script>
+<!-- /footer content -->
 
+
+<?php $this->endBody() ?>
+<script>
 $( document ).ready(function() {
   // Handler for .ready() called.
   setTimeout(function(){
     $('#loader-out').fadeOut();
-  }, 3000);
+  }, 1300);
 });
+function cerrarSesion(){
+  $.ajax({
+      url: '<?php echo Url::to(['/site/logout']) ?>',
+      type: 'post',
+  });
+}
 
 </script>
-<?php $this->endBody() ?>
 </body>
 </html>
 <?php $this->endPage() ?>

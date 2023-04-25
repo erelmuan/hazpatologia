@@ -1,3 +1,4 @@
+
 <?php
 use yii\helpers\Url;
 use yii\helpers\Html;
@@ -13,6 +14,9 @@ use kartik\widgets\AlertBlock;
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
 $this->title = 'Paps';
+?>
+<div class="col-xs-3">
+<?
 echo Collapse::widget([
    'items' => [
        [
@@ -21,6 +25,9 @@ echo Collapse::widget([
        ],
    ]
 ]);
+?>
+</div>
+<?
 $this->params['breadcrumbs'][] = $this->title;
 
 CrudAsset::register($this);
@@ -124,3 +131,9 @@ $columns[]=
     "footer"=>"",// always need it for jquery plugin
 ])?>
 <?php Modal::end(); ?>
+<style>
+.panel-default > .panel-heading {
+    background-color: #40adce;
+    color: white;
+}
+</style>

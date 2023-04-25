@@ -12,11 +12,12 @@ use kartik\widgets\DatePicker;
 <div class="biopsia-search">
 
     <?php $form = ActiveForm::begin([
+        'id' => 'busqueda-fecha',
         'action' => ['index'],
         'method' => 'get',
-        // 'options' => [
-        //     'data-pjax' => 1
-        // ],
+        'options' => [
+            'data-pjax' => 1
+        ],
     ]); ?>
 
     <?
@@ -41,11 +42,15 @@ use kartik\widgets\DatePicker;
     ]);
 
     ?>
-
-
         <?= Html::submitButton('Buscar', ['class' => 'btn btn-primary']) ?>
-        <?= Html::resetButton('Limpiar', ['class' => 'btn btn-default']) ?>
-
+        <?= Html::resetButton('Limpiar', ['class' => 'btn btn-default','id'=>'btn-limpiar']) ?>
     <?php ActiveForm::end(); ?>
 
 </div>
+<script>
+  document.getElementById("btn-limpiar").addEventListener("click", function() {
+      document.getElementById("biopsiasearch-fecha_desde").value = "";
+      document.getElementById("biopsiasearch-fecha_hasta").value = "";
+    });
+
+</script>

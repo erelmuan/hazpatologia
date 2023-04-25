@@ -152,8 +152,33 @@ white-space: nowrap;
     padding: 0 0 4px 0
 }
 .left_col {
-    background: #131416
+    /* background: #131416  */
+    /* background-size: cover; /* la imagen se ajustará al tamaño del contenedor, cubriendo todo el espacio disponible */ */
+    background-attachment: fixed; /* la imagen quedará fija en su posición, sin importar si el usuario hace scroll */
+    /* position: fixed; */
+
 }
+.main_container {
+    /* background: #131416  */
+    background-image: url('/hazpatologia/web/img/negro.jpg');;
+    /* opacity: 0.9; */
+    background-position: left center; /* la imagen se centrará en el contenedor */
+    background-size: cover; /* la imagen se ajustará al tamaño del contenedor, cubriendo todo el espacio disponible */
+    background-attachment: fixed; /* la imagen quedará fija en su posición, sin importar si el usuario hace scroll */
+    background-repeat: no-repeat;
+    background-size: cover;
+      /* position: fixed; */
+
+}
+.site_title{
+  background: black;
+  opacity: 0.9;
+
+}
+.sidebar-footer {
+  background: black;
+}
+
 .nav-sm .container.body .col-md-3.left_col {
     min-height: 100%;
     width: 70px;
@@ -497,7 +522,7 @@ body .container.body .right_col {
 }
 body {
     color: #191B1C;
-    background: #131416;
+    background: #eaedf4;
     font-family: "Helvetica Neue", Roboto, Arial, "Droid Sans", sans-serif;
     font-size: 13px;
     font-weight: 400;
@@ -833,7 +858,7 @@ a:focus {
     text-decoration: none
 }
 .nav.navbar-nav>li>a {
-    color: #515356 !important
+    color: #cacfd7 !important
 }
 .nav.top_menu>li>a {
     position: relative;
@@ -1528,7 +1553,7 @@ ul.msg_list li a .message {
     border-top-right-radius: 0
 }
 .dropdown-menu>li>a {
-    color: #5A738E
+    color: #403d3d;
 }
 .navbar-nav .open .dropdown-menu {
     position: absolute;
@@ -1542,6 +1567,9 @@ ul.msg_list li a .message {
 }
 .navbar-nav .open .dropdown-menu.msg_list {
     width: 300px
+}
+.left_col scroll-view{
+  background: red;
 }
 .info-number .badge {
     font-size: 10px;
@@ -1704,7 +1732,7 @@ span.right {
 }
 @media (min-width: 992px) {
     footer {
-        margin-left: 230px
+        margin-left: 230px;
     }
 }
 @media (min-width: 992px) {
@@ -1873,11 +1901,7 @@ h4.graph_title {
     background: #EBEFEE;
     transition: all 300ms ease-in-out
 }
-/*.tile-stats .usuario{
-    background: #35B091;
-    height: 120px;
 
-}*/
 .tile-stats:hover .icon i {
     animation-name: tansformAnimation;
     animation-duration: .5s;
@@ -1926,9 +1950,7 @@ h4.graph_title {
     /*z-index: 5;*/
     padding: 0
 }
-.tile-stats h3 {
-    color: #BAB8B8
-}
+
 .tile-stats p {
     margin-top: 5px;
     font-size: 12px
@@ -4198,59 +4220,63 @@ ul.notifications {
 }
 
 
-
-
-/* CSS3 Checkbox */
-/*
-.checkbox-input { display:block;position:relative; }
-.checkbox-input:before { display:block;content:"";position:absolute;top:2px;left:0;height:20px;width:20px;background:red;border-radius:3px; }
-
-
- #input + label:after {
-    content: 'click my input';
-    color: blue;
-  }
-
-  #input:focus + label:after {
-    content: 'not valid yet';
-    color: blue;
-  }
-
-  #input:valid + label:after {
-    content: 'looks good';
-    color: red;
-  }
-
-/* CSS3 Checkbox - end */
-/*
-
-/*
-.checkbox 																										{ display: block;position:relative;cursor:pointer; }
-.checkbox input 																								{ position:absolute;z-index:-1;opacity:0;left:0;top:0; }
-.checkbox div 																									{ position:absolute;top:2px;left:0;height:20px;width:20px;background:#e6e6e6;border-radius:3px; }
-.checkbox input:checked ~ div 																			{ background: #1ABC9C; }
-.checkbox:hover input:not([disabled]):checked ~ div,
-.checkbox input:checked:focus ~ div 																	{ background: #1ABC9C; }
-.checkbox input:disabled ~ div 																			{ background: #1ABC9C;opacity: 0.6;pointer-events: none; }
-.checkbox div:after 																							{ content: '';position: absolute;display: none; }
-.checkbox input:checked ~ div:after 																	{ display: block; }
-.checkbox-wp div:after 																					{ left: 7px;top: 3px;width: 7px;height: 11px;border: solid #fff;border-width: 0 2px 2px 0;transform: rotate(40deg); }
-.checkbox-wp input:disabled ~ div:after 																{ border-color: #F2F2F2; }
-
-
-.checkbox-radio div 																							{ border-radius: 50%; }
-.checkbox-radio div:after 																					{ left: 7px;top: 7px;height: 6px;width: 6px;border-radius: 50%;background: #fff; }
-.checkbox-radio input:disabled ~ div:after 															{ background: #F2F2F2; }
-
-
-.checkbox, .radio { margin-top:-3px; }
-
-table thead .checkbox { margin-top:-7px;margin-top:-21px; }
-table thead .checkbox.radio { margin-top:-7px;margin-top:-21px; }
-*/
-
 .daterangepicker.xdisplay { width:228px; }
 
 .dataTables_wrapper > .row{
   overflow:auto !important; /*prevent datatables overflowing its container*/
 }
+.tile-stats.planillas{
+background: #E6FDBD;
+}
+.tile-stats.administracion{
+background: #D5ECF4;
+}
+.tile-stats.permisos{
+background: #D5EBD5;
+}
+ #demo{
+   position:absolute;
+   right:123px;
+ top: 40px;     }
+ .panel-primary > .panel-heading {
+     color: #fff;
+     background-color: #333;
+     border-color: #977979;
+ }
+ .btn-circle {
+     width: 25px;
+     height: 25px;
+     /* padding: 6px 0px; */
+     border-radius: 15px;
+     text-align: center;
+     font-size: 12px;
+     line-height: 1.42857;
+ }
+
+ .expanded-row > td {
+     background-color: #a4cea9;
+ }
+
+     .expanded-row > tr {
+         background-color: #beedc0;
+     }
+     .detalle-expand .table-striped > tbody > tr:nth-of-type(2n+1) > td {
+         background-color: #f9f9f9; !important;
+         padding: 6px;!important;
+     }
+     .detalle-expand .table-striped > tbody > tr:nth-of-type(2n) > td {
+         background-color: #ffffff; !important;
+         padding: 6px;!important;
+     }
+     .detalle-expand .table-striped > thead > tr > th {
+         padding-top: 2px; !important;
+         padding-left: 6px; !important;
+         padding-right: 6px; !important;
+         padding-bottom: 2px; !important;
+     }
+     .detalle-expand .glyphicon {
+         /*color: #6cb475;*/
+     }
+     a:hover {
+       color: #4a3b36;
+     }

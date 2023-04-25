@@ -1,24 +1,3 @@
-<style>
-  .x_title h2 {
-      margin: 5px 0 6px;
-      float: left;
-      display: block;
-      text-overflow: ellipsis;
-      overflow: hidden;
-      white-space: nowrap;
-  }
-  .x_title {
-    border-bottom: 2px solid #E6E9ED;
-    padding: 0px;
-    margin-bottom: 10px;
-    height:45;
-}
-.tile-stats{
-background: #D5ECF4;
-}
-
-
-</style>
 <?php
 use kartik\icons\Icon;
 use yii\helpers\Html;
@@ -44,7 +23,7 @@ $this->title = 'Administración';
     <div class="row top_tiles">
       <a href=<?=Yii::$app->homeUrl."usuario"; ?>>
       <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
-        <div class="tile-stats">
+        <div class="tile-stats administracion">
             <div class="icon"><i class="fa fa-user"></i>
             </div>
             <div class="count"><?=$cantidadUsuarios ?></div>
@@ -58,7 +37,7 @@ $this->title = 'Administración';
 
       <a href=<?=Yii::$app->homeUrl."site/permisos"; ?>>
       <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
-        <div class="tile-stats">
+        <div class="tile-stats administracion">
           <div class="icon"><i class="fa fa-key"></i>
           </div>
           <div class="count">3 </div>
@@ -70,7 +49,7 @@ $this->title = 'Administración';
     </a>
     <a href=<?=Yii::$app->homeUrl."auditoria"; ?>>
     <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
-      <div class="tile-stats">
+      <div class="tile-stats administracion">
           <div class="icon"><i class="fa fa-book"></i>
           </div>
           <div class="count"><?=$cantidadAuditorias ?></div>
@@ -83,7 +62,7 @@ $this->title = 'Administración';
     </a>
     <a href=<?=Yii::$app->homeUrl."firma"; ?>>
     <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
-      <div class="tile-stats">
+      <div class="tile-stats administracion">
           <div class="icon"><i class="fa fa-edit"></i>
           </div>
           <div class="count"><?=$cantidadFirmas?></div>

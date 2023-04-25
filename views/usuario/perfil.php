@@ -13,8 +13,6 @@ CrudAsset::register($this);
 ?>
 <div id="w0" class="x_panel">
   <h2><i class="fa fa-table"></i> PERFIL  </h2>
-
-  </div>
 <div class="usuario-misdatos">
 
       <!-- Nav tabs -->
@@ -22,10 +20,6 @@ CrudAsset::register($this);
         <li class="active"><a href="#general" role="tab" data-toggle="tab">Datos del usuario</a></li>
         <li><a href="#photo" role="tab" data-toggle="tab">Subir o actualizar foto</a></li>
       </ul>
-
-
-
-
         <div class="perfil-form">
           <?php $form = ActiveForm::begin(); ?>
 
