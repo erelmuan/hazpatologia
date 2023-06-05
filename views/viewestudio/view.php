@@ -6,7 +6,7 @@ use yii\widgets\DetailView;
 /* @var $model app\models\Viewestudio */
 ?>
 <div class="viewestudio-view">
-
+ 
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [

@@ -13,14 +13,14 @@ use yii\widgets\DetailView;
             'id',
             [
               'attribute'=>'index',
-                'label'=>'Index/Ver',
+                'label'=>'Index',
                 'format'=>'boolean',
               ],
             'create:boolean',
             'delete:boolean',
             'update:boolean',
             'export:boolean',
-            'listdetalle:boolean',
+            'view:boolean',
 
         ],
     ]) ?>

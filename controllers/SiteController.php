@@ -40,6 +40,7 @@ use app\models\Nacionalidad;
 use app\models\Tipodoc;
 use app\models\Estado;
 use app\models\Estudio;
+use app\models\User;
 
 use app\components\Seguridad\Seguridad;
 class SiteController extends Controller {
@@ -61,11 +62,7 @@ class SiteController extends Controller {
         }
         ], ], ], 'verbs' => ['class' => VerbFilter::className() , 'actions' => ['logout' => ['post'], ], ], ];
     }
-    public function actionFlash() {
-        $session = Yii::$app->session; // establece un mensaje flash llamado "greeting "
-        $session->setFlash('saludo ', 'Hola usuarioator! ');
-        return $this->render('flash');
-    }
+
     /**
      * {@inheritdoc}
      */
@@ -89,7 +86,10 @@ class SiteController extends Controller {
      * @return string
      */
     public function actionIndex() {
+        if (Yii::$app->user->identity->id_pantalla == 1 && !User::isUserAdmin()){
+          return $this->redirect(Yii::$app->request->baseUrl.'/solicitud/consulta');
 
+        }
         $cantidadBiopsias = Biopsia::find()->count();
         $cantidadSolicitudes = Solicitud::find()->count();
         $cantidadPacientes = Paciente::find()->count();

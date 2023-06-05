@@ -28,13 +28,9 @@ class PacienteController extends Controller {
         $searchModelPac->scenario = "search";
         $request = Yii::$app->request;
         if ($request->isAjax) {
-            $searchModelPac->load(\Yii::$app
-                ->request
-                ->get());
+            $searchModelPac->load(\Yii::$app->request->get());
             if ($searchModelPac->validate()) {
-                $dataProviderPac = $searchModelPac->search(\Yii::$app
-                    ->request
-                    ->get());
+                $dataProviderPac = $searchModelPac->search(\Yii::$app->request->get());
                 if ($dataProviderPac->totalCount == 0) return Json::encode(['status' => 'error', 'mensaje' => "No se encontro el paciente"]);
                 else return Json::encode(["nombre" => $dataProviderPac->getModels() [0]['nombre'], "apellido" => $dataProviderPac->getModels() [0]['apellido'], "id" => $dataProviderPac->getModels() [0]['id']]);
             }
@@ -50,9 +46,7 @@ class PacienteController extends Controller {
      */
     public function actionIndex() {
         $searchModel = new PacienteSearch();
-        $dataProvider = $searchModel->search(Yii::$app
-            ->request
-            ->queryParams);
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         return $this->render('index', ['searchModel' => $searchModel, 'dataProvider' => $dataProvider, ]);
     }
     /**

@@ -5,39 +5,30 @@ namespace app\controllers;
 use Yii;
 use app\models\Viewestudio;
 use app\models\ViewestudioSearch;
+use app\models\Solicitud;
+use app\models\Biopsia;
+use app\models\Pap;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use \yii\web\Response;
 use yii\helpers\Html;
-
+use app\components\Metodos\Metodos;
+use app\components\behaviors\AuditoriaBehaviors;
+use yii\filters\AccessControl;
+use app\components\Seguridad\Seguridad;
 /**
  * ViewestudioController implements the CRUD actions for Viewestudio model.
  */
 class ViewestudioController extends Controller
 {
-    /**
-     * @inheritdoc
-     */
-    public function behaviors()
-    {
-        return [
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['post'],
-                    'bulk-delete' => ['post'],
-                ],
-            ],
-        ];
-    }
-
+    
     /**
      * Lists all Viewestudio models.
      * @return mixed
      */
     public function actionIndex()
-    {    
+    {
         $searchModel = new ViewestudioSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
@@ -54,22 +45,23 @@ class ViewestudioController extends Controller
      * @return mixed
      */
     public function actionView($id)
-    {   
+    {
         $request = Yii::$app->request;
+        $modelo = $this->findModel($id);
+        $namespace="app\models\\";
+        $Model= $namespace.ucwords($modelo->modelo);
+
+        $modelo_estudio = $Model::findOne($modelo->id_estudio_modelo);
+
         if($request->isAjax){
             Yii::$app->response->format = Response::FORMAT_JSON;
             return [
-                    'title'=> "Viewestudio #".$id,
-                    'content'=>$this->renderAjax('view', [
-                        'model' => $this->findModel($id),
+                    'title'=> "Estudio #".$modelo_estudio->id,
+                    'content'=>$this->renderAjax('/'.$modelo->modelo.'/view', [
+                        'model' => $modelo_estudio,
                     ]),
-                    'footer'=> Html::button('Close',['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
-                            Html::a('Edit',['update','id'=>$id],['class'=>'btn btn-primary','role'=>'modal-remote'])
-                ];    
-        }else{
-            return $this->render('view', [
-                'model' => $this->findModel($id),
-            ]);
+                    'footer'=> Html::button('Cerrar',['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"])
+                ];
         }
     }
 
@@ -82,7 +74,7 @@ class ViewestudioController extends Controller
     public function actionCreate()
     {
         $request = Yii::$app->request;
-        $model = new Viewestudio();  
+        $model = new Viewestudio();
 
         if($request->isAjax){
             /*
@@ -97,8 +89,8 @@ class ViewestudioController extends Controller
                     ]),
                     'footer'=> Html::button('Close',['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
                                 Html::button('Save',['class'=>'btn btn-primary','type'=>"submit"])
-        
-                ];         
+
+                ];
             }else if($model->load($request->post()) && $model->save()){
                 return [
                     'forceReload'=>'#crud-datatable-pjax',
@@ -106,9 +98,9 @@ class ViewestudioController extends Controller
                     'content'=>'<span class="text-success">Create Viewestudio success</span>',
                     'footer'=> Html::button('Close',['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
                             Html::a('Create More',['create'],['class'=>'btn btn-primary','role'=>'modal-remote'])
-        
-                ];         
-            }else{           
+
+                ];
+            }else{
                 return [
                     'title'=> "Create new Viewestudio",
                     'content'=>$this->renderAjax('create', [
@@ -116,8 +108,8 @@ class ViewestudioController extends Controller
                     ]),
                     'footer'=> Html::button('Close',['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
                                 Html::button('Save',['class'=>'btn btn-primary','type'=>"submit"])
-        
-                ];         
+
+                ];
             }
         }else{
             /*
@@ -131,7 +123,7 @@ class ViewestudioController extends Controller
                 ]);
             }
         }
-       
+
     }
 
     /**
@@ -144,7 +136,7 @@ class ViewestudioController extends Controller
     public function actionUpdate($id)
     {
         $request = Yii::$app->request;
-        $model = $this->findModel($id);       
+        $model = $this->findModel($id);
 
         if($request->isAjax){
             /*
@@ -159,7 +151,7 @@ class ViewestudioController extends Controller
                     ]),
                     'footer'=> Html::button('Close',['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
                                 Html::button('Save',['class'=>'btn btn-primary','type'=>"submit"])
-                ];         
+                ];
             }else if($model->load($request->post()) && $model->save()){
                 return [
                     'forceReload'=>'#crud-datatable-pjax',
@@ -169,7 +161,7 @@ class ViewestudioController extends Controller
                     ]),
                     'footer'=> Html::button('Close',['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
                             Html::a('Edit',['update','id'=>$id],['class'=>'btn btn-primary','role'=>'modal-remote'])
-                ];    
+                ];
             }else{
                  return [
                     'title'=> "Update Viewestudio #".$id,
@@ -178,7 +170,7 @@ class ViewestudioController extends Controller
                     ]),
                     'footer'=> Html::button('Close',['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
                                 Html::button('Save',['class'=>'btn btn-primary','type'=>"submit"])
-                ];        
+                ];
             }
         }else{
             /*
@@ -230,7 +222,7 @@ class ViewestudioController extends Controller
      * @return mixed
      */
     public function actionBulkDelete()
-    {        
+    {
         $request = Yii::$app->request;
         $pks = explode(',', $request->post( 'pks' )); // Array or selected records primary keys
         foreach ( $pks as $pk ) {
@@ -250,7 +242,7 @@ class ViewestudioController extends Controller
             */
             return $this->redirect(['index']);
         }
-       
+
     }
 
     /**

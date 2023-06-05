@@ -30,15 +30,71 @@ class SolicitudController extends Controller {
     public function actionIndex() {
         $model = new Solicitud();
         $searchModel = new SolicitudSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams, false);
         $dataProvider->pagination->pageSize = 7;
         $columnas = Metodos::obtenerColumnas($model);
         return $this->render('index', ['searchModel' => $searchModel, 'dataProvider' => $dataProvider, 'columns' => $columnas, ]);
     }
-    public function actionSeleccionar() {
+
+    public function actionConsulta() {
+        $searchModel = new SolicitudSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams, true);
+        $dataProvider->pagination->pageSize = 7;
+        return $this->render('consulta', ['searchModel' => $searchModel,
+         'dataProvider' => $dataProvider ]);
+    }
+
+    public function actionAutocomplete()
+    {
+        $searchModel = new SolicitudSearch();
+        $searchModel->term = Yii::$app->request->get('term'); // Acceder al valor enviado
+        $searchModel->load(Yii::$app->request->queryParams);
+        // Realiza la búsqueda en la base de datos para obtener los resultados del autocompletado
+        $results = $searchModel->searchAutocomplete();
+        $data = [];
+        foreach ($results as $result) {
+            // Define la estructura de datos que se enviará como respuesta en formato JSON
+            $data[] = [
+                'value' => $result->paciente->apellido.' ,'.$result->paciente->nombre, // Valor que se mostrará en el campo de autocompletado
+                'id_paciente' => $result->paciente->id, // ID asociado al valor seleccionado (opcional)
+            ];
+        }
+        // Devuelve los resultados en formato JSON
+        return Json::encode($data);
+    }
+
+    public function actionViewconsulta($id)
+    {
+        $request = Yii::$app->request;
+        $namespace="app\models\\";
+        $solicitud = $this->findModel($id);
+        if($request->isAjax){
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            //Si es distinto de un estado listo
+            if ($solicitud->id_estado !==2){
+              return ['title' => "ESTUDIO ".$solicitud->estado->descripcion ,
+              'content' => '<h3>'.$solicitud->estado->explicacion.'</h3>', 'footer' => Html::button('Cerrar', ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) ];
+
+            }
+            $Model= $namespace.ucfirst($solicitud->estudio->modelo);
+            //Puede ser una solicitud de biopsia o de pap
+            $estudio = $Model::findOne(['id_solicitud'.$solicitud->estudio->modelo=>$id]);
+
+            return [
+                    'title'=> "ESTUDIO DE ".strtoupper($solicitud->estudio->modelo)." - ".$solicitud->estado->descripcion. " #".$estudio->id,
+                    'content'=>$this->renderAjax('/'.$solicitud->estudio->modelo.'/view', [
+                        'model' => $estudio
+                    ]),
+
+                    'footer'=> Html::button('Cerrar',['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"])
+                ];
+        }
+    }
+
+      public function actionSeleccionar() {
         $searchModel = $this->returnModelSearch();
-        //En el modelo de solicitude de pap y biopsias solo busca la solicitudes que no tienen informes asociados
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        //En el modelo de solicitudes de pap y biopsias solo busca la solicitudes que no tienen informes asociados
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams, false);
         if (isset($_POST['idsol'])) {
             if ($_POST['idsol'] == '') {
                 $this->setearMensajeError('DEBE ELEGIR UNA OPCION');
@@ -96,6 +152,29 @@ class SolicitudController extends Controller {
             return Json::encode(["protocolo" => Solicitud::obtenerProtocolo() ]);
         }
     }
+
+
+    public function devolverModelos(){
+      ////////////PACIENTE/////////////////
+      $modelPac = new Paciente();
+      $searchModelPac = new PacienteSearch();
+      $dataProviderPac = $searchModelPac->search(Yii::$app->request->queryParams,false);
+      $dataProviderPac->pagination->pageSize = 7;
+      ////////////MEDICO/////////////////
+      $modelMed = new Medico();
+      $searchModelMed = new MedicoSearch();
+      $dataProviderMed = $searchModelMed->search(Yii::$app->request->queryParams,false);
+      $dataProviderMed->pagination->pageSize = 7;
+      return [
+              'modelPac' => $modelPac,
+              'searchModelPac' => $searchModelPac,
+              'dataProviderPac' => $dataProviderPac,
+              'modelMed' => $modelMed,
+              'searchModelMed' => $searchModelMed,
+              'dataProviderMed' => $dataProviderMed,
+          ];
+    }
+
     /**
      * Creates a new Solicitud model.
      * For ajax request will return json object
@@ -108,19 +187,8 @@ class SolicitudController extends Controller {
         }
         $request = Yii::$app->request;
         $model = $this->returnModel();
-        ////////////PACIENTE/////////////////
-        $modelPac = new Paciente();
-        $searchModelPac = new PacienteSearch();
-        $dataProviderPac = $searchModelPac->search(Yii::$app->request->queryParams);
-        $dataProviderPac->pagination->pageSize = 7;
-        ////////////MEDICO/////////////////
-        $modelMed = new Medico();
-        $searchModelMed = new MedicoSearch();
-        $dataProviderMed = $searchModelMed->search(Yii::$app->request->queryParams);
-        $dataProviderMed->pagination->pageSize = 7;
-        /*
-         *   Process for non-ajax request
-        */
+        $modelos = $this->devolverModelos();
+
         if ($this->request->isPost) {
             //Si no valida
             if (!$this->validar($_POST[$model->classNameM() ]["fechadeingreso"])) {
@@ -140,13 +208,29 @@ class SolicitudController extends Controller {
                 return $this->redirect(['view', 'id' => $model->id]);
             }
             else {
-                return $this->render('_form', ['model' => $model, 'searchModelPac' => $searchModelPac, 'dataProviderPac' => $dataProviderPac, 'modelPac' => $modelPac, 'searchModelMed' => $searchModelMed, 'dataProviderMed' => $dataProviderMed, 'modelMed' => $modelMed, 'protocolo_insertar' => $model->protocolo, ]);
+                return $this->render('_form', ['model' => $model,
+                'searchModelPac' => $modelos['searchModelPac'],
+                'dataProviderPac' => $modelos['dataProviderPac'],
+                'modelPac' => $modelos['modelPac'],
+                'searchModelMed' => $modelos['searchModelMed'],
+                'dataProviderMed' => $modelos['dataProviderMed'],
+                'modelMed' => $modelos['modelMed'],
+                'protocolo_insertar' => $model->protocolo, ]);
             }
         }
         else {
-            return $this->render('_form', ['model' => $model, 'searchModelPac' => $searchModelPac, 'dataProviderPac' => $dataProviderPac, 'modelPac' => $modelPac, 'searchModelMed' => $searchModelMed, 'dataProviderMed' => $dataProviderMed, 'modelMed' => $modelMed, 'protocolo_insertar' => Solicitud::obtenerProtocolo() , ]);
+            return $this->render('_form', ['model' => $model,
+            'searchModelPac' => $modelos['searchModelPac'],
+            'dataProviderPac' => $modelos['dataProviderPac'],
+            'modelPac' => $modelos['modelPac'],
+            'searchModelMed' => $modelos['searchModelMed'],
+            'dataProviderMed' => $modelos['dataProviderMed'],
+            'modelMed' => $modelos['modelMed'],
+              'protocolo_insertar' => Solicitud::obtenerProtocolo() , ]);
         }
     }
+
+
     /**
      * Updates an existing Solicitud model.
      * For ajax request will return json object
@@ -161,33 +245,43 @@ class SolicitudController extends Controller {
         $request = Yii::$app->request;
         $model = $this->findModel($id);
         $modelestudio = $model->estudio->modelo;
-        ////////////PACIENTE/////////////////
-        $modelPac = new Paciente();
-        $searchModelPac = new PacienteSearch();
-        $dataProviderPac = $searchModelPac->search(Yii::$app->request->queryParams);
-        $dataProviderPac->pagination->pageSize = 7;
-        ////////////MEDICO/////////////////
-        $modelMed = new Medico();
-        $searchModelMed = new MedicoSearch();
-        $dataProviderMed = $searchModelMed->search(Yii::$app->request->queryParams);
-        $dataProviderMed->pagination->pageSize = 7;
+        $modelos = $this->devolverModelos();
         /*
          *   Process for non-ajax request
         */
         if ($this->request->isPost) {
             if (!$this->validar($_POST[$model->classNameM() ]["fechadeingreso"])) {
-                return $this->render('_form', ['model' => $model, 'searchModelPac' => $searchModelPac, 'dataProviderPac' => $dataProviderPac, 'modelPac' => $modelPac, 'searchModelMed' => $searchModelMed, 'dataProviderMed' => $dataProviderMed, 'modelMed' => $modelMed, ]);
+                return $this->render('_form', ['model' => $model,
+                'searchModelPac' => $modelos['searchModelPac'],
+                 'dataProviderPac' => $modelos['dataProviderPac'],
+                 'modelPac' => $modelos['modelPac'],
+                 'searchModelMed' => $modelos['searchModelMed'],
+                 'dataProviderMed' => $modelos['dataProviderMed'],
+                 'modelMed' => $modelos['modelMed'],
+               ]);
             }
             if ($model->load($request->post()) && $model->validate()) {
                 $model->save();
                 return $this->redirect(['view', 'id' => $model->id]);
             }
             else {
-                return $this->render('_form', ['model' => $model, 'searchModelPac' => $searchModelPac, 'dataProviderPac' => $dataProviderPac, 'modelPac' => $modelPac, 'searchModelMed' => $searchModelMed, 'dataProviderMed' => $dataProviderMed, 'modelMed' => $modelMed, ]);
+                return $this->render('_form', ['model' => $model,
+                'searchModelPac' => $modelos['searchModelPac'],
+                'dataProviderPac' => $modelos['dataProviderPac'],
+                 'modelPac' => $modelos['modelPac'],
+                 'searchModelMed' =>$modelos['searchModelMed'],
+                 'dataProviderMed' => $modelos['dataProviderMed'],
+                  'modelMed' => $modelos['modelMed'], ]);
             }
         }
         else {
-            return $this->render('_form', ['model' => $model, 'searchModelPac' => $searchModelPac, 'dataProviderPac' => $dataProviderPac, 'modelPac' => $modelPac, 'searchModelMed' => $searchModelMed, 'dataProviderMed' => $dataProviderMed, 'modelMed' => $modelMed, ]);
+            return $this->render('_form', ['model' => $model,
+            'searchModelPac' => $modelos['searchModelPac'],
+            'dataProviderPac' => $modelos['dataProviderPac'],
+             'modelPac' => $modelos['modelPac'],
+             'searchModelMed' =>$modelos['searchModelMed'],
+             'dataProviderMed' => $modelos['dataProviderMed'],
+              'modelMed' => $modelos['modelMed'],]);
         }
     }
     /**

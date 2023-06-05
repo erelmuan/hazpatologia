@@ -13,9 +13,7 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'id_solicitud')->textInput() ?>
 
-    <?= $form->field($model, 'id_biopsia')->textInput() ?>
-
-    <?= $form->field($model, 'id_pap')->textInput() ?>
+    <?= $form->field($model, 'id_estudio_modelo')->textInput() ?>
 
     <?= $form->field($model, 'modelo')->textInput() ?>
 
@@ -23,7 +21,9 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'fechadeingreso')->textInput() ?>
 
-    <?= $form->field($model, 'paciente')->textarea(['rows' => 6]) ?>
+    <?= $form->field($model, 'pacientenomb')->textarea(['rows' => 6]) ?>
+
+    <?= $form->field($model, 'pacienteapel')->textarea(['rows' => 6]) ?>
 
     <?= $form->field($model, 'tipo_documento')->textInput() ?>
 
@@ -35,7 +35,9 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'estado')->textInput() ?>
 
-    <?= $form->field($model, 'medico')->textarea(['rows' => 6]) ?>
+    <?= $form->field($model, 'mediconomb')->textarea(['rows' => 6]) ?>
+
+    <?= $form->field($model, 'medicoeapel')->textarea(['rows' => 6]) ?>
 
   
 	<?php if (!Yii::$app->request->isAjax){ ?>

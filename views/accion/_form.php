@@ -21,7 +21,7 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'export')->checkbox() ?>
 
-    <?= $form->field($model, 'listdetalle')->checkbox() ?>
+    <?= $form->field($model, 'view')->checkbox() ?>
 
 
 	<?php if (!Yii::$app->request->isAjax){ ?>

@@ -46,38 +46,68 @@ use kartik\widgets\DatePicker;
 
           <legend class="text-info"><center>ESTUDIOS PATOLOGICOS HOSPITAL ARTEMIDES ZATTI</center></legend>
           <div class="x_content">
-        <div class='col-sm-6'>
-        <?= $form->field($model, 'id_solicitud')->textInput()->label('Pap previo') ?>
-        <?= $form->field($model, 'id_biopsia')->textInput()->label('Pap previo') ?>
-        <?= $form->field($model, 'paciente')->textInput()->label('Paciente') ?>
-        <?= $form->field($model, 'procedencia')->textInput()->label('procedencia') ?>
-        <?= $form->field($model, 'estudio')->textInput()->label('estudio') ?>
-        <?= $form->field($model, 'medico')->textInput()->label('medico') ?>
+            <div class="row">
+      <div class="col-md-3">
+              <?= $form->field($model, 'tipo_documento') ?>
+          </div>
+          <div class="col-md-3">
+            <?= $form->field($model, 'num_documento')->textInput()->label('Nro. Documento') ?>
+          </div>
+          <div class="col-md-3">
+            <?= $form->field($model, 'estudio') ?>
+            <?//= $form->field($model, 'id_estudio')->dropDownList($model->getEstudios())->label('Estudios') ;?>
+          </div>
+          <div class="col-md-3">
+              <?= $form->field($model, 'procedencia') ?>
+          </div>
+      </div>
+      <div class="row">
+          <div class="col-md-3">
+              <?= $form->field($model, 'pacientenomb') ?>
 
-        </div>
-        <div class='col-sm-6'>
-
-        <?= $form->field($model, 'fechadeingreso')->widget(DatePicker::className(), [
-               'options' => ['placeholder' => 'Debe agregar una fecha',
-               'value'=> ($model->fechadeingreso)?date('d/m/Y',strtotime($model->fechadeingreso)):"" ,
-                 'type' => DatePicker::TYPE_COMPONENT_APPEND,
+          </div>
+          <div class="col-md-3">
+            <?=$form->field($model, 'fechadeingreso')->widget(DatePicker::className(), [
+                   'options' => ['placeholder' => 'Debe agregar una fecha',
+                   'value'=> ($model->fechadeingreso)?date('d/m/Y',strtotime($model->fechadeingreso)):"" ,
+                     'type' => DatePicker::TYPE_COMPONENT_APPEND,
+                           ],
+                      'pluginOptions' => [
+                      'format' => 'dd/mm/yyyy',
+                      'todayHighlight' => true,
+                      'allowClear' => false
                        ],
-                  'pluginOptions' => [
-                  'format' => 'dd/mm/yyyy',
-                  'todayHighlight' => true,
-                  'allowClear' => false
-                   ],
-                  'pluginEvents' => [
-                       "changeDate" => "function(e){
-                         cambiarFechaNac();
-                       }",
+                      'pluginEvents' => [
+                           "changeDate" => "function(e){
+                             cambiarFechaNac();
+                           }",
+                           ],
+                       ])->label('Fecha de desde');;
+                           ?>
+          </div>
+          <div class="col-md-3">
+            <?=$form->field($model, 'fechadeingreso')->widget(DatePicker::className(), [
+                   'options' => ['placeholder' => 'Debe agregar una fecha',
+                   'value'=> ($model->fechadeingreso)?date('d/m/Y',strtotime($model->fechadeingreso)):"" ,
+                     'type' => DatePicker::TYPE_COMPONENT_APPEND,
+                           ],
+                      'pluginOptions' => [
+                      'format' => 'dd/mm/yyyy',
+                      'todayHighlight' => true,
+                      'allowClear' => false
                        ],
-                   ])->label('Fecha de desde');;
-                       ?>
-        <?= $form->field($model, 'num_documento')->textInput()->label('DNI') ?>
-        <?= $form->field($model, 'protocolo')->textInput()->label('Protocolo') ?>
+                      'pluginEvents' => [
+                           "changeDate" => "function(e){
+                             cambiarFechaNac();
+                           }",
+                           ],
+                       ])->label('Fecha de hasta');;
+                           ?>
+          </div>
+          <div class="col-md-3">
+          </div>
+      </div>
 
-        </div>
        </div>
 
 </div>

@@ -12,6 +12,8 @@ use kartik\widgets\Alert;
 use kartik\widgets\Growl;
 use kartik\widgets\SwitchInput;
 use app\models\AnioProtocolo;
+use app\models\User;
+
   // Registra el AssetBundle de Gentelella
    $bundle = yiister\gentelella\assets\Asset::register($this);
 ?>
@@ -34,7 +36,7 @@ use app\models\AnioProtocolo;
      <!-- Modal para que muestra el protocolo -->
      <?= Html::jsFile('@web/js/sweetalert2.all.min.js') ?>
      <?= Html::jsFile('@web/js/flashjs/dist/flash.min.js') ?>
-     <link href="/hazpatologia/web/css/custom.<?=Yii::$app->user->identity->configuracion->tema->descripcion?>.css" rel="stylesheet" id="estilo-original">
+     <link href="<?= Yii::$app->request->baseUrl ?>/css/custom.<?=Yii::$app->user->identity->configuracion->tema->descripcion?>.css" rel="stylesheet" id="estilo-original">
      <?=$this->registerLinkTag(['rel' => 'icon', 'type' => 'image/ico', 'href' => Url::base(true).'/favicon.ico']); ?>
 </head>
 <body class="nav-<?= !empty($_COOKIE['menuIsCollapsed']) && $_COOKIE['menuIsCollapsed'] == 'true' ? 'sm' : 'md' ?>" >
@@ -49,7 +51,7 @@ use app\models\AnioProtocolo;
             <div class="left_col scroll-view">
 
                 <div class="navbar nav_title" style="border: 0;">
-                    <center class="site_title"><i class="fa fa-flask"></i> <span>hazpatologia</span> </center><center id="version" style="color:white; font-size: 10px;"> <b>Version: 2.1.1 </b></center>
+                    <center class="site_title"><i class="fa fa-flask"></i> <span>hazpatologia</span> </center><center id="version" style="color:white; font-size: 10px;"> <b>Version: 2.5.0 </b></center>
                 </div>
                 <div class="clearfix"></div>
 
@@ -74,14 +76,12 @@ use app\models\AnioProtocolo;
                         <p>
                         <h3>MENÚ</h3>
                         </p>
-                      <?  if (Yii::$app->user->identity->id_pantalla==1){ ?>
-                        <?= //Hacerlo dinamico recorriendo un arreglo
+                      <?  if (Yii::$app->user->identity->id_pantalla==1 && !User::isUserAdmin()){ ?>
+                        <?= //pantalla 1 es la pantalla de consulta
                         \yiister\gentelella\widgets\Menu::widget(
                             [
                                 "items" => [
-                                    ["label" => "Inicio", "url" => "index.php", "icon" => "fa fa-home"],
-                                    ["label" => "Biopsias", "url" => ["/biopsia/index","sort"=>"-id"] , 'icon' =>"fa icon-microscope"],
-                                    ["label" => "Paps", "url" => ["/pap/index","sort"=>"-id"], "icon" => "fa fa-flask"],
+                                    ["label" => "Inicio", "url" => ["/site/index"], "icon" => "fa fa-home"]
 
                                 ],
                             ]
@@ -122,7 +122,8 @@ use app\models\AnioProtocolo;
                                     ["label" => "Pacientes", "url" => ["/paciente/index"], "icon" => "fa fa-group"],
                                     [ 'separator' => '<br>',"label" => "Biopsias",   "url" => ["/biopsia/index","sort"=>"-id"],  'icon' =>"fa fa-microscope"],
                                     ["label" => "Paps","url" => ["/pap/index","sort"=>"-id"], "icon" => "fa fa-flask"],
-                                    ["label" => "Solicitudes", "url" => ["/solicitud/index","sort"=>"-id"], "icon" => "fa fa-file-text-o"],
+                                    ["label" => "Solicitudes", "url" => ["/solicitud/index"], "icon" => "fa fa-file-text-o"],
+                                    ["label" => "Consulta", "url" => ["/solicitud/consulta"], "icon" => "fa fa-search"],
 
 
                                 ],
@@ -213,13 +214,12 @@ use app\models\AnioProtocolo;
 
                         </li>
 
-
+                        <? if (Yii::$app->user->identity->id_pantalla==2) { ?>
                         <div id="fecha">
-                     <b>   <input type="text" class="form-control is-invalid" value = <?= (AnioProtocolo::find()->where(['activo'=>true])->one()!== NULL)? AnioProtocolo::find()->where(['activo'=>true])->one()->anio:'INACTIVOS'  ?> readonly>  </b>
-
-                      <?= Html::a('<i class="glyphicon glyphicon-pencil"></i> Modificar Año-Protocolo', ['/anio-protocolo/index'], ['class'=>'btn btn-success grid-button']) ?>
+                          <b>   <input type="text" class="form-control is-invalid" value = <?= (AnioProtocolo::find()->where(['activo'=>true])->one()!== NULL)? AnioProtocolo::find()->where(['activo'=>true])->one()->anio:'INACTIVOS'  ?> readonly>  </b>
+                        <?= Html::a('<i class="glyphicon glyphicon-pencil"></i> Modificar Año-Protocolo', ['/anio-protocolo/index'], ['class'=>'btn btn-success grid-button']) ?>
                        </div>
-
+                      <? } ?>
                     </ul>
 
 
@@ -269,6 +269,7 @@ use app\models\AnioProtocolo;
     </div>
 
 </div>
+
 
 <!-- /footer content -->
 <?php $this->endBody(); ?>

@@ -5,7 +5,7 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\Pap */
 ?>
-<div class="pap-view">
+<div class="pap-view letras-grandes">
 
     <?= DetailView::widget([
         'model' => $model,
@@ -79,7 +79,7 @@ use yii\helpers\Html;
           'attributes' => [
 
           [
-            'value'=> Html::a('<i class="fa fa-file-pdf-o"></i> Generar informe vph', ['/vph-escaneado/informe', 'id' => $model->vphEscaneado->id], [
+            'value'=> Html::a('<i class="fa fa-file-pdf"></i> Generar informe vph', ['/vph-escaneado/informe', 'id' => $model->vphEscaneado->id], [
                   'class'=>'btn btn-primary',
                   // 'role'=>'modal-remote',
                   'target'=>'_blank',
@@ -104,7 +104,7 @@ use yii\helpers\Html;
   </div>
 
   <?    }
-        echo Html::a('<i class="fa fa-file-pdf-o"></i> Generar informe de pap', ['/pap/informe', 'id' => $model->id], [
+        echo Html::a('<i class="fa fa-file-pdf"></i> Generar informe de pap', ['/pap/informe', 'id' => $model->id], [
               'class'=>'btn btn-dark',
               'target'=>'_blank',
               'data-toggle'=>'tooltip',

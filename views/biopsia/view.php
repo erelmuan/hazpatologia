@@ -7,7 +7,7 @@ use yii\helpers\Html;
 /* @var $model app\models\Biopsia */
 
 ?>
-<div class="biopsia-view">
+<div class="biopsia-view letras-grandes">
 
   <?= DetailView::widget([
       'model' => $model,
@@ -71,7 +71,7 @@ use yii\helpers\Html;
           'attributes' => [
 
           [
-            'value'=> Html::a('<i class="fa fa-file-pdf-o"></i> Generar informe inmunostoquimica', ['/inmunohistoquimica-escaneada/informe', 'id' => $model->inmunohistoquimicaEscaneada->id], [
+            'value'=> Html::a('<i class="fa fa-file-pdf"></i> Generar informe inmunostoquimica', ['/inmunohistoquimica-escaneada/informe', 'id' => $model->inmunohistoquimicaEscaneada->id], [
                   'class'=>'btn btn-primary',
                   // 'role'=>'modal-remote',
                   'target'=>'_blank',
@@ -97,7 +97,7 @@ use yii\helpers\Html;
  <?
 }
 
-      echo Html::a('<i class="fa fa-file-pdf-o"></i> Generar informe de biopsia', ['/biopsia/informe', 'id' => $model->id], [
+      echo Html::a('<i class="fa fa-file-pdf"></i> Generar informe de biopsia', ['/biopsia/informe', 'id' => $model->id], [
             'class'=>'btn btn-dark',
             'target'=>'_blank',
             'data-toggle'=>'tooltip',

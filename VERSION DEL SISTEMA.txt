@@ -1,3 +1,15 @@
+VERSIÓN 2.5.0
+Cambio en la base de datos:
+-Se agrega una columna en la tabla estado, llamada "explicacion"
+-Cambiamos el nombre de la columna  listDetalle por view
+Codigo:
+-Implementacion del modulo de consultas
+- Ordenación de las solicitudes por id y por Protocolo
+- Modificacion en el modulo de seguridad
+
+
+
+
 VERSIÓN 2.1.0
 modificación de la tabla de usuarios (corrección campo usuario -unique)
 creación de tabla de configuración, tema y menú - para personalizar por usuario el tema oscuro o claro

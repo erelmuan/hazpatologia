@@ -10,6 +10,7 @@ use yii\bootstrap\NavBar;
 use yii\widgets\Breadcrumbs;
 use app\assets\AppAsset;
 use app\models\AnioProtocolo;
+use app\models\User;
 
 use yii\bootstrap\Nav;
 use yii\helpers\Url;
@@ -33,8 +34,13 @@ AppAsset::register($this);
    <?= Html::cssFile('@web/css/animate.min.css') ?>
    <?= Html::jsFile('@web/js/jquery.min.js') ?>
    <?= Html::jsFile('@web/js/sweetalert2.all.min.js') ?>
-   <link href="/hazpatologia/web/css/custom.<?=Yii::$app->user->identity->configuracion->tema->descripcion?>.css" rel="stylesheet" id="estilo-original">
+   <link href="<?= Yii::$app->request->baseUrl ?>/css/custom.<?=Yii::$app->user->identity->configuracion->tema->descripcion?>.css" rel="stylesheet" id="estilo-original">
    <?=$this->registerLinkTag(['rel' => 'icon', 'type' => 'image/ico', 'href' => Url::base(true).'/favicon.ico']); ?>
+   <style>
+   .modal-content p {
+       font-size: 80px !important; /* Ajusta el tamaño de fuente según tus necesidades */
+   }
+   </style>
 </head>
 <body class="nav-<?= !empty($_COOKIE['menuIsCollapsed']) && $_COOKIE['menuIsCollapsed'] == 'true' ? 'sm' : 'md' ?>" >
 
@@ -43,64 +49,89 @@ AppAsset::register($this);
 <div class="wrap">
     <?php
     NavBar::begin([
-        'brandLabel' => FontAwesome::icon('fa fa-microscope') ." ".Yii::$app->name ." (v 2.1.1)",
+        'brandLabel' => FontAwesome::icon('fa fa-microscope') ." ".Yii::$app->name ." (v 2.5.0)",
         'brandUrl' => Yii::$app->homeUrl,
         'options' => [
             'class' => 'navbar-inverse navbar-fixed-top',
         ],
     ]);
+     if (Yii::$app->user->identity->id_pantalla==1 && !User::isUserAdmin()){
+       echo Nav::widget([
+           'options' => ['class' => 'navbar-nav navbar-right'],
 
-    echo Nav::widget([
-        'options' => ['class' => 'navbar-nav navbar-right'],
-        'items' => [
-            ["label" => FontAwesome::icon('fa fa-home') ." Inicio", "url" => ["/site/index"]],
-            [   "label" => FontAwesome::icon('fa fa-paste') ." Plant. biopsia",
-                "url" => "#",
-                "items" => [
-                    ["label" => "Diagnostico", "url" => ["/plantilladiagnostico/index"]],
-                    ["label" => "Microscopia  ", "url" => ["/plantillamicroscopia/index"]],
-                    ["label" => "Macroscopia", "url" => ["/plantillamacroscopia/index"]],
-                    ["label" => "Material", "url" => ["/plantillamaterial/index"]],
-                    ["label" => "Frases", "url" => ["/plantillafrase/index"]],
-                    ["label" => "Material de solicitud", "url" => ["/materialsolicitud/index"]],
+           'items' => [
+             [   "label" => Yii::$app->user->identity->usuario,
+               'options' => ['class' => 'btn-primary', ],
+                 "icon" => "fa fa-files-o",
+                 "url" => "#",
+                 "items" => [
+                     ["label" => FontAwesome::icon('glyphicon glyphicon-user') ." Perfil", "url" => ["/usuario/perfil"]],
+                     ["label" => FontAwesome::icon('glyphicon glyphicon-cog') ." Configuración", "url" => ["/usuario/configuracion"]],
+                     ["label" => FontAwesome::icon('glyphicon glyphicon-question-sign') ." Ayuda", "url" => ["/site/ayuda"]],
+                 ],
+             ],
+               ["label" => "SALIR", "url" => "#", "icon" => "fa fa-file-text-o" ,'options' => ['class' => 'btn-danger'],'linkOptions' => [ 'onclick' => 'cerrarSesion()'] ],
 
+           ]
+           ,'encodeLabels' => false,
+       ]);
+
+
+     }else {
+
+        echo Nav::widget([
+            'options' => ['class' => 'navbar-nav navbar-right'],
+            'items' => [
+                ["label" => FontAwesome::icon('fa fa-home') ." Inicio", "url" => ["/site/index"]],
+                [   "label" => FontAwesome::icon('fa fa-paste') ." Plant. biopsia",
+                    "url" => "#",
+                    "items" => [
+                        ["label" => "Diagnostico", "url" => ["/plantilladiagnostico/index"]],
+                        ["label" => "Microscopia  ", "url" => ["/plantillamicroscopia/index"]],
+                        ["label" => "Macroscopia", "url" => ["/plantillamacroscopia/index"]],
+                        ["label" => "Material", "url" => ["/plantillamaterial/index"]],
+                        ["label" => "Frases", "url" => ["/plantillafrase/index"]],
+                        ["label" => "Material de solicitud", "url" => ["/materialsolicitud/index"]],
+
+                    ],
                 ],
-            ],
-            [   "label" => FontAwesome::icon('fa fa-paste') ." Plant. pap",
-                "url" => "#",
-                "items" => [
-                    ["label" => "Diagnostico", "url" => ["/plantilladiagnostico/index"]],
-                    ["label" => "Flora", "url" => ["/plantillaflora/index"]],
-                    ["label" => "Aspecto", "url" => ["/plantillaaspecto/index"]],
-                    ["label" => "Pavimentosa  ", "url" => ["/plantillapavimentosa/index"]],
-                    ["label" => "Glandular", "url" => ["/plantillaglandular/index"]],
-                    ["label" => "Frases", "url" => ["/plantillafrase/index"]],
-                    ["label" => "Material de solicitud", "url" => ["/materialsolicitud/index"]],
+                [   "label" => FontAwesome::icon('fa fa-paste') ." Plant. pap",
+                    "url" => "#",
+                    "items" => [
+                        ["label" => "Diagnostico", "url" => ["/plantilladiagnostico/index"]],
+                        ["label" => "Flora", "url" => ["/plantillaflora/index"]],
+                        ["label" => "Aspecto", "url" => ["/plantillaaspecto/index"]],
+                        ["label" => "Pavimentosa  ", "url" => ["/plantillapavimentosa/index"]],
+                        ["label" => "Glandular", "url" => ["/plantillaglandular/index"]],
+                        ["label" => "Frases", "url" => ["/plantillafrase/index"]],
+                        ["label" => "Material de solicitud", "url" => ["/materialsolicitud/index"]],
 
+                    ],
                 ],
-            ],
-            ["label" =>FontAwesome::icon('fa fa-users') . " Pacientes", "url" => ["/paciente/index"]],
-            [ 'separator' => '<br>',"label" => FontAwesome::icon('fa fa-microscope') ." Biopsias",   "url" => ["/biopsia/index","sort"=>"-id"]],
-            ["label" =>FontAwesome::icon('fa fa-flask') . " Paps","url" => ["/pap/index","sort"=>"-id"]],
-            ["label" => FontAwesome::icon('fa fa-file-text') ." Solicitudes", "url" => ["/solicitud/index","sort"=>"-id"]],
-            ["label" => (AnioProtocolo::find()->where(['activo'=>true])->one()!== NULL)? AnioProtocolo::find()->where(['activo'=>true])->one()->anio:'INACTIVOS', "url" => ["/anio-protocolo/index"],'options' => ['class' => 'btn-success' ]],
-
-            [   "label" => Yii::$app->user->identity->usuario,
-              'options' => ['class' => 'btn-primary', ],
-                "icon" => "fa fa-files-o",
-                "url" => "#",
-                "items" => [
-                    ["label" => FontAwesome::icon('glyphicon glyphicon-user') ." Perfil", "url" => ["/usuario/perfil"]],
-                    ["label" => FontAwesome::icon('glyphicon glyphicon-cog') ." Configuración", "url" => ["/usuario/configuracion"]],
-                    ["label" => FontAwesome::icon('glyphicon glyphicon-question-sign') ." Ayuda", "url" => ["/site/ayuda"]],
+                ["label" =>FontAwesome::icon('fa fa-users') . " Pacientes", "url" => ["/paciente/index"]],
+                [ 'separator' => '<br>',"label" => FontAwesome::icon('fa fa-microscope') ." Biopsias",   "url" => ["/biopsia/index","sort"=>"-id"]],
+                ["label" =>FontAwesome::icon('fa fa-flask') . " Paps","url" => ["/pap/index","sort"=>"-id"]],
+                ["label" => FontAwesome::icon('fa fa-file-text') ." Solicitudes", "url" => ["/solicitud/index"]],
+                ["label" =>FontAwesome::icon('fa fa-search') . " Consulta", "url" => ["/solicitud/consulta"]],
+                ["label" => (AnioProtocolo::find()->where(['activo'=>true])->one()!== NULL)? AnioProtocolo::find()->where(['activo'=>true])->one()->anio:'INACTIVOS', "url" => ["/anio-protocolo/index"],'options' => ['class' => 'btn-success' ]],
+                [   "label" => Yii::$app->user->identity->usuario,
+                  'options' => ['class' => 'btn-primary', ],
+                    "icon" => "fa fa-files-o",
+                    "url" => "#",
+                    "items" => [
+                        ["label" => FontAwesome::icon('glyphicon glyphicon-user') ." Perfil", "url" => ["/usuario/perfil"]],
+                        ["label" => FontAwesome::icon('glyphicon glyphicon-cog') ." Configuración", "url" => ["/usuario/configuracion"]],
+                        ["label" => FontAwesome::icon('glyphicon glyphicon-question-sign') ." Ayuda", "url" => ["/site/ayuda"]],
+                    ],
                 ],
-            ],
 
-            ["label" => "SALIR", "url" => "#", "icon" => "fa fa-file-text-o" ,'options' => ['class' => 'btn-danger'],'linkOptions' => [ 'onclick' => 'cerrarSesion()'] ],
+                ["label" => "SALIR", "url" => "#", "icon" => "fa fa-file-text-o" ,'options' => ['class' => 'btn-danger'],'linkOptions' => [ 'onclick' => 'cerrarSesion()'] ],
 
-        ]
-        ,'encodeLabels' => false,
-    ]);
+            ]
+            ,'encodeLabels' => false,
+        ]);
+
+      }
 
     NavBar::end();
     // Obtener la instancia de la sesión

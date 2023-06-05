@@ -18,9 +18,8 @@ class ViewestudioSearch extends Viewestudio
     public function rules()
     {
         return [
-          [['id_solicitud', 'id_estudio_modelo', 'protocolo'], 'integer'],
-            [['modelo', 'fechadeingreso', 'pacientenomb', 'pacienteapel', 'tipo_documento', 'num_documento',
-             'procedencia', 'estudio', 'estado', 'mediconomb', 'medicoeapel'], 'safe'],
+            [['id_solicitud', 'id_estudio_modelo', 'protocolo'], 'integer'],
+            [['modelo', 'fechadeingreso', 'pacientenomb', 'pacienteapel', 'tipo_documento', 'num_documento', 'procedencia', 'estudio', 'estado', 'mediconomb', 'medicoeapel'], 'safe'],
         ];
     }
 
@@ -72,7 +71,7 @@ class ViewestudioSearch extends Viewestudio
             ->andFilterWhere(['like', 'estudio', $this->estudio])
             ->andFilterWhere(['like', 'estado', $this->estado])
             ->andFilterWhere(['like', 'mediconomb', $this->mediconomb])
-		        ->andFilterWhere(['like', 'medicoeapel', $this->medicoeapel]);
+            ->andFilterWhere(['like', 'medicoeapel', $this->medicoeapel]);
 
         return $dataProvider;
     }

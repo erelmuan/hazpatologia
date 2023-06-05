@@ -19,8 +19,15 @@ use kartik\grid\GridView;
             'modulo.nombre',
             [
                 'class' => 'kartik\grid\BooleanColumn',
-                'label'=>'Index/Ver',
+                'label'=>'Index',
                 'attribute'=>'accion.index',
+                'trueLabel' => 'Sí',
+                'falseLabel' => 'No',
+            ],
+            [
+                'class' => 'kartik\grid\BooleanColumn',
+                'label'=>'Ver',
+                'attribute'=> 'accion.view',
                 'trueLabel' => 'Sí',
                 'falseLabel' => 'No',
             ],
@@ -45,6 +52,7 @@ use kartik\grid\GridView;
                 'trueLabel' => 'Sí',
                 'falseLabel' => 'No',
             ],
+
             [
                 'class' => 'kartik\grid\BooleanColumn',
                 'label'=>'Exportar',

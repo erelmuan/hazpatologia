@@ -28,20 +28,6 @@ class Seguridad {
        if(Yii::$app->user->isGuest)
           return false;
 
-       //
-       // if (empty($accion)){
-       //     $accion=$_GET['r'];
-       // }
-
-
-       // $array = explode("/",$accion);
-       // if (count($array)==1) {
-       //         $controller = $accion;
-       //         $accion = 'index';
-       // }else {
-       //         $controller = $array[0];
-       //         $accion = $array[1];
-       // }
 
        $accion=Yii::$app->controller->action->id;
        $controller=Yii::$app->controller->id;
@@ -55,7 +41,7 @@ class Seguridad {
       foreach($rolesusuario as $roluser) {
             $permisos=\app\models\Permiso::find()->where(['id_rol'=>$roluser->id_rol ])->all();
             // return false;
-            if ($accion =="fos" ||$accion =="puco" || $accion =="informe" || $accion =="documento" || $accion=="perfil" ||  $accion=="search" ||  $accion=="subcat" ||  $accion=="buscaregistro")
+            if ($accion =="fos" ||$accion =="puco"||$accion =="consulta" || $accion =="informe" || $accion =="documento" || $accion=="perfil" ||  $accion=="search" ||  $accion=="subcat" ||  $accion=="buscaregistro")
                return true;
             foreach($permisos as $permiso) {
               $modulo=\app\models\Modulo::findOne(['id'=>$permiso->id_modulo]);
@@ -69,15 +55,13 @@ class Seguridad {
 
                 if ($permiso->id_accion !== null ){
 
-              $accionbd=\app\models\Accion::find()->where(['id'=>$permiso->id_accion])->one();
-              //supongo que si le das permiso para ver la grilla tambien le das permiso para ver la vista completa
-              if ($accionbd->index == false)
-                  return false;
-              if ($accion =="view" || $accion =="select" || $accion =="createdetalle" || $accion =="listdetalle" || $accion == "seleccionar")
-                 return true;
+                  $accionbd=\app\models\Accion::find()->where(['id'=>$permiso->id_accion])->one();
+
+                  if ($accion =="select" || $accion =="createdetalle" || $accion =="listdetalle" || $accion == "seleccionar")
+                    return true;
                 //si algun modulo tiene activado en verdadero la accion
                 //prevalece la accion verdadero por sobre el falso y el null
-              if ($accionbd->$accion == true)
+                  if ($accionbd->$accion == true)
                   return true;
                 }
 

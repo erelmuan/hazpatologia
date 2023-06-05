@@ -35,6 +35,8 @@ use yii\helpers\Html;
 
 class Solicitud extends \yii\db\ActiveRecord
 {
+  public $num_documento;
+
   public function behaviors()
   {
 
@@ -67,7 +69,7 @@ class Solicitud extends \yii\db\ActiveRecord
           [['id_medico'], 'required',  'message' => 'El campo medico no puede estar vacío.'],
           [['id_paciente', 'id_procedencia', 'id_medico',  'fechadeingreso', 'id_estudio', 'id_estado'], 'required'],
 
-            [['id_paciente', 'id_procedencia', 'id_medico', 'id_materialsolicitud', 'id_estudio', 'id_estado'], 'integer'],
+            [['id_paciente', 'id_procedencia', 'id_medico', 'id_materialsolicitud', 'id_estudio', 'id_estado' ,'num_documento'], 'integer'],
             [['fecharealizacion', 'fechadeingreso'], 'safe'],
             [['fechadeingreso', 'protocolo'], 'required'],
             [['observacion'], 'string'],
@@ -325,5 +327,13 @@ class Solicitud extends \yii\db\ActiveRecord
            ,[    'class' => 'text-success','role'=>'modal-remote','title'=>'Datos del medico','data-toggle'=>'tooltip']
           );
        }
+
+       public function getTipodocs() {
+               return ArrayHelper::map(Tipodoc::find()->all(), 'id','documento');
+
+           }
+        public function getEstudios() {
+               return ArrayHelper::map(Estudio::find()->all(), 'id','descripcion');
+           }
 
 }

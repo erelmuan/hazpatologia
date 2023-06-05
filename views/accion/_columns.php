@@ -6,7 +6,7 @@ return [
     [
         'class'=>'\kartik\grid\BooleanColumn',
         'attribute'=>'index',
-        'label'=>'Index/ver',
+        'label'=>'Index',
         'trueLabel' => 'Sí',
         'falseLabel' => 'No',
     ],
@@ -34,7 +34,7 @@ return [
     // ],
     [
         'class'=>'\kartik\grid\BooleanColumn',
-        'attribute'=>'listdetalle',
+        'attribute'=>'view',
         'trueLabel' => 'Sí',
         'falseLabel' => 'No',
     ],

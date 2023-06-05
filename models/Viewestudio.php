@@ -32,9 +32,9 @@ class Viewestudio extends \yii\db\ActiveRecord
         return 'viewestudio';
     }
     public static function primaryKey()
-    {
-    return ['id_solicitud'];
-    }
+      {
+      return ['id_solicitud'];
+      } 
 
     /**
      * {@inheritdoc}
@@ -42,10 +42,9 @@ class Viewestudio extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-          [['id_solicitud', 'id_estudio_modelo', 'protocolo'], 'default', 'value' => null],
-     		  [['id_solicitud', 'id_estudio_modelo', 'protocolo'], 'integer'],
-     		   [['modelo', 'pacientenomb', 'pacienteapel', 'tipo_documento',
-             'num_documento', 'estudio', 'estado', 'mediconomb', 'medicoeapel'], 'string'],
+            [['id_solicitud', 'id_estudio_modelo', 'protocolo'], 'default', 'value' => null],
+            [['id_solicitud', 'id_estudio_modelo', 'protocolo'], 'integer'],
+            [['modelo', 'pacientenomb', 'pacienteapel', 'tipo_documento', 'num_documento', 'estudio', 'estado', 'mediconomb', 'medicoeapel'], 'string'],
             [['fechadeingreso'], 'safe'],
             [['procedencia'], 'string', 'max' => 18],
         ];
@@ -70,7 +69,7 @@ class Viewestudio extends \yii\db\ActiveRecord
             'estudio' => 'Estudio',
             'estado' => 'Estado',
             'mediconomb' => 'Mediconomb',
-		        'medicoeapel' => 'Medicoeapel',
+            'medicoeapel' => 'Medicoeapel',
         ];
     }
 }
