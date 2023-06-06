@@ -1,3 +1,8 @@
+VERSIÓN 2.5.1
+Correccion de busqueda
+-Se corrige la busqueda para que no salgo por duplicado el paciente cuando tiene  mas de un estudio
+
+
 VERSIÓN 2.5.0
 Cambio en la base de datos:
 -Se agrega una columna en la tabla estado, llamada "explicacion"
