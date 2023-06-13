@@ -49,7 +49,7 @@ AppAsset::register($this);
 <div class="wrap">
     <?php
     NavBar::begin([
-        'brandLabel' => FontAwesome::icon('fa fa-microscope') ." ".Yii::$app->name ." (v 2.5.1)",
+        'brandLabel' => FontAwesome::icon('fa fa-microscope') ." ".Yii::$app->name ." (v 2.5.2)",
         'brandUrl' => Yii::$app->homeUrl,
         'options' => [
             'class' => 'navbar-inverse navbar-fixed-top',

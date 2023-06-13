@@ -1,3 +1,8 @@
+VERSIÓN 2.5.2
+Restriccion - paciente
+Se modifica  restricción en la creación del paciente
+numero de dni.- tipo dni - sexo
+
 VERSIÓN 2.5.1
 Correccion de busqueda
 -Se corrige la busqueda para que no salgo por duplicado el paciente cuando tiene  mas de un estudio
