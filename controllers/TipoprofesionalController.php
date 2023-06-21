@@ -13,6 +13,8 @@ use yii\helpers\Html;
  * TipoprofesionalController implements the CRUD actions for Tipoprofesional model.
  */
 class TipoprofesionalController extends Controller {
+  // behaviors heredado
+
     /**
      * Lists all Tipoprofesional models.
      * @return mixed

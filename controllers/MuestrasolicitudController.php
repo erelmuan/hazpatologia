@@ -12,6 +12,8 @@ use yii\helpers\Html;
  * MuestrasolicitudController implements the CRUD actions for Muestrasolicitud model.
  */
 class MuestrasolicitudController extends Controller {
+  // behaviors heredado
+
     /**
      * Lists all Muestrasolicitud models.
      * @return mixed

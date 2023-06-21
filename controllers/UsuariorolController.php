@@ -12,6 +12,8 @@ use yii\helpers\Html;
  * UsuariorolController implements the CRUD actions for Usuariorol model.
  */
 class UsuariorolController extends Controller {
+  // behaviors heredado
+
     /**
      * Lists all Usuariorol models.
      * @return mixed

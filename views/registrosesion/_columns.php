@@ -4,6 +4,10 @@ use yii\helpers\Html;
 
 return [
 
+    [
+        'class' => 'kartik\grid\SerialColumn',
+        'width' => '30px',
+    ],
         [
         'class'=>'\kartik\grid\DataColumn',
         'attribute'=>'id',
@@ -21,24 +25,12 @@ return [
          }
          ,
 
-         'filterInputOptions' => ['placeholder' => 'Ingrese Dni,HC o nombre'],
+         'filterInputOptions' => [ 'class' => 'form-control','placeholder' => 'Nombre de usuario'],
          'format' => 'raw',
     ],
     [
         'class'=>'\kartik\grid\DataColumn',
-        'attribute'=>'accion',
-    ],
-    [
-        'class'=>'\kartik\grid\DataColumn',
-        'attribute'=>'tabla',
-    ],
-    [
-        'class'=>'\kartik\grid\DataColumn',
-        'attribute'=>'fecha',
-    ],
-    [
-        'class'=>'\kartik\grid\DataColumn',
-        'attribute'=>'hora',
+        'attribute'=>'inicio_sesion',
     ],
     [
         'class'=>'\kartik\grid\DataColumn',
@@ -50,12 +42,11 @@ return [
     ],
     [
         'class'=>'\kartik\grid\DataColumn',
-        'attribute'=>'cambios',
-         'format' => 'raw',
+        'attribute'=>'cookie',
     ],
     [
-    'class'=>'\kartik\grid\DataColumn',
-    'attribute'=>'registro',
+        'class'=>'\kartik\grid\DataColumn',
+        'attribute'=>'cierre_sesion',
     ],
     [
         'class' => 'kartik\grid\ActionColumn',

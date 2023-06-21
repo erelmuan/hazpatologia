@@ -47,7 +47,7 @@ $this->title = 'Administración';
         </div>
       </div>
     </a>
-    <a href=<?=Yii::$app->homeUrl."auditoria"; ?>>
+    <a href=<?=Yii::$app->homeUrl."site/auditorias"; ?>>
     <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
       <div class="tile-stats administracion">
           <div class="icon"><i class="fa fa-book"></i>

@@ -12,6 +12,8 @@ use yii\helpers\Html;
  * EstudioController implements the CRUD actions for Estudio model.
  */
 class EstudioController extends Controller {
+  // behaviors heredado
+
     /**
      * Lists all Estudio models.
      * @return mixed

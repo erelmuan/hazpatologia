@@ -3,29 +3,29 @@
 namespace app\controllers;
 
 use Yii;
-use app\models\Estado;
-use app\models\EstadoSearch;
+use app\models\Registrosesion;
+use app\models\RegistrosesionSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use \yii\web\Response;
 use yii\helpers\Html;
+use app\components\Seguridad\Seguridad;
 
 /**
- * EstadoController implements the CRUD actions for Estado model.
+ * RegistrosesionController implements the CRUD actions for Registrosesion model.
  */
-class EstadoController extends Controller
+class RegistrosesionController extends Controller
 {
-
-  // behaviors heredado
+// behaviors heredado
 
     /**
-     * Lists all Estado models.
+     * Lists all Registrosesion models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new EstadoSearch();
+        $searchModel = new RegistrosesionSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -36,7 +36,7 @@ class EstadoController extends Controller
 
 
     /**
-     * Displays a single Estado model.
+     * Displays a single Registrosesion model.
      * @param integer $id
      * @return mixed
      */
@@ -46,12 +46,11 @@ class EstadoController extends Controller
         if($request->isAjax){
             Yii::$app->response->format = Response::FORMAT_JSON;
             return [
-                    'title'=> "Estado #".$id,
+                    'title'=> "Registro de sesion #".$id,
                     'content'=>$this->renderAjax('view', [
                         'model' => $this->findModel($id),
                     ]),
-                    'footer'=> Html::button('Close',['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
-                            Html::a('Edit',['update','id'=>$id],['class'=>'btn btn-primary','role'=>'modal-remote'])
+                    'footer'=> Html::button('Cerrar',['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"])
                 ];
         }else{
             return $this->render('view', [
@@ -61,16 +60,17 @@ class EstadoController extends Controller
     }
 
 
+
     /**
-     * Finds the Estado model based on its primary key value.
+     * Finds the Registrosesion model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return Estado the loaded model
+     * @return Registrosesion the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Estado::findOne($id)) !== null) {
+        if (($model = Registrosesion::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

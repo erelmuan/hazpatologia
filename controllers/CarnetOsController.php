@@ -12,6 +12,8 @@ use yii\helpers\Html;
  * CarnetOsController implements the CRUD actions for CarnetOs model.
  */
 class CarnetOsController extends Controller {
+  // behaviors heredado
+
     /**
      * Lists all CarnetOs models.
      * @return mixed

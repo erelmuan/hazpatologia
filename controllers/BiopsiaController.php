@@ -27,6 +27,8 @@ use app\components\Seguridad\Seguridad;
  * BiopsiaController implements the CRUD actions for Biopsia model.
  */
 class BiopsiaController extends Controller {
+  // behaviors heredado
+
     /**
      * Lists all Biopsia models.
      * @return mixed

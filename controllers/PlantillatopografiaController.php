@@ -13,6 +13,8 @@ use yii\helpers\Json;
  * PlantillatopografiaController implements the CRUD actions for Plantillatopografia model.
  */
 class PlantillatopografiaController extends Controller {
+  // behaviors heredado
+
     /**
      * Lists all Plantillatopografia models.
      * @return mixed

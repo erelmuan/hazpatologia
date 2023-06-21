@@ -16,7 +16,10 @@ use app\models\Solicitud;
  * InmunohistoquimicaController implements the CRUD actions for Inmunohistoquimica model.
  */
 class InmunohistoquimicaController extends Controller
+
 {
+  // behaviors heredado
+
     /**
      * @inheritdoc
      */

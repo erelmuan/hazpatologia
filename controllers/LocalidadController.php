@@ -13,6 +13,8 @@ use yii\helpers\Html;
  * LocalidadController implements the CRUD actions for Localidad model.
  */
 class LocalidadController extends Controller {
+  // behaviors heredado
+
     /**
      * Lists all Localidad models.
      * @return mixed

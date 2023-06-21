@@ -13,6 +13,8 @@ use yii\helpers\Html;
  * NacionalidadController implements the CRUD actions for Nacionalidad model.
  */
 class NacionalidadController extends Controller {
+  // behaviors heredado
+
     /**
      * Lists all Nacionalidad models.
      * @return mixed

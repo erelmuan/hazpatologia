@@ -4,6 +4,8 @@ use yii\rest\Controller;
 
 class UserrestController extends Controller
 {
+  // behaviors heredado
+
     public $modelClass = 'app\models\Usuario';
 
     public function actionAuthenticate(){

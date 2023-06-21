@@ -19,6 +19,8 @@ use app\components\Metodos\Metodos;
  * FirmaController implements the CRUD actions for Firma model.
  */
 class FirmaController extends Controller {
+  // behaviors heredado
+
     /**
      * Lists all Firma models.
      * @return mixed

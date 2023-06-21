@@ -13,6 +13,8 @@ use yii\helpers\Json;
  * PlantilladiagnosticoController implements the CRUD actions for Plantilladiagnostico model.
  */
 class PlantilladiagnosticoController extends Controller {
+  // behaviors heredado
+
     /**
      * Lists all Plantilladiagnostico models.
      * @return mixed

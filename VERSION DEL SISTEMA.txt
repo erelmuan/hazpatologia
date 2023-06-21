@@ -1,3 +1,8 @@
+VERSIÓN 2.5.3
+Se registra el inicio de sesion de los usuarios
+Agregue comentario a los controller que usan por herencia el comportamiento (behaviors) de restrinccion
+Modificacion del acceso a auditorias, al agregarse otro modulo de control.
+
 VERSIÓN 2.5.2
 Restriccion - paciente
 Se modifica  restricción en la creación del paciente

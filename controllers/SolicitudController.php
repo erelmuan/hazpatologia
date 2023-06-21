@@ -25,6 +25,7 @@ use yii\helpers\Json;
  * SolicitudController implements the CRUD actions for Solicitud model.
  */
 class SolicitudController extends Controller {
+  // behaviors heredado
 
 
     public function actionIndex() {

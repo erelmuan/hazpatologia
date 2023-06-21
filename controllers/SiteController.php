@@ -41,7 +41,8 @@ use app\models\Tipodoc;
 use app\models\Estado;
 use app\models\Estudio;
 use app\models\User;
-
+use app\models\Registrosesion;
+use yii\web\Cookie;
 use app\components\Seguridad\Seguridad;
 class SiteController extends Controller {
     /**
@@ -99,6 +100,33 @@ class SiteController extends Controller {
 
         return $this->render('index', ['cantidadBiopsias' => $cantidadBiopsias, 'cantidadSolicitudes' => $cantidadSolicitudes, 'cantidadBiopsias' => $cantidadBiopsias, 'cantidadPacientes' => $cantidadPacientes, 'cantidadPaps' => $cantidadPaps, 'cantidadProcedencia' => $cantidadProcedencia, 'cantidadMedicos' => $cantidadMedicos ]);
     }
+
+    public function registrarsesion(){
+          // Obtener la información necesaria
+       $idUsuario = Yii::$app->user->identity->id;
+       $inicioSesion = date('Y-m-d H:i:s');
+       $ip = Yii::$app->request->getUserIP();
+       $informacionUsuario = Yii::$app->request->getUserAgent(); // Aquí debes proporcionar la información necesaria
+       // Generar una cookie única para la sesión
+       $cookieValue = uniqid('sesion_', true);
+       $cookie = new Cookie([
+           'name' => 'sesion',
+           'value' => $cookieValue,
+           'expire' => time() + 3600, // Tiempo de expiración de la cookie (en segundos)
+       ]);
+       Yii::$app->response->cookies->add($cookie);
+
+       // Crear una nueva instancia del modelo Sesion
+       $sesion = new Registrosesion();
+       $sesion->id_usuario = $idUsuario;
+       $sesion->inicio_sesion = $inicioSesion;
+       $sesion->ip = $ip;
+       $sesion->informacion_usuario = $informacionUsuario;
+       $sesion->cookie = $cookieValue;
+
+       // Guardar el registro de inicio de sesión en la base de datos
+       $sesion->save();
+    }
     /**
      * Login action.
      *
@@ -121,10 +149,32 @@ class SiteController extends Controller {
             if (!Yii::$app->user->identity->activo) {
                 Yii::$app->user->logout();
             }
+            $this->registrarsesion ();
             return $this->goBack();
         }
         $model->password = '';
         return $this->render('login', ['model' => $model, ]);
+    }
+
+
+    public function registroLogout(){
+      // Obtener la información necesaria
+          $idUsuario = Yii::$app->user->identity->id;
+          $cierreSesion = date('Y-m-d H:i:s');
+          // Obtener el valor de la cookie de sesión actual
+          $cookieValue = Yii::$app->request->cookies->getValue('sesion');
+          // Buscar la sesión actual del usuario con la cookie correspondiente
+          $registrarsesion = Registrosesion::find()
+              ->where(['id_usuario' => $idUsuario])
+              ->andWhere(['cookie' => $cookieValue])
+              ->andWhere(['cierre_sesion' => null])
+              ->orderBy(['inicio_sesion' => SORT_DESC])
+              ->one();
+          if ($registrarsesion) {
+              // Actualizar la fecha y hora de cierre de sesión
+              $registrarsesion->cierre_sesion = $cierreSesion;
+              $registrarsesion->save();
+          }
     }
     /**
      * Logout action.
@@ -139,6 +189,9 @@ class SiteController extends Controller {
             $session->open();
         }
         $usuario=Yii::$app->user->identity->usuario;
+        //Registramos el cierre de sesion
+        $this->registroLogout();
+        //cerramos sesion
         Yii::$app->user->logout();
         // Almacenar un valor en la variable de sesión
         $session->set('mensajeDelSistema', 'adios');
@@ -213,6 +266,11 @@ class SiteController extends Controller {
         $cantidadAuditorias = Auditoria::find()->count();
         $cantidadFirmas = Firma::find()->count();
         return $this->render('administracion', ['cantidadUsuarios' => $cantidadUsuarios, 'cantidadAuditorias' => $cantidadAuditorias, 'cantidadFirmas' => $cantidadFirmas]);
+    }
+    public function actionAuditorias() {
+        $cantidadAuditorias = Auditoria::find()->count();
+        $cantidadRegistrosesion = Registrosesion::find()->count();
+        return $this->render('auditorias', ['cantidadAuditorias' => $cantidadAuditorias, 'cantidadRegistrosesion' => $cantidadRegistrosesion]);
     }
     public function actionPermisos() {
         $cantidadRoles = Rol::find()->count();

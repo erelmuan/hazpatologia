@@ -13,6 +13,8 @@ use yii\helpers\Json;
  * PlantillafraseController implements the CRUD actions for Plantillafrase model.
  */
 class PlantillafraseController extends Controller {
+  // behaviors heredado
+
     /**
      * Lists all Plantillafrase models.
      * @return mixed

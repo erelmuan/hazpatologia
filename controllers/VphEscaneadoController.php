@@ -17,21 +17,7 @@ use yii\web\UploadedFile;
  */
 class VphEscaneadoController extends Controller
 {
-    /**
-     * @inheritdoc
-     */
-    public function behaviors()
-    {
-        return [
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['post'],
-                    'bulk-delete' => ['post'],
-                ],
-            ],
-        ];
-    }
+
 
     /**
      * Lists all VphEscaneado models.

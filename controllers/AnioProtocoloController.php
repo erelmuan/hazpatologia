@@ -13,6 +13,8 @@ use app\models\Solicitud;
  * AnioProtocoloController implements the CRUD actions for AnioProtocolo model.
  */
 class AnioProtocoloController extends Controller {
+  // behaviors heredado
+
     /**
      * Lists all AnioProtocolo models.
      * @return mixed

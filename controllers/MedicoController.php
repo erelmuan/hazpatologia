@@ -16,6 +16,8 @@ use yii\helpers\Json;
  * MedicoController implements the CRUD actions for Medico model.
  */
 class MedicoController extends Controller {
+  // behaviors heredado
+
     public function actionSearch() {
         $searchModelMed = new MedicoSearch();
         $searchModelMed->scenario = "search";

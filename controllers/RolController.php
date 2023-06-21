@@ -19,6 +19,8 @@ use app\components\Metodos\Metodos;
  * RolController implements the CRUD actions for Rol model.
  */
 class RolController extends Controller {
+  // behaviors heredado
+
     /**
      * Lists all Rol models.
      * @return mixed

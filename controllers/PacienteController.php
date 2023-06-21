@@ -22,6 +22,8 @@ use app\components\Metodos\Metodos;
  * PacienteController implements the CRUD actions for Paciente model.
  */
 class PacienteController extends Controller {
+  // behaviors heredado
+
 
     public function actionSearch() {
         $searchModelPac = new PacienteSearch();

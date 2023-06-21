@@ -13,6 +13,8 @@ use yii\helpers\Json;
  * PlantillafloraController implements the CRUD actions for Plantillaflora model.
  */
 class PlantillafloraController extends Controller {
+  // behaviors heredado
+
     /**
      * Lists all Plantillaflora models.
      * @return mixed

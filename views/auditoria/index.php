@@ -32,7 +32,7 @@ $export= ExportMenu::widget([
 ?>
 <div id="w0Audi" class="x_panel">
   <div class="x_title"><h2><i class="fa fa-table"></i> AUDITORIAS </h2>
-    <div class="clearfix"> <div class="nav navbar-right panel_toolbox"><?= Html::a('<i class="glyphicon glyphicon-arrow-left"></i> Atrás', ['/site/administracion'], ['class'=>'btn btn-danger grid-button']) ?></div>
+    <div class="clearfix"> <div class="nav navbar-right panel_toolbox"><?= Html::a('<i class="glyphicon glyphicon-arrow-left"></i> Atrás', ['/site/auditorias'], ['class'=>'btn btn-danger grid-button']) ?></div>
 </div>
   </div>
   <?=$export;

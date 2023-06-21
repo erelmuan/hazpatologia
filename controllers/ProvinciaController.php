@@ -14,6 +14,8 @@ use yii\helpers\Html;
  * ProvinciaController implements the CRUD actions for Provincia model.
  */
 class ProvinciaController extends Controller {
+  // behaviors heredado
+
     /**
      * Lists all Provincia models.
      * @return mixed

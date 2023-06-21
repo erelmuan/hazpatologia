@@ -13,6 +13,8 @@ use yii\helpers\Html;
  * TipodocController implements the CRUD actions for Tipodoc model.
  */
 class TipodocController extends Controller {
+  // behaviors heredado
+
     /**
      * Lists all Tipodoc models.
      * @return mixed

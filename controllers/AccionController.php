@@ -13,6 +13,8 @@ use yii\helpers\Html;
  * AccionController implements the CRUD actions for Accion model.
  */
 class AccionController extends Controller {
+  // behaviors heredado
+
     /**
      * Lists all Accion models.
      * @return mixed

@@ -17,6 +17,7 @@ use yii\helpers\Html;
 class CirugiapreviaController extends Controller
 {
 
+  // behaviors heredado
 
     /**
      * Lists all Cirugiaprevia models.

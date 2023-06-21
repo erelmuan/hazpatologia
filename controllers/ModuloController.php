@@ -14,6 +14,8 @@ use app\components\Metodos\Metodos;
  * ModuloController implements the CRUD actions for Modulo model.
  */
 class ModuloController extends Controller {
+  // behaviors heredado
+
     /**
      * Lists all Modulo models.
      * @return mixed
@@ -62,7 +64,7 @@ class ModuloController extends Controller {
                 return ['title' => "Crear nuevo Modulo", 'content' => $this->renderAjax('create', ['model' => $model, ]) , 'footer' => Html::button('Cerrar', ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) . Html::button('Guardar', ['class' => 'btn btn-primary', 'type' => "submit"]) ];
             }
             else if ($model->load($request->post()) && $model->save()) {
-                return ['forceReload' => '#crud-datatable-pjax', 'title' => "Crear nuevo Modulo", 'content' => '<span class="text-success">Create Modulo success</span>', 'footer' => Html::button('Cerrar', ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) . Html::a('Create More', ['create'], ['class' => 'btn btn-primary', 'role' => 'modal-remote']) ];
+                return ['forceReload' => '#crud-datatable-pjax', 'title' => "Crear nuevo Modulo", 'content' => '<span class="text-success">Modulo creado satisfactoriamente</span>', 'footer' => Html::button('Cerrar', ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) . Html::a('Create More', ['create'], ['class' => 'btn btn-primary', 'role' => 'modal-remote']) ];
             }
             else {
                 return ['title' => "Crear nuevo Modulo", 'content' => $this->renderAjax('create', ['model' => $model, ]) , 'footer' => Html::button('Cerrar', ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) . Html::button('Guardar', ['class' => 'btn btn-primary', 'type' => "submit"]) ];

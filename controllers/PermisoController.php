@@ -12,6 +12,8 @@ use yii\helpers\Html;
  * PermisoController implements the CRUD actions for Permiso model.
  */
 class PermisoController extends Controller {
+  // behaviors heredado
+
     /**
      * Lists all Permiso models.
      * @return mixed

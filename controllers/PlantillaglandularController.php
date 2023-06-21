@@ -13,6 +13,8 @@ use yii\helpers\Json;
  * PlantillaglandularController implements the CRUD actions for Plantillaglandular model.
  */
 class PlantillaglandularController extends Controller {
+  // behaviors heredado
+
     /**
      * Lists all Plantillaglandular models.
      * @return mixed

@@ -12,6 +12,8 @@ use yii\helpers\Html;
  * AuditoriaController implements the CRUD actions for Auditoria model.
  */
 class AuditoriaController extends Controller {
+  // behaviors heredado
+
     public function actionIndex() {
         $searchModel = new AuditoriaSearch();
         $dataProvider = $searchModel->search(Yii::$app

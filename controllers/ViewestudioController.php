@@ -22,7 +22,8 @@ use app\components\Seguridad\Seguridad;
  */
 class ViewestudioController extends Controller
 {
-    
+  // behaviors heredado
+
     /**
      * Lists all Viewestudio models.
      * @return mixed

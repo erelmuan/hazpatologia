@@ -14,12 +14,7 @@ use yii\web\UploadedFile;
  * InmunohistoquimicaEscaneadaController implements the CRUD actions for InmunohistoquimicaEscaneada model.
  */
 class InmunohistoquimicaEscaneadaController extends Controller {
-    /**
-     * @inheritdoc
-     */
-    public function behaviors() {
-        return ['verbs' => ['class' => VerbFilter::className() , 'actions' => ['delete' => ['post'], 'bulk-delete' => ['post'], ], ], ];
-    }
+
     /**
      * Lists all InmunohistoquimicaEscaneada models.
      * @return mixed

@@ -12,6 +12,8 @@ use yii\helpers\Html;
  * MetodoanticonceptivoController implements the CRUD actions for Metodoanticonceptivo model.
  */
 class MetodoanticonceptivoController extends Controller {
+  // behaviors heredado
+
     /**
      * Lists all Metodoanticonceptivo models.
      * @return mixed

@@ -17,6 +17,8 @@ use app\components\Metodos\Metodos;
  * SolicitudpapController implements the CRUD actions for Solicitudpap model.
  */
 class SolicitudpapController extends SolicitudController {
+  // behaviors heredado
+
     /**
      * Lists all Solicitudpap models.
      * @return mixed

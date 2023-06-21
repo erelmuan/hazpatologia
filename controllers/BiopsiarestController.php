@@ -8,7 +8,7 @@
 
   class BiopsiarestController extends  \yii\rest\ActiveController
     {
-// https://localhost/hazpatologia/web/biopsiarests/informe?id=12851
+      // behaviors heredado
 public $modelClass='app\models\BiopsiaSearch';
 
 

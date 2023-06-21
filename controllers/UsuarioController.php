@@ -26,6 +26,8 @@ use app\models\Configuracion;
  * UsuarioController implements the CRUD actions for Usuario model.
  */
 class UsuarioController extends Controller {
+  // behaviors heredado
+
     /**
      * Lists all Usuario models.
      * @return mixed

@@ -17,6 +17,8 @@ use app\components\Metodos\Metodos;
  * SolicitudbiopsiaController implements the CRUD actions for Solicitudbiopsia model.
  */
 class SolicitudbiopsiaController extends SolicitudController {
+  // behaviors heredado
+
 
     public function actionIndex() {
         $model = new Solicitudbiopsia();

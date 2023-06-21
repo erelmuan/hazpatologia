@@ -15,6 +15,8 @@ use yii\helpers\Html;
  * ProcedenciaController implements the CRUD actions for Procedencia model.
  */
 class ProcedenciaController extends Controller {
+  // behaviors heredado
+
     /**
      * Lists all Procedencia models.
      * @return mixed

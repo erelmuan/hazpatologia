@@ -13,6 +13,8 @@ use yii\helpers\Json;
  * PlantillaaspectoController implements the CRUD actions for Plantillaaspecto model.
  */
 class PlantillaaspectoController extends Controller {
+  // behaviors heredado
+
     /**
      * Lists all Plantillaaspecto models.
      * @return mixed

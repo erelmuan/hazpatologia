@@ -13,6 +13,8 @@ use yii\helpers\Json;
  * PlantillapavimentosaController implements the CRUD actions for Plantillapavimentosa model.
  */
 class PlantillapavimentosaController extends Controller {
+  // behaviors heredado
+
     /**
      * Lists all Plantillapavimentosa models.
      * @return mixed

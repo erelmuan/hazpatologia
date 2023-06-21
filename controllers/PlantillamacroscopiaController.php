@@ -13,6 +13,8 @@ use yii\helpers\Json;
  * PlantillamacroscopiaController implements the CRUD actions for Plantillamacroscopia model.
  */
 class PlantillamacroscopiaController extends Controller {
+  // behaviors heredado
+
     /**
      * Lists all Plantillamacroscopia models.
      * @return mixed

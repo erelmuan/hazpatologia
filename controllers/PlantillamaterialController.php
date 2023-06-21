@@ -16,6 +16,8 @@ use yii\helpers\Json;
  * PlantillamaterialController implements the CRUD actions for Plantillamaterial model.
  */
 class PlantillamaterialController extends Controller {
+  // behaviors heredado
+
     /**
      * Lists all Plantillamaterial models.
      * @return mixed
