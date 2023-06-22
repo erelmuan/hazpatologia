@@ -1,3 +1,8 @@
+VERSIÓN 2.5.4
+Independencia de sesiones de la aplicaciones . configuracion en el archivo web.php
+Origen de los usuarios agregar, provincia y localidad.
+
+
 VERSIÓN 2.5.3
 Se registra el inicio de sesion de los usuarios
 Agregue comentario a los controller que usan por herencia el comportamiento (behaviors) de restrinccion

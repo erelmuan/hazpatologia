@@ -10,7 +10,7 @@ use johnitvn\ajaxcrud\BulkButtonWidget;
 /* @var $searchModel app\models\RegistrosesionSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Registrosesions';
+$this->title = 'Registro de sesiones';
 $this->params['breadcrumbs'][] = $this->title;
 
 CrudAsset::register($this);

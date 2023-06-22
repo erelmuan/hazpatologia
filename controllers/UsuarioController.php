@@ -22,6 +22,9 @@ use yii\imagine\Image;
 use app\models\Tema;
 use app\models\Menu;
 use app\models\Configuracion;
+use app\models\Provincia;
+use app\models\Localidad;
+
 /**
  * UsuarioController implements the CRUD actions for Usuario model.
  */
@@ -76,9 +79,11 @@ class UsuarioController extends Controller {
     public function actionView($id) {
         $request = Yii::$app->request;
         if ($request->isAjax) {
-            Yii::$app
-                ->response->format = Response::FORMAT_JSON;
-            return ['title' => "Usuario #" . $id, 'content' => $this->renderAjax('view', ['model' => $this->findModel($id) , ]) , 'footer' => Html::button('Cerrar', ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) . Html::a('Editar', ['update', 'id' => $id], ['class' => 'btn btn-primary', 'role' => 'modal-remote']) ];
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            return ['title' => "Usuario #" . $id,
+            'content' => $this->renderAjax('view', ['model' => $this->findModel($id) , ]) ,
+             'footer' => Html::button('Cerrar', ['class' => 'btn btn-default pull-left',
+             'data-dismiss' => "modal"]) ];
         }
         else {
             return $this->render('view', ['model' => $this->findModel($id) , ]);
@@ -100,19 +105,25 @@ class UsuarioController extends Controller {
     public function actionCreate() {
         $request = Yii::$app->request;
         $model = new Usuario();
+        $provincias = [];
+        $localidades = [];
+        $this->devolverArray($model,$provincias, $localidades);
         if ($request->isAjax) {
             Yii::$app->response->format = Response::FORMAT_JSON;
             if ($request->isGet) {
-                return ['title' => "Crear nuevo Usuario", 'content' => $this->renderAjax('create', ['model' => $model, ]) , 'footer' => Html::button('Cerrar', ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) . Html::button('Guardar', ['class' => 'btn btn-primary', 'type' => "submit"]) ];
+                return ['title' => "Crear nuevo Usuario", 'content' => $this->renderAjax('create', ['model' => $model,'provincias'=> $provincias,'localidades'=> $localidades ]) , 'footer' => Html::button('Cerrar', ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) . Html::button('Guardar', ['class' => 'btn btn-primary', 'type' => "submit"]) ];
             }
             else if ($model->load($request->post()) ) {
                   $configuracion=$this->crearConfiguracion();
                   $model->id_configuracion= $configuracion->id;
                 if($model->save())
-                  return ['forceReload' => '#crud-datatable-pjax', 'title' => "Crear nuevo Usuario", 'content' => '<span class="text-success">Create Usuario success</span>', 'footer' => Html::button('Cerrar', ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) . Html::a('Crear más', ['create'], ['class' => 'btn btn-primary', 'role' => 'modal-remote']) ];
+                  return [
+                    'forceReload' => '#crud-datatable-pjax',
+                  'title' => "Crear nuevo Usuario", 'content' => '<span class="text-success">Usuario creado satisfactoriamente</span>', 'footer' => Html::button('Cerrar', ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) . Html::a('Crear más', ['create'], ['class' => 'btn btn-primary', 'role' => 'modal-remote']) ];
             }
             else {
                 return ['title' => "Crear nuevo Usuario", 'content' => $this->renderAjax('create', ['model' => $model, ]) , 'footer' => Html::button('Cerrar', ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) . Html::button('Guardar', ['class' => 'btn btn-primary', 'type' => "submit"]) ];
+
             }
         }
         else {
@@ -124,9 +135,17 @@ class UsuarioController extends Controller {
                 return $this->redirect(['view', 'id' => $model->id]);
             }
             else {
-                return $this->render('create', ['model' => $model, ]);
+                return $this->render('create', ['model' => $model,'provincias'=> $provincias,'localidades'=> $localidades ]);
             }
         }
+    }
+    public function devolverArray($model,&$provincias, &$localidades){
+
+      $provincias = ArrayHelper::map(Provincia::find()->all() , 'id', 'nombre');
+      $Arraylocalidades = LocalidadController::findidproModel($model->id_provincia);
+      foreach ($Arraylocalidades as $key => $value) {
+          $localidades[$value['id']] = $value['nombre'];
+      }
     }
     /**
      * Updates an existing Usuario model.
@@ -138,6 +157,9 @@ class UsuarioController extends Controller {
     public function actionUpdate($id) {
         $request = Yii::$app->request;
         $model = $this->findModel($id);
+        $provincias = [];
+        $localidades = [];
+        $this->devolverArray($model,$provincias, $localidades);
         if ($request->isAjax) {
             Yii::$app->response->format = Response::FORMAT_JSON;
             $modeluser = Usuariorol::findOne(['id_usuario' => Yii::$app->user
@@ -147,13 +169,29 @@ class UsuarioController extends Controller {
                 return ['title' => "Cambiar contraseña #", 'content' => "No puede editar si no es administrador", 'footer' => Html::button('Cerrar', ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) ];
             }
             if ($request->isGet) {
-                return ['title' => "Actualizar Usuario #" . $id, 'content' => $this->renderAjax('update', ['model' => $model, ]) , 'footer' => Html::button('Cerrar', ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) . Html::button('Guardar', ['class' => 'btn btn-primary', 'type' => "submit"]) ];
+                return ['title' => "Actualizar Usuario #" . $id,
+                'content' => $this->renderAjax('update',
+                ['model' => $model, 'provincias'=> $provincias,'localidades'=> $localidades ]) ,
+                'footer' => Html::button('Cerrar', ['class' => 'btn btn-default pull-left',
+                 'data-dismiss' => "modal"]) . Html::button('Guardar', ['class' => 'btn btn-primary'
+                 , 'type' => "submit"]) ];
             }
             else if ($model->load($request->post()) && $model->save()) {
-                return ['forceReload' => '#crud-datatable-pjax', 'title' => "Usuario #" . $id, 'content' => $this->renderAjax('view', ['model' => $model, ]) , 'footer' => Html::button('Cerrar', ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) . Html::a('Editar', ['update', 'id' => $id], ['class' => 'btn btn-primary', 'role' => 'modal-remote']) ];
+                return [
+                'forceReload' => '#crud-datatable-pjax',
+                'title' => "Usuario #" . $id,
+                'content' => $this->renderAjax('view', ['model' => $model,'provincias' => $provincias, 'localidades' =>
+                 $localidades,]) ,
+                 'footer' => Html::button('Cerrar',
+                 ['class' => 'btn btn-default pull-left',
+                  'data-dismiss' => "modal"]) .
+                   Html::a('Editar', ['update', 'id' => $id],
+                    ['class' => 'btn btn-primary', 'role' => 'modal-remote']) ];
             }
             else {
-                return ['title' => "Actualizar Usuario #" . $id, 'content' => $this->renderAjax('update', ['model' => $model, ]) , 'footer' => Html::button('Cerrar', ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) . Html::button('Guardar', ['class' => 'btn btn-primary', 'type' => "submit"]) ];
+                return ['title' => "Actualizar Usuario #" .
+                $id, 'content' => $this->renderAjax('update', ['model' => $model, 'provincias'=> $provincias,'localidades'=> $localidades ]) ,
+                'footer' => Html::button('Cerrar', ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) . Html::button('Guardar', ['class' => 'btn btn-primary', 'type' => "submit"]) ];
             }
         }
         else {
@@ -161,7 +199,8 @@ class UsuarioController extends Controller {
                 return $this->redirect(['view', 'id' => $model->id]);
             }
             else {
-                return $this->render('update', ['model' => $model, ]);
+
+                return $this->render('update', ['model' => $model, 'provincias'=> $provincias,'localidades'=> $localidades]);
             }
         }
     }

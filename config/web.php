@@ -18,6 +18,9 @@ $config = [
         '@npm'   => '@vendor/npm-asset',
     ],
     'components' => [
+      'session' => [
+          'name' => 'hazpatologia_session',
+      ],
 
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
@@ -34,14 +37,6 @@ $config = [
             'enableAutoLogin' => true,
         ]
         ,
-     //    'formatter' => [
-     //     'class' => 'yii\i18n\Formatter',
-     //     'locale' => 'es-ES',
-     //     'dateFormat' => 'dd/mm/yyyy',
-     //     'timeFormat' => 'short',
-     //     'defaultTimeZone' => 'Europe'
-     // ],
-
 
         'i18n' => [
             'translations' => [

@@ -30,10 +30,16 @@ use yii\widgets\DetailView;
               'attribute'=>'imagen',
                 'label'=>'Imagen',
                 'value'=> '<img src=uploads/avatar/'.$model->imagen.' width="75px" height="75px" style="margin-left: auto;margin-right: auto;;position:relative;" >',
-
                 'format'=>'raw',
-
          ],
+         [
+         'value'=> ($model->localidad)?$model->localidad->nombre:'No definido',
+         'label'=> 'Localidad',
+        ],
+        [
+        'value'=> ($model->localidad)?$model->localidad->provincia->nombre:'No definido',
+        'label'=> 'Provincia',
+       ],
 
         ],
     ]) ?>

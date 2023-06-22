@@ -6,7 +6,7 @@ use yii\widgets\DetailView;
 /* @var $model app\models\Registrosesion */
 ?>
 <div class="registrosesion-view">
- 
+
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [

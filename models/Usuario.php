@@ -26,6 +26,12 @@ use Yii;
  * @property Vista[] $vistas
  * @property int $id_configuracion
  * @property Configuracion $configuracion
+ * @property Registrosesion[] $registrosesions
+ * @property string $token
+ * @property int $id_provincia
+ * @property int $id_localidad
+ * @property Localidad $localidad
+ * @property Provincia $provincia
  */
  use yii\filters\AccessControl;
  use app\components\behaviors\AuditoriaBehaviors;
@@ -101,13 +107,15 @@ class Usuario extends \yii\db\ActiveRecord  implements \yii\web\IdentityInterfac
             [['activo'], 'default', 'value' => null],
             // [['activo'], 'integer'],
             [['descripcion', 'imagen'], 'string'],
-            [['id_pantalla'], 'default', 'value' => null],
-            [['id_pantalla'], 'integer'],
+            [['id_pantalla','id_configuracion','id_provincia', 'id_localidad'], 'default', 'value' => null],
+            [['id_pantalla','id_configuracion','id_provincia', 'id_localidad'], 'integer'],
             [['usuario', 'nombre'], 'string', 'max' => 45],
             [['contrasenia'], 'string', 'max' => 50],
             [['email'], 'string', 'max' => 35],
             [['id_configuracion'], 'unique'],
-            [['usuario'], 'unique'], 
+            [['usuario'], 'unique'],
+            [['id_localidad'], 'exist', 'skipOnError' => true, 'targetClass' => Localidad::className(), 'targetAttribute' => ['id_localidad' => 'id']],
+            [['id_provincia'], 'exist', 'skipOnError' => true, 'targetClass' => Provincia::className(), 'targetAttribute' => ['id_provincia' => 'id']],
             [['id_configuracion'], 'exist', 'skipOnError' => true, 'targetClass' => Configuracion::className(), 'targetAttribute' => ['id_configuracion' => 'id']],
             [['usuario', 'email'], 'unique', 'targetAttribute' => ['usuario', 'email']],
             [['id_pantalla'], 'exist', 'skipOnError' => true, 'targetClass' => Pantalla::className(), 'targetAttribute' => ['id_pantalla' => 'id']],
@@ -134,6 +142,8 @@ class Usuario extends \yii\db\ActiveRecord  implements \yii\web\IdentityInterfac
             'pass_new_check' => 'Repita Nueva Contraseña',
             'pass_reset' => 'Resetear Contraseña',
              'id_pantalla' => 'Id Pantalla',
+             'id_provincia' => 'Id Provincia',
+             'id_localidad' => 'Id Localidad',
 
         ];
     }
@@ -268,4 +278,15 @@ class Usuario extends \yii\db\ActiveRecord  implements \yii\web\IdentityInterfac
      	  {
      	      return $this->hasOne(Configuracion::className(), ['id' => 'id_configuracion']);
      	  }
+        /**
+       * @return \yii\db\ActiveQuery
+       */
+      public function getProvincia()
+      {
+          return $this->hasOne(Provincia::className(), ['id' => 'id_provincia']);
+      }
+      public function getLocalidad()
+     {
+         return $this->hasOne(Localidad::className(), ['id' => 'id_localidad']);
+     }
 }

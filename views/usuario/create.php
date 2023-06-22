@@ -10,5 +10,7 @@ use yii\helpers\Html;
 <div class="usuario-create">
     <?= $this->render('_form', [
         'model' => $model,
+        'provincias'=> $provincias,
+        'localidades'=> $localidades
     ]) ?>
 </div>
