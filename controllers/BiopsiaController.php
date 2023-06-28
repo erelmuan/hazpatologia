@@ -156,25 +156,31 @@ class BiopsiaController extends Controller {
             $model->fechalisto = date("Y-m-d  H:i:s");
             $model->id_usuario = Yii::$app->user->identity->getId();
         }
-        if ($model->load($post) && $model->save()) {
-            // cambio de estados
-            if ($Solicitud->id_estado !== $model->id_estado) {
-                $Solicitud->id_estado = $model->id_estado;
-                $Solicitud->save();
-
+        $transaction = Yii::$app->db->beginTransaction();
+            try {
+                if ($model->load($post) && $model->save()) {
+                    // cambio de estados
+                    if ($Solicitud->id_estado !== $model->id_estado) {
+                        $Solicitud->save();
+                    }
+                    if ($model->fechalisto != null) {
+                        // Creacion de biopsiacie10
+                        // $this->saveBiopsiacie10($post['Biopsia']['id_cie10'], $model->id);
+                    }
+                    if ($model->ihq) {
+                        $transaction->commit();
+                        return $this->redirect(['inmunohistoquimica-escaneada/create', 'id_biopsia' => $model->id]);
+                    }
+                    $transaction->commit();
+                    return $this->redirect(['view', 'id' => $model->id]);
+                } else {
+                    $transaction->rollBack();
+                    return $this->render('_form', ['model' => $model, 'search' => $search, 'array' => $array, 'provider' => $provider, 'solicitud' => $Solicitud]);
+                }
+            } catch (\Exception $e) {
+                $transaction->rollBack();
+                throw $e;
             }
-            if($model->fechalisto !=null){
-              //Creacion de biopsiacie10
-            //  $this->saveBiopsiacie10($post['Biopsia']['id_cie10'],$model->id);
-            }
-            if ($model->ihq) {
-                return $this->redirect(['inmunohistoquimica-escaneada/create', 'id_biopsia' => $model->id]);
-            }
-            return $this->redirect(['view', 'id' => $model->id]);
-        }
-        else {
-            return $this->render('_form', ['model' => $model, 'search' => $search, 'array' => $array, 'provider' => $provider, 'solicitud' => $Solicitud]);
-        }
     }
 
 
@@ -207,27 +213,38 @@ class BiopsiaController extends Controller {
             $model->fechalisto = date("Y-m-d  H:i:s");
             $model->id_usuario = Yii::$app->user->identity->getId();
         }
-        if ($model->load($post) && $model->save()) {
-          // cambio de estados
-            if ($model->solicitudbiopsia->id_estado !== $model->id_estado) {
-                $model->solicitudbiopsia->id_estado = $model->id_estado;
-                $model->solicitudbiopsia->save();
+        $transaction = Yii::$app->db->beginTransaction();
+
+         try {
+              if ($model->load($post) && $model->save()) {
+                // cambio de estados
+                  if ($model->solicitudbiopsia->id_estado !== $model->id_estado) {
+                      $model->solicitudbiopsia->id_estado = $model->id_estado;
+                      $model->solicitudbiopsia->save();
+                  }
+                  if (!$model->ihq && isset($model->inmunohistoquimicaEscaneada)) {
+                      $model->inmunohistoquimicaEscaneada->baja_logica=true;
+                      $model->inmunohistoquimicaEscaneada->save();
+                  }
+                  if ($model->ihq && isset($model->inmunohistoquimicaEscaneada)) {
+                      $transaction->commit();
+                      return $this->redirect(['inmunohistoquimica-escaneada/update', 'id' => $model->inmunohistoquimicaEscaneada->id]);
+                  }
+                  elseif ($model->ihq) {
+                      $transaction->commit();
+                      return $this->redirect(['inmunohistoquimica-escaneada/create', 'id_biopsia' => $model->id]);
+                  }
+                  $transaction->commit();
+                  return $this->redirect(['view', 'id' => $model->id]);
+              }
+              else {
+                  $transaction->rollBack();
+                  return $this->render('_form', ['model' => $model, 'solicitud' =>$model->solicitudbiopsia, 'search' => $search, 'array' => $array, 'provider' => $provider ]);
+              }
+          } catch (\Exception $e) {
+                $transaction->rollBack();
+                throw $e;
             }
-            if (!$model->ihq && isset($model->inmunohistoquimicaEscaneada)) {
-                $model->inmunohistoquimicaEscaneada->baja_logica=true;
-                $model->inmunohistoquimicaEscaneada->save();
-            }
-            if ($model->ihq && isset($model->inmunohistoquimicaEscaneada)) {
-                return $this->redirect(['inmunohistoquimica-escaneada/update', 'id' => $model->inmunohistoquimicaEscaneada->id]);
-            }
-            elseif ($model->ihq) {
-                return $this->redirect(['inmunohistoquimica-escaneada/create', 'id_biopsia' => $model->id]);
-            }
-            return $this->redirect(['view', 'id' => $model->id]);
-        }
-        else {
-            return $this->render('_form', ['model' => $model, 'solicitud' =>$model->solicitudbiopsia, 'search' => $search, 'array' => $array, 'provider' => $provider ]);
-        }
     }
     /**
      * Delete an existing Biopsia model.
@@ -242,25 +259,31 @@ class BiopsiaController extends Controller {
         if ($model->estado->descripcion == 'LISTO') {
             return ['title' => "Eliminar informe Biopsia #" . $id, 'content' => "No se puede eliminar informe en estado listo", 'footer' => Html::button('Cerrar', ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) ];
         }
-        $request = Yii::$app->request;
-        $model->solicitudbiopsia->id_estado=5;//Vuelve al estado PENDIENTE
-        $model->solicitudbiopsia->save();
-        if (isset($model->inmunohistoquimicaEscaneada)) {
-            $model->inmunohistoquimicaEscaneada->delete();
-        }
-        $model->delete();
-        if ($request->isAjax) {
-            /*
-             *   Process for ajax request
-            */
-            return ['forceClose' => true, 'forceReload' => '#crud-datatable-pjax'];
-        }
-        else {
-            /*
-             *   Process for non-ajax request
-            */
-            return $this->redirect(['index']);
-        }
+        $transaction = Yii::$app->db->beginTransaction();
+
+        try {
+            $request = Yii::$app->request;
+            $model->solicitudbiopsia->id_estado=5;//Vuelve al estado PENDIENTE
+            $model->solicitudbiopsia->save();
+            if (isset($model->inmunohistoquimicaEscaneada)) {
+                $model->inmunohistoquimicaEscaneada->delete();
+            }
+            $model->delete();
+            if ($request->isAjax) {
+                $transaction->commit();
+                return ['forceClose' => true, 'forceReload' => '#crud-datatable-pjax'];
+            }
+            else {
+                $transaction->commit();
+                return $this->redirect(['index']);
+            }
+      } catch (\Exception $e) {
+         $transaction->rollBack();
+         throw $e;
+       } catch (\Throwable $e) {
+           $transaction->rollBack();
+           throw $e;
+       }
     }
     /**
      * Finds the Biopsia model based on its primary key value.

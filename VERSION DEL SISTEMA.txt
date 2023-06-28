@@ -1,3 +1,7 @@
+VERSIÓN 2.5.5
+Incorporacion de transaccion en las biopsias y paps
+
+
 VERSIÓN 2.5.4
 Independencia de sesiones de la aplicaciones . configuracion en el archivo web.php
 Origen de los usuarios agregar, provincia y localidad.

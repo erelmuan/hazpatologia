@@ -151,21 +151,33 @@ class PapController extends Controller {
           $model->fechalisto = date("Y-m-d  H:i:s");
           $model->id_usuario = Yii::$app->user->identity->getId();
         }
-        if ($model->load($post) && $model->save()) {
-          // cambio de estados
-          if ($Solicitud->id_estado !== $model->id_estado) {
-              $Solicitud->id_estado = $model->id_estado;
-              $Solicitud->save();
-          }
-          if ($model->vph) {
-              return $this->redirect(['vph-escaneado/create', 'id_pap' => $model->id]);
-          }
-            return $this->redirect(['view', 'id' => $model->id]);
-        }
-        else {
-            return $this->render('_form', ['search' => $search, 'array' => $array, 'provider' => $provider, 'model' => $model, 'solicitud' => $Solicitud]);
+        $transaction = Yii::$app->db->beginTransaction();
+
+        try {
+            if ($model->load($post) && $model->save()) {
+                // cambio de estados
+                if ($Solicitud->id_estado !== $model->id_estado) {
+                    $Solicitud->id_estado = $model->id_estado;
+                    $Solicitud->save();
+                }
+
+                if ($model->vph) {
+                    $transaction->commit();
+                    return $this->redirect(['vph-escaneado/create', 'id_pap' => $model->id]);
+                }
+
+                $transaction->commit();
+                return $this->redirect(['view', 'id' => $model->id]);
+            } else {
+                $transaction->rollBack();
+                return $this->render('_form', ['search' => $search, 'array' => $array, 'provider' => $provider, 'model' => $model, 'solicitud' => $Solicitud]);
+            }
+        } catch (\Exception $e) {
+            $transaction->rollBack();
+            throw $e;
         }
     }
+
 
 
     /**
@@ -194,27 +206,39 @@ class PapController extends Controller {
           $model->fechalisto = date("Y-m-d  H:i:s");
           $model->id_usuario = Yii::$app->user->identity->getId();
         }
-        if ($model->load($post) && $model->save()) {
-            if ($model->solicitudpap->id_estado !== $model->id_estado) {
-                $model->solicitudpap->id_estado = $model->id_estado;
-                $model->solicitudpap->save();
-            }
-            if (!$model->vph && isset($model->vphEscaneado)) {
-                $model->vphEscaneado->baja_logica=true;
-                $model->vphEscaneado->save();
-            }
-            if ($model->vph && isset($model->vphEscaneado)) {
-                return $this->redirect(['vph-escaneado/update', 'id' => $model->vphEscaneado->id]);
-            }
-            elseif ($model->vph) {
-                return $this->redirect(['vph-escaneado/create', 'id_pap' => $model->id]);
-            }
-            return $this->redirect(['view', 'id' => $model->id]);
-        }
-        else {
-            return $this->render('_form', ['model' => $model, 'solicitud'=>$model->solicitudpap, 'search' => $search, 'array' => $array, 'provider' => $provider,  ]);
-        }
-    }
+        $transaction = Yii::$app->db->beginTransaction();
+
+         try {
+             if ($model->load($post) && $model->save()) {
+                 if ($model->solicitudpap->id_estado !== $model->id_estado) {
+                     $model->solicitudpap->id_estado = $model->id_estado;
+                     $model->solicitudpap->save();
+                 }
+
+                 if (!$model->vph && isset($model->vphEscaneado)) {
+                     $model->vphEscaneado->baja_logica = true;
+                     $model->vphEscaneado->save();
+                 }
+
+                 if ($model->vph && isset($model->vphEscaneado)) {
+                     $transaction->commit();
+                     return $this->redirect(['vph-escaneado/update', 'id' => $model->vphEscaneado->id]);
+                 } elseif ($model->vph) {
+                     $transaction->commit();
+                     return $this->redirect(['vph-escaneado/create', 'id_pap' => $model->id]);
+                 }
+
+                 $transaction->commit();
+                 return $this->redirect(['view', 'id' => $model->id]);
+             } else {
+                 $transaction->rollBack();
+                 return $this->render('_form', ['model' => $model, 'solicitud' => $model->solicitudpap, 'search' => $search, 'array' => $array, 'provider' => $provider]);
+             }
+         } catch (\Exception $e) {
+             $transaction->rollBack();
+             throw $e;
+         }
+}
     /**
      * Delete an existing Pap model.
      * For ajax request will return json object
@@ -225,26 +249,35 @@ class PapController extends Controller {
     public function actionDelete($id) {
         Yii::$app->response->format = Response::FORMAT_JSON;
         $model = $this->findModel($id);
-        if ($model
-            ->estado->descripcion == 'LISTO') {
+        if ($model->estado->descripcion == 'LISTO') {
             return ['title' => "Eliminar informe Pap #" . $id, 'content' => "No se puede eliminar informe en estado listo", 'footer' => Html::button('Cerrar', ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) ];
         }
-        $request = Yii::$app->request;
-        $model->solicitudpap->id_estado=5;//Vuelve al estado PENDIENTE
-        $model->solicitudpap->save();
-        $this->findModel($id)->delete();
-        if ($request->isAjax) {
-            /*
-             *   Process for ajax request
-            */
-            return ['forceClose' => true, 'forceReload' => '#crud-datatable-pjax'];
-        }
-        else {
-            /*
-             *   Process for non-ajax request
-            */
-            return $this->redirect(['index']);
-        }
+        $transaction = Yii::$app->db->beginTransaction();
+
+        try {
+            $request = Yii::$app->request;
+            $model->solicitudpap->id_estado=5;//Vuelve al estado PENDIENTE
+            $model->solicitudpap->save();
+            if (isset($model->vphEscaneado)) {
+                $model->vphEscaneado->delete();
+            }
+            $this->findModel($id)->delete();
+            if ($request->isAjax) {
+                $transaction->commit();
+                return ['forceClose' => true, 'forceReload' => '#crud-datatable-pjax'];
+            }
+            else {
+                $transaction->commit();
+                return $this->redirect(['index']);
+            }
+          } catch (\Exception $e) {
+             $transaction->rollBack();
+             throw $e;
+           } catch (\Throwable $e) {
+               $transaction->rollBack();
+               throw $e;
+           }
+
     }
     public function actionSelect() {
         $request = Yii::$app->request;
