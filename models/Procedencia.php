@@ -47,6 +47,7 @@ class Procedencia extends \yii\db\ActiveRecord
             [['direccion'], 'string'],
             [['nombre'], 'string', 'max' => 18],
             [['contacto'], 'string', 'max' => 40],
+            [['nombre'],'unique'],
         ];
     }
 

@@ -1,3 +1,5 @@
+VERSIÓN 2.5.6
+La columna nombre de la tabla procedencia es unica, de esta forma se evita generar duplicados
 VERSIÓN 2.5.5
 Incorporacion de transaccion en las biopsias y paps
 
