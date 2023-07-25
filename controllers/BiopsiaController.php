@@ -161,6 +161,7 @@ class BiopsiaController extends Controller {
                 if ($model->load($post) && $model->save()) {
                     // cambio de estados
                     if ($Solicitud->id_estado !== $model->id_estado) {
+                        $Solicitud->id_estado = $model->id_estado;
                         $Solicitud->save();
                     }
                     if ($model->fechalisto != null) {

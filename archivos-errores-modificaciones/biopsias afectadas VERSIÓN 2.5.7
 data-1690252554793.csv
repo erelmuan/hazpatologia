@@ -1,0 +1,41 @@
+"material","macroscopia","microscopia","diagnostico","ihq","firmado","Pagado","id","id_solicitudbiopsia","id_plantillamaterial","id_cie10","fechalisto","ubicacion","observacion","id_estado","frase","id_usuario","id-2","id_paciente","id_procedencia","id_medico","id_materialsolicitud","fecharealizacion","fechadeingreso","observacion-2","protocolo","id_estudio","id_estado-2","id_anio_protocolo","protocolo_automatico","sitio_prec_toma","datos_clin_interes","diagnostico_presuntivo","biopsia_anterior_resultado","id_materialginecologico"
+"Biopsia de esofago","Se reciben 7 fragmentos de tejido, el mayor de 0.6 x 0.4 cm.","El examen histologico revela una proliferacion de celulas neoplasicas de estirpe epitelial.
+Tipo histologico: ADENOCARCINOMA.
+Grado Histologico: 3.
+Invasion linfovascular: presenta
+Invasion perineural: no presenta","ADENOCARCINOMA INVASOR, POBREMENTE DIFERENCIADO.
+
+En el material remitido.",False,True,NULL,14439,4420,NULL,NULL,"2023-06-28 19:35:49-03",NULL,NULL,2,"",7,4420,317983,55,344,1,NULL,"2023-06-23","",1506,2,5,2,NULL,"","","","",NULL
+"1) Biopsia de duodeno
+2) Biopsia de colon","1) Se reciben dos fragmentos de tejido, el mayor de 0.6 x0.3 cm.
+2) Se reciben dos fragmentos de tejido, el mayor de 0.5 x0.3 cm.","1) Fragmento de mucosa duodenal que muestra
+Relación vellocidad/cripta : 3/1
+Linfocitos intraepiteliales: menor 10 x 100 enterocitos.
+Corion: Infiltrado fisiológico.
+No se observa atrofia vellositaria, granulomas ni malignidad.
+
+2) Fragmento de mucosa colónica que conserva su histoarquitectura.
+El corion presenta moderado infiltrado inflamatorio mixto, con neutrofilos en migracion transepitelial.
+Eosinofilos: menor a 5 por campo de mayor aumento.
+Lesion epitelial: no presenta.
+Tricromico de Masson: no se observa deposito de membrana.
+PAS: negativo para agente etiologico biologico
+No se observa Seudoabscesos criptico, granulomas ni malignidad.","1) FRAGMENTO DE MUCOSA DUODENAL SIN ALTERACIONES HISTOPATOLOGICAS.
+
+2) COLITIS INESPECIFICA.
+
+En el material remitido.",False,True,NULL,14438,4417,NULL,NULL,"2023-06-28 17:23:06-03",NULL,NULL,2,"",7,4417,306907,55,344,1,NULL,"2023-06-23","",1503,2,5,2,NULL,"","","","",NULL
+"Biopsia de colon tranverso","Se reciben cinco fragmentos de tejido, el mayor de 0.7 x 0.3 cm.","Fragmento de colón que muestra una proliferación de células neoplasicas de estirpe epitelial.
+Tipo histologico: ADENOCARCINOMA.
+Grado histologico: 2 
+Invasión vascular: No presenta.
+tipo de polipo donde se origino la neoplasia: adenoma tubular","ADENOCARCINOMA INVASOR, MODERADAMENTE DIFERENCIADO.
+En el material remitido.",False,True,NULL,14437,4418,NULL,NULL,"2023-06-28 17:05:41-03",NULL,NULL,2,"",7,4418,384541,55,344,1,NULL,"2023-06-23","",1504,2,5,2,NULL,"","","","",NULL
+"Biopsia de colon","Se reciben siete fragmento de tejido, el mayor de 0.6 x 0.5 cm.
+","Fragmentos de colon que muestran una proliferacion de celulas neoplasicas de estirpe epitelial.
+Tipo histologico: Adenocarcinoma
+Grado histologico: 3
+Invasion linfovascular: presenta
+Polipo donde se origino la neoplasia: no se identifica","ADENOCARCINOMA POCO DIFERENCIADO.
+
+En el material remitido.",False,True,NULL,14487,4553,NULL,NULL,"2023-07-17 17:01:17-03",NULL,NULL,2,"",7,4553,318698,55,344,1,NULL,"2023-07-07","",1638,2,5,2,NULL,"","","","",NULL

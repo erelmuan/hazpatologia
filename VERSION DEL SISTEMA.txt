@@ -1,3 +1,6 @@
+VERSIÓN 2.5.7
+Se corrige el controlador de la biopsia, porque no actualizaba la solicitud cuando la biopsia
+esta en estado LISTO.
 VERSIÓN 2.5.6
 La columna nombre de la tabla procedencia es unica, de esta forma se evita generar duplicados
 VERSIÓN 2.5.5
