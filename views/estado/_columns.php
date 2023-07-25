@@ -11,8 +11,6 @@ return [
     [
         'class'=>'\kartik\grid\DataColumn',
         'attribute'=>'descripcion',
-        'trueLabel' => 'Sí',
-        'falseLabel' => 'No',
     ],
     [
         'class'=>'\kartik\grid\BooleanColumn',
