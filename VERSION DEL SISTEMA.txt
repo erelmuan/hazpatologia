@@ -1,3 +1,5 @@
+VERSION 2.5.8
+Se aumenta la cantidad de caracteres de procedencia a 30
 VERSIÓN 2.5.7
 Se corrige el controlador de la biopsia, porque no actualizaba la solicitud cuando la biopsia
 esta en estado LISTO.
