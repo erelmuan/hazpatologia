@@ -1,3 +1,6 @@
+VERSION 2.6.0
+Correccion en la fecha de la busqueda en consulta
+
 VERSION 2.5.9
 Se corrige la consulta de los estudios,
 dentro del Rol consulta no es necesario agregar ningún permiso de algún modulo.

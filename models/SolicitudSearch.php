@@ -87,12 +87,12 @@ class SolicitudSearch extends Solicitud
             else {
               //tengo que tener un logica de 7 dias entre estos dias
                  if (!empty($this->fecha_desde) && !empty($this->fecha_hasta)) { // A partir de la fecha desde, un máximo de 7 días
-                     $ft =DateTime::createFromFormat('d/m/Y', $this->fecha_desde);
-                     $ft->modify('+7 days');
+                     $fd =DateTime::createFromFormat('d/m/Y', $this->fecha_desde);
+                     $fd->modify('+7 days');
                      $fh =DateTime::createFromFormat('d/m/Y', $this->fecha_hasta);
-                     $this->fecha_hasta = $fh <= $ft ?  $fh->format('d/m/Y') : $ft->format('d/m/Y');
+                     $this->fecha_hasta = $fh <= $fd ? $fd->format('d/m/Y') :  $fh->format('d/m/Y') ;
                  } elseif (empty($this->fecha_desde)) { // Un día, el establecido en hasta
-                     $$this->fecha_desde = $this->fecha_hasta;
+                     $this->fecha_desde = $this->fecha_hasta;
                  } else { // Un día, el establecido en desde
                      $this->fecha_hasta = $this->fecha_desde;
                  }
