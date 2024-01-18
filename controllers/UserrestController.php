@@ -24,8 +24,45 @@ class UserrestController extends Controller
                 return ['token'=>$u->token,'id'=>$u->id,'usuario'=>$u->usuario];
             }
 
-        return ['error'=>'Usuario incorrecto. '.$username];
+        return ['error'=>'Credenciales incorrectas. '.$username];
       }
     }
+    // public function behaviors()
+    //     {
+    //         return [
+    //             'contentNegotiator' => [
+    //                 'class' => ContentNegotiator::className(),
+    //                 'formats' => [
+    //                     'application/json' => Response::FORMAT_JSON,
+    //                 ],
+    //             ],
+    //         ];
+    //     }
+    //
+    //     public function actionLogin()
+    //     {
+    //         $username = Yii::$app->request->post('username');
+    //         $password = Yii::$app->request->post('password');
+    //
+    //         $user = \app\models\Usuario::findByUsername($username);
+    //         if ($user && Yii::$app->security->validatePassword($password, $user->contrasenia)) {
+    //             // Generar un token seguro usando Yii2 Security
+    //             $token = Yii::$app->security->generateRandomString();
+    //             $user->token = $token;
+    //             $user->save();
+    //
+    //             return ['token' => $token];
+    //         }
+    //
+    //         Yii::$app->response->statusCode = 401; // Unauthorized
+    //         return ['error' => 'Invalid username or password'];
+    //     }
+    //
+    //     public function actionLogout()
+    //     {
+    //         // Lógica para cerrar sesión y eliminar el token de acceso del usuario
+    //     }
+
+
 }
   ?>

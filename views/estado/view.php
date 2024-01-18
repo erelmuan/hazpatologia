@@ -6,7 +6,7 @@ use yii\widgets\DetailView;
 /* @var $model app\models\Estado */
 ?>
 <div class="estado-view">
- 
+
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
@@ -17,6 +17,7 @@ use yii\widgets\DetailView;
             'pap:boolean',
             'ver_informe_solicitud:boolean',
             'ver_informe_estudio:boolean',
+            'explicacion'
         ],
     ]) ?>
 

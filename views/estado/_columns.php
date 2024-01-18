@@ -43,6 +43,10 @@ return [
         'falseLabel' => 'No',
     ],
     [
+        'class'=>'\kartik\grid\DataColumn',
+        'attribute'=>'explicacion',
+    ],
+    [
         'class' => 'kartik\grid\ActionColumn',
         'dropdown' => false,
         'template' => '{view}',

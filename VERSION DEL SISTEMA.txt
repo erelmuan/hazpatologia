@@ -1,3 +1,7 @@
+
+VERSION 2.6.1
+Se visualiza la descripción en los estados y se realizan modificaciones menos importantes en los servicio rest
+
 VERSION 2.6.0
 Correccion en la fecha de la busqueda en consulta
 

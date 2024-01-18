@@ -17,7 +17,8 @@ public $modelClass='app\models\BiopsiaSearch';
              $behaviors = parent::behaviors();
              $behaviors['authenticator'] = [
                 'class' => HttpBearerAuth::className(),
-              'except' => ['ACCION1', 'accion2'],
+              // 'except' => ['informe', 'index'], // no necesitan autenticacion
+              'except' => ['accion1', 'accion2'], // no necesitan autenticacion (son accion ficticias)
              ];
              return $behaviors;
       }
@@ -35,15 +36,15 @@ public $modelClass='app\models\BiopsiaSearch';
               throw new NotFoundHttpException('The requested page does not exist.');
           }
       }
-     public function actions()
-     {
-         $actions = parent::actions();
-         $actions['index']['dataFilter'] = [
-             'class' => \yii\data\ActiveDataFilter::class,
-             'searchModel' => $this->modelClass,
-         ];
-         return $actions;
-     }
+     // public function actions()
+     // {
+     //     $actions = parent::actions();
+     //     $actions['index']['dataFilter'] = [
+     //         'class' => \yii\data\ActiveDataFilter::class,
+     //         'searchModel' => $this->modelClass,
+     //     ];
+     //     return $actions;
+     // }
 
 
 }
