@@ -51,7 +51,7 @@ use app\models\User;
             <div class="left_col scroll-view">
 
                 <div class="navbar nav_title" style="border: 0;">
-                    <center class="site_title"><i class="fa fa-flask"></i> <span>hazpatologia</span> </center><center id="version" style="color:white; font-size: 10px;"> <b>Version: 2.6.1 </b></center>
+                    <center class="site_title"><i class="fa fa-flask"></i> <span>hazpatologia</span> </center><center id="version" style="color:white; font-size: 10px;"> <b>Version: <?=Yii::$app->params['version']?> </b></center>
                 </div>
                 <div class="clearfix"></div>
 

@@ -1,15 +1,17 @@
+VERSIÓN 2.6.2
+EL numero de versión se obtiene de un parámetro, ya no es hardcodeado
 
-VERSION 2.6.1
+VERSIÓN 2.6.1
 Se visualiza la descripción en los estados y se realizan modificaciones menos importantes en los servicio rest
 
-VERSION 2.6.0
+VERSIÓN 2.6.0
 Correccion en la fecha de la busqueda en consulta
 
-VERSION 2.5.9
+VERSIÓN 2.5.9
 Se corrige la consulta de los estudios,
 dentro del Rol consulta no es necesario agregar ningún permiso de algún modulo.
  DE TODAS FORMAS HAY QUE REVISAR ESTO.
-VERSION 2.5.8
+VERSIÓN 2.5.8
 Se aumenta la cantidad de caracteres de procedencia a 30
 VERSIÓN 2.5.7
 Se corrige el controlador de la biopsia, porque no actualizaba la solicitud cuando la biopsia
