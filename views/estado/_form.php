@@ -11,19 +11,11 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'descripcion')->textInput() ?>
+    <?= $form->field($model, 'descripcion')->textInput(['readOnly'=>true]) ?>
 
-    <?= $form->field($model, 'solicitud')->checkbox() ?>
+    <?= $form->field($model, 'explicacion')->textInput() ?>
 
-    <?= $form->field($model, 'biopsia')->checkbox() ?>
 
-    <?= $form->field($model, 'pap')->checkbox() ?>
-
-    <?= $form->field($model, 'ver_informe_solicitud')->checkbox() ?>
-
-    <?= $form->field($model, 'ver_informe_estudio')->checkbox() ?>
-
-  
 	<?php if (!Yii::$app->request->isAjax){ ?>
 	  	<div class="form-group">
 	        <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
@@ -31,5 +23,5 @@ use yii\widgets\ActiveForm;
 	<?php } ?>
 
     <?php ActiveForm::end(); ?>
-    
+
 </div>

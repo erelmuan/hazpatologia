@@ -19,8 +19,7 @@ class EstadoSearch extends Estado
     {
         return [
             [['id'], 'integer'],
-            [['descripcion'], 'safe'],
-            [['solicitud', 'biopsia', 'pap', 'ver_informe_solicitud', 'ver_informe_estudio'], 'boolean'],
+            [['descripcion', 'explicacion'], 'safe'],
         ];
     }
 
@@ -58,14 +57,10 @@ class EstadoSearch extends Estado
 
         $query->andFilterWhere([
             'id' => $this->id,
-            'solicitud' => $this->solicitud,
-            'biopsia' => $this->biopsia,
-            'pap' => $this->pap,
-            'ver_informe_solicitud' => $this->ver_informe_solicitud,
-            'ver_informe_estudio' => $this->ver_informe_estudio,
         ]);
 
-        $query->andFilterWhere(['like', 'descripcion', $this->descripcion]);
+        $query->andFilterWhere(['like', 'descripcion', $this->descripcion])
+            ->andFilterWhere(['like', 'explicacion', $this->explicacion]);
 
         return $dataProvider;
     }

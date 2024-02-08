@@ -159,6 +159,17 @@ $this->title = 'Extras';
       </div>
     </div>
     </a>
+    <a href=<?=Yii::$app->homeUrl."solicitud/anulado"; ?>>
+    <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
+      <div class="tile-stats">
+          <div class="icon"><i class="fas fa-archive"></i>
+          </div>
+          <div class="count"><?=$cantidadCie10 ?></div>
+          <h3> ESTUDIOS ANULADOS</h3>
+          <p>Biopsias y paps anulados.</p>
+      </div>
+    </div>
+    </a>
     </div>
 
   </div>

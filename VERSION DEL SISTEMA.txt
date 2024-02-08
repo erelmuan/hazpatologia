@@ -1,3 +1,112 @@
+VERSIÓN 2.7.0
+En esta version se detallan las modificaciones realizadas. Debido a que se presento
+el inconveniente de eliminar un estudio que estaba en estado LISTO, desde la base de datos
+porque el mismo fue cargado por error, la situacion lo ameritaba por que una vez que
+un estudio pasa a estado LISTO no se podia eliminar de esta manera.
+Para lograr una anulacion de un registro sin tener que recurrir a la base de datos para ello,
+se decidio incorporar un estado con el fin de dar una baja logica y de esta manera no perden los datos del informe anulado,
+al dar de baja un informe automaticamente se da de baja la solicitu y ya no pueden recuperarse sino solamente consultarse por los
+usuarios con permiso administrativo y patologo del sistema.
+INFORMES Y SOLICITUDES ANULADAS (baja logica)
+Cambios en la base de datos
+
+1 Se incorpora 2 trigger para garantizar que no haya duplicados de solicitudes con la
+combinacion (protocolo y id_anio_protocolo), siempre y cuando sean el id_estado=6
+eso quiere decir que para cada año el protocolo debe ser unico a menos que haya sido
+anulado el informe y por consiguiente tambien la solicitud. Cabe aclarar que estas validacion de protocolo y id_anio_protocolo
+no estaban funcionando antes en la base de datos, el constraint unique fallaba, la razon por la que nunca hubo conflicto es por
+que si se validaba desde  el codigo.
+Estos son los nombres de los triggers (ver en la carpeta scripts ):
+before_insert_solicitudbiopsia
+before_insert_solicitudpap
+Con esto se refuerza la seguridad en cuanto consistencia de los datos, dado que se
+valida desde el la base de datos y tambien desde el codigo.
+ *Se elimino los constraint unique de las tablas:
+ solicitud
+ solicitudpap
+ solicitudbiopsia
+
+ 2 Se agrego el estado "ANULADO" de la tabla estado, y ademas se quitaron las columnas
+ solicitud, pap, biopsia, ver_informe_solicitud y ver_informe_estudio, estos valores
+ eran booleanos, y su logica ya no era consistente, debido a que se uso el estado de los estudios
+ para reemplazar la logica que era implementada por esos valores booleanos. Ver en la carpeta
+ scripts los script para realizar las modificaciones mencionadas.
+
+Cambios en el codigo
+
+1 modicifiaciones en la reglas (rules) de los modelos solicitudbiopsia y solicitudpap
+Al incorporarse este nuevo estado "ANULADO", se cambio la logica de validaciones,
+se anularon las que YII habia generado por defecto, y se reemplazo por validaciones
+personalizadas, incorporando para ello scenarios que se activen tanto para la creacion
+y actualizacion de los registros:
+[ ['protocolo'], 'validacion_protocolo_create','on' => 'create'],
+[ ['protocolo'], 'validacion_protocolo_update','on' => 'update'],
+
+Estos escenarios se incorporan tanto en el controlador padre solicitud en los metodos create y update
+como en los controladores biopsia y pap, que es donde se actuliza el estado de las solicitudes.
+Aqui hay algunos ejemplos:
+$solicitud->scenario = 'update';  $model->solicitudbiopsia->scenario = 'update'; metodo update y create de biopsia y pap
+$model->scenario = 'create'; metodo create de solicitud
+$model->scenario = 'update'; metodo update de solicitud
+
+2 Modificaciones en los filtros ubicados en el modelo Search, para no traer los
+estudios que estan en estado ANULADO:
+BiopsiaSearch :       ->andWhere(['and','biopsia.id_estado <> 6 ' ]); //ANULADO
+PapSearch :       ->andWhere(['and','pap.id_estado <> 6 ' ]); //ANULADO
+
+3 Modificacion en la logica de filtrado en el modelo solicitud
+En linea con mencionado anteriormente, el metodo de filtro search de solicitud,
+se modifica la variable "consulta" por la de "busqueda", de esta forma poder incoporar
+la logica de los registros anulados y conservar la logica de las consultas (modulo para que realizen consultas los centros aledaños)
+if($busqueda=="anulado"){
+  $query = Solicitud::find()->innerJoinWith('procedencia', true)
+  ->innerJoinWith('paciente', 'paciente.id = solicitud.id_paciente')
+  ->innerJoinWith('medico', 'medico.id = solicitud.id_medico')
+  ->innerJoinWith('estado', 'estado.id = solicitud.id_estado')
+  ->innerJoinWith('estudio', 'estudio.id = solicitud.id_estudio')
+  ->andWhere(['and','id_estado = 6 ' ])
+  ;
+}else {
+  $query = Solicitud::find()->innerJoinWith('procedencia', true)
+  ->innerJoinWith('paciente', 'paciente.id = solicitud.id_paciente')
+  ->innerJoinWith('medico', 'medico.id = solicitud.id_medico')
+  ->innerJoinWith('estado', 'estado.id = solicitud.id_estado')
+  ->innerJoinWith('estudio', 'estudio.id = solicitud.id_estudio')
+  ->andWhere(['and','id_estado <> 6 ' ])
+  ;
+}
+Se incorporo un acceso mas a la seccion de "TAblas extras" del sistema, y es la
+de estudios anulados, para ello se hizo necesario incorporar una nueva vista y metodo em el controlador
+esto va en la linea con el filtrado que esta anteriormente.
+Los informes que son generados desde ese apartado, tienen la marca de agua de "INFORME ANULADO"
+
+4 se modifica el metodo estadoEstudio del modelo Estado
+Como se menciona en el apartado 2 de "cambio en la base de datos", se eliminaban
+los valores booleanos y en reemplazo de la logica que se aplicaba con ellos, se utiliza
+los valores de los estados, aca esta el metodo modificado
+public function estadosEstudio(){
+  if (Usuario::isPatologo()){
+    return ArrayHelper::map(Estado::find()->where(['or', "descripcion='EN PROCESO'", "descripcion='LISTO'"])
+    ->all(), 'id','descripcion');
+    }
+  else {
+    return ArrayHelper::map(Estado::find()->where(['and', "descripcion='EN PROCESO'"])
+            ->all(), 'id','descripcion');
+          }
+}
+
+5 Una vez anulados los estudios solo se pueden ver desde el modulo de estudios anulados, no se pueden recuperar ni editar, desde el controlador 
+de biopsia y pap, se incorporo la siguiente sentencia en el metodo update:
+if ($model->estado->descripcion =="ANULADO"){
+  return $this->redirect(['index']);
+}
+
+MODIFICACIONES MENORES
+Se cambian los textos del ingles al español desde el codigo en los controladores
+de Estudiocie10Controller y CIE10Controller, ademas de corregir algunos links.
+
+
+
 VERSIÓN 2.6.2
 EL numero de versión se obtiene de un parámetro, ya no es hardcodeado
 

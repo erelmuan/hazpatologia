@@ -31,15 +31,24 @@ class SolicitudController extends Controller {
     public function actionIndex() {
         $model = new Solicitud();
         $searchModel = new SolicitudSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams, false);
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams, null);
         $dataProvider->pagination->pageSize = 7;
         $columnas = Metodos::obtenerColumnas($model);
         return $this->render('index', ['searchModel' => $searchModel, 'dataProvider' => $dataProvider, 'columns' => $columnas, ]);
     }
+    public function actionAnulado() {
+        $model = new Solicitud();
+        $searchModel = new SolicitudSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams, 'anulado');
+        $dataProvider->pagination->pageSize = 7;
+        $columnas = Metodos::obtenerColumnas($model);
+        return $this->render('anulado', ['searchModel' => $searchModel, 'dataProvider' => $dataProvider, 'columns' => $columnas, ]);
+    }
+
 
     public function actionConsulta() {
         $searchModel = new SolicitudSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams, true);
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams, 'consulta');
         $dataProvider->pagination->pageSize = 7;
         return $this->render('consulta', ['searchModel' => $searchModel,
          'dataProvider' => $dataProvider ]);
@@ -188,6 +197,7 @@ class SolicitudController extends Controller {
         }
         $request = Yii::$app->request;
         $model = $this->returnModel();
+        $model->scenario = 'create'; //es para validar el protocolo unico por año
         $modelos = $this->devolverModelos();
 
         if ($this->request->isPost) {
@@ -245,6 +255,7 @@ class SolicitudController extends Controller {
         }
         $request = Yii::$app->request;
         $model = $this->findModel($id);
+        $model->scenario = 'update'; //es para validar el protocolo unico por año
         $modelestudio = $model->estudio->modelo;
         $modelos = $this->devolverModelos();
         /*

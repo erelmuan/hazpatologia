@@ -18,7 +18,7 @@ CrudAsset::register($this);
 ?>
 <div id="w0c" class="x_panel">
   <div class="x_title"><h2><i class="fa fa-table"></i> Códigos CIE10  </h2>
-    <div class="clearfix"> <div class="nav navbar-right panel_toolbox"><?= Html::a('<i class="glyphicon glyphicon-arrow-left"></i> Atrás', ['/site/administracion'], ['class'=>'btn btn-danger grid-button']) ?></div>
+    <div class="clearfix"> <div class="nav navbar-right panel_toolbox"><?= Html::a('<i class="glyphicon glyphicon-arrow-left"></i> Atrás', ['/site/extras'], ['class'=>'btn btn-danger grid-button']) ?></div>
 </div>
   </div>
 <div class="cie10-index">

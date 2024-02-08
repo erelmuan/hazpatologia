@@ -136,9 +136,9 @@ class PapController extends Controller {
         $request = Yii::$app->request;
         $post = $request->post();
         $model = new Pap();
-        $Solicitud = Solicitudpap::findOne($_GET['idsol']);
+        $solicitud = Solicitudpap::findOne($_GET['idsol']);
         $search = [];  $array = [];  $provider = [];
-        $this->cargarEstructuras($search, $array, $provider, $Solicitud->id_estudio);
+        $this->cargarEstructuras($search, $array, $provider, $solicitud->id_estudio);
         if (isset($post['Pap']['id_estado']) && $post['Pap']['id_estado'] != 2) {
             unset($post['Pap']['firmado']);
         }
@@ -146,7 +146,7 @@ class PapController extends Controller {
           if (!$this->validar($post)) {
               unset($post['Pap']['id_estado']);
               $model->load($post);
-              return $this->render('_form', ['model' => $model, 'solicitud' => $Solicitud, 'search' => $search, 'array' => $array, 'provider' => $provider ]);
+              return $this->render('_form', ['model' => $model, 'solicitud' => $solicitud, 'search' => $search, 'array' => $array, 'provider' => $provider ]);
           }
           $model->fechalisto = date("Y-m-d  H:i:s");
           $model->id_usuario = Yii::$app->user->identity->getId();
@@ -156,9 +156,10 @@ class PapController extends Controller {
         try {
             if ($model->load($post) && $model->save()) {
                 // cambio de estados
-                if ($Solicitud->id_estado !== $model->id_estado) {
-                    $Solicitud->id_estado = $model->id_estado;
-                    $Solicitud->save();
+                if ($solicitud->id_estado !== $model->id_estado) {
+                    $solicitud->id_estado = $model->id_estado;
+                    $solicitud->scenario = 'update';
+                    $solicitud->save();
                 }
 
                 if ($model->vph) {
@@ -170,7 +171,7 @@ class PapController extends Controller {
                 return $this->redirect(['view', 'id' => $model->id]);
             } else {
                 $transaction->rollBack();
-                return $this->render('_form', ['search' => $search, 'array' => $array, 'provider' => $provider, 'model' => $model, 'solicitud' => $Solicitud]);
+                return $this->render('_form', ['search' => $search, 'array' => $array, 'provider' => $provider, 'model' => $model, 'solicitud' => $solicitud]);
             }
         } catch (\Exception $e) {
             $transaction->rollBack();
@@ -190,6 +191,9 @@ class PapController extends Controller {
     public function actionUpdate($id) {
         $request = Yii::$app->request;
         $model = $this->findModel($id);
+        if ($model->estado->descripcion =="ANULADO"){
+          return $this->redirect(['index']);
+        }
         $post = $request->post();
         $search = [];$array = [];$provider = [];
         $this->cargarEstructuras($search, $array, $provider, $model->solicitudpap->id_estudio);
@@ -203,8 +207,14 @@ class PapController extends Controller {
               $model->load($post);
               return $this->render('_form', ['model' => $model, 'solicitud' => $model->solicitudpap, 'search' => $search, 'array' => $array, 'provider' => $provider ]);
           }
-          $model->fechalisto = date("Y-m-d  H:i:s");
-          $model->id_usuario = Yii::$app->user->identity->getId();
+          if(isset($post['Pap']['anulado']) && $post['Pap']['anulado']=="1"){
+            unset($post['Pap']['id_estado']);
+            $model->id_estado=6; //estado anulado
+          }else {
+            //fecha cuando esta listo el informe de la biopsia
+            $model->fechalisto = date("Y-m-d  H:i:s");
+            $model->id_usuario = Yii::$app->user->identity->getId();
+          }
         }
         $transaction = Yii::$app->db->beginTransaction();
 
@@ -212,6 +222,7 @@ class PapController extends Controller {
              if ($model->load($post) && $model->save()) {
                  if ($model->solicitudpap->id_estado !== $model->id_estado) {
                      $model->solicitudpap->id_estado = $model->id_estado;
+                     $model->solicitudpap->scenario = 'update';
                      $model->solicitudpap->save();
                  }
 

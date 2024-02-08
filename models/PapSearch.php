@@ -64,7 +64,9 @@ class PapSearch extends Pap
        ->innerJoin('paciente', 'paciente.id = solicitudpap.id_paciente')
        ->innerJoin('medico', 'medico.id = solicitudpap.id_medico')
       ->innerJoin('procedencia', 'procedencia.id = solicitudpap.id_procedencia')
-      ->innerJoinWith('estado', 'estado.id = pap.id_estado');
+      ->innerJoinWith('estado', 'estado.id = pap.id_estado')
+      ->andWhere(['and','pap.id_estado <> 6 ' ]); //ANULADO
+
 
        $dataProvider = new ActiveDataProvider([
            'query' => $query,

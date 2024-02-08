@@ -50,7 +50,7 @@ if (isset($parametros)){
         ],
     ]) ?>
     <?
-    if ($model->estado->ver_informe_solicitud)
+    if ($model->estado->descripcion=="LISTO" or $model->estado->descripcion=="ANULADO" )
     {
       echo Html::a('<i class="fa fa-file-pdf-o"></i> Documento del informe', ['/biopsia/informe', 'id' => $model->biopsia->id], [
             'class'=>'btn btn-danger',
@@ -61,7 +61,9 @@ if (isset($parametros)){
     }
 
     else {
-      echo "<b>LA SOLICITUD AÚN NO POSEE EL INFORME"; echo ($model->estado->descripcion=='EN PROCESO')?" VERIFICADO":""; echo " DE ".$model->estudio->descripcion." </b>";
+      echo "<b>LA SOLICITUD AÚN NO POSEE EL INFORME";
+      echo ($model->estado->descripcion=='EN PROCESO')?" VERIFICADO":"";
+       echo " DE ".$model->estudio->descripcion." </b>";
     }
      ?>
 

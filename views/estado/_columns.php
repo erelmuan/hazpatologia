@@ -13,36 +13,6 @@ return [
         'attribute'=>'descripcion',
     ],
     [
-        'class'=>'\kartik\grid\BooleanColumn',
-        'attribute'=>'solicitud',
-        'trueLabel' => 'Sí',
-        'falseLabel' => 'No',
-    ],
-    [
-        'class'=>'\kartik\grid\BooleanColumn',
-        'attribute'=>'biopsia',
-        'trueLabel' => 'Sí',
-        'falseLabel' => 'No',
-    ],
-    [
-        'class'=>'\kartik\grid\BooleanColumn',
-        'attribute'=>'pap',
-        'trueLabel' => 'Sí',
-        'falseLabel' => 'No',
-    ],
-    [
-        'class'=>'\kartik\grid\BooleanColumn',
-        'attribute'=>'ver_informe_solicitud',
-        'trueLabel' => 'Sí',
-        'falseLabel' => 'No',
-    ],
-    [
-        'class'=>'\kartik\grid\BooleanColumn',
-        'attribute'=>'ver_informe_estudio',
-        'trueLabel' => 'Sí',
-        'falseLabel' => 'No',
-    ],
-    [
         'class'=>'\kartik\grid\DataColumn',
         'attribute'=>'explicacion',
     ],

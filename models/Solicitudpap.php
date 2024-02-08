@@ -102,20 +102,32 @@ class Solicitudpap extends Solicitud
             [['id_cirugia_previa'], 'exist', 'skipOnError' => true, 'targetClass' => Cirugiaprevia::className(), 'targetAttribute' => ['id_cirugia_previa' => 'id']],
             [['id_metodo_anticonceptivo'], 'exist', 'skipOnError' => true, 'targetClass' => Metodoanticonceptivo::className(), 'targetAttribute' => ['id_metodo_anticonceptivo' => 'id']],
             [['id_tipo_muestra'], 'exist', 'skipOnError' => true, 'targetClass' => Tipomuestra::className(), 'targetAttribute' => ['id_tipo_muestra' => 'id']],
-             [ 'protocolo', 'validacion_protocolo_anio'],
-            // [['id_anio_protocolo', 'protocolo',],  'compare','message' => 'El numero de protocolo ya fue asignado para el año seleccionado','targetAttribute' => ['id_anio_protocolo', 'protocolo']],
-            [['id_anio_protocolo', 'protocolo'], 'unique','message' => 'El numero de protocolo ya fue asignado para el año seleccionado','targetAttribute' => ['id_anio_protocolo', 'protocolo']],
+            // [['id_anio_protocolo', 'protocolo'], 'unique','message' => 'El numero de protocolo ya fue asignado para el año seleccionado','targetAttribute' => ['id_anio_protocolo', 'protocolo']],
+            [['protocolo'], 'validacion_protocolo_create','on' => 'create'],
+            [['protocolo'], 'validacion_protocolo_update','on' => 'update'],
 
         ];
     }
-    public function validacion_protocolo_anio($attribute, $params){
-        // add custom validation
-        $solbiopsia=Solicitudbiopsia::find()->where(['protocolo' =>$this->protocolo,'id_anio_protocolo' => $this->id_anio_protocolo])->one();
-        if(isset($solbiopsia)){
-          $this->addError('protocolo','El numero de protocolo ya fue asignado para el año seleccionado');
-
+    public function validacion_protocolo_create($attribute, $params){
+        $solicitud=Solicitud::find()
+        ->where(['protocolo' =>$this->protocolo,'id_anio_protocolo' => $this->id_anio_protocolo])
+        ->andWhere(['<>', 'id_estado', 6]) // No debe tener id_estado igual a 6 ANULADO
+        ->one();
+        if(isset($solicitud)){
+          $this->addError('protocolo','El numero de 232 ya fue asignado para el año seleccionado');
         }
     }
+    public function validacion_protocolo_update($attribute, $params){
+        $solicitud=Solicitud::find()
+        ->where(['protocolo' =>$this->protocolo,'id_anio_protocolo' => $this->id_anio_protocolo])
+        ->andWhere(['<>', 'id_estado', 6]) // No debe tener id_estado igual a 6 ANULADO
+        ->andWhere(['<>', 'id', $this->id]) // No debe evaluarse si mismo
+        ->one();
+        if(isset($solicitud)){
+          $this->addError('protocolo','El numero de 22 ya fue asignado para el año seleccionado');
+        }
+    }
+
     /**
      * {@inheritdoc}
      */

@@ -32,6 +32,11 @@ function Header()
     $this->SetTextColor(255,192,203);
     $this->RotatedText(35,215,'INFORME EN PROCESO',35);
   }
+  if ($this->estado =='ANULADO'){
+    $this->SetFont('Arial','B',50);
+    $this->SetTextColor(255,192,203);
+    $this->RotatedText(35,215,'INFORME  ANULADO',35);
+  }
 /////////////////////////////////////////////////////
   $this->SetTextColor(245,245,245);
   $this->Image(  Yii::$app->basePath .'/web/img/hospitalzatti.png',18,18,15);

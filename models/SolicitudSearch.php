@@ -111,13 +111,26 @@ class SolicitudSearch extends Solicitud
      *
      * @return ActiveDataProvider
      */
-    public function search($params,$consulta )
+    public function search($params,$busqueda )
     {
-       $query = Solicitud::find()->innerJoinWith('procedencia', true)
-       ->innerJoinWith('paciente', 'paciente.id = solicitud.id_paciente')
-       ->innerJoinWith('medico', 'medico.id = solicitud.id_medico')
-       ->innerJoinWith('estado', 'estado.id = solicitud.id_estado')
-       ->innerJoinWith('estudio', 'estudio.id = solicitud.id_estudio');
+      if($busqueda=="anulado"){
+        $query = Solicitud::find()->innerJoinWith('procedencia', true)
+        ->innerJoinWith('paciente', 'paciente.id = solicitud.id_paciente')
+        ->innerJoinWith('medico', 'medico.id = solicitud.id_medico')
+        ->innerJoinWith('estado', 'estado.id = solicitud.id_estado')
+        ->innerJoinWith('estudio', 'estudio.id = solicitud.id_estudio')
+        ->andWhere(['and','id_estado = 6 ' ])
+        ;
+      }else {
+        $query = Solicitud::find()->innerJoinWith('procedencia', true)
+        ->innerJoinWith('paciente', 'paciente.id = solicitud.id_paciente')
+        ->innerJoinWith('medico', 'medico.id = solicitud.id_medico')
+        ->innerJoinWith('estado', 'estado.id = solicitud.id_estado')
+        ->innerJoinWith('estudio', 'estudio.id = solicitud.id_estudio')
+        ->andWhere(['and','id_estado <> 6 ' ])
+        ;
+      }
+
 
        $dataProvider = new ActiveDataProvider([
             'query' => $query,
@@ -171,8 +184,8 @@ class SolicitudSearch extends Solicitud
         ->andFilterWhere(['ilike', 'estado.descripcion', $this->estado])
         ->andFilterWhere(['ilike', 'estudio.descripcion', $this->estudio])
         ->andFilterWhere(['ilike', 'procedencia.nombre', $this->procedencia]);
-        //Si es true el metodo search es invocado por la funcion actionConsulta del controlador
-        if($consulta){
+        //Si busqueda tiene el valor "consulta" el metodo search es invocado por la funcion actionConsulta del controlador
+        if($busqueda){
           $dataProvider=  $this->searchConsulta($params, $query,$dataProvider);
         }
 

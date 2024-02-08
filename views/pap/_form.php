@@ -363,8 +363,15 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
       <?= $form->field($model, 'diagnostico')->textarea(['rows' => 3,'style'=> 'font-size:17px;','disabled'=>(isset($model->estado) && ($model->estado->descripcion=="LISTO" && !Usuario::isPatologo()))]) ?>
     </div>
     <div class="col-md-8 col-sm-12 col-xs-12 form-group">
-        </br>
-        <?= $form->field($model, 'frase')->textarea(['rows' => 3,'style'=> 'font-size:17px;','disabled'=>(isset($model->estado) && ($model->estado->descripcion=="LISTO" && !Usuario::isPatologo()))]) ?>
+        <?= $form->field($model, 'frase')->textarea(['rows' => 4,'style'=> 'font-size:17px;', 'disabled'=>(isset($model->estado) && ($model->estado->descripcion=="LISTO" && !Usuario::isPatologo()))]) ?>
+        <? if (Usuario::isPatologo() && isset($model->estado) && $model->estado->descripcion=="LISTO")  {?>
+          <div class="col-lg-2"  style="background-color: #f2dede; border: 0.5px solid #ebccd1; padding: 10px;">
+            <label class="control-label">
+            Anular estudio
+            </label>
+          <input type="checkbox" id="pap-anulado" class="form-control" name="Pap[anulado]" value="1" title="Si esta activo, y actualiza se anulara el estudio">
+          </div>
+        <? } ?>
     </div>
     <div class="col-md-12 col-sm-12 col-xs-12 form-group">
         <?= Html::submitButton($model->isNewRecord ? 'Guardar' : 'Actualizar', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary','disabled'=>(isset($model->estado) && ($model->estado->descripcion=="LISTO" && !Usuario::isPatologo()))]) ?>

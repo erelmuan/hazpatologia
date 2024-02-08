@@ -48,7 +48,7 @@ use yii\helpers\Html;
         ],
     ]) ?>
 <?
-      if ($model->estado->ver_informe_solicitud)
+  if ($model->estado->descripcion=="LISTO" or $model->estado->descripcion=="ANULADO" )
     {
       echo Html::a('<i class="fa fa-file-pdf-o"></i> Documento del informe', ['/pap/informe', 'id' => $model->pap->id], [
             'class'=>'btn btn-danger',

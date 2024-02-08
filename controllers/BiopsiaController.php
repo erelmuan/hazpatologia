@@ -141,9 +141,9 @@ class BiopsiaController extends Controller {
         $request = Yii::$app->request;
         $post = $request->post();
         $model = new Biopsia();
-        $Solicitud = Solicitudbiopsia::findOne($_GET['idsol']);
+        $solicitud = Solicitudbiopsia::findOne($_GET['idsol']);
         $search = [];  $array = [];  $provider = [];
-        $this->cargarEstructuras($search, $array, $provider, $Solicitud->id_estudio);
+        $this->cargarEstructuras($search, $array, $provider, $solicitud->id_estudio);
         if (isset($post['Biopsia']['id_estado']) && $post['Biopsia']['id_estado'] != 2) {
             unset($post['Biopsia']['firmado']);
         }
@@ -151,7 +151,7 @@ class BiopsiaController extends Controller {
             if (!$this->validar($post)) {
                 unset($post['Biopsia']['id_estado']);
                 $model->load($post);
-                return $this->render('_form', ['model' => $model, 'solicitud' => $Solicitud, 'search' => $search, 'array' => $array, 'provider' => $provider ]);
+                return $this->render('_form', ['model' => $model, 'solicitud' => $solicitud, 'search' => $search, 'array' => $array, 'provider' => $provider ]);
             }
             $model->fechalisto = date("Y-m-d  H:i:s");
             $model->id_usuario = Yii::$app->user->identity->getId();
@@ -160,9 +160,10 @@ class BiopsiaController extends Controller {
             try {
                 if ($model->load($post) && $model->save()) {
                     // cambio de estados
-                    if ($Solicitud->id_estado !== $model->id_estado) {
-                        $Solicitud->id_estado = $model->id_estado;
-                        $Solicitud->save();
+                    if ($solicitud->id_estado !== $model->id_estado) {
+                        $solicitud->id_estado = $model->id_estado;
+                        $solicitud->scenario = 'update';
+                        $solicitud->save();
                     }
                     if ($model->fechalisto != null) {
                         // Creacion de biopsiacie10
@@ -176,7 +177,7 @@ class BiopsiaController extends Controller {
                     return $this->redirect(['view', 'id' => $model->id]);
                 } else {
                     $transaction->rollBack();
-                    return $this->render('_form', ['model' => $model, 'search' => $search, 'array' => $array, 'provider' => $provider, 'solicitud' => $Solicitud]);
+                    return $this->render('_form', ['model' => $model, 'search' => $search, 'array' => $array, 'provider' => $provider, 'solicitud' => $solicitud]);
                 }
             } catch (\Exception $e) {
                 $transaction->rollBack();
@@ -197,6 +198,9 @@ class BiopsiaController extends Controller {
     public function actionUpdate($id) {
         $request = Yii::$app->request;
         $model = $this->findModel($id);
+        if ($model->estado->descripcion =="ANULADO"){
+          return $this->redirect(['index']);
+        }
         $post = $request->post();
         $search = [];  $array = [];  $provider = [];
         $this->cargarEstructuras($search, $array, $provider, $model->solicitudbiopsia->estudio->id);
@@ -210,17 +214,22 @@ class BiopsiaController extends Controller {
                 $model->load($post);
                 return $this->render('_form', ['model' => $model, 'solicitud' => $model->solicitudbiopsia, 'search' => $search, 'array' => $array, 'provider' => $provider ]);
             }
-            //fecha cuando esta listo el informe de la biopsia
-            $model->fechalisto = date("Y-m-d  H:i:s");
-            $model->id_usuario = Yii::$app->user->identity->getId();
+            if(isset($post['Biopsia']['anulado']) && $post['Biopsia']['anulado']=="1"){
+              unset($post['Biopsia']['id_estado']);
+              $model->id_estado=6; //estado anulado
+            }else {
+              //fecha cuando esta listo el informe de la biopsia
+              $model->fechalisto = date("Y-m-d  H:i:s");
+              $model->id_usuario = Yii::$app->user->identity->getId();
+            }
         }
         $transaction = Yii::$app->db->beginTransaction();
 
          try {
               if ($model->load($post) && $model->save()) {
-                // cambio de estados
                   if ($model->solicitudbiopsia->id_estado !== $model->id_estado) {
                       $model->solicitudbiopsia->id_estado = $model->id_estado;
+                      $model->solicitudbiopsia->scenario = 'update';
                       $model->solicitudbiopsia->save();
                   }
                   if (!$model->ihq && isset($model->inmunohistoquimicaEscaneada)) {

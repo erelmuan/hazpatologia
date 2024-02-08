@@ -1,6 +1,6 @@
 <?php
-
 namespace app\models;
+
 use yii\helpers\ArrayHelper;
 
 use Yii;
@@ -10,11 +10,11 @@ use Yii;
  *
  * @property int $id
  * @property string $descripcion
- * @property bool $solicitud
- * @property bool $biopsia
- * @property bool $pap
- * @property bool $ver_informe_solicitud
- * @property bool $ver_informe_estudio
+ * @property string $explicacion
+ *
+ * @property Biopsia[] $biopsias
+ * @property Pap[] $paps
+ * @property Solicitud[] $solicituds
  */
 class Estado extends \yii\db\ActiveRecord
 {
@@ -32,8 +32,7 @@ class Estado extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['descripcion'], 'string'],
-            [['solicitud', 'biopsia', 'pap', 'ver_informe_solicitud', 'ver_informe_estudio'], 'boolean'],
+            [['descripcion', 'explicacion'], 'string'],
         ];
     }
 
@@ -45,24 +44,43 @@ class Estado extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'descripcion' => 'Descripcion',
-            'solicitud' => 'Solicitud',
-            'biopsia' => 'Biopsia',
-            'pap' => 'Pap',
-            'ver_informe_solicitud' => 'Ver Informe Solicitud',
-            'ver_informe_estudio' => 'Ver Informe Estudio',
+            'explicacion' => 'Explicacion',
         ];
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getBiopsias()
+    {
+        return $this->hasMany(Biopsia::className(), ['id_estado' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getPaps()
+    {
+        return $this->hasMany(Pap::className(), ['id_estado' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getSolicituds()
+    {
+        return $this->hasMany(Solicitud::className(), ['id_estado' => 'id']);
     }
 
     //ESTO ES PARA LOS FORMULARIOS DE LOS ESTUDIOS
     public function estadosEstudio(){
       if (Usuario::isPatologo()){
-        return ArrayHelper::map(Estado::find()->where(['and', "biopsia=true","pap=true"])
+        return ArrayHelper::map(Estado::find()->where(['or', "descripcion='EN PROCESO'", "descripcion='LISTO'"])
         ->all(), 'id','descripcion');
         }
       else {
-        return ArrayHelper::map(Estado::find()->where(['and', "biopsia=true","pap=true","descripcion='PENDIENTE' or descripcion='EN PROCESO' "])
+        return ArrayHelper::map(Estado::find()->where(['and', "descripcion='EN PROCESO'"])
                 ->all(), 'id','descripcion');
               }
   }
-
 }

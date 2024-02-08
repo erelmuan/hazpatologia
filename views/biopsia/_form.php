@@ -124,8 +124,6 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
                    'options' => [
                          'onchange' => 'onEnviarMac (this.value)',
                          'disabled'=>(isset($model->estado) && ($model->estado->descripcion=="LISTO" && !Usuario::isPatologo())),
-                         'disabled'=>(isset($model->estado) && ($model->estado->descripcion=="LISTO" && !Usuario::isPatologo())),
-
                          ],
                ]);
 
@@ -272,9 +270,19 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
     </div>
     <div class="col-md-8 col-sm-12 col-xs-12 form-group">
         <?= $form->field($model, 'frase')->textarea(['rows' => 4,'style'=> 'font-size:17px;', 'disabled'=>(isset($model->estado) && ($model->estado->descripcion=="LISTO" && !Usuario::isPatologo()))]) ?>
+        <? if (Usuario::isPatologo() && isset($model->estado) && $model->estado->descripcion=="LISTO")  {?>
+          <div class="col-lg-2"  style="background-color: #f2dede; border: 0.5px solid #ebccd1; padding: 10px;">
+            <label class="control-label">
+            Anular estudio
+            </label>
+          <input type="checkbox" id="biopsia-anulado" class="form-control" name="Biopsia[anulado]" value="1" title="Si esta activo, y actualiza se anulara el estudio">
+          </div>
+        <? } ?>
     </div>
+
     <div class="col-md-12 col-sm-12 col-xs-12 form-group">
         <?= Html::submitButton($model->isNewRecord ? 'Guardar' : 'Actualizar', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary','disabled'=>(isset($model->estado) && ($model->estado->descripcion=="LISTO" && !Usuario::isPatologo()))]);
+
         if( !$model->isNewRecord &&  $model->ihq){
             if ($model->ihq && isset($model->inmunohistoquimicaEscaneada)){
               echo Html::a('<i class="glyphicon glyphicon-arrow-right"></i> Ir inmunostoquimica',['/inmunohistoquimica-escaneada/update', 'id'=>$model->inmunohistoquimicaEscaneada->id], ['class'=>'btn btn-success grid-button']) ;
@@ -284,6 +292,9 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
 
         }
         ?>
+
+
+
     </div>
     <? if (Usuario::isPatologo()) { ?>
     <div class="col-md-8 col-sm-12 col-xs-12 form-group">

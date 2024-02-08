@@ -62,7 +62,9 @@ class BiopsiaSearch extends Biopsia
       ->innerJoin('paciente', 'paciente.id = solicitudbiopsia.id_paciente')
       ->innerJoin('procedencia', 'procedencia.id = solicitudbiopsia.id_procedencia')
       ->innerJoin('medico', 'medico.id = solicitudbiopsia.id_medico')
-      ->innerJoinWith('estado', 'estado.id = biopsia.id_estado');
+      ->innerJoinWith('estado', 'estado.id = biopsia.id_estado')
+      ->andWhere(['and','biopsia.id_estado <> 6 ' ]); //ANULADO
+
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);

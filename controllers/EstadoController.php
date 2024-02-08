@@ -33,7 +33,65 @@ class EstadoController extends Controller
             'dataProvider' => $dataProvider,
         ]);
     }
+    /**
+    		    * Updates an existing Estado model.
+    		    * For ajax request will return json object
+    		    * and for non-ajax request if update is successful, the browser will be redirected to the 'view' page.
+    		    * @param integer $id
+    		    * @return mixed
+    		    */
+    		   public function actionUpdate($id)
+    		   {
+    		       $request = Yii::$app->request;
+    		       $model = $this->findModel($id);
 
+    		       if($request->isAjax){
+    		           /*
+    		           *  Process for ajax request
+    		           */
+    		           Yii::$app->response->format = Response::FORMAT_JSON;
+    		           if($request->isGet){
+    		               return [
+    		                   'title'=> "Actualizar Estado #".$id,
+    		                   'content'=>$this->renderAjax('update', [
+    		                       'model' => $model,
+    		                   ]),
+    		                   'footer'=> Html::button('Cerrar',['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
+    		                               Html::button('Guardar',['class'=>'btn btn-primary','type'=>"submit"])
+    		               ];
+    		           }else if($model->load($request->post()) && $model->save()){
+    		               return [
+    		                   'forceReload'=>'#crud-datatable-pjax',
+    		                   'title'=> "Estado #".$id,
+    		                   'content'=>$this->renderAjax('view', [
+    		                       'model' => $model,
+    		                   ]),
+    		                   'footer'=> Html::button('Cerrar',['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
+    		                           Html::a('Editar',['update','id'=>$id],['class'=>'btn btn-primary','role'=>'modal-remote'])
+    		               ];
+    		           }else{
+    		                return [
+    		                   'title'=> "Actualizar Estado #".$id,
+    		                   'content'=>$this->renderAjax('update', [
+    		                       'model' => $model,
+    		                   ]),
+    		                   'footer'=> Html::button('Cerrar',['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
+    		                               Html::button('Guardar',['class'=>'btn btn-primary','type'=>"submit"])
+    		               ];
+    		           }
+    		       }else{
+    		           /*
+    		           *  Process for non-ajax request
+    		           */
+    		           if ($model->load($request->post()) && $model->save()) {
+    		               return $this->redirect(['view', 'id' => $model->id]);
+    		           } else {
+    		               return $this->render('update', [
+    		                   'model' => $model,
+    		               ]);
+    		           }
+    		       }
+    		   }
 
     /**
      * Displays a single Estado model.
@@ -50,8 +108,8 @@ class EstadoController extends Controller
                     'content'=>$this->renderAjax('view', [
                         'model' => $this->findModel($id),
                     ]),
-                    'footer'=> Html::button('Close',['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
-                            Html::a('Edit',['update','id'=>$id],['class'=>'btn btn-primary','role'=>'modal-remote'])
+                    'footer'=> Html::button('Cerrar',['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
+                            Html::a('Editar',['update','id'=>$id],['class'=>'btn btn-primary','role'=>'modal-remote'])
                 ];
         }else{
             return $this->render('view', [
