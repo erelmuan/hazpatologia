@@ -1,3 +1,6 @@
+VERSIÓN 2.7.1
+Se corrige los mensajes de error de duplicacion de solitud de biopsia y de pap
+
 VERSIÓN 2.7.0
 En esta version se detallan las modificaciones realizadas. Debido a que se presento
 el inconveniente de eliminar un estudio que estaba en estado LISTO, desde la base de datos
@@ -95,7 +98,7 @@ public function estadosEstudio(){
           }
 }
 
-5 Una vez anulados los estudios solo se pueden ver desde el modulo de estudios anulados, no se pueden recuperar ni editar, desde el controlador 
+5 Una vez anulados los estudios solo se pueden ver desde el modulo de estudios anulados, no se pueden recuperar ni editar, desde el controlador
 de biopsia y pap, se incorporo la siguiente sentencia en el metodo update:
 if ($model->estado->descripcion =="ANULADO"){
   return $this->redirect(['index']);

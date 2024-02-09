@@ -93,7 +93,7 @@ class Solicitudbiopsia extends Solicitud
         ->andWhere(['<>', 'id_estado', 6]) // No debe tener id_estado igual a 6 ANULADO
         ->one();
         if(isset($solicitud)){
-          $this->addError('protocolo','El numero de 22 ya fue asignado para el año seleccionado');
+          $this->addError('protocolo','El numero de protocolo ya fue asignado para el año seleccionado');
         }
     }
     public function validacion_protocolo_update($attribute, $params){
@@ -103,7 +103,7 @@ class Solicitudbiopsia extends Solicitud
         ->andWhere(['<>', 'id', $this->id]) // No debe evaluarse si mismo
         ->one();
         if(isset($solicitud)){
-          $this->addError('protocolo','El numero de 22 ya fue asignado para el año seleccionado');
+          $this->addError('protocolo','El numero de protocolo ya fue asignado para el año seleccionado');
         }
     }
 
