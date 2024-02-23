@@ -1,3 +1,18 @@
+-- SEQUENCE: public.configuracion_anio_usuario_id_seq
+
+-- DROP SEQUENCE public.configuracion_anio_usuario_id_seq;
+
+CREATE SEQUENCE public.configuracion_anio_usuario_id_seq
+    INCREMENT 1
+    START 1
+    MINVALUE 1
+    MAXVALUE 2147483647
+    CACHE 1;
+
+ALTER SEQUENCE public.configuracion_anio_usuario_id_seq
+    OWNER TO postgres;
+
+
 -- Table: public.configuracion_anios_usuario
 
 -- DROP TABLE public.configuracion_anios_usuario;
