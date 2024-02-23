@@ -13,9 +13,9 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
     <? if($model->estudios()){
-                echo  $form->field($model, 'anio')->input("text",['readonly' => true])->label('Nombre');
+                echo  $form->field($model, 'anio')->input("text",['style'=> 'width:20%;','readonly' => true])->label('Nombre');
               }else {
-                echo  $form->field($model, 'anio')->input("text",['style'=> 'width:100%; text-transform:uppercase;'])->label('Nombre');
+                echo  $form->field($model, 'anio')->input("text",['style'=> 'width:20%; text-transform:uppercase;'])->label('Nombre');
               }
             ?>
     <? if (!$model->isNewRecord){
@@ -29,5 +29,6 @@ use yii\widgets\ActiveForm;
 
     <?php ActiveForm::end(); ?>
 
+</div>
 </div>
 </div>

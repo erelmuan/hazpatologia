@@ -60,11 +60,22 @@ class PapSearch extends Pap
      */
     public function search($params)
     {
+      $id_estudio = Solicitudpap::find()
+          ->select(['id_estudio'])
+          ->scalar();
+      $selectedYearsQuery = (new \yii\db\Query())
+        ->select('id_anio_protocolo')
+        ->from('configuracion_anios_usuario')
+        ->andWhere(['id_usuario' => Yii::$app->user->id])
+        ->andWhere(['id_estudio' => $id_estudio])
+        ->column();
+
         $query = Pap::find()->innerJoinWith('solicitudpap', true)
        ->innerJoin('paciente', 'paciente.id = solicitudpap.id_paciente')
        ->innerJoin('medico', 'medico.id = solicitudpap.id_medico')
       ->innerJoin('procedencia', 'procedencia.id = solicitudpap.id_procedencia')
       ->innerJoinWith('estado', 'estado.id = pap.id_estado')
+      ->andWhere(['solicitudpap.id_anio_protocolo' => $selectedYearsQuery])
       ->andWhere(['and','pap.id_estado <> 6 ' ]); //ANULADO
 
 
@@ -100,7 +111,7 @@ class PapSearch extends Pap
         $paciente= trim($this->paciente);
         if (is_numeric($paciente)){
 
-            $query->orFilterWhere(["paciente.num_documento"=>$paciente]);
+            $query->andFilterWhere(["paciente.num_documento"=>$paciente]);
              }
         else {
             $apellidonombreP = explode(",", $paciente);
@@ -111,7 +122,7 @@ class PapSearch extends Pap
         }
         $medico= trim($this->medico);
         if (is_numeric($medico)){
-            $query->orFilterWhere(["medico.matricula"=>$medico]);
+            $query->andFilterWhere(["medico.matricula"=>$medico]);
              }
         else {
             $apellidonombreM = explode(",", $medico);

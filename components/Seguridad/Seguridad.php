@@ -41,7 +41,7 @@ class Seguridad {
       foreach($rolesusuario as $roluser) {
             $permisos=\app\models\Permiso::find()->where(['id_rol'=>$roluser->id_rol ])->all();
             // return false;
-            if ($accion =="fos" ||$accion =="puco" ||$accion =="anulado"||$accion =="consulta"||$accion =="viewconsulta" || $accion =="informe" || $accion =="documento" || $accion=="perfil" ||  $accion=="search" ||  $accion=="subcat" ||  $accion=="buscaregistro")
+            if ($accion =="fos" ||$accion =="puco" ||$accion =="anulado"||$accion =="consulta"||$accion =="viewconsulta" || $accion =="informe" || $accion =="documento" || $accion=="perfil" ||  $accion=="search" || $accion=="anioselect" ||   $accion=="subcat" ||  $accion=="buscaregistro")
                return true;
             foreach($permisos as $permiso) {
               $modulo=\app\models\Modulo::findOne(['id'=>$permiso->id_modulo]);

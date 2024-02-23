@@ -36,7 +36,7 @@ CrudAsset::register($this);
             'toolbar'=> [
                 ['content'=>
                     Html::a('<i class="glyphicon glyphicon-plus"></i>', ['create'],
-                    ['role'=>'modal-remote','title'=> 'Crear nueva plantilla','class'=>'btn btn-default']).
+                    ['role'=>'modal-remote','title'=> 'Crear nueva procedencia','class'=>'btn btn-default']).
                     Html::a('<i class="glyphicon glyphicon-repeat"></i>', [''],
                     ['data-pjax'=>1, 'class'=>'btn btn-default', 'title'=>'Refrescar'])
                 ],

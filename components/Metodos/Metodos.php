@@ -593,6 +593,27 @@ public static function obtenerConsultaSQL($modeloSeleccionado,$datosSeleccionado
             return $seleccion;
 
         }
+  public static function obtenerRegistros($modelo)
+       {
+           $registros=array();
+
+           // si existen recupero columnas guardadas, cargo columnas y seleccion
+           $vista = \app\models\Vista::findOne(['id_usuario'=>Yii::$app->user->id,'modelo'=>$modelo->className()]);
+           $vista =null;
+             if($vista!=null){
+                 $registros=  unserialize($vista->columna);
+           }else{
+                 // columnas y seleccion por defecto
+                 $contador=0;
+               foreach($modelo->valueRows() as $key=>$datosAux) {
+                   if($contador<7){
+                     $registros[]=$datosAux;
+                     }
+                   $contador++;
+               }
+           }
+             return $registros;
+    }
 
    public static function obtenerEtiquetasColumnas($modelo,$seleccion)
         {
@@ -1580,5 +1601,6 @@ public static Function obtenerDetalleHTML($model,$relacion,$datos,$idDetalle,$fu
 
 
 }
+
 
 ?>

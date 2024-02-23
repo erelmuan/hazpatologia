@@ -63,7 +63,7 @@ class PlantillamicroscopiaController extends Controller {
                 return ['title' => "Crear nueva Plantilla microscopia", 'content' => $this->renderAjax('create', ['model' => $model, ]) , 'footer' => Html::button('Cerrar', ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) . Html::button('Guardar', ['class' => 'btn btn-primary', 'type' => "submit"]) ];
             }
             else if ($model->load($request->post()) && $model->save()) {
-                return ['forceReload' => '#crud-datatable-pjax', 'title' => "Crear nueva Plantilla microscopia", 'content' => '<span class="text-success">Create Plantillamicroscopia success</span>', 'footer' => Html::button('Cerrar', ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) . Html::a('Crear más', ['create'], ['class' => 'btn btn-primary', 'role' => 'modal-remote']) ];
+                return ['forceReload' => '#crud-datatable-pjax', 'title' => "Crear nueva Plantilla microscopia", 'content' => '<span class="text-success">Éxito al crear plantilla de microscopia</span>', 'footer' => Html::button('Cerrar', ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) . Html::a('Crear más', ['create'], ['class' => 'btn btn-primary', 'role' => 'modal-remote']) ];
             }
             else {
                 return ['title' => "Crear nueva Plantilla microscopia", 'content' => $this->renderAjax('create', ['model' => $model, ]) , 'footer' => Html::button('Cerrar', ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) . Html::button('Guardar', ['class' => 'btn btn-primary', 'type' => "submit"]) ];

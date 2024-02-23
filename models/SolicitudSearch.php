@@ -157,7 +157,7 @@ class SolicitudSearch extends Solicitud
 
           $paciente= trim($this->paciente);
         if (is_numeric($paciente)){
-            $query->orFilterWhere(["paciente.num_documento"=>$paciente]);
+            $query->andFilterWhere(["paciente.num_documento"=>$paciente]);
              }
         else {
             $apellidonombreP = explode(",", $paciente);
@@ -168,7 +168,7 @@ class SolicitudSearch extends Solicitud
         }
         $medico= trim($this->medico);
         if (is_numeric($medico)){
-            $query->orFilterWhere(["medico.matricula"=>$medico]);
+            $query->andFilterWhere(["medico.matricula"=>$medico]);
              }
         else {
             $apellidonombreM = explode(",", $medico);

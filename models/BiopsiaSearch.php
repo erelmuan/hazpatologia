@@ -58,12 +58,24 @@ class BiopsiaSearch extends Biopsia
      */
     public function search($params)
     {
-        $query = Biopsia::find()->innerJoinWith('solicitudbiopsia', true)
+      $id_estudio = Solicitudbiopsia::find()
+          ->select(['id_estudio'])
+          ->scalar();
+      $selectedYearsQuery = (new \yii\db\Query())
+        ->select('id_anio_protocolo')
+        ->from('configuracion_anios_usuario')
+        ->andWhere(['id_usuario' => Yii::$app->user->id])
+        ->andWhere(['id_estudio' =>  $id_estudio])
+        ->column();
+
+      $query = Biopsia::find()->innerJoinWith('solicitudbiopsia', true)
       ->innerJoin('paciente', 'paciente.id = solicitudbiopsia.id_paciente')
       ->innerJoin('procedencia', 'procedencia.id = solicitudbiopsia.id_procedencia')
       ->innerJoin('medico', 'medico.id = solicitudbiopsia.id_medico')
       ->innerJoinWith('estado', 'estado.id = biopsia.id_estado')
+      ->andWhere(['solicitudbiopsia.id_anio_protocolo' => $selectedYearsQuery])
       ->andWhere(['and','biopsia.id_estado <> 6 ' ]); //ANULADO
+
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
@@ -101,7 +113,7 @@ class BiopsiaSearch extends Biopsia
         ]);
         $paciente= trim($this->paciente);
         if (is_numeric($paciente)){
-            $query->orFilterWhere(["paciente.num_documento"=>$paciente]);
+            $query->andFilterWhere(["paciente.num_documento"=>$paciente]);
              }
         else {
             $apellidonombreP = explode(",", $paciente);
@@ -113,7 +125,7 @@ class BiopsiaSearch extends Biopsia
         }
         $medico= trim($this->medico);
         if (is_numeric($medico)){
-            $query->orFilterWhere(["medico.matricula"=>$medico]);
+            $query->andFilterWhere(["medico.matricula"=>$medico]);
              }
         else {
             $apellidonombreM = explode(",", $medico);

@@ -18,7 +18,8 @@ CrudAsset::register($this);
 ?>
 <div id="w0c" class="x_panel">
   <div class="x_title"><h2><i class="fa fa-table"></i> AÑOS DE PROTOCOLOS  </h2>
-    <div class="clearfix"> <div class="nav navbar-right panel_toolbox"><?echo Html::button('<i class="glyphicon glyphicon-arrow-left"></i> Atrás',array('name' => 'btnBack','onclick'=>'js:history.go(-1);returnFalse;','id'=>'botonAtras')); ?></div>
+    <div class="clearfix"> <div class="nav navbar-right panel_toolbox"><?=Html::a('<i class="glyphicon glyphicon-arrow-left"></i> Atrás', ['/site/index'], ['class'=>'btn btn-danger grid-button']) ?></div>
+
 </div>
   </div>
 <div class="anio-protocolo-index">

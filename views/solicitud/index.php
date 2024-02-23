@@ -58,6 +58,24 @@ $columns[]=
                   ]
 
               );
+              },
+              'delete' => function ($url, $model, $key) {
+                return Html::a(
+                  "<button class='btn-danger btn-circle'>
+                <span class='glyphicon glyphicon-trash'></span></button>",
+                 [$model::tableName().$model->estudio->modelo.'/delete',"id"=> $key]
+                ,['role'=>'modal-remote',
+                  'data-toggle'=>'tooltip',
+                  'data-pjax'=>"0",
+                   'data-request-method'=>"post",
+                   'data-toggle'=>"tooltip",
+                   'data-confirm-title'=>"Confirmar",
+                   'data-confirm-message'=>"¿Esta seguro de eliminar este elemento?",
+                   'data-confirm-cancel' => "Cancelar", // Texto del botón de cancelar
+                   'data-confirm-ok' => "Aceptar", // Texto del botón de aceptar
+                   'data-original-title'=>"Eliminar",
+                  ]
+              );
               }
           ],
 
@@ -94,7 +112,7 @@ $columns[]=
             'columns' => $columns,
             'toolbar'=> [
               ['content'=>
-                  Html::a('<i class="glyphicon glyphicon-th"></i>', ['select'],
+                  Html::a('<i class="glyphicon glyphicon-th"></i>', ['vista/select','modelo' => 'app\models\Solicitud'],
                   ['role'=>'modal-remote','title'=> 'Personalizar','class'=>'btn btn-default']).
                   Html::a('<i class="glyphicon glyphicon-repeat"></i>', [''],
                   ['data-pjax'=>1, 'class'=>'btn btn-default', 'title'=>'Refrescar'])

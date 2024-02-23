@@ -59,7 +59,7 @@ $columns[]=
         'buttons'=>[
           'fos' => function ($url, $model, $key) {
             return Html::a(
-              "<button class='btn-warning btn-circle'><b>F</b></button>", ['solicitud/fos', 'id' => $model->solicitudbiopsia->id,'id_carnet' => null], ['data-pjax'=>"0",'role'=>'modal-remote','title'=>"O.S - FOS"]) ;
+              "<button class='btn-warning btn-circle'><b>F</b></button>", ['solicitud/fos', 'tipoSolicitud'=>'app\models\Solicitudbiopsia','id' => $model->solicitudbiopsia->id,'id_carnet' => null], ['data-pjax'=>"0",'role'=>'modal-remote','title'=>"O.S - FOS"]) ;
             },
         ],
         'updateOptions'=>['title'=>'Actualizar', 'data-toggle'=>'tooltip','icon'=>"<button class='btn-primary btn-circle'><span class='glyphicon glyphicon-pencil'></span></button>"],
@@ -100,7 +100,9 @@ $columns[]=
             'columns' => $columns,
             'toolbar'=> [
                 ['content'=>
-                    Html::a('<i class="glyphicon glyphicon-th"></i>', ['select'],
+                    Html::a('<i class="glyphicon glyphicon-calendar"></i>', ['configuracion-anios-usuario/anioselect','modelo' => 'app\models\Solicitudbiopsia'],
+                    ['role'=>'modal-remote','title'=> 'Personalizar','class'=>'btn btn-default']).
+                    Html::a('<i class="glyphicon glyphicon-th"></i>', ['vista/select','modelo' => 'app\models\Biopsia'],
                     ['role'=>'modal-remote','title'=> 'Personalizar','class'=>'btn btn-default']).
                     Html::a('<i class="glyphicon glyphicon-repeat"></i>', [''],
                     ['data-pjax'=>1, 'class'=>'btn btn-default', 'title'=>'Refrescar'])

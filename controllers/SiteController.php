@@ -91,10 +91,10 @@ class SiteController extends Controller {
           return $this->redirect(Yii::$app->request->baseUrl.'/solicitud/consulta');
 
         }
-        $cantidadBiopsias = Biopsia::find()->count();
+        $cantidadBiopsias = Biopsia::find()->andWhere(['and','biopsia.id_estado <> 6'])->count();
         $cantidadSolicitudes = Solicitud::find()->count();
         $cantidadPacientes = Paciente::find()->count();
-        $cantidadPaps = Pap::find()->count();
+        $cantidadPaps = Pap::find()->andWhere(['and','pap.id_estado <> 6'])->count();
         $cantidadProcedencia = Procedencia::find()->count();
         $cantidadMedicos = Medico::find()->count();
 

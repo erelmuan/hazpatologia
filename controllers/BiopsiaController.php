@@ -2,6 +2,8 @@
 namespace app\controllers;
 use Yii;
 use app\models\Biopsia;
+use app\models\AnioProtocolo;
+use app\models\ConfiguracionAniosUsuario;
 use app\models\BiopsiaSearch;
 use app\models\PlantillamaterialSearch;
 use app\models\PlantillamacroscopiaSearch;
@@ -310,63 +312,15 @@ class BiopsiaController extends Controller {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
-    public function actionSelect() {
-        $request = Yii::$app->request;
-        $model = new Biopsia();
-        if ($request->isAjax) {
-            Yii::$app->response->format = Response::FORMAT_JSON;
-            if (isset($_POST['seleccion'])) {
-                // recibo datos de lo seleccionado, reconstruyo columnas
-                $seleccion = $_POST['seleccion'];
-                $columnAdmin = $model->attributeColumns();
-                $columnSearch = [];
-                $columnas = [];
-                foreach ($columnAdmin as $value) {
-                    $columnSearch[] = $value['attribute'];
-                }
-                foreach ($seleccion as $key) {
-                    $indice = array_search($key, $columnSearch);
-                    if ($indice !== null) {
-                        $columnas[] = $columnAdmin[$indice];
-                    }
-                }
-                // guardo esa informacion, sin controles ni excepciones, no es importante
-                $vista = \app\models\Vista::findOne(['id_usuario' => Yii::$app->user->id, 'modelo' => $model->classname() ]);
-                if ($vista == null) {
-                    $vista = new \app\models\Vista();
-                    $vista->id_usuario = Yii::$app->user->id;
-                    $vista->modelo = $model->classname();
-                }
-                $vista->columna = serialize($columnas);
-                $vista->save();
-                return [$vista, 'forceClose' => true, 'forceReload' => '#crud-datatable-pjax'];
-            }
-            // columnas mostradas actualmente
-            $columnas = Metodos::obtenerColumnas($model);
-            // attributos de las columnas mostradas
-            $seleccion = Metodos::obtenerAttributosColumnas($columnas);
-            // todas las etiquetas
-            $etiquetas = Metodos::obtenerEtiquetasColumnas($model, $seleccion);
-            return ['title' => "Personalizar Lista", 'content' => $this->renderAjax('/../components/Vistas/_select', ['seleccion' => $seleccion, 'etiquetas' => $etiquetas, ]) , 'footer' => Html::button('Cancelar', ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) . Html::button('Guardar', ['class' => 'btn btn-primary', 'type' => "submit"]) ];
-        }
-        else {
-            // Process for non-ajax request
-            return $this->redirect(['index']);
-        }
-    }
+
+
+
     public function actionInforme($id) {
         $request = Yii::$app->request;
-        // Si entra en el if es porque el estudio esta en estado EN_PROCESO
-        //Ver el view de biopsia donde se accde al informe
-        if ($request->isAjax) {
-            Yii::$app->response->format = Response::FORMAT_JSON;
-            return ['forceReload' => '#crud-datatable-pjax', 'title' => "AVISO!", 'content' => 'EL SIGUIENTE DOCUMENTO TIENE UN ESTADO <b>EN PROCESO</b> (NO ESTA VERIFICADO) CONFIRME SI DESEA GENERAR EL DOCUMENTO', 'footer' => Html::button('Cerrar', ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) . Html::a('<i class="fa glyphicon glyphicon-hand-up"></i> Confirmar', ['/biopsia/informe', 'id' => $id], ['class' => 'btn btn-primary', 'data-toggle' => 'tooltip', 'target' => '_blank', 'title' => 'Se abrirá el archivo PDF generado en una nueva ventana']) ];
-        }
-        else {
-            $biopsia = $this->findModel($id);
-            return $this->render('informePatologia', ['model' => $biopsia ]);
-        }
+        $biopsia = $this->findModel($id);
+        return $this->render('informePatologia', ['model' => $biopsia ]);
     }
+
     public function actionEnviarcorreo($id) {
         // $mpdf=new mPDF();
         // $mpdf->WriteHTML($this->renderPartial('pdf',['model' => $model])); //pdf is a name of view file responsible for this pdf document

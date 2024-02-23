@@ -1,3 +1,15 @@
+Version 2.8.1
+Se incorpora en esta version, la seleccion de años por usuario de los estudios
+Agregando ConfiguracionAniosUsuario controlador y modelo
+ademas se refactoriza agregando el controlador de vista, la seleccion de columnas de biopsias,
+paps y solicitudes.
+Cambio de idioma en el modal eliminar mediante esta accion:
+Se modifico el mensaje para todos los grill el boton eliminar (delete)accediendo a
+/opt/lampp/htdocs/hazpatologia/vendor/kartik-v/yii2-grid/src
+el archivo ActionColumn.php
+- Se corrigo el mensaje de exito de la mayoria de las plantillas.
+
+
 VERSIÓN 2.7.1
 Se corrige los mensajes de error de duplicacion de solitud de biopsia y de pap
 
@@ -301,7 +313,7 @@ Se corrige el acceso al fos para los usuarios que no tienen permiso administrado
 se implementa una mejora en la visualizacion del paciente y medico en la grilla de biopsia, pap y solicitudes.
 VERSIÓN 1.4.0
 Implementación de planilla del fos
-Previamente se modifico la base de datos, añadiendo el atributo código al estudio y a las obras sociales.
+Previamente botse modifico la base de datos, añadiendo el atributo código al estudio y a las obras sociales.
 Se implementa planilla del fos en los estudios de pap y biopsia a los estudios que están en estado LISTO
 añadiendo para tal fin un botón,
 se incorporo el acceso a los registro ESTUDIOS en tablas extras

@@ -2,6 +2,8 @@
 namespace app\controllers;
 use Yii;
 use app\models\Pap;
+use app\models\AnioProtocolo;
+use app\models\ConfiguracionAniosUsuario;
 use app\models\PapSearch;
 use app\models\PlantillafloraSearch;
 use app\models\PlantillaaspectoSearch;
@@ -290,65 +292,51 @@ class PapController extends Controller {
            }
 
     }
-    public function actionSelect() {
+
+    public function actionAnioselect() {
         $request = Yii::$app->request;
-        $model = new Pap();
+        $id_estudio = Solicitudpap::find()
+            ->select(['id_estudio'])
+            ->scalar();
         if ($request->isAjax) {
-            Yii::$app
-                ->response->format = Response::FORMAT_JSON;
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            // Cargar los años disponibles
+            $aniosDisponibles = AnioProtocolo::aniosDisponibles();
             if (isset($_POST['seleccion'])) {
-                // recibo datos de lo seleccionado, reconstruyo columnas
-                $seleccion = $_POST['seleccion'];
-                $columnAdmin = $model->attributeColumns();
-                $columnSearch = [];
-                $columnas = [];
-                foreach ($columnAdmin as $value) {
-                    $columnSearch[] = $value['attribute'];
-                }
-                foreach ($seleccion as $key) {
-                    $indice = array_search($key, $columnSearch);
-                    if ($indice !== null) {
-                        $columnas[] = $columnAdmin[$indice];
-                    }
-                }
-                // guardo esa informacion, sin controles ni excepciones, no es importante
-                $vista = \app\models\Vista::findOne(['id_usuario' => Yii::$app
-                    ->user->id, 'modelo' => $model->classname() ]);
-                if ($vista == null) {
-                    $vista = new \app\models\Vista();
-                    $vista->id_usuario = Yii::$app
-                        ->user->id;
-                    $vista->modelo = $model->classname();
-                }
-                $vista->columna = serialize($columnas);
-                $vista->save();
-                return [$vista, 'forceClose' => true, 'forceReload' => '#crud-datatable-pjax'];
+              // recibo datos de lo seleccionado, reconstruyo columnas
+              $seleccionAnios = $_POST['seleccion'];
+              ConfiguracionAniosUsuario::deleteAll(["id_usuario"=> Yii::$app->user->id,"id_estudio"=>$id_estudio]);
+            foreach ($seleccionAnios as $anio) {
+                $modelConfAnio= new ConfiguracionAniosUsuario();
+                $modelConfAnio->id_anio_protocolo = $anio;
+                $modelConfAnio->id_usuario= Yii::$app->user->id;
+                $modelConfAnio->id_estudio=$id_estudio;
+                $modelConfAnio->save();
             }
-            // columnas mostradas actualmente
-            $columnas = Metodos::obtenerColumnas($model);
-            // attributos de las columnas mostradas
-            $seleccion = Metodos::obtenerAttributosColumnas($columnas);
-            // todas las etiquetas
-            $etiquetas = Metodos::obtenerEtiquetasColumnas($model, $seleccion);
-            return ['title' => "Personalizar Lista", 'content' => $this->renderAjax('/../components/Vistas/_select', ['seleccion' => $seleccion, 'etiquetas' => $etiquetas, ]) , 'footer' => Html::button('Cancelar', ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) . Html::button('Guardar', ['class' => 'btn btn-primary', 'type' => "submit"]) ];
-        }
-        else {
-            // Process for non-ajax request
-            return $this->redirect(['index']);
+            return [$modelConfAnio, 'forceClose' => true, 'forceReload' => '#crud-datatable-pjax'];
+          }else {
+            // Obtener los años seleccionados por el usuario
+              $id_usuario = Yii::$app->user->id;
+              $aniosSeleccionados = ConfiguracionAniosUsuario::getSeleccionAnios($id_usuario, $id_estudio);
+                  return ['success' => true,
+                  'message' => 'Configuración de años guardada correctamente.',
+                   'title' => "Configuración personalizada",
+                   'content' => $this->renderAjax('/../components/Vistas/_anioselect',
+                    ['aniosDisponibles' => $aniosDisponibles,
+                    'aniosSeleccionados'=>$aniosSeleccionados]) ,
+                   'footer' => Html::button('Cancelar',
+                   ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"])
+                   . Html::button('Guardar', ['class' => 'btn btn-primary',
+                   'type' => "submit"]) ];
+          }
+        } else {
+            $this->redirect("index");
         }
     }
     public function actionInforme($id) {
         $request = Yii::$app->request;
-        // return [$vista,'forceClose'=>true,'forceReload'=>'#crud-datatable-pjax'];
-        if ($request->isAjax) {
-            Yii::$app
-                ->response->format = Response::FORMAT_JSON;
-            return ['forceReload' => '#crud-datatable-pjax', 'title' => "AVISO!", 'content' => 'EL SIGUIENTE DOCUMENTO TIENE UN ESTADO <b>EN PROCESO</b> (NO ESTA VERIFICADO) CONFIRME SI DESEA GENERAR EL DOCUMENTO', 'footer' => Html::button('Cerrar', ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) . Html::a('<i class="fa glyphicon glyphicon-hand-up"></i> Confirmar', ['/pap/informe', 'id' => $id], ['class' => 'btn btn-primary', 'data-toggle' => 'tooltip', 'target' => '_blank', 'title' => 'Se abrirá el archivo PDF generado en una nueva ventana']) ];
-        }
-        else {
-            $pap = $this->findModel($id);
-            return $this->render('informePatologia', ['model' => $pap ]);
-        }
+        $pap = $this->findModel($id);
+        return $this->render('informePatologia', ['model' => $pap ]);
     }
     /**
      * Finds the Pap model based on its primary key value.

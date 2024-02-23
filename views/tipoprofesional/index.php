@@ -10,7 +10,7 @@ use johnitvn\ajaxcrud\BulkButtonWidget;
 /* @var $searchModel app\models\TipoprofesionalSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Tipoprofesionals';
+$this->title = 'Tipo de profesionales';
 $this->params['breadcrumbs'][] = $this->title;
 
 CrudAsset::register($this);
@@ -34,7 +34,7 @@ CrudAsset::register($this);
             'toolbar'=> [
                 ['content'=>
                     Html::a('<i class="glyphicon glyphicon-plus"></i>', ['create'],
-                    ['role'=>'modal-remote','title'=> 'Create new Tipoprofesionals','class'=>'btn btn-default']).
+                    ['role'=>'modal-remote','title'=> 'Crear nuevo profesional','class'=>'btn btn-default']).
                     Html::a('<i class="glyphicon glyphicon-repeat"></i>', [''],
                     ['data-pjax'=>1, 'class'=>'btn btn-default', 'title'=>'Reset Grid']).
                     '{toggleData}'.

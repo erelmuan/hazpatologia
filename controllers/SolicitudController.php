@@ -102,6 +102,8 @@ class SolicitudController extends Controller {
     }
 
       public function actionSeleccionar() {
+        //El metodo Seleccionar es invocado desde la clase hija
+        //por eso puede usar el metodo returnModelSearch que esta en la misma y no el de solicitudController
         $searchModel = $this->returnModelSearch();
         //En el modelo de solicitudes de pap y biopsias solo busca la solicitudes que no tienen informes asociados
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams, false);
@@ -296,60 +298,7 @@ class SolicitudController extends Controller {
               'modelMed' => $modelos['modelMed'],]);
         }
     }
-    /**
-     * Delete an existing Solicitud model.
-     * For ajax request will return json object
-     * and for non-ajax request if deletion is successful, the browser will be redirected to the 'index' page.
-     * @param integer $id
-     * @return mixed
-     */
 
-    public function actionSelect() {
-        $request = Yii::$app->request;
-        $model = new Solicitud();
-        if ($request->isAjax) {
-            Yii::$app->response->format = Response::FORMAT_JSON;
-            if (isset($_POST['seleccion'])) {
-                // recibo datos de lo seleccionado, reconstruyo columnas
-                $seleccion = $_POST['seleccion'];
-                $columnAdmin = $model->attributeColumns();
-                $columnSearch = [];
-                $columnas = [];
-                foreach ($columnAdmin as $value) {
-                    $columnSearch[] = $value['attribute'];
-                }
-                foreach ($seleccion as $key) {
-                    $indice = array_search($key, $columnSearch);
-                    if ($indice !== null) {
-                        $columnas[] = $columnAdmin[$indice];
-                    }
-                }
-                // guardo esa informacion, sin controles ni excepciones, no es importante
-                $vista = \app\models\Vista::findOne(['id_usuario' => Yii::$app
-                    ->user->id, 'modelo' => $model->classname() ]);
-                if ($vista == null) {
-                    $vista = new \app\models\Vista();
-                    $vista->id_usuario = Yii::$app
-                        ->user->id;
-                    $vista->modelo = $model->classname();
-                }
-                $vista->columna = serialize($columnas);
-                $vista->save();
-                return [$vista, 'forceClose' => true, 'forceReload' => '#crud-datatable-pjax'];
-            }
-            // columnas mostradas actualmente
-            $columnas = Metodos::obtenerColumnas($model);
-            // attributos de las columnas mostradas
-            $seleccion = Metodos::obtenerAttributosColumnas($columnas);
-            // todas las etiquetas
-            $etiquetas = Metodos::obtenerEtiquetasColumnas($model, $seleccion);
-            return ['title' => "Personalizar Lista", 'content' => $this->renderAjax('/../components/Vistas/_select', ['seleccion' => $seleccion, 'etiquetas' => $etiquetas, ]) , 'footer' => Html::button('Cancelar', ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) . Html::button('Guardar', ['class' => 'btn btn-primary', 'type' => "submit"]) ];
-        }
-        else {
-            // Process for non-ajax request
-            return $this->redirect(['index']);
-        }
-    }
     /**
      * Finds the Solicitud model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
@@ -365,28 +314,31 @@ class SolicitudController extends Controller {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
+
+    private function contieneEstudio($id_solicitud){
+      $modelbiopsia = Biopsia::find()->where(['and', 'biopsia.id_solicitudbiopsia = ' . $id_solicitud])->one();
+      $modelpap = Pap::find()->where(['and', 'pap.id_solicitudpap = ' . $id_solicitud])->one();
+       if (isset($modelbiopsia) || isset($modelpap)) {
+         return true;
+       }else {
+         return false;
+       }
+    }
+
+
     public function actionDelete($id) {
         Yii::$app->response->format = Response::FORMAT_JSON;
-        $modelbiopsia = Biopsia::find()->where(['and', 'biopsia.id_solicitudbiopsia = ' . $id])->one();
-        $modelpap = Pap::find()->where(['and', 'pap.id_solicitudpap = ' . $id])->one();
-        if (isset($modelbiopsia) || isset($modelpap)) {
-            return ['title' => "Eliminar solicitud  #" . $id, 'content' => "No se puede eliminar la solicitud porque tiene un informe asociado", 'footer' => Html::button('Cerrar', ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) ];
-        }
+       if ($this->contieneEstudio($id)) {
+           return ['title' => "Eliminar solicitud  #" . $id,
+           'content' => "No se puede eliminar la solicitud porque tiene un informe asociado",
+           'footer' => Html::button('Cerrar', ['class' => 'btn btn-default pull-left',
+            'data-dismiss' => "modal"]) ];
+       }
         $model = $this->findModel($id);
-        //Para que se refleje en la auditoria que tipo de solicitud se elimina
-        if ($model->estudio->modelo == "pap") {
-            $modelsolicitud = Solicitudpap::find()->where(['and', 'id = ' . $id])->one();
-        }
-        if ($model->estudio->modelo == "biopsia") {
-            $modelsolicitud = Solicitudbiopsia::find()->where(['and', 'id = ' . $id])->one();
-        }
         $request = Yii::$app->request;
         if ($request->isAjax) {
-            /*
-             *   Process for ajax request
-            */
             try {
-                if ($modelsolicitud->delete()) {
+                if ($model->delete()) {
                     return ['forceClose' => true, 'forceReload' => '#crud-datatable-pjax'];
                 }
             }
@@ -396,10 +348,9 @@ class SolicitudController extends Controller {
             }
         }
         else {
-            /*
-             *   Process for non-ajax request
-            */
-            return $this->redirect(['index']);
+            // el metodo es invocado desde la clase hija,
+            // pero quiero se redireccione a la clase controller del padre
+            return $this->redirect(['solicitud/index']);
         }
     }
 
@@ -422,19 +373,13 @@ class SolicitudController extends Controller {
             return $this->render('documento', ['model' => $solicitud ]);
         }
     }
-    public function actionFos($id, $id_carnet=null) {
+    public function actionFos($tipoSolicitud,$id, $id_carnet=null) {
         $request = Yii::$app->request;
-
-        $model = $this->findModel($id);
-        if ($model->estudio->modelo == "pap") {
-            $modelsolicitud = Solicitudpap::find()->where(['and', 'id = ' . $id])->one();
-        }
-        if ($model->estudio->modelo == "biopsia") {
-            $modelsolicitud = Solicitudbiopsia::find()->where(['and', 'id = ' . $id])->one();
-        }
+        $modelsolicitud = $tipoSolicitud::find()->where(['and', 'id = ' . $id])->one();
         if ($request->isAjax) {
             Yii::$app->response->format = Response::FORMAT_JSON;
-                return ['title' => "Obra Social - FOS", 'content' => $this->renderAjax('fosobrasocial', ['solicitud' => $modelsolicitud, ]) , 'footer' => Html::button('Cerrar', ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"])  ];
+                return ['title' => "Obra Social - FOS", 'content' => $this->renderAjax('fosobrasocial',
+                 ['solicitud' => $modelsolicitud, 'tipoSolicitud'=>$tipoSolicitud]) , 'footer' => Html::button('Cerrar', ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"])  ];
           }
         if ($id_carnet !=null && $modelsolicitud->estado->descripcion ==="LISTO"){
 

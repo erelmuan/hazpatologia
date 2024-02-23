@@ -113,7 +113,7 @@ class PacienteController extends Controller {
                 return [
                 // comentado para que funcione cuando llamo desde la vista de solicitudes en la creacion
                 // 'forceReload'=>'#crud-datatable-pjax',
-                'title' => "Crear nuevo Paciente", 'content' => '<span class="text-success">Create Paciente success</span>', 'footer' => Html::button('Cerrar', ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) . Html::a('Crear otro', ['create'], ['class' => 'btn btn-primary', 'role' => 'modal-remote']) ];
+                'title' => "Crear nuevo Paciente", 'content' => '<span class="text-success">Éxito al crear paciente</span>', 'footer' => Html::button('Cerrar', ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) . Html::a('Crear otro', ['create'], ['class' => 'btn btn-primary', 'role' => 'modal-remote']) ];
             }
             else {
                 return ['title' => "Crear nuevo paciente", 'content' => $this->renderAjax('create', ['model' => $model, 'provincias' => $provincias, 'localidades' => $localidades, 'obrasociales' => $obrasociales, 'valorObrasocial' => $valorObrasocial, 'afiliado' => $afiliado, ]) , 'footer' => Html::button('Cerrar', ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) . Html::button('Guardar', ['class' => 'btn btn-primary', 'type' => "submit"]) ];

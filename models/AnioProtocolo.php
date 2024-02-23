@@ -109,5 +109,17 @@ class AnioProtocolo extends \yii\db\ActiveRecord
         return false;
       }
 
-
+      public function aniosDisponibles()
+      {
+        $anios =[];
+          $registros = AnioProtocolo::find()
+              ->orderBy('anio DESC')
+              ->select(['id', 'anio'])
+              ->asArray()
+              ->all();
+          foreach ($registros as $registro) {
+          $anios[$registro['id']] = $registro['anio'];
+      }
+      return $anios;
+    }
 }

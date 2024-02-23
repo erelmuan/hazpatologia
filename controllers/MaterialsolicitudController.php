@@ -60,7 +60,7 @@ class MaterialsolicitudController extends Controller {
                 return ['title' => "Create new Materialsolicitud", 'content' => $this->renderAjax('create', ['model' => $model, ]) , 'footer' => Html::button('Close', ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) . Html::button('Save', ['class' => 'btn btn-primary', 'type' => "submit"]) ];
             }
             else if ($model->load($request->post()) && $model->save()) {
-                return ['forceReload' => '#crud-datatable-pjax', 'title' => "Create new Materialsolicitud", 'content' => '<span class="text-success">Create Materialsolicitud success</span>', 'footer' => Html::button('Close', ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) . Html::a('Create More', ['create'], ['class' => 'btn btn-primary', 'role' => 'modal-remote']) ];
+                return ['forceReload' => '#crud-datatable-pjax', 'title' => "Create new Materialsolicitud", 'content' => '<span class="text-success">Éxito al crear material solicitud</span>', 'footer' => Html::button('Close', ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) . Html::a('Create More', ['create'], ['class' => 'btn btn-primary', 'role' => 'modal-remote']) ];
             }
             else {
                 return ['title' => "Create new Materialsolicitud", 'content' => $this->renderAjax('create', ['model' => $model, ]) , 'footer' => Html::button('Close', ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) . Html::button('Save', ['class' => 'btn btn-primary', 'type' => "submit"]) ];

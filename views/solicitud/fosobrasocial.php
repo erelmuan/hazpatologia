@@ -85,7 +85,7 @@ use yii\helpers\Html;
         if($solicitud->estado->descripcion!=="LISTO"){
           echo "Debe estar LISTO el estudio";
         }else {
-          echo  Html::a('<i class="fa fa-file-pdf-o"> Planilla FOS</i>', ['solicitud/fos', 'id'=>$solicitud->id, 'id_carnet' => $carnet->id],
+          echo  Html::a('<i class="fa fa-file-pdf-o"> Planilla FOS</i>', ['solicitud/fos','tipoSolicitud'=>$tipoSolicitud, 'id'=>$solicitud->id, 'id_carnet' => $carnet->id],
            ['title'=> 'Generar pdf','class'=>'btn btn-danger btn-xs', 'target'=>'_blank' ]);
         }
 

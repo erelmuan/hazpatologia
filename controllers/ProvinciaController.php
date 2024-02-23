@@ -62,7 +62,7 @@ class ProvinciaController extends Controller {
                 return ['title' => "Crear nueva Provincia", 'content' => $this->renderAjax('create', ['model' => $model, ]) , 'footer' => Html::button('Cerrar', ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) . Html::button('Guardar', ['class' => 'btn btn-primary', 'type' => "submit"]) ];
             }
             else if ($model->load($request->post()) && $model->save()) {
-                return ['forceReload' => '#crud-datatable-pjax', 'title' => "Crear nueva Provincia", 'content' => '<span class="text-success">Create Provincia success</span>', 'footer' => Html::button('Cerrar', ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) . Html::a('Crear más', ['create'], ['class' => 'btn btn-primary', 'role' => 'modal-remote']) ];
+                return ['forceReload' => '#crud-datatable-pjax', 'title' => "Crear nueva Provincia", 'content' => '<span class="text-success">Éxito al crear provincia</span>', 'footer' => Html::button('Cerrar', ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) . Html::a('Crear más', ['create'], ['class' => 'btn btn-primary', 'role' => 'modal-remote']) ];
             }
             else {
                 return ['title' => "Crear nueva Provincia", 'content' => $this->renderAjax('create', ['model' => $model, ]) , 'footer' => Html::button('Cerrar', ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) . Html::button('Guardar', ['class' => 'btn btn-primary', 'type' => "submit"]) ];
