@@ -13,6 +13,7 @@
     margin-bottom: 10px;
     height:45;
 }
+
 </style>
 <?php
 use kartik\icons\Icon;
@@ -170,6 +171,7 @@ $this->title = 'Extras';
       </div>
     </div>
     </a>
+
     </div>
 
   </div>

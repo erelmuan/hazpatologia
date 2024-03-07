@@ -48,21 +48,46 @@ class SiteController extends Controller {
     /**
      * {@inheritdoc}
      */
-    public function behaviors() {
-        return ['access' => ['class' => AccessControl::className() , 'only' => ['logout', 'administracion'], 'rules' => [['actions' => ['logout'], 'allow' => true, 'roles' => ['@'], ], [
-        //El administrador tiene permisos sobre las siguientes acciones
-        'actions' => ['administracion'], 'allow' => true,
-        //Usuarios autenticados, el signo ? es para invitados
-        'roles' => ['@'], 'matchCallback' => function ($rule, $action) {
-            if (Yii::$app->user->identity->id_pantalla == 1) {
-                return false;
-            }
-            else {
-                return true;
-            }
-        }
-        ], ], ], 'verbs' => ['class' => VerbFilter::className() , 'actions' => ['logout' => ['post'], ], ], ];
-    }
+     public function behaviors() {
+         return [
+             'access' => [
+                 'class' => AccessControl::className(),
+                 'only' => ['logout', 'administracion', 'extras','permisos','plantillas','plantillaspaps','plantillasbiopsias'],
+                 'rules' => [
+                     [
+                         'actions' => ['logout'],
+                         'allow' => true,
+                         'roles' => ['@'],
+                     ],
+                     [
+                         'actions' => ['logout', 'administracion', 'extras','permisos','plantillas','plantillaspaps','plantillasbiopsias'],
+                         'allow' => true,
+                         'roles' => ['@'],
+                         'matchCallback' => function ($rule, $action) {
+                             // Aquí colocamos la lógica de verificación de permisos
+                             return Seguridad::tienePermiso($action->id); // $action->id puede no ser necesario, depende de tu implementación
+                         }
+                     ],
+                     [
+                         'roles' => ['@'],
+                         'matchCallback' => function ($rule, $action) {
+                             if (Yii::$app->user->identity->id_pantalla == 1) {
+                                 return false;
+                             } else {
+                                 return true;
+                             }
+                         }
+                     ],
+                 ],
+             ],
+             'verbs' => [
+                 'class' => VerbFilter::className(),
+                 'actions' => [
+                     'logout' => ['post'],
+                 ],
+             ],
+         ];
+     }
 
     /**
      * {@inheritdoc}
@@ -75,10 +100,11 @@ class SiteController extends Controller {
     public function actionError()
     {
       $this->layout = 'template_error';
-
+      $controller = Yii::$app->requestedAction->controller->id;
+      $action = Yii::$app->requestedAction->id;
         $exception = Yii::$app->errorHandler->exception;
         if ($exception !== null) {
-            return $this->render('error', ['exception' => $exception]);
+            return $this->render('error', ['exception' => $exception , 'controller'=>$controller ,'action'=>$action]);
         }
     }
     /**
@@ -276,7 +302,8 @@ class SiteController extends Controller {
         $cantidadRoles = Rol::find()->count();
         $cantidadModulos = Modulo::find()->count();
         $cantidadAcciones = Accion::find()->count();
-        return $this->render('permisos', ['cantidadRoles' => $cantidadRoles, 'cantidadModulos' => $cantidadModulos, 'cantidadAcciones' => $cantidadAcciones]);
+        return $this->render('permisos', ['cantidadRoles' => $cantidadRoles,
+         'cantidadModulos' => $cantidadModulos, 'cantidadAcciones' => $cantidadAcciones]);
     }
     public function actionSolicitudes() {
         $cantidadSolicitudbiopsia = Solicitudbiopsia::find()->count();

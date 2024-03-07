@@ -82,15 +82,23 @@ class PapSearch extends Pap
        $dataProvider = new ActiveDataProvider([
            'query' => $query,
        ]);
-       $dataProvider->sort->attributes['protocolo'] = [
-              'asc' => ['solicitudpap.protocolo' => SORT_ASC],
-              'desc' => ['solicitudpap.protocolo' => SORT_DESC],
+       $dataProvider->setSort([
+           'attributes' => [
+             'protocolo','estado','id','fechadeingreso','fecharealizacion','sexo',
+        ]]);
+        $dataProvider->sort->attributes['medico'] = [
+               'asc' => ['medico.apellido' => SORT_ASC],
+               'desc' => ['medico.apellido' => SORT_DESC],
+           ];
+       $dataProvider->sort->attributes['paciente'] = [
+              'asc' => ['paciente.apellido' => SORT_ASC],
+              'desc' => ['paciente.apellido' => SORT_DESC],
           ];
+      $dataProvider->sort->attributes['procedencia'] = [
+               'asc' => ['procedencia.nombre' => SORT_ASC],
+               'desc' => ['procedencia.nombre' => SORT_DESC],
+           ];
         $this->load($params);
-        $dataProvider->setSort([
-            'attributes' => [
-              'protocolo','estado'
-         ]]);
 
         if (!$this->validate()) {
             // uncomment the following line if you do not want to return any records when validation fails

@@ -11,7 +11,7 @@ use yii\helpers\Html;
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
 
-	<title>404 HTML Template by Colorlib</title>
+	<title>Error</title>
 
 	<!-- Google font -->
 	<link href="https://fonts.googleapis.com/css?family=Oswald:700" rel="stylesheet">
@@ -47,6 +47,6 @@ use yii\helpers\Html;
 
 	</div>
 
-</body><!-- This templates was made by Colorlib (https://colorlib.com) -->
+</body>
 
 </html>

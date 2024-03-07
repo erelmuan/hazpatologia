@@ -12,14 +12,15 @@ use app\models\Modulo;
  */
 class ModuloSearch extends Modulo
 {
+  public $tipo_acceso;
     /**
      * @inheritdoc
      */
     public function rules()
     {
         return [
-            [['id'], 'integer'],
-            [['nombre'], 'safe'],
+           [['id', 'id_tipo_acceso'], 'integer'],
+           [['nombre'], 'safe'],
         ];
     }
 
@@ -41,7 +42,9 @@ class ModuloSearch extends Modulo
      */
     public function search($params)
     {
-        $query = Modulo::find();
+        $query = Modulo::find()
+        ->innerJoinWith('tipoAcceso', true)
+        ;
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
@@ -57,9 +60,13 @@ class ModuloSearch extends Modulo
 
         $query->andFilterWhere([
             'id' => $this->id,
+            'id_tipo_acceso' => $this->id_tipo_acceso, 
         ]);
 
-        $query->andFilterWhere(['like', 'nombre', $this->nombre]);
+        $query->andFilterWhere(['ilike', 'modulo.nombre', $this->nombre])
+        ->andFilterWhere(['ilike', 'tipo_acceso.nombre', $this->tipo_acceso]);
+
+        ;
 
         return $dataProvider;
     }

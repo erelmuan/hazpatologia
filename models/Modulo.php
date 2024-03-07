@@ -9,6 +9,8 @@ use Yii;
 * @property Permiso[] $permisos
  * @property int $id
  * @property string $nombre
+ * @property int $id_tipo_acceso
+ * @property TipoAcceso $tipoAcceso
  */
  use app\components\behaviors\AuditoriaBehaviors;
 
@@ -38,10 +40,13 @@ class Modulo extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['nombre'], 'required'],
+            [['nombre','id_tipo_acceso'], 'required'],
+            [['id_tipo_acceso'], 'default', 'value' => null],
+            [['id_tipo_acceso'], 'integer'],
             [['nombre'], 'string', 'max' => 50],
-            [['nombre'], 'unique'],
-
+            [['nombre', 'id_tipo_acceso'], 'unique', 'targetAttribute' => ['nombre', 'id_tipo_acceso'], 'message' => 'Esta combinación ya existe.'],
+            [['id_tipo_acceso'], 'integer'],
+            [['id_tipo_acceso'], 'exist', 'skipOnError' => true, 'targetClass' => TipoAcceso::className(), 'targetAttribute' => ['id_tipo_acceso' => 'id']],
         ];
     }
 
@@ -53,19 +58,17 @@ class Modulo extends \yii\db\ActiveRecord
         return [
             'id' => 'id',
             'nombre' => 'Nombre',
+            'id_tipo_acceso' => 'Id Tipo Acceso',
         ];
     }
 
     public function attributeView()
     {
         return [
-      // 'id',
-      // 'nombre',
-      // 'regla',
-      // 'obs',
+
       'id',
       'nombre',
-
+      'id_tipo_acceso'
         ];
     }
 
@@ -79,7 +82,13 @@ class Modulo extends \yii\db\ActiveRecord
           [
             'class'=>'\kartik\grid\DataColumn',
             'attribute'=>'nombre',
-          ]
+          ],
+          [
+            'class'=> '\kartik\grid\DataColumn',
+            'label'=> 'Tipo de acceso',
+            'attribute'=>'tipo_acceso',
+            'value'=>'tipoAcceso.nombre',
+          ],
         ];
     }
 
@@ -99,6 +108,12 @@ class Modulo extends \yii\db\ActiveRecord
          return $this->hasMany(Permiso::className(), ['id_modulo' => 'id']);
        }
 
-
+       /**
+  		    * @return \yii\db\ActiveQuery
+  		    */
+  	  public function getTipoAcceso()
+    {
+       return $this->hasOne(TipoAcceso::className(), ['id' => 'id_tipo_acceso']);
+       }
 
 }

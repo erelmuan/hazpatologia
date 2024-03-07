@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use kartik\grid\GridView;
+use yii\helpers\Url;
 
 ?>
 
@@ -22,7 +23,7 @@ use kartik\grid\GridView;
                 'class' => 'kartik\grid\ActionColumn',
                 'vAlign'=>'middle',
                 'contentOptions' =>['width'=>'75px', 'style'=>'text-align:center;'],
-                'header' => Html::a('Agregar', 'usuario/addrol?id_maestro='.$id_maestro, [
+                'header' => Html::a('Agregar',Yii::$app->urlManager->baseUrl. '/usuario/addrol?id_maestro='.$id_maestro, [
                     'title' => 'Agregar registro',
                     'class' => 'btn btn-success',
                     'style' => ['width'=>'75px', 'height'=>'30px','padding-top'=>'4px'],
@@ -50,7 +51,7 @@ use kartik\grid\GridView;
                     //     return $url;
                     // }
                     if ($action === 'deleteDetalle') {
-                        $url ='usuario/deletedetalle?id_detalle='.$searchModel->id.'&id_maestro='.$searchModel->id_usuario;
+                        $url =Yii::$app->urlManager->baseUrl.'/usuario/deletedetalle?id_detalle='.$searchModel->id;
                         return $url;
                     }
                 }

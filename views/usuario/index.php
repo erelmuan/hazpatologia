@@ -32,9 +32,12 @@ function reloadDetalle(id_maestro){
 }
 
 function submitAddrol(id_usuario){
-    var keys = $('#cruddetalle-datatable').yiiGridView('getSelectedRows');
-
-
+    // var keys = $('#cruddetalle-datatable').yiiGridView('getSelectedRows');
+    var keys =$("tr.detalle-seleccionado").find("td:eq(0)").text();
+    if (keys.length === 0) {
+        $('#error-no-seleccion').text('Debes seleccionar una opción.');
+        return; // Evita que la función continúe si ninguna opción se ha seleccionado
+    }
     $.ajax({
         url: '<?php echo Url::to(['addrol']) ?>',
         dataType: 'json',

@@ -13,7 +13,7 @@ class AccionSearch extends Accion {
      */
     public function rules() {
         return [[['id'], 'integer'],
-        [['index', 'create', 'delete', 'update', 'export', 'view'], 'boolean'], ];
+        [[ 'create', 'delete', 'update',  'view'], 'boolean'], ];
     }
     /**
      * @inheritdoc
@@ -38,7 +38,7 @@ class AccionSearch extends Accion {
             // $query->where('0=1');
             return $dataProvider;
         }
-        $query->andFilterWhere(['id' => $this->id, 'index' => $this->index, 'create' => $this->create, 'delete' => $this->delete, 'update' => $this->update, 'export' => $this->export, 'view' => $this->view, ]);
+        $query->andFilterWhere(['id' => $this->id, 'create' => $this->create, 'delete' => $this->delete, 'update' => $this->update, 'view' => $this->view, ]);
         return $dataProvider;
     }
 }

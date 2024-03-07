@@ -4,7 +4,7 @@ use yii\helpers\Html;
 use yii\bootstrap\Modal;
 use kartik\grid\GridView;
 // use johnitvn\ajaxcrud\CrudAsset;
-use johnitvn\ajaxcrud\BulkButtonWidget; 
+use johnitvn\ajaxcrud\BulkButtonWidget;
  use quidu\ajaxcrud\CrudAsset;
 
 /* @var $this yii\web\View */
@@ -12,7 +12,7 @@ use johnitvn\ajaxcrud\BulkButtonWidget;
 /* @var $dataProvider yii\data\ActiveDataProvider */
 use kartik\export\ExportMenu;
 
-$this->title = 'Rols';
+$this->title = 'Roles';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <script>
@@ -35,7 +35,10 @@ $this->params['breadcrumbs'][] = $this->title;
 
     function submitDetalle(id_maestro){
         var keys = $('#cruddetalle-datatable').yiiGridView('getSelectedRows');
-
+        if (keys.length === 0) {
+            $('#error-no-seleccion').text('Debes seleccionar al menos una opción.');
+            return; // Evita que la función continúe si ninguna opción se ha seleccionado
+        }
 
         $.ajax({
             url: '<?php echo Url::to(['createdetalle']) ?>',
@@ -65,6 +68,12 @@ $this->params['breadcrumbs'][] = $this->title;
     function submitAddaccion(id_permiso){
         var keys = $('#cruddetalle-datatable').yiiGridView('getSelectedRows');
           var keys =$("tr.detalle-seleccionado").find("td:eq(0)").text();
+          // Verificar si al menos una opción ha sido seleccionada
+         if (keys.length === 0) {
+           $('#error-no-seleccion').text('Debes seleccionar al menos una opción.');
+             return; // Evita que la función continúe si ninguna opción se ha seleccionado
+         }
+
         $.ajax({
             url: '<?php echo Url::to(['addaccion']) ?>',
             dataType: 'json',
@@ -178,8 +187,7 @@ $gridColumns =[  [
                 'type' => 'primary',
                 'heading' => '<i class="glyphicon glyphicon-list"></i> Lista de roles',
                 'before'=>'<em>* Para buscar algún registro tipear en el filtro y presionar ENTER </em>',
-
-                        '<div class="clearfix"></div>',
+                '<div class="clearfix"></div>',
             ]
         ])?>
     </div>

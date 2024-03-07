@@ -87,6 +87,12 @@ class Rol extends \yii\db\ActiveRecord
      public function getPermisos()
      {
        return $this->hasMany(Permiso::className(), ['id_rol' => 'id']);     }
-
+       /**
+       * @return \yii\db\ActiveQuery
+ 		    */
+ 		   public function getUsuarios()
+ 		   {
+ 		       return $this->hasMany(Usuario::className(), ['id_rol' => 'id']);
+ 		   }
 
 }

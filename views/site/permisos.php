@@ -57,8 +57,17 @@ $this->title = 'Permisos';
           <div class="count"><?=$cantidadAcciones?></div>
           <h3>ACCIONES</h3>
           <p>Alta-Baja-Modificacion.</p>
-
-
+      </div>
+    </div>
+    </a>
+    <a href=<?=Yii::$app->homeUrl."tipo-acceso/index"; ?>>
+    <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
+      <div class="tile-stats permisos">
+          <div class="icon"><i class="fas fa-archive"></i>
+          </div>
+          <div class="count"><?=$cantidadAcciones ?></div>
+          <h3> TIPO DE ACCESOS </h3>
+          <p>Listado de accesos.</p>
       </div>
     </div>
     </a>

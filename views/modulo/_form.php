@@ -1,6 +1,9 @@
 <?php
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use nex\chosen\Chosen;
+use app\models\TipoAcceso;
+use yii\helpers\ArrayHelper;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Modulo */
@@ -12,7 +15,20 @@ use yii\widgets\ActiveForm;
     <?php $form = ActiveForm::begin(); ?>
 
     <?= $form->field($model, 'nombre')->textInput(['maxlength' => true,'style'=> 'width:100%; text-transform:lowercase;']) ?>
+    <? $mapacceso = ArrayHelper::map(TipoAcceso::find()->all() , 'id',  'nombre'  ); ?>
 
+    <?
+
+    echo $form->field($model, 'id_tipo_acceso')->widget(
+      Chosen::className(), [
+       'items' => $mapacceso,
+        'placeholder' => 'Selecciona una opción',
+       'clientOptions' => [
+         'language' => 'es',
+         'rtl'=> true,
+           'search_contains' => true,
+           'single_backstroke_delete' => false,
+       ],])->label("Tipo de acceso"); ?>
 
 	<?php if (!Yii::$app->request->isAjax){ ?>
 	  	<div class="form-group">

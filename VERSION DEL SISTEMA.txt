@@ -1,3 +1,7 @@
+Version 2.8.2
+Refactorizacion de los permisos, de esta forma ya no va a ser hardcodeado cada vez que se agregue una vista nueva.
+
+
 Version 2.8.1
 Se incorpora en esta version, la seleccion de años por usuario de los estudios
 Agregando ConfiguracionAniosUsuario controlador y modelo

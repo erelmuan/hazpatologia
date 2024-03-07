@@ -20,9 +20,9 @@ class UsuarioSearch extends Usuario
     public function rules()
     {
         return [
-            [['id', 'activo'], 'integer'],
-            [['id', 'id_pantalla'], 'integer'],
-            [['usuario', 'contrasenia', 'nombre', 'email', 'descripcion', 'pantalla'], 'safe'],
+              [['id', 'id_pantalla', 'id_configuracion', 'id_provincia', 'id_localidad', 'id_rol'], 'integer'],
+              [['usuario', 'contrasenia', 'nombre', 'email', 'descripcion', 'imagen', 'token'], 'safe'],
+              [['activo'], 'boolean'],
         ];
     }
 
@@ -61,7 +61,7 @@ class UsuarioSearch extends Usuario
         $query->andFilterWhere([
             'id' => $this->id,
             'activo' => $this->activo,
-            'id_pantalla' => $this->id_pantalla,
+            // 'id_pantalla' => $this->id_pantalla,
               'id_pantalla' => $this->pantalla,
         ]);
 
@@ -69,7 +69,10 @@ class UsuarioSearch extends Usuario
             ->andFilterWhere(['ilike', 'contrasenia', $this->contrasenia])
             ->andFilterWhere(['ilike', 'nombre', $this->nombre])
             ->andFilterWhere(['ilike', 'email', $this->email])
-            ->andFilterWhere(['ilike', 'descripcion', $this->descripcion]);
+            ->andFilterWhere(['ilike', 'descripcion', $this->descripcion])
+            ->andFilterWhere(['like', 'descripcion', $this->descripcion])
+            ->andFilterWhere(['like', 'imagen', $this->imagen])
+            ->andFilterWhere(['like', 'token', $this->token]);
 
         return $dataProvider;
     }

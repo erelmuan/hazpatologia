@@ -11,8 +11,6 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use \yii\web\Response;
 use yii\helpers\Html;
-use app\models\Usuariorol;
-use app\models\UsuariorolSearch;
 use app\models\RolSearch;
 use app\models\Rol;
 use app\components\Metodos\Metodos;
@@ -24,6 +22,7 @@ use app\models\Menu;
 use app\models\Configuracion;
 use app\models\Provincia;
 use app\models\Localidad;
+use app\models\User;
 
 /**
  * UsuarioController implements the CRUD actions for Usuario model.
@@ -41,9 +40,8 @@ class UsuarioController extends Controller {
         $request = Yii::$app->request;
         if ($request->isAjax) { // modal para cambiar contraseña
             Yii::$app->response->format = Response::FORMAT_JSON;
-            $model = Usuariorol::findOne(['id_usuario' => Yii::$app->user->identity->id, 'id_rol' => 1, //id rol admin
-            ]);
-            if ($model == null) {
+
+            if (!User::isUserAdmin()) {
                 return ['title' => "Cambiar contraseña #", 'content' => "No puede cambiar una contraseña si no es administrador", 'footer' => Html::button('Cerrar', ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) ];
             }
             $model = $this->findModel($_GET['id']);
@@ -162,10 +160,7 @@ class UsuarioController extends Controller {
         $this->devolverArray($model,$provincias, $localidades);
         if ($request->isAjax) {
             Yii::$app->response->format = Response::FORMAT_JSON;
-            $modeluser = Usuariorol::findOne(['id_usuario' => Yii::$app->user
-                ->identity->id, 'id_rol' => 1, //id rol admin
-            ]);
-            if ($modeluser == null) {
+            if (!User::isUserAdmin()) {
                 return ['title' => "Cambiar contraseña #", 'content' => "No puede editar si no es administrador", 'footer' => Html::button('Cerrar', ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) ];
             }
             if ($request->isGet) {
@@ -216,9 +211,7 @@ class UsuarioController extends Controller {
         if (Yii::$app->user->identity->id == $id) {
             return ['title' => "Eliminar Rol #" . $id, 'content' => "No puede eliminarse a si mismo", 'footer' => Html::button('Cerrar', ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) ];
         }
-        $model = Usuariorol::findOne(['id_usuario' => Yii::$app->user->identity->id, 'id_rol' => 1, //id rol admin
-        ]);
-        if ($model == null) {
+        if (!User::isUserAdmin()) {
             return ['title' => "Eliminar Rol #" . $id, 'content' => "No puede eliminar usuario si no es administrador", 'footer' => Html::button('Cerrar', ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) ];
         }
         $request = Yii::$app->request;
@@ -241,35 +234,32 @@ class UsuarioController extends Controller {
 
     public function actionListdetalle() {
         if (isset($_POST['expandRowKey'])) {
-            $searchModel = new UsuariorolSearch();
+            $searchModel = new UsuarioSearch();
             $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-            $dataProvider->query->where(['id_usuario' => $_POST['expandRowKey']]);
+            $dataProvider->query->andWhere(['id' => $_POST['expandRowKey']])
+            ->andWhere(['not', ['id_rol' => null]]);
             $dataProvider->setPagination(false);
             $dataProvider->setSort(false);
-            return $this->renderPartial('_listDetalle', ['id_maestro' => $_POST['expandRowKey'], 'searchModel' => $searchModel, 'dataProvider' => $dataProvider, ]);
+            return $this->renderPartial('_listDetalle', ['id_maestro' => $_POST['expandRowKey'],
+             'searchModel' => $searchModel, 'dataProvider' => $dataProvider, ]);
         }
         else {
             return '<div>No se encontraron resultados</div>';
         }
     }
     public function actionAddrol() {
+        if (!Yii::$app->request->isAjax){
+          return $this->redirect(["index"]);
+        }
+
         if (isset($_POST['keylist']) and isset($_POST['id_usuario'])) {
             $lerror = false;
             $id_usuario = $_POST['id_usuario'];
-            foreach ($_POST['keylist'] as $value) {
-                if ($modelUsuarioRol = new Usuariorol()) {
-                    $modelUsuarioRol->id_usuario = $id_usuario;
-                    $modelUsuarioRol->id_rol = $value;
-                    if (!$modelUsuarioRol->save()) {
-                        $lerror = true;
-                        break;
-                    }
-                }
-                else {
+              $modelUsuario = $this->findModel($id_usuario);
+              $modelUsuario->id_rol = $_POST['keylist'] ;
+                if (!$modelUsuario->save()) {
                     $lerror = true;
-                    break;
-                }
-            }
+                    }
             Yii::$app
                 ->response->format = Response::FORMAT_JSON;
             if ($lerror) {
@@ -282,41 +272,35 @@ class UsuarioController extends Controller {
         $searchModel = new RolSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         $columnas = Metodos::obtenerColumnas($modelDetalle);
-        // Respuesta para el GET de filter y sort
-        // if (isset($_GET['_pjax'])) {
-        //
-        //     return $this->renderAjax('_addrol', [
-        //         'searchModel' => $searchModel,
-        //         'dataProvider' => $dataProvider,
-        //         'columns' => $columnas,
-        //         'id_maestro' => $_GET['id_maestro']
-        //     ]);
-        //
-        // } else {
+
         Yii::$app
             ->response->format = Response::FORMAT_JSON;
-        return ['title' => 'Agregar Rol', 'content' => $this->renderAjax('_addrol', ['searchModel' => $searchModel, 'dataProvider' => $dataProvider, 'columns' => $columnas, 'id_usuario' => $_GET['id_maestro'], ]) , ];
-        //
-        // }
+        return ['title' => 'Agregar Rol', 'content' =>
+        $this->renderAjax('_addrol', ['searchModel' => $searchModel,
+        'dataProvider' => $dataProvider, 'columns' => $columnas,
+        'id_usuario' => $_GET['id_maestro'], ]) , ];
+
 
     }
-    public function actionDeletedetalle($id_detalle, $id_maestro) {
-        //detalle=usuariorol
-        //maestro =usuario
+    public function actionDeletedetalle($id_detalle) {
         Yii::$app->response->format = Response::FORMAT_JSON;
-        if (Yii::$app->user->identity->id == $id_maestro) {
-            return ['title' => "Eliminar Rol #" . $id_maestro, 'content' => "No puede eliminarse el rol usted mismo", 'footer' => Html::button('Cerrar', ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) ];
+        if (Yii::$app->user->identity->id == $id_detalle) {
+            return ['title' => "Eliminar Rol #" . $id_detalle, 'content' => "No puede eliminarse el rol usted mismo", 'footer' => Html::button('Cerrar', ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) ];
         }
-        $model = Usuariorol::findOne(['id_usuario' => Yii::$app->user->identity->id, 'id_rol' => 1, //id rol admin
-        ]);
-        if ($model == null) {
+
+        if (!User::isUserAdmin()) {
             return ['title' => "Eliminar Rol #" . $id, 'content' => "No puede eliminar un rol si no es administrador", 'footer' => Html::button('Cerrar', ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) ];
         }
         try {
-            if ($modelUsuarioRol = Usuariorol::findOne($id_detalle)) {
+            if ($modelUsuario = Usuario::findOne($id_detalle)) {
                 // borro registro en este caso por que es una relacion NN
-                if ($modelUsuarioRol->delete())
-                return ['forceClose' => true, 'success' => 'reloadDetalle(' . $id_maestro . ')'];
+                 $modelUsuario->id_rol=null;
+                 if($modelUsuario->save()){
+                   return ['forceClose' => true, 'success' => 'reloadDetalle(' . $id_detalle . ')'];
+                 }else {
+                   return ['status'=>'error'];
+                    Yii::$app->end();
+                 }
             }
         }
         catch(yii\db\Exception $e) {

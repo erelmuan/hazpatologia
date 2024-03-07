@@ -10,7 +10,6 @@ use \yii\web\Response;
 use yii\helpers\Html;
 use app\components\Metodos\Metodos;
 use yii\filters\AccessControl;
-use app\components\Seguridad\Seguridad;
 use yii\helpers\Json;
 /**
  * PlantillamaterialController implements the CRUD actions for Plantillamaterial model.

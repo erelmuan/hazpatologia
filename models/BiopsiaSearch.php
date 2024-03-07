@@ -80,29 +80,29 @@ class BiopsiaSearch extends Biopsia
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
-        $dataProvider->sort->attributes['protocolo'] = [
-             'asc' => ['solicitudbiopsia.protocolo' => SORT_ASC],
-             'desc' => ['solicitudbiopsia.protocolo' => SORT_DESC],
-           ];
 
         $this->load($params);
         $dataProvider->setSort([
             'attributes' => [
-              'protocolo','estado'
+              'protocolo','estado','id','fechadeingreso','fecharealizacion','sexo'
          ]]);
-
+         $dataProvider->sort->attributes['medico'] = [
+                'asc' => ['medico.apellido' => SORT_ASC],
+                'desc' => ['medico.apellido' => SORT_DESC],
+            ];
+        $dataProvider->sort->attributes['paciente'] = [
+               'asc' => ['paciente.apellido' => SORT_ASC],
+               'desc' => ['paciente.apellido' => SORT_DESC],
+           ];
+       $dataProvider->sort->attributes['procedencia'] = [
+                'asc' => ['procedencia.nombre' => SORT_ASC],
+                'desc' => ['procedencia.nombre' => SORT_DESC],
+            ];
         if (!$this->validate()) {
             // uncomment the following line if you do not want to return any records when validation fails
             // $query->where('0=1');
             return $dataProvider;
         }
-        $dataProvider->sort->attributes['id'] = [
-               // The tables are the ones our relation are configured to
-               // in my case they are prefixed with "tbl_"
-               'desc' => ['id' => SORT_DESC],
-               'asc' => ['id' => SORT_ASC],
-
-           ];
         //filtro de busqueda
         $query->andFilterWhere([
             'biopsia.id' => $this->id,

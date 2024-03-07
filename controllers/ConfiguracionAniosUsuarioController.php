@@ -13,26 +13,12 @@ use \yii\web\Response;
 use yii\helpers\Html;
 use app\components\Metodos\Metodos;
 use yii\filters\AccessControl;
-use app\components\Seguridad\Seguridad;
 /**
  * ConfiguracionAniosUsuarioController implements the CRUD actions for ConfiguracionAniosUsuario model.
  */
 class ConfiguracionAniosUsuarioController extends Controller
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function behaviors()
-    {
-        return [
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['POST'],
-                ],
-            ],
-        ];
-    }
+  
 
     public function actionAnioselect($modelo) {
             $request = Yii::$app->request;

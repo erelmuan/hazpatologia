@@ -10,7 +10,6 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use \yii\web\Response;
 use yii\helpers\Html;
-use app\components\Seguridad\Seguridad;
 
 /**
  * RegistrosesionController implements the CRUD actions for Registrosesion model.

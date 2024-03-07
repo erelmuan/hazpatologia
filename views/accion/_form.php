@@ -11,16 +11,12 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'index')->checkbox() ?>
-
     <?= $form->field($model, 'create')->checkbox() ?>
 
     <?= $form->field($model, 'delete')->checkbox() ?>
 
     <?= $form->field($model, 'update')->checkbox() ?>
-
-    <?= $form->field($model, 'export')->checkbox() ?>
-
+    
     <?= $form->field($model, 'view')->checkbox() ?>
 
 

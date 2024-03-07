@@ -25,12 +25,10 @@ $this->title = 'Inicio';
   <div class="row">
 
     <div class="row top_tiles">
-      <?  if (Yii::$app->user->identity->id_pantalla==2){ ?>
-
       <a href=<?=Yii::$app->homeUrl."site/plantillas"; ?>>
       <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
         <div class="tile-stats">
-            <div class="icon"><i class="icon-pastealt"></i>
+            <div class="icon"><i class="icon-pastealt" style="color:#a4d149 ;"></i>
             </div>
             <div class="count">2</div>
             <h3>PLANTILLAS</h3>
@@ -43,7 +41,7 @@ $this->title = 'Inicio';
       <a href=<?=Yii::$app->homeUrl."site/extras"; ?>>
         <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
           <div class="tile-stats">
-            <div class="icon"><i class="fa fa-table"></i>
+            <div class="icon"><i class="fa fa-table" style="color:#5499c7 ;"></i>
             </div>
             <div class="count">8</div>
 
@@ -55,7 +53,7 @@ $this->title = 'Inicio';
       <a href=<?=Yii::$app->homeUrl."paciente"; ?>>
       <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
         <div class="tile-stats">
-          <div class="icon"><i class="fa fa-users"></i>
+          <div class="icon"><i class="fa fa-users" style="color:#f7dc6f ;"></i>
           </div>
           <div class="count"><?=$cantidadPacientes ?></div>
 
@@ -67,7 +65,7 @@ $this->title = 'Inicio';
       <a href=<?=Yii::$app->homeUrl."medico"; ?>>
       <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
         <div class="tile-stats">
-          <div class="icon"><i class="fa fa-user-md"></i>
+          <div class="icon"><i class="fa fa-user-md" style="color:#f5b7b1 ;"></i>
           </div>
           <div class="count"><?=$cantidadMedicos ?></div>
 
@@ -79,7 +77,7 @@ $this->title = 'Inicio';
       <a href=<?=Yii::$app->homeUrl."biopsia/index?sort=-id"; ?>>
       <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
         <div class="tile-stats">
-          <div class="icon"> <?  echo Icon::show('microscope', ['class'=>'fa-2x', 'framework' => Icon::WHHG]); ?>
+          <div class="icon"> <?  echo Icon::show('microscope', ['class'=>'fa-2x','style'=>"color:#a569bd  ;", 'framework' => Icon::WHHG]); ?>
 
           </div>
           <div class="count"><?=$cantidadBiopsias ?></div>
@@ -92,7 +90,7 @@ $this->title = 'Inicio';
       <a href=<?=Yii::$app->homeUrl."pap/index?sort=-id"; ?>>
       <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
         <div class="tile-stats">
-          <div class="icon"><i class="fa fa-flask"></i>
+          <div class="icon"><i class="fa fa-flask" style="color:#a9dfbf ;"></i>
           </div>
           <div class="count"><?=$cantidadPaps ?></div>
 
@@ -104,7 +102,7 @@ $this->title = 'Inicio';
       <a href=<?=Yii::$app->homeUrl."solicitud/index?sort=-id"; ?>>
       <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
         <div class="tile-stats">
-          <div class="icon"><i class="fa fa-file-text"></i>
+          <div class="icon"><i class="fa fa-file-text" style="color:#f0b27a ;"></i>
           </div>
           <div class="count"><?=$cantidadSolicitudes ?></div>
 
@@ -117,7 +115,7 @@ $this->title = 'Inicio';
      <a href=<?=Yii::$app->homeUrl."site/administracion"; ?>>
       <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
         <div class="tile-stats">
-          <div class="icon"><i class="fa fa-wrench"></i>
+          <div class="icon"><i class="fa fa-wrench" style="color:#2c3e50 ;"></i>
           </div>
           <div class="count">4</div>
 
@@ -126,33 +124,6 @@ $this->title = 'Inicio';
         </div>
       </div>
     </a>
-  <? }  else {  ?>
-      <a href=<?=Yii::$app->homeUrl."biopsia"; ?>>
-      <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
-        <div class="tile-stats">
-          <div class="icon"> <?  echo Icon::show('microscope', ['class'=>'fa-2x', 'framework' => Icon::WHHG]); ?>
-
-          </div>
-          <div class="count"><?=$cantidadBiopsias ?></div>
-
-          <h3>BIOPSIAS</h3>
-          <p>Información de las biopsias - ABM.</p>
-        </div>
-      </div>
-      </a>
-      <a href=<?=Yii::$app->homeUrl."pap"; ?>>
-      <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
-        <div class="tile-stats">
-          <div class="icon"><i class="fa fa-flask"></i>
-          </div>
-          <div class="count"><?=$cantidadPaps ?></div>
-
-          <h3>PAPS</h3>
-          <p>Información de los paps - ABM..</p>
-        </div>
-      </div>
-      </a>
-  <?  }  ?>
     </div>
   </div>
 

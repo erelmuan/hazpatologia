@@ -113,31 +113,37 @@ class SolicitudSearch extends Solicitud
      */
     public function search($params,$busqueda )
     {
-      if($busqueda=="anulado"){
+
         $query = Solicitud::find()->innerJoinWith('procedencia', true)
         ->innerJoinWith('paciente', 'paciente.id = solicitud.id_paciente')
         ->innerJoinWith('medico', 'medico.id = solicitud.id_medico')
         ->innerJoinWith('estado', 'estado.id = solicitud.id_estado')
-        ->innerJoinWith('estudio', 'estudio.id = solicitud.id_estudio')
-        ->andWhere(['and','id_estado = 6 ' ])
-        ;
-      }else {
-        $query = Solicitud::find()->innerJoinWith('procedencia', true)
-        ->innerJoinWith('paciente', 'paciente.id = solicitud.id_paciente')
-        ->innerJoinWith('medico', 'medico.id = solicitud.id_medico')
-        ->innerJoinWith('estado', 'estado.id = solicitud.id_estado')
-        ->innerJoinWith('estudio', 'estudio.id = solicitud.id_estudio')
-        ->andWhere(['and','id_estado <> 6 ' ])
-        ;
-      }
+        ->innerJoinWith('estudio', 'estudio.id = solicitud.id_estudio');
+        if($busqueda=="anulado"){
+        $query->andWhere(['and','id_estado = 6 ' ]);
+        }else {
+          $query->andWhere(['and','id_estado <> 6 ' ]);
+        }
+        $dataProvider = new ActiveDataProvider([
+           'query' => $query,
 
+       ]);
+    $query->orderBy(['fechadeingreso'=> SORT_DESC ,'protocolo' => SORT_DESC ,'id' => SORT_DESC ]);
+       $this->load($params);
+       if (!$this->validate()) {
+           // uncomment the following line if you do not want to return any records when validation fails
+           // $query->where('0=1');
+           return $dataProvider;
+       }
 
-       $dataProvider = new ActiveDataProvider([
-            'query' => $query,
+         $dataProvider->setSort([
+             'attributes' => [
+               'protocolo','estado','id','fechadeingreso','fecharealizacion','sexo',
+          ]]);
 
-        ]);
-     $query->orderBy(['fechadeingreso'=> SORT_DESC ,'protocolo' => SORT_DESC ,'id' => SORT_DESC ]);
         $this->load($params);
+
+
         if (!$this->validate()) {
             // uncomment the following line if you do not want to return any records when validation fails
             // $query->where('0=1');
@@ -149,6 +155,7 @@ class SolicitudSearch extends Solicitud
             'protocolo' => $this->protocolo,
             'id_materialsolicitud' => $this->id_materialsolicitud,
         ]) ;
+
           $query->andFilterWhere(['=', 'fecharealizacion', $this->fecharealizacion]);
           $query->andFilterWhere(['=', 'fechadeingreso', $this->fechadeingreso]);
           $query->andFilterWhere([  'id_procedencia' => $this->id_procedencia,]);

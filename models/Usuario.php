@@ -17,12 +17,12 @@ use Yii;
  * @property string $descripcion
  * @property string $imagen
  * @property int $id_pantalla
+  * @property int $id_rol
  * @property Biopsia[] $biopsias
  * @property Firma $firma
  * @property Pap[] $paps
  * @property Auditoria[] $auditorias
  * @property Pantalla $pantalla
- * @property Usuariorol[] $usuariorols
  * @property Vista[] $vistas
  * @property int $id_configuracion
  * @property Configuracion $configuracion
@@ -32,6 +32,8 @@ use Yii;
  * @property int $id_localidad
  * @property Localidad $localidad
  * @property Provincia $provincia
+ * @property Rol $rol
+
  */
  use yii\filters\AccessControl;
  use app\components\behaviors\AuditoriaBehaviors;
@@ -107,8 +109,8 @@ class Usuario extends \yii\db\ActiveRecord  implements \yii\web\IdentityInterfac
             [['activo'], 'default', 'value' => null],
             // [['activo'], 'integer'],
             [['descripcion', 'imagen'], 'string'],
-            [['id_pantalla','id_configuracion','id_provincia', 'id_localidad'], 'default', 'value' => null],
-            [['id_pantalla','id_configuracion','id_provincia', 'id_localidad'], 'integer'],
+            [['id_pantalla','id_configuracion','id_provincia', 'id_localidad','id_rol'], 'default', 'value' => null],
+            [['id_pantalla','id_configuracion','id_provincia', 'id_localidad','id_rol'], 'integer'],
             [['usuario', 'nombre'], 'string', 'max' => 45],
             [['contrasenia'], 'string', 'max' => 50],
             [['email'], 'string', 'max' => 35],
@@ -119,7 +121,7 @@ class Usuario extends \yii\db\ActiveRecord  implements \yii\web\IdentityInterfac
             [['id_configuracion'], 'exist', 'skipOnError' => true, 'targetClass' => Configuracion::className(), 'targetAttribute' => ['id_configuracion' => 'id']],
             [['usuario', 'email'], 'unique', 'targetAttribute' => ['usuario', 'email']],
             [['id_pantalla'], 'exist', 'skipOnError' => true, 'targetClass' => Pantalla::className(), 'targetAttribute' => ['id_pantalla' => 'id']],
-
+            [['id_rol'], 'exist', 'skipOnError' => true, 'targetClass' => Rol::className(), 'targetAttribute' => ['id_rol' => 'id']],
         ];
     }
 
@@ -144,6 +146,7 @@ class Usuario extends \yii\db\ActiveRecord  implements \yii\web\IdentityInterfac
              'id_pantalla' => 'Id Pantalla',
              'id_provincia' => 'Id Provincia',
              'id_localidad' => 'Id Localidad',
+             'id_rol' => 'Id Rol',
 
         ];
     }
@@ -194,13 +197,7 @@ class Usuario extends \yii\db\ActiveRecord  implements \yii\web\IdentityInterfac
       {
     		    return $this->hasMany(Auditoria::className(), ['id_usuario' => 'id']);
     	 }
-           /**
-       * @return \yii\db\ActiveQuery
-       */
-      public function getUsuariorols()
-      {
-          return $this->hasMany(Usuariorol::className(), ['id_usuario' => 'id']);
-      }
+
       /**
 		    * @return \yii\db\ActiveQuery
 		    */
@@ -237,9 +234,9 @@ class Usuario extends \yii\db\ActiveRecord  implements \yii\web\IdentityInterfac
      }
      public function isPatologo() {
          $id= Yii::$app->user->identity->id;
-         $rol_patologo = Usuariorol::find()
+         $rol_patologo = Usuario::find()
           //el id_rol 4 es del patologo
-          ->where(['and', "usuariorol.id_usuario=".$id ,"usuariorol.id_rol=4"])->count('*');
+          ->where(['and', "id=".$id ,"id_rol=4"])->count('*');
           if ($rol_patologo >0){
             return true;
           }
@@ -289,4 +286,12 @@ class Usuario extends \yii\db\ActiveRecord  implements \yii\web\IdentityInterfac
      {
          return $this->hasOne(Localidad::className(), ['id' => 'id_localidad']);
      }
+		   /**
+		    * @return \yii\db\ActiveQuery
+		    */
+		   public function getRol()
+		   {
+		       return $this->hasOne(Rol::className(), ['id' => 'id_rol']);
+		   }
+
 }

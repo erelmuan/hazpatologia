@@ -155,12 +155,23 @@ class RolController extends Controller {
         }
     }
     public function actionCreatedetalle() {
+
+        if (!Yii::$app->request->isAjax) {
+          $this->redirect(['index']);
+        }
         // Verifico si es el POST de createdetalle con la seleccion
         if (isset($_POST['keylist']) and isset($_POST['id_maestro'])) {
             $lerror = false;
             $id_maestro = $_POST['id_maestro'];
             foreach ($_POST['keylist'] as $value) {
                 if ($modelPermiso = new Permiso()) {
+                    $existePermiso= Permiso::find()->andWhere(['id_modulo'=>$value,'id_rol'=>$id_maestro])->one();
+                    if ($existePermiso != null){
+                      Yii::$app->getSession()->setFlash('danger', ['type' => 'danger', 'duration' => 5000, 'icon' => 'fa fa-danger', 'message' => "No se permiten modulos duplicados", 'title' => 'NOTIFICACIÓN', 'positonY' => 'top', 'positonX' => 'right']);
+                        $this->redirect(["index"]);
+                        $lerror = true;
+                        break;
+                    }
                     $modelPermiso->id_rol = $id_maestro;
                     $modelPermiso->id_modulo = $value;
                     if (!$modelPermiso->save()) {
@@ -194,7 +205,10 @@ class RolController extends Controller {
         else {
             Yii::$app
                 ->response->format = Response::FORMAT_JSON;
-            return ['title' => 'Agregar Modulo', 'content' => $this->renderAjax('_createDetalle', ['searchModel' => $searchModel, 'dataProvider' => $dataProvider, 'columns' => $columnas, 'id_maestro' => $_GET['id_maestro'], ]) , ];
+            return ['title' => 'Agregar Modulo', 
+            'content' => $this->renderAjax('_createDetalle',
+            ['searchModel' => $searchModel, 'dataProvider' => $dataProvider,
+             'columns' => $columnas, 'id_maestro' => $_GET['id_maestro'], ]) , ];
         }
     }
     public function actionDeletedetalle($id_detalle, $id_maestro) {
@@ -213,6 +227,9 @@ class RolController extends Controller {
     }
     public function actionAddaccion() {
         // Verifico si es el POST de createdetalle con la seleccion
+        if (!Yii::$app->request->isAjax) {
+          $this->redirect(['index']);
+        }
         if (isset($_POST['keylist']) and isset($_POST['id_permiso'])) {
             $lerror = false;
             // $id_permiso = $_POST['id_permiso'];

@@ -2,13 +2,13 @@
 
 use yii\helpers\Html;
 
-
 /* @var $this yii\web\View */
-/* @var $model app\models\Usuariorol */
-
+/* @var $model app\models\TipoAcceso */
 ?>
-<div class="usuariorol-create">
+<div class="tipo-acceso-update">
+
     <?= $this->render('_form', [
         'model' => $model,
     ]) ?>
+
 </div>

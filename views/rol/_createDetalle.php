@@ -44,6 +44,7 @@ $columns[]=
             'responsiveWrap' => false,
             'panel' => [
                 'type' => 'primary',
+                'before'=>'<em>* Para buscar algún registro tipear en el filtro y presionar ENTER </em> </br><span id="error-no-seleccion" style="color:red;"> </span>',
                 'heading' => '<i class="glyphicon glyphicon-list"></i> Modulos',
             ]
         ])?>

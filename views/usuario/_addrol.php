@@ -2,13 +2,18 @@
 use yii\helpers\Html;
 use kartik\grid\GridView;
 ?>
+<style>
+    .detalle-seleccionado > td {
+        background-color: #bee0bf;!important;
+    }
+</style>
 
 <?php
 // agrego acciones a $columns
 $columns[]=
 
-    ['class' => '\kartik\grid\CheckboxColumn',
-     'header' => Html::img("./img/check.png"),
+    ['class' => '\kartik\grid\RadioColumn',
+     'header' => Html::img("../img/check.png"),
      'rowSelectedClass' => 'detalle-seleccionado',
     ];
 ?>
@@ -39,6 +44,7 @@ $columns[]=
             'responsiveWrap' => false,
             'panel' => [
                 'type' => 'primary',
+                'before'=>'<em>* Para buscar algún registro tipear un id o elegir una opción en el filtro. </em> </br><span id="error-no-seleccion" style="color:red;"> </span>',
                 'heading' => '<i class="glyphicon glyphicon-list"></i> Roles',
             ]
         ])?>

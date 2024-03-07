@@ -122,16 +122,14 @@ class User extends \yii\base\BaseObject implements \yii\web\IdentityInterface
         ];
     }
 public static function isUserAdmin()    {
-      $model = Usuariorol::findOne([
-        'id_usuario' => Yii::$app->user->identity->id,
+      $model = Usuario::findOne([
+        'id' => Yii::$app->user->identity->id,
         'id_rol' => 1, //id rol admin
       ]);
           if ($model){
-
-                 return true;
+            return true;
           } else {
-
-                 return false;
+            return false;
           }
 
     }

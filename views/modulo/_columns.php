@@ -12,6 +12,12 @@ return [
         'attribute'=>'nombre',
     ],
     [
+      'class'=> '\kartik\grid\DataColumn',
+      'label'=> 'Tipo de acceso',
+      'attribute'=>'tipo_acceso',
+      'value'=>'tipoAcceso.nombre',
+    ],
+    [
         'class' => 'kartik\grid\ActionColumn',
         'dropdown' => false,
         'vAlign'=>'middle',
