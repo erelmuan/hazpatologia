@@ -24,9 +24,10 @@ use app\components\behaviors\AuditoriaBehaviors;
  * @property int $id_materialginecologico
  * @property int $id_estudio
  * @property int $id_estado
- ** @property int $id_anio_protocolo
-* @property bool $protocolo_automatico
-*
+ * @property int $id_anio_protocolo
+ * @property bool $protocolo_automatico
+ * @property Medico $medico
+ * @property Paciente $paciente
  * @property Biopsia $biopsia
  * @property Paramaterialginecologico $materialginecologico
  */
@@ -81,9 +82,8 @@ class Solicitudbiopsia extends Solicitud
             [['observacion', 'sitio_prec_toma', 'datos_clin_interes', 'diagnostico_presuntivo', 'biopsia_anterior_resultado'], 'string'],
             [['id_materialginecologico'], 'exist', 'skipOnError' => true, 'targetClass' => Paramaterialginecologico::className(), 'targetAttribute' => ['id_materialginecologico' => 'id']],
             [['id_paciente'], 'exist', 'skipOnError' => true, 'targetClass' => Paciente::className(), 'targetAttribute' => ['id_paciente' => 'id']],
-            // [['id_anio_protocolo', 'protocolo'], 'unique','message' => 'El 44 de protocolo ya fue asignado para el año seleccionado','targetAttribute' => ['id_anio_protocolo', 'protocolo']],
-             [ ['protocolo'], 'validacion_protocolo_create','on' => 'create'],
-             [ ['protocolo'], 'validacion_protocolo_update','on' => 'update'],
+            [['id_medico'], 'exist', 'skipOnError' => true, 'targetClass' => Medico::className(), 'targetAttribute' => ['id_medico' => 'id']],
+            [ ['protocolo'], 'validacion_protocolo_update','on' => 'update'],
 
         ];
     }
@@ -149,5 +149,19 @@ class Solicitudbiopsia extends Solicitud
         return $this->hasOne(Paramaterialginecologico::className(), ['id' => 'id_materialginecologico']);
     }
 
+    /**
+   		 * @return \yii\db\ActiveQuery
+      */
+      public function getMedico()
+      {
+          return $this->hasOne(Medico::className(), ['id' => 'id_medico']);
+      }
 
+   	  /**
+   	  * @return \yii\db\ActiveQuery
+   		  */
+      public function getPaciente()
+   	   {
+  	      return $this->hasOne(Paciente::className(), ['id' => 'id_paciente']);
+  	   }
 }

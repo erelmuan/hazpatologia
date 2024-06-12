@@ -51,7 +51,7 @@ class PapController extends Controller {
             return ['title' => "Pap #" . $id, 'content' => $this->renderAjax('view', ['model' => $this->findModel($id)  ]) , 'footer' => Html::button('Cerrar', ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) ];
         }
         else {
-            return $this->render('viewV', ['model' => $this->findModel($id)]);
+            return $this->render('view', ['model' => $this->findModel($id)]);
         }
     }
     public function cargarEstructuras(&$search, &$array, &$provider, $id_estudio) {
@@ -115,13 +115,14 @@ class PapController extends Controller {
         $array['arraycie10'] = $arraycie10;
         $provider['dataProviderCie'] = $dataProviderCie;
     }
+
     public function validar($post) {
         if (Yii::$app->user->identity->contrasenia <> md5($post['contrasenia'])) {
-            Yii::$app->getSession()->setFlash('warning', ['type' => 'danger', 'duration' => 5000, 'icon' => 'fa fa-warning', 'message' => "CONTRASEÑA INCORRECTA", 'title' => 'NOTIFICACIÓN', 'positonY' => 'top', 'positonX' => 'right']);
+          $this->setearMensajeError('CONTRASEÑA INCORRECTA');
             return false;
         }
         if ($post['Pap']['firmado'] !== "1") {
-            Yii::$app->getSession()->setFlash('warning', ['type' => 'danger', 'duration' => 5000, 'icon' => 'fa fa-warning', 'message' => "EN ESTADO LISTO, DEBE POSEER LA FIRMA", 'title' => 'NOTIFICACIÓN', 'positonY' => 'top', 'positonX' => 'right']);
+          $this->setearMensajeError('EN ESTADO LISTO, DEBE POSEER LA FIRMA');
         }
         else {
             return true;
@@ -154,7 +155,6 @@ class PapController extends Controller {
           $model->id_usuario = Yii::$app->user->identity->getId();
         }
         $transaction = Yii::$app->db->beginTransaction();
-
         try {
             if ($model->load($post) && $model->save()) {
                 // cambio de estados
@@ -163,12 +163,10 @@ class PapController extends Controller {
                     $solicitud->scenario = 'update';
                     $solicitud->save();
                 }
-
                 if ($model->vph) {
                     $transaction->commit();
                     return $this->redirect(['vph-escaneado/create', 'id_pap' => $model->id]);
                 }
-
                 $transaction->commit();
                 return $this->redirect(['view', 'id' => $model->id]);
             } else {
@@ -260,15 +258,17 @@ class PapController extends Controller {
      * @return mixed
      */
     public function actionDelete($id) {
-        Yii::$app->response->format = Response::FORMAT_JSON;
-        $model = $this->findModel($id);
+      Yii::$app->response->format = Response::FORMAT_JSON;
+      $model = $this->findModel($id);
+      $request = Yii::$app->request;
+      if ($request->isAjax) {
         if ($model->estado->descripcion == 'LISTO') {
-            return ['title' => "Eliminar informe Pap #" . $id, 'content' => "No se puede eliminar informe en estado listo", 'footer' => Html::button('Cerrar', ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) ];
+          $this->setearMensajeError("No se puede eliminar informe en estado listo.");
+          return ['forceClose' => true, 'forceReload' => '#crud-datatable-pjax','metodo'=>'delete'];
         }
         $transaction = Yii::$app->db->beginTransaction();
 
         try {
-            $request = Yii::$app->request;
             $model->solicitudpap->id_estado=5;//Vuelve al estado PENDIENTE
             $model->solicitudpap->save();
             if (isset($model->vphEscaneado)) {
@@ -277,7 +277,8 @@ class PapController extends Controller {
             $this->findModel($id)->delete();
             if ($request->isAjax) {
                 $transaction->commit();
-                return ['forceClose' => true, 'forceReload' => '#crud-datatable-pjax'];
+                $this->setearMensajeExito('El registro se eliminó correctamente');
+                return ['forceClose' => true, 'forceReload' => '#crud-datatable-pjax','metodo'=>'delete'];
             }
             else {
                 $transaction->commit();
@@ -290,6 +291,10 @@ class PapController extends Controller {
                $transaction->rollBack();
                throw $e;
            }
+         }
+         else {
+             return $this->redirect(['index']);
+         }
 
     }
 

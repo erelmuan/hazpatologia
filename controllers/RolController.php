@@ -118,42 +118,8 @@ class RolController extends Controller {
             }
         }
     }
-    /**
-     * Delete an existing Rol model.
-     * For ajax request will return json object
-     * and for non-ajax request if deletion is successful, the browser will be redirected to the 'index' page.
-     * @param integer $id
-     * @return mixed
-     */
-    public function actionDelete($id) {
-        $request = Yii::$app->request;
-        Yii::$app
-            ->response->format = Response::FORMAT_JSON;
-        if ($id == 1) {
-            return ['title' => "Eliminar Rol #" . $id, 'content' => "El rol administrador no se puede eliminar", 'footer' => Html::button('Cerrar', ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) ];
-        }
-        if ($id == 4) {
-            return ['title' => "Eliminar Rol #" . $id, 'content' => "El rol patologo no se puede eliminar", 'footer' => Html::button('Cerrar', ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) ];
-        }
-        if (Permiso::find()->where(['id_rol'=>$id])->count()>0 ){
-            return ['title' => "Eliminar rol #" . $id, 'content' => 'No se puede eliminar la rol porque esta asociado a uno o más permisos', 'footer' => Html::button('Cerrar', ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) ];
-          }
-        $this->findModel($id)->delete();
-        if ($request->isAjax) {
-            /*
-             *   Process for ajax request
-            */
-            Yii::$app
-                ->response->format = Response::FORMAT_JSON;
-            return ['forceClose' => true, 'success' => 'reloadDetalle(' . $id_maestro . ')'];
-        }
-        else {
-            /*
-             *   Process for non-ajax request
-            */
-            return $this->redirect(['index']);
-        }
-    }
+
+
     public function actionCreatedetalle() {
 
         if (!Yii::$app->request->isAjax) {
@@ -205,7 +171,7 @@ class RolController extends Controller {
         else {
             Yii::$app
                 ->response->format = Response::FORMAT_JSON;
-            return ['title' => 'Agregar Modulo', 
+            return ['title' => 'Agregar Modulo',
             'content' => $this->renderAjax('_createDetalle',
             ['searchModel' => $searchModel, 'dataProvider' => $dataProvider,
              'columns' => $columnas, 'id_maestro' => $_GET['id_maestro'], ]) , ];

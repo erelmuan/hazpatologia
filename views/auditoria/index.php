@@ -19,6 +19,21 @@ $export= ExportMenu::widget([
   'exportConfig' => [
     ExportMenu::FORMAT_TEXT => false,
     ExportMenu::FORMAT_HTML => false,
+    ExportMenu::FORMAT_PDF => [
+          'icon' => 'fa fa-file-pdf-o', // Cambia 'fa fa-file-pdf-o' por el nombre de tu icono de PDF
+      ],
+      ExportMenu::FORMAT_CSV => [
+          'icon' => 'fa fa-file-text-o', // Cambia 'fa fa-file-text-o' por el nombre de tu icono de CSV
+      ],
+      ExportMenu::FORMAT_TEXT => [
+          'icon' => 'fa fa-file-text', // Cambia 'fa fa-file-text' por el nombre de tu icono de TXT
+      ],
+      ExportMenu::FORMAT_EXCEL => [
+       'icon' => 'fa fa-file-excel-o', // Icono para Excel (formato XLS)
+     ],
+      ExportMenu::FORMAT_EXCEL_X => [
+        'icon' => 'fa fa-file-excel-o', // Icono para Excel (formato XLSX)
+      ],
 ],
          'dataProvider' => $dataProvider,
          'columns' => require(__DIR__.'/_columns.php'),

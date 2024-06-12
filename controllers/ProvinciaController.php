@@ -118,39 +118,7 @@ class ProvinciaController extends Controller {
             }
         }
     }
-    /**
-     * Delete an existing Provincia model.
-     * For ajax request will return json object
-     * and for non-ajax request if deletion is successful, the browser will be redirected to the 'index' page.
-     * @param integer $id
-     * @return mixed
-     */
-    public function actionDelete($id) {
-        $request = Yii::$app->request;
-        Yii::$app->response->format = Response::FORMAT_JSON;
-        if (Paciente::find()->where(['id_provincia'=>$id])->count()>0 ){
-            return ['title' => "Eliminar provincia #" . $id, 'content' =>'No se puede eliminar la provincia porque esta asociado a uno o más pacientes', 'footer' => Html::button('Cerrar', ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) ];
-          }
-          if (Localidad::find()->where(['id_provincia'=>$id])->count()>0 ){
-              return ['title' => "Eliminar provincia #" . $id, 'content' =>'No se puede eliminar la provincia porque esta asociado a uno o más localidades', 'footer' => Html::button('Cerrar', ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) ];
-            }
-            $this->findModel($id)->delete();
-            if ($request->isAjax) {
-                /*
-                 *   Process for ajax request
-                */
-                Yii::$app
-                    ->response->format = Response::FORMAT_JSON;
-                return ['forceClose' => true, 'forceReload' => '#crud-datatable-pjax'];
-            }
-            else {
-                /*
-                 *   Process for non-ajax request
-                */
-                return $this->redirect(['index']);
-            }
-
-    }
+  
     /**
      * Finds the Provincia model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.

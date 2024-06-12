@@ -56,7 +56,7 @@ class BiopsiaController extends Controller {
             return ['title' => "Biopsia #" . $id, 'content' => $this->renderAjax('view', ['model' => $this->findModel($id)  ]) , 'footer' => Html::button('Cerrar', ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) ];
         }
         else {
-            return $this->render('viewV', ['model' => $this->findModel($id)  ]);
+            return $this->render('view', ['model' => $this->findModel($id)  ]);
         }
     }
     public function cargarEstructuras(&$search, &$array, &$provider, $id_estudio) {
@@ -114,11 +114,11 @@ class BiopsiaController extends Controller {
     }
     public function validar($post) {
         if (Yii::$app->user->identity->contrasenia <> md5($post['contrasenia'])) {
-            Yii::$app->getSession()->setFlash('warning', ['type' => 'danger', 'duration' => 5000, 'icon' => 'fa fa-warning', 'message' => "CONTRASEÑA INCORRECTA", 'title' => 'NOTIFICACIÓN', 'positonY' => 'top', 'positonX' => 'right']);
+          $this->setearMensajeError('CONTRASEÑA INCORRECTA');
             return false;
         }
         if ($post['Biopsia']['firmado'] !== "1") {
-            Yii::$app->getSession()->setFlash('warning', ['type' => 'danger', 'duration' => 5000, 'icon' => 'fa fa-warning', 'message' => "EN ESTADO LISTO, DEBE POSEER LA FIRMA", 'title' => 'NOTIFICACIÓN', 'positonY' => 'top', 'positonX' => 'right']);
+          $this->setearMensajeError('EN ESTADO LISTO, DEBE POSEER LA FIRMA');
         }
         else {
             return true;
@@ -268,34 +268,41 @@ class BiopsiaController extends Controller {
     public function actionDelete($id) {
         Yii::$app->response->format = Response::FORMAT_JSON;
         $model = $this->findModel($id);
-        if ($model->estado->descripcion == 'LISTO') {
-            return ['title' => "Eliminar informe Biopsia #" . $id, 'content' => "No se puede eliminar informe en estado listo", 'footer' => Html::button('Cerrar', ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) ];
-        }
-        $transaction = Yii::$app->db->beginTransaction();
+        $request = Yii::$app->request;
+        if ($request->isAjax) {
 
-        try {
-            $request = Yii::$app->request;
-            $model->solicitudbiopsia->id_estado=5;//Vuelve al estado PENDIENTE
-            $model->solicitudbiopsia->save();
-            if (isset($model->inmunohistoquimicaEscaneada)) {
-                $model->inmunohistoquimicaEscaneada->delete();
+            if ($model->estado->descripcion == 'LISTO') {
+                $this->setearMensajeError("No se puede eliminar informe en estado listo.");
+                return ['forceClose' => true, 'forceReload' => '#crud-datatable-pjax','metodo'=>'delete'];
             }
-            $model->delete();
-            if ($request->isAjax) {
-                $transaction->commit();
-                return ['forceClose' => true, 'forceReload' => '#crud-datatable-pjax'];
-            }
-            else {
-                $transaction->commit();
-                return $this->redirect(['index']);
-            }
-      } catch (\Exception $e) {
-         $transaction->rollBack();
-         throw $e;
-       } catch (\Throwable $e) {
-           $transaction->rollBack();
-           throw $e;
-       }
+            $transaction = Yii::$app->db->beginTransaction();
+
+            try {
+                $model->solicitudbiopsia->id_estado=5;//Vuelve al estado PENDIENTE
+                $model->solicitudbiopsia->save();
+                if (isset($model->inmunohistoquimicaEscaneada)) {
+                    $model->inmunohistoquimicaEscaneada->delete();
+                }
+                $model->delete();
+                if ($request->isAjax) {
+                    $transaction->commit();
+                    $this->setearMensajeExito('El registro se eliminó correctamente');
+                    return ['forceClose' => true, 'forceReload' => '#crud-datatable-pjax','metodo'=>'delete'];
+                }
+                else {
+                    $transaction->commit();
+                    return $this->redirect(['index']);
+                }
+          } catch (\Exception $e) {
+             $transaction->rollBack();
+             throw $e;
+           } catch (\Throwable $e) {
+               $transaction->rollBack();
+               throw $e;
+           }
+        }else {
+          return $this->redirect(['index']);
+         }
     }
     /**
      * Finds the Biopsia model based on its primary key value.

@@ -16,7 +16,7 @@ $this->params['breadcrumbs'][] = $this->title;
 CrudAsset::register($this);
 
 ?>
-<div id="w0c" class="x_panel">
+<div id="w0" class="x_panel">
   <div class="x_title"><h2><i class="fa fa-table"></i> FIRMAS  </h2>
     <div class="clearfix"> <div class="nav navbar-right panel_toolbox"><?= Html::a('<i class="glyphicon glyphicon-arrow-left"></i> Atrás', ['/site/administracion'], ['class'=>'btn btn-danger grid-button']) ?></div>
 </div>

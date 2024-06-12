@@ -8,6 +8,7 @@ use johnitvn\ajaxcrud\BulkButtonWidget;
 use yii\widgets\Pjax;
 use kartik\export\ExportMenu;
 use yii\bootstrap\Collapse;
+
 use kartik\widgets\AlertBlock;
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\BiopsiaSearch */
@@ -24,26 +25,44 @@ $this->title = 'Biopsias'; ?>
     ]
 ]);?>
 </div>
+
 <?
 
 $this->params['breadcrumbs'][] = $this->title;
 
 CrudAsset::register($this);
 
-  $export= ExportMenu::widget([
+$export = ExportMenu::widget([
     'exportConfig' => [
-      ExportMenu::FORMAT_TEXT => false,
-      ExportMenu::FORMAT_HTML => false,
-  ],
-           'dataProvider' => $dataProvider,
-           'columns' => require(__DIR__.'/_columns.php'),
-           'dropdownOptions' => [
-             'label' => 'Todo',
-             'class' => 'btn btn-secondary',
-             'itemsBefore' => [
-               '<div class="dropdown-header">Exportar Todos los Datos</div>',
-  ],
-       ]]);
+        ExportMenu::FORMAT_TEXT => false,
+        ExportMenu::FORMAT_HTML => false,
+        ExportMenu::FORMAT_PDF => [
+            'icon' => 'fa fa-file-pdf-o',
+        ],
+        ExportMenu::FORMAT_CSV => [
+            'icon' => 'fa fa-file-text-o',
+        ],
+        ExportMenu::FORMAT_TEXT => [
+            'icon' => 'fa fa-file-text',
+        ],
+        ExportMenu::FORMAT_EXCEL => [
+            'icon' => 'fa fa-file-excel-o',
+        ],
+        ExportMenu::FORMAT_EXCEL_X => [
+            'icon' => 'fa fa-file-excel-o',
+        ],
+    ],
+    'dataProvider' => $dataProvider,
+    'columns' => require(__DIR__ . '/_columns.php'),
+    'dropdownOptions' => [
+        'label' => 'Todo',
+        'class' => 'btn btn-secondary',
+        'itemsBefore' => [
+            '<div class="dropdown-header">Exportar Todos los Datos</div>',
+        ],
+    ],
+    'filename' => 'Biopsias', // Aquí especifica el nombre de archivo personalizado
+]);
 
 
 
@@ -123,6 +142,8 @@ $columns[]=
     </div>
 </div>
 </div>
+
+
 <?php Modal::begin([
     "id"=>"ajaxCrudModal",
     "footer"=>"",// always need it for jquery plugin

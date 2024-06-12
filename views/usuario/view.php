@@ -1,6 +1,7 @@
 <?php
 
 use yii\widgets\DetailView;
+use yii\helpers\Html;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Usuario */
@@ -28,9 +29,11 @@ use yii\widgets\DetailView;
            ],
             [
               'attribute'=>'imagen',
-                'label'=>'Imagen',
-                'value'=> '<img src=uploads/avatar/'.$model->imagen.' width="75px" height="75px" style="margin-left: auto;margin-right: auto;;position:relative;" >',
-                'format'=>'raw',
+              'label'=>'Imagen',
+              'value' => function ($model) {
+                       return Html::img(Yii::$app->urlManager->baseUrl . '/uploads/avatar/' . $model->imagen, ['width' => '75px', 'height' => '75px', 'style' => 'margin-left: auto; margin-right: auto; position: relative;']);
+                   },
+              'format'=>'raw',
          ],
          [
          'value'=> ($model->localidad)?$model->localidad->nombre:'No definido',

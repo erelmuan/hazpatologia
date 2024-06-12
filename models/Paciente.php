@@ -49,7 +49,16 @@ class Paciente extends \yii\db\ActiveRecord
                    ],
  		     ];
  		}
-
+    public function getActiveRelations()
+      {
+          $relations = [];
+          var_dump($this->getRelatedRecords());
+          die();
+          foreach ($this->getRelatedRecords() as $relationName) {
+              $relations[$relationName] = $this->getRelation($relationName);
+          }
+          return $relations;
+      }
 
     /**
      * {@inheritdoc}

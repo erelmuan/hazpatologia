@@ -9,6 +9,9 @@ use yii\filters\VerbFilter;
 use \yii\web\Response;
 use yii\helpers\Html;
 use app\models\Solicitud;
+use app\models\ConfiguracionAniosUsuario;
+
+
 /**
  * AnioProtocoloController implements the CRUD actions for AnioProtocolo model.
  */
@@ -120,48 +123,27 @@ class AnioProtocoloController extends Controller {
      * @return mixed
      */
     public function actionDelete($id) {
-        $request = Yii::$app->request;
-        $model = $this->findModel($id);
-        if (Solicitud::getSolicitudesAnio($model->anio)) {
-            $this->setearMensajeError('NO SE PUEDE ELIMINAR PORQUE HAY SOLICITUDES DE ESE AÑO');
-            return $this->redirect(['index']);
-        }
-        else {
-            $this->findModel($id)->delete();
-            Yii::$app
-                ->response->format = Response::FORMAT_JSON;
-            return ['forceClose' => true, 'forceReload' => '#crud-datatable-pjax'];
-        }
+      Yii::$app->response->format = Response::FORMAT_JSON;
+      $model = $this->findModel($id);
+      $request = Yii::$app->request;
+      if ($request->isAjax) {
+         if (Solicitud::getSolicitudesAnio($model->anio)) {
+            $this->setearMensajeError('No se puede eliminar porque hay solicitudes ese año.');
+            return ['forceClose' => true, 'forceReload' => '#crud-datatable-pjax' ,'metodo'=>'delete'];
+
+         }
+         if (ConfiguracionAniosUsuario::find()->where(['id_anio_protocolo'=>$id])->count()>0 ){
+           $this->setearMensajeError('No se puede eliminar porque hay configuraciones de usuario con ese año.');
+           return ['forceClose' => true, 'forceReload' => '#crud-datatable-pjax' ,'metodo'=>'delete'];
+       }
+          $this->findModel($id)->delete();
+          return ['forceClose' => true, 'forceReload' => '#crud-datatable-pjax','metodo'=>'delete'];
+
+      }else {
+        return $this->redirect(['index']);
+       }
     }
-    /**
-     * Delete multiple existing AnioProtocolo model.
-     * For ajax request will return json object
-     * and for non-ajax request if deletion is successful, the browser will be redirected to the 'index' page.
-     * @param integer $id
-     * @return mixed
-     */
-    public function actionBulkDelete() {
-        $request = Yii::$app->request;
-        $pks = explode(',', $request->post('pks')); // Array or selected records primary keys
-        foreach ($pks as $pk) {
-            $model = $this->findModel($pk);
-            $model->delete();
-        }
-        if ($request->isAjax) {
-            /*
-             *   Process for ajax request
-            */
-            Yii::$app
-                ->response->format = Response::FORMAT_JSON;
-            return ['forceClose' => true, 'forceReload' => '#crud-datatable-pjax'];
-        }
-        else {
-            /*
-             *   Process for non-ajax request
-            */
-            return $this->redirect(['index']);
-        }
-    }
+
     /**
      * Finds the AnioProtocolo model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.

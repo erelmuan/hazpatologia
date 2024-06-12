@@ -121,35 +121,7 @@ class ProcedenciaController extends Controller {
             }
         }
     }
-    /**
-     * Delete an existing Procedencia model.
-     * For ajax request will return json object
-     * and for non-ajax request if deletion is successful, the browser will be redirected to the 'index' page.
-     * @param integer $id
-     * @return mixed
-     */
-    public function actionDelete($id) {
-        $request = Yii::$app->request;
-        Yii::$app->response->format = Response::FORMAT_JSON;
-          if (Solicitud::find()->where(['id_procedencia'=>$id])->count()>0 ){
-            return ['title' => "Eliminar procedencia #" . $id, 'content' => 'No se puede eliminar la procedencia porque esta asociado a una o más solicitudes', 'footer' => Html::button('Cerrar', ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) ];
-          }
-            $this->findModel($id)->delete();
-            if ($request->isAjax) {
-                /*
-                 *   Process for ajax request
-                */
-                Yii::$app
-                    ->response->format = Response::FORMAT_JSON;
-                return ['forceClose' => true, 'forceReload' => '#crud-datatable-pjax'];
-            }
-            else {
-                /*
-                 *   Process for non-ajax request
-                */
-                return $this->redirect(['index']);
-            }
-      }
+  
     /**
      * Finds the Procedencia model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.

@@ -18,20 +18,37 @@ CrudAsset::register($this);
 // arrojaba un error de serializacion
 
 
-  $export= ExportMenu::widget([
+$export = ExportMenu::widget([
     'exportConfig' => [
-      ExportMenu::FORMAT_TEXT => false,
-      ExportMenu::FORMAT_HTML => false,
-  ],
-           'dataProvider' => $dataProvider,
-           'columns' => require(__DIR__.'/_columns.php'),
-           'dropdownOptions' => [
-             'label' => 'Todo',
-             'class' => 'btn btn-secondary',
-             'itemsBefore' => [
-               '<div class="dropdown-header">Exportar Todos los Datos</div>',
-  ],
-       ]]);
+        ExportMenu::FORMAT_TEXT => false,
+        ExportMenu::FORMAT_HTML => false,
+        ExportMenu::FORMAT_PDF => [
+            'icon' => 'fa fa-file-pdf-o',
+        ],
+        ExportMenu::FORMAT_CSV => [
+            'icon' => 'fa fa-file-text-o',
+        ],
+        ExportMenu::FORMAT_TEXT => [
+            'icon' => 'fa fa-file-text',
+        ],
+        ExportMenu::FORMAT_EXCEL => [
+            'icon' => 'fa fa-file-excel-o',
+        ],
+        ExportMenu::FORMAT_EXCEL_X => [
+            'icon' => 'fa fa-file-excel-o',
+        ],
+    ],
+    'dataProvider' => $dataProvider,
+    'columns' => require(__DIR__ . '/_columns.php'),
+    'dropdownOptions' => [
+        'label' => 'Todo',
+        'class' => 'btn btn-secondary',
+        'itemsBefore' => [
+            '<div class="dropdown-header">Exportar Todos los Datos</div>',
+        ],
+    ],
+    'filename' => 'Solicitudes', // Aquí especifica el nombre de archivo personalizado
+]);
 
 $columns[]=
     [
@@ -82,12 +99,7 @@ $columns[]=
     ];
     ;
 
-  if (Yii::$app->session->hasFlash('error')) {
-    echo AlertBlock::widget([
-                    'useSessionFlash' => true,
-                    'type' => AlertBlock::TYPE_ALERT
-                ]);
-  }?>
+?>
 <div id="w0s" class="x_panel">
   <div class="x_title"><h2><i class="fa fa-table"></i> SOLICITUDES  </h2>
     <div class="clearfix"> <div class="nav navbar-right panel_toolbox"><?= Html::a('<i class="glyphicon glyphicon-arrow-left"></i> Atrás', ['/site'], ['class'=>'btn btn-danger grid-button']) ?></div>

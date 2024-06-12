@@ -1,10 +1,8 @@
 <?php
-
 /**
  * @var string $content
  * @var \yii\web\View $this
  */
-
 use \yii\web\View ;
 use yii\helpers\Html;
 use yii\helpers\Url;
@@ -13,9 +11,10 @@ use kartik\widgets\Growl;
 use kartik\widgets\SwitchInput;
 use app\models\AnioProtocolo;
 use app\models\User;
-
+use yii\widgets\Pjax;
   // Registra el AssetBundle de Gentelella
    $bundle = yiister\gentelella\assets\Asset::register($this);
+
 ?>
 <?php $this->beginPage(); ?>
 <!DOCTYPE html>
@@ -32,6 +31,7 @@ use app\models\User;
      <?= Html::cssFile('@web/css/plantillas-intro.css') ?>
      <!-- efecto sobre los modulos  -->
      <?= Html::cssFile('@web/css/animate.min.css') ?>
+     <?//= Html::jsFile('@web/js/custom.js') ?>
      <?= Html::jsFile('@web/js/jquery.min.js') ?>
      <!-- Modal para que muestra el protocolo -->
      <?= Html::jsFile('@web/js/sweetalert2.all.min.js') ?>
@@ -236,9 +236,9 @@ use app\models\User;
                         <?php
                         echo \kartik\widgets\Growl::widget([
                             'type' => (!empty($message['type'])) ? $message['type'] : 'danger',
-                            'title' => (!empty($message['title'])) ? Html::encode($message['title']) : 'Title Not Set!',
+                            'title' => (!empty($message['title'])) ? '<b>' .Html::encode($message['title']). '</b>' : 'Title Not Set!',
                             'icon' => (!empty($message['icon'])) ? $message['icon'] : 'fa fa-info',
-                            'body' => (!empty($message['message'])) ? Html::encode($message['message']) : 'Message Not Set!',
+                            'body' => (!empty($message['message'])) ? '<h4>' .Html::encode($message['message']). '</h4>' : 'Message Not Set!',
                             'showSeparator' => true,
                             'delay' => 0, //This delay is how long before the message shows
                             'pluginOptions' => [
@@ -270,9 +270,13 @@ use app\models\User;
 
 </div>
 
-
 <!-- /footer content -->
 <?php $this->endBody(); ?>
+<?//= Html::jsFile('@web/js/switchery/switchery.min.js') ?>
+
+<?//= Html::jsFile('@web/js/icheck/icheck.min.js') ?>
+
+<?//= Html::cssFile('@web/css/icheck/flat/green.css') ?>
 
 <script>
 $( document ).ready(function() {
@@ -280,6 +284,17 @@ $( document ).ready(function() {
   setTimeout(function(){
     $('#loader-out').fadeOut();
   }, 1300);
+
+  $(document).ajaxSuccess(function(event, xhr, settings) {
+      // Verificar si `event` y `event.target` están definidos
+      if (event && event.target && event.target.id !== 'crud-datatable-pjax') {
+          // Verificar si `xhr.responseJSON` está definido y tiene la propiedad `metodo`
+          if (xhr.responseJSON && xhr.responseJSON.metodo === 'delete') {
+              location.reload();
+          }
+      }
+  });
+
 });
   function cerrarSesion(){
     $.ajax({
@@ -287,10 +302,10 @@ $( document ).ready(function() {
         type: 'post',
     });
   }
+  </script>
 
-
-</script>
 
 </body>
 </html>
+
 <?php $this->endPage(); ?>

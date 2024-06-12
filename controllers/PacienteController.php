@@ -18,6 +18,9 @@ use yii\helpers\Html;
 use yii\data\ActiveDataProvider;
 use yii\helpers\Json;
 use app\components\Metodos\Metodos;
+use yii\db\Schema;
+use yii\helpers\Inflector;
+use yii\helpers\FileHelper;
 /**
  * PacienteController implements the CRUD actions for Paciente model.
  */
@@ -222,42 +225,11 @@ class PacienteController extends Controller {
             }
         }
     }
-    /**
-     * Delete an existing Paciente model.
-     * For ajax request will return json object
-     * and for non-ajax request if deletion is successful, the browser will be redirected to the 'index' page.
-     * @param integer $id
-     * @return mixed
-     */
-    public function actionDelete($id) {
-        $request = Yii::$app->request;
-        Yii::$app->response->format = Response::FORMAT_JSON;
-          if (Solicitud::find()->where(['id_paciente'=>$id])->count()>0 ){
-            return ['title' => "Eliminar paciente #" . $id, 'content' => 'No se puede eliminar el paciente porque esta asociado a una solicitud', 'footer' => Html::button('Cerrar', ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) ];
-          }
 
-        if ($request->isAjax) {
-            /*
-             *   Process for ajax request
-            */
-            Yii::$app
-                ->response->format = Response::FORMAT_JSON;
 
-                \Yii::$app
-                    ->db
-                    ->createCommand()
-                    ->delete('carnet_os', ['id_paciente' => $id])->execute();
-                if ($this->findModel($id)->delete()) {
-                    return ['forceClose' => true, 'forceReload' => '#crud-datatable-pjax'];
-                }
-        }
-        else {
-            /*
-             *   Process for non-ajax request
-            */
-            return $this->redirect(['index']);
-        }
-    }
+    //delete hereda de Controller
+
+
 
     public function actionPuco() {
 
@@ -298,11 +270,11 @@ class PacienteController extends Controller {
                 }
               }
               $out = $items;
+              echo Json::encode([$out]);
             }else {
               $out = $oXML->resultado;
+              echo Json::encode($out);
             }
-
-            echo Json::encode([$out]);
             return;
 
           }else {

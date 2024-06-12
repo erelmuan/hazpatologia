@@ -20,6 +20,8 @@ use yii\helpers\ArrayHelper;
  * @property Tipodoc $tipodoc
  * @property Tipoprofesional $tipoprofesional
  * @property Solicitud[] $solicituds
+ * @property Solicitudbiopsia[] $solicitudbiopsias
+ * @property Solicitudpap[] $solicitudpaps
  */
 class Medico extends \yii\db\ActiveRecord
 {
@@ -105,6 +107,21 @@ class Medico extends \yii\db\ActiveRecord
     {
         return $this->hasMany(Solicitud::className(), ['id_medico' => 'id']);
     }
+    /**
+      * @return \yii\db\ActiveQuery
+      */
+     public function getSolicitudbiopsias()
+     {
+         return $this->hasMany(Solicitudbiopsia::className(), ['id_medico' => 'id']);
+     }
+     /**
+      * @return \yii\db\ActiveQuery
+      */
+     public function getSolicitudpaps()
+     {
+         return $this->hasMany(Solicitudpap::className(), ['id_medico' => 'id']);
+     }
+
     public function Estudios()
    {
        if (!isset($this->id))

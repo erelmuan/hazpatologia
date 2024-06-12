@@ -257,7 +257,7 @@ class Solicitud extends \yii\db\ActiveRecord
         return $this->hasOne(Procedencia::className(), ['id' => 'id_procedencia']);
     }
 
-    public function obtenerProtocolo()  {
+    public static function obtenerProtocolo()  {
         $anioprotocolo= AnioProtocolo::anioprotocoloActivo();
         if ($anioprotocolo!== NULL){
           $solicitud= Solicitud::find()
@@ -286,7 +286,7 @@ class Solicitud extends \yii\db\ActiveRecord
         return ArrayHelper::map(Materialsolicitud::find()->where(['id_estudio' => $id_estudio])->orderBy(['id' => SORT_ASC])->all(), 'id','descripcion');
 
     }
-    public function getSolicitudesAnio($anio) {
+    public static function getSolicitudesAnio($anio) {
         $cantidad= Solicitud::find()->andWhere(['and' ,' "fechadeingreso"::text  like '. "'%".$anio."%'"])->count();
         if ($cantidad >0){
           return true;

@@ -54,9 +54,9 @@ $pdf->SetFont('Arial','B',10);
 //fecha del turno
 $modelo=$solicitud->estudio->modelo;
 
-$pdf->Cell(10,7.5,date("d", strtotime($solicitud->$modelo->fechalisto)),1,0,'C');
-$pdf->Cell(10,7.5,date("m", strtotime($solicitud->$modelo->fechalisto)),1,0,'C');
-$pdf->Cell(12,7.5,date("Y", strtotime($solicitud->$modelo->fechalisto)),1,1,'C');
+$pdf->Cell(10,7.5,date("d", strtotime($solicitud->fechadeingreso)),1,0,'C');
+$pdf->Cell(10,7.5,date("m", strtotime($solicitud->fechadeingreso)),1,0,'C');
+$pdf->Cell(12,7.5,date("Y", strtotime($solicitud->fechadeingreso)),1,1,'C');
 $pdf->SetFont('Arial','B',10);
 $pdf->Cell(205,5,"",1,1,'C');
 $pdf->Cell(165,6,"HOSPITAL: Artemides Zatti",1,0,'L');
@@ -129,9 +129,9 @@ $pdf->Cell(8,5,utf8_decode(''),'LR',0,'C');
 $pdf->Cell(6,5,utf8_decode(''),'L',0,'C');
 $pdf->Cell(32,5,"",'LR',0,'C');
 $pdf->Cell(107,5,"",'LR',0,'C');//Especialidad
-$pdf->Cell(10,5,date("d", strtotime($solicitud->$modelo->fechalisto)),'LR',0,'C');
-$pdf->Cell(10,5,date("m", strtotime($solicitud->$modelo->fechalisto)),'LR',0,'C');
-$pdf->Cell(10,5,date("Y", strtotime($solicitud->$modelo->fechalisto)),'LR',1,'C');
+$pdf->Cell(10,5,date("d", strtotime($solicitud->fechadeingreso)),'LR',0,'C');
+$pdf->Cell(10,5,date("m", strtotime($solicitud->fechadeingreso)),'LR',0,'C');
+$pdf->Cell(10,5,date("Y", strtotime($solicitud->fechadeingreso)),'LR',1,'C');
 $pdf->Cell(22,0.5,utf8_decode(''),'LBR',0,'C');
 $pdf->Cell(8,0.5,utf8_decode(''),'LBR',0,'C');
 $pdf->Cell(6,0.5,utf8_decode(''),'L',0,'C');

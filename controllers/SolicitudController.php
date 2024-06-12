@@ -329,17 +329,17 @@ class SolicitudController extends Controller {
     public function actionDelete($id) {
         Yii::$app->response->format = Response::FORMAT_JSON;
        if ($this->contieneEstudio($id)) {
-           return ['title' => "Eliminar solicitud  #" . $id,
-           'content' => "No se puede eliminar la solicitud porque tiene un informe asociado",
-           'footer' => Html::button('Cerrar', ['class' => 'btn btn-default pull-left',
-            'data-dismiss' => "modal"]) ];
+            $this->setearMensajeError("No se puede eliminar la solicitud porque tiene un informe asociado");
+            return ['forceClose' => true, 'forceReload' => '#crud-datatable-pjax', 'metodo' => 'delete'];
+
        }
         $model = $this->findModel($id);
         $request = Yii::$app->request;
         if ($request->isAjax) {
             try {
                 if ($model->delete()) {
-                    return ['forceClose' => true, 'forceReload' => '#crud-datatable-pjax'];
+                  $this->setearMensajeExito('El registro se eliminó correctamente.');
+                  return ['forceClose' => true, 'forceReload' => '#crud-datatable-pjax', 'metodo' => 'delete'];
                 }
             }
             catch(yii\db\Exception $e) {

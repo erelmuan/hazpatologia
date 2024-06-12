@@ -1,0 +1,2 @@
+ALTER TABLE procedencia
+ALTER COLUMN nombre SET NOT NULL;

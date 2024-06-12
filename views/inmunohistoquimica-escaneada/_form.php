@@ -57,6 +57,7 @@ $form = ActiveForm::begin(['options'=>['enctype'=>'multipart/form-data'],'type'=
     'required' => (isset($model->documento )&& !empty($model->documento))?false:true,
    ],
     'pluginOptions' => ['previewFileType' => 'pdf',
+                  'language' => 'es',
             'allowedFileExtensions' => [ 'pdf'],
     ],
     'disabled'=> ($model->biopsia->estado->descripcion=="LISTO" && !Usuario::isPatologo()),

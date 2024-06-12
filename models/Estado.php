@@ -73,7 +73,7 @@ class Estado extends \yii\db\ActiveRecord
     }
 
     //ESTO ES PARA LOS FORMULARIOS DE LOS ESTUDIOS
-    public function estadosEstudio(){
+    public static function estadosEstudio(){
       if (Usuario::isPatologo()){
         return ArrayHelper::map(Estado::find()->where(['or', "descripcion='EN PROCESO'", "descripcion='LISTO'"])
         ->all(), 'id','descripcion');

@@ -12,7 +12,7 @@ use johnitvn\ajaxcrud\BulkButtonWidget;
 /* @var $dataProvider yii\data\ActiveDataProvider */
 use kartik\export\ExportMenu;
 
-$this->title = 'Roles';
+$this->title = 'Roles/permisos';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <script>
@@ -118,25 +118,11 @@ $gridColumns =[  [
       'attribute'=>'descripcion',
   ]];
 
-        $export= ExportMenu::widget([
-          'exportConfig' => [
-        ExportMenu::FORMAT_TEXT => false,
-        ExportMenu::FORMAT_HTML => false,
-      ],
-                 'dataProvider' => $dataProvider,
-                 'columns' => $gridColumns,
-                 'dropdownOptions' => [
-    'label' => 'Todo',
-    'class' => 'btn btn-secondary',
-    'itemsBefore' => [
-        '<div class="dropdown-header">Export All Data</div>',
-    ],
-             ]]);
 
 ?>
 
 <div id="w0r" class="x_panel">
-  <div class="x_title"><h2><i class="fa fa-table"></i> ROLES  </h2>
+  <div class="x_title"><h2><i class="fa fa-table"></i> ROLES/PERMISOS  </h2>
     <div class="clearfix"> <div class="nav navbar-right panel_toolbox"><?= Html::a('<i class="glyphicon glyphicon-arrow-left"></i> Atrás', ['/site/permisos'], ['class'=>'btn btn-danger grid-button']) ?></div>
 </div>
   </div>
@@ -176,7 +162,7 @@ $gridColumns =[  [
                     ['role'=>'modal-remote','title'=> 'Crear nuevo rol','class'=>'btn btn-default']).
                     Html::a('<i class="glyphicon glyphicon-repeat"></i>', [''],
                     ['data-pjax'=>1, 'class'=>'btn btn-default', 'title'=>'Refrescar'])
-                ], 'export'=>$export,
+                ],
 
             ],
             'striped' => true,

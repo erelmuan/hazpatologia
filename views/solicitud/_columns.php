@@ -77,16 +77,6 @@ return [
         'label'=> 'Edad al momento del estudio(años)',
 
     ],
-    [
-        'class' => 'kartik\grid\ActionColumn',
-        'dropdown' => false,
-        'vAlign'=>'middle',
-        'template' => '{view}',
 
-        'urlCreator' => function($action, $model, $key, $index) {
-                return Url::to([$action,'id'=>$key]);
-        },
-
-    ],
 
 ];

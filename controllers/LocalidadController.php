@@ -15,6 +15,7 @@ use yii\helpers\Html;
 class LocalidadController extends Controller {
   // behaviors heredado
 
+
     /**
      * Lists all Localidad models.
      * @return mixed
@@ -117,36 +118,8 @@ class LocalidadController extends Controller {
             }
         }
     }
-    /**
-     * Delete an existing Localidad model.
-     * For ajax request will return json object
-     * and for non-ajax request if deletion is successful, the browser will be redirected to the 'index' page.
-     * @param integer $id
-     * @return mixed
-     */
-    public function actionDelete($id) {
-        $request = Yii::$app->request;
-        Yii::$app->response->format = Response::FORMAT_JSON;
-        if (Paciente::find()->where(['id_localidad'=>$id])->count()>0 ){
-            return ['title' => "Eliminar localidad #" . $id, 'content' => 'No se puede eliminar la localidad porque esta asociado a uno o más pacientes', 'footer' => Html::button('Cerrar', ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) ];
-          }
 
-            $this->findModel($id)->delete();
-            if ($request->isAjax) {
-                /*
-                 *   Process for ajax request
-                */
-                Yii::$app
-                    ->response->format = Response::FORMAT_JSON;
-                return ['forceClose' => true, 'forceReload' => '#crud-datatable-pjax'];
-            }
-            else {
-                /*
-                 *   Process for non-ajax request
-                */
-                return $this->redirect(['index']);
-            }
-        }
+    //delete hereda de Controller
 
 
     /**
@@ -164,7 +137,7 @@ class LocalidadController extends Controller {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
-    public function findidproModel($id) {
+    public static function findidproModel($id) {
         if (($model = Localidad::Find()->where(['id_provincia' => $id])->all()) !== null) {
             return $model;
         }

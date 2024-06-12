@@ -36,9 +36,7 @@ CrudAsset::register($this);
                     Html::a('<i class="glyphicon glyphicon-plus"></i>', ['create'],
                     ['role'=>'modal-remote','title'=> 'Crear nuevo modulo','class'=>'btn btn-default']).
                     Html::a('<i class="glyphicon glyphicon-repeat"></i>', [''],
-                    ['data-pjax'=>1, 'class'=>'btn btn-default', 'title'=>'Refrescar']).
-                    '{toggleData}'.
-                    '{export}'
+                    ['data-pjax'=>1, 'class'=>'btn btn-default', 'title'=>'Refrescar'])
                 ],
             ],
             'striped' => true,

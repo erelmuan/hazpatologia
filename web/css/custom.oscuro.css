@@ -3,7 +3,9 @@ html , body{
 
  height:100%;
 }
-
+.kv-table-header {
+  background: linear-gradient(to bottom, #000 0%, #2f2d2d 100%);
+}
 #fecha{
 
 margin: 8px 0 6px;
@@ -4672,4 +4674,64 @@ a:hover {
   margin-bottom: 2px;
   background-color: rgb(58, 58, 54) !important;
   border-radius: 4px;
+}
+
+#medicobuscar, #pacientebuscar {
+  color: rgb(187, 181, 170);
+  background-color: rgb(25, 27, 28);
+}
+
+.btn-warning {
+  color: #fff;
+  background-color: #c18939;
+  border-color: #b77e2c;
+}
+.btn-success {
+  background: #24937B;
+  border: 1px solid #117562;
+}
+.panel-default > .panel-heading {
+  background-color: #2d839d;
+  color: white;
+}
+.btn-danger {
+  color: #fff;
+  background-color: #b53b37;
+  border-color: #8a2926;}
+
+
+.select2-container--krajee-bs3 .select2-selection {
+  box-shadow: rgba(0, 0, 0, 0.07) 0px 1px 1px inset;
+  background-color: rgb(27, 26, 24);
+  border-color: rgb(69, 68, 63);
+  color: rgb(187, 175, 155);
+  outline-color: currentcolor;
+}
+.select2-container--krajee-bs3 .select2-results__option[aria-selected="true"] {
+  color: rgb(154, 174, 174);
+  background-color: rgb(31, 45, 49);
+}
+.select2-container--krajee-bs3 .select2-dropdown {
+  box-shadow: rgba(0, 0, 0, 0.17) 0px 6px 12px;
+  border-color: rgb(53, 79, 97);
+}
+.select2-container--krajee-bs3 .select2-results__option[aria-selected] {
+  background-color: rgb(26, 25, 24);
+  color: rgb(211, 199, 178);
+}
+.select2-container--krajee-bs3 .select2-search--dropdown .select2-search__field {
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+  background: #2d2727 url('search.png') right 10px top 7px no-repeat;
+  border: 1px solid #000;
+  border-radius: 4px;
+  color: #fdfdfd;
+}
+.select2-dropdown {
+  background-color: #2b1f1f;
+  border: 1px solid #aaa;
+}
+.select2-container--krajee-bs3 .select2-selection--single .select2-selection__rendered {
+  color: #d0bfbf;
+  padding: 0;
 }

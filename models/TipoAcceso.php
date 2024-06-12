@@ -30,6 +30,8 @@ class TipoAcceso extends \yii\db\ActiveRecord
         return [
             [['nombre'], 'required'],
             [['nombre'], 'string'],
+            [['nombre'], 'unique'],
+
         ];
     }
 

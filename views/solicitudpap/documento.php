@@ -10,7 +10,7 @@ class PDF extends FPDF
 {
 // Cabecera de página
 function Header()
-{ 
+{
   $this->SetTextColor(245,245,245);
   //$this->RotatedText(65,180,'H. A. Z.',45);
  // $this->Image('http://localhost/patologiahaz/web/img/hospitalzatti.png',18,18,15);
@@ -112,7 +112,7 @@ $pdf->Text(40,$Inicio ,$model->paciente->nombre.' '.$model->paciente->apellido);
 $pdf->SetFont('Times','B',10);
 $pdf->Text(120,$Inicio,"Edad:");
 $pdf->SetFont('Times','',10);
-$pdf->Text(132,$Inicio,$edad);
+$pdf->Text(132,$Inicio,$model->calcular_edad());
 
 $Inicio=$Inicio +8;
 $pdf->SetFont('Times','B',10);
@@ -161,11 +161,11 @@ $pdf->Text(32,$Inicio ,$model->procedencia->nombre);
 $pdf->SetFont('Times','B',10);
 $pdf->Text(85,$Inicio,"Internacion:");
 $pdf->SetFont('Times','',10);
-$pdf->Text(107,$Inicio,$edad);
+$pdf->Text(107,$Inicio,$model->calcular_edad());
 $pdf->SetFont('Times','B',10);
 $pdf->Text(157,$Inicio,"C. Ext:");
 $pdf->SetFont('Times','',10);
-$pdf->Text(170,$Inicio,$edad);
+$pdf->Text(170,$Inicio,$model->calcular_edad());
 
 $Inicio=$Inicio +18;
 $pdf->SetFont('Times','BU',10);

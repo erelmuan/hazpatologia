@@ -48,6 +48,24 @@ class FirmaController extends Controller {
             return $this->render('view', ['model' => $this->findModel($id) , ]);
         }
     }
+
+    //Parametros pasados por referencia
+    private function guadarImagen(&$model,&$image){
+      $ext = explode(".", $image->name);
+      $ext = end($ext);
+      Yii::$app->params['uploadPath'] = Yii::$app->basePath . '/web/uploads/firmas/';
+      $nombreEncriptadoImagen = Yii::$app->security->generateRandomString() . ".{$ext}";
+      $path = Yii::$app->params['uploadPath'] . $nombreEncriptadoImagen;
+      $model->imagen = $nombreEncriptadoImagen;
+
+      $image->saveAs($path);
+      // Redimensionamiento de la imagen (opcional)
+      Image::thumbnail(Yii::$app->params['uploadPath'] . $nombreEncriptadoImagen, 120, 120)
+          ->save(Yii::$app->params['uploadPath'] . 'lg_' . $nombreEncriptadoImagen, ['quality' => 100]);
+      Image::thumbnail(Yii::$app->params['uploadPath'] . $nombreEncriptadoImagen, 30, 30)
+          ->save(Yii::$app->params['uploadPath'] . 'sm_' . $nombreEncriptadoImagen, ['quality' => 100]);
+    }
+
     /**
      * Creates a new Firma model.
      * For ajax request will return json object
@@ -59,45 +77,19 @@ class FirmaController extends Controller {
         $model = new Firma();
         $modelUsu = new Usuario();
         $searchModelUsu = new UsuarioSearch();
-        $dataProviderUsu = $searchModelUsu->search(Yii::$app
-            ->request
-            ->queryParams);
-        $dataProviderUsu
-            ->pagination->pageSize = 7;
-        /*
-         *   Process for non-ajax request
-        */
-        if ($this->request->isPost) {
-            $post = $request->post();
-            //verificar porque hay que agregar el indice [0] a diferencia cuando se sube una imagen de perfil
-            $image = UploadedFile::getInstances($model, 'imagen') [0];
-            unset($post['Firma']['imagen']);
-            if ($model->load($request->post()) && $model->save()) {
+        $dataProviderUsu = $searchModelUsu->search(Yii::$app->request->queryParams);
+        $dataProviderUsu->pagination->pageSize = 7;
+
+        if ($this->request->isPost && $model->load($request->post())) {
+            $image = UploadedFile::getInstance($model, 'imagen');
+            // Manejar la subida de la imagen si está presente
+            if (!is_null($image) && $image !== "") {
+                $this->guadarImagen($model, $image);
+            }
+            if ($model->save()) {
                 if (!is_null($image) && $image !== "") {
-                    // save with image
-                    // store the source file name
-                    //  $model->imagen = $image->name;
-                    $ext = (explode(".", $image->name));
-                    $ext = end($ext);
-                    // generate a unique file name to prevent duplicate filenames
-                    //  $model->avatar = Yii::$app->security->generateRandomString().".{$ext}";
-                    // the path to save file, you can set an uploadPath
-                    // in Yii::$app->params (as used in example below)
-                    Yii::$app->params['uploadPath'] = Yii::$app->basePath . '/web/uploads/firmas/';
-                    $nombreEncriptadoImagen = Yii::$app
-                        ->security
-                        ->generateRandomString() . ".{$ext}";
-                    // $path = Yii::$app->params['uploadPath'] . $nombreEncriptadoImagen;
-                    $path = Yii::$app->params['uploadPath'] . $nombreEncriptadoImagen;
-                    // $model->id = Yii::$app->user->getId();
-                    $model->imagen = $nombreEncriptadoImagen;
-                    $image->saveAs($path);
-                    //Redimensionar
-                    Image::thumbnail(Yii::$app->params['uploadPath'] . $nombreEncriptadoImagen, 120, 120)->save(Yii::$app->params['uploadPath'] . 'sqr_' . $nombreEncriptadoImagen, ['quality' => 100]);
-                    Image::thumbnail(Yii::$app->params['uploadPath'] . $nombreEncriptadoImagen, 30, 30)->save(Yii::$app->params['uploadPath'] . 'sm_' . $nombreEncriptadoImagen, ['quality' => 100]);
                     if ($model->save()) {
-                        Yii::$app->getSession()
-                            ->setFlash('success', ['type' => 'success', 'duration' => 5000, 'icon' => 'fa fa-success', 'message' => "Datos guardados correctamente", 'title' => 'NOTIFICACIÓN', 'positonY' => 'top', 'positonX' => 'right']);
+                      $this->setearMensajeExito('Datos guardados correctamente');
                     }
                 }
                 return $this->redirect(['view', 'id' => $model->id]);
@@ -120,59 +112,25 @@ class FirmaController extends Controller {
     public function actionUpdate($id) {
         $request = Yii::$app->request;
         $model = $this->findModel($id);
-        $modelbiopsia = Biopsia::find()->where(['and', 'biopsia.id_usuario = ' . $this->findModel($id)->id_usuario])->one();
-        $modelpap = Pap::find()->where(['and', 'pap.id_usuario = ' . $model->id_usuario])->one();
-        if (isset($modelbiopsia) || isset($modelpap)) {
-          Yii::$app->response->format = Response::FORMAT_JSON;
-            return ['title' => "Actualizar firma  #" . $id, 'content' => "No se puede modificar la firma porque esta asociada a estudios", 'footer' => Html::button('Cerrar', ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) ];
-        }
 
         $modelUsu = new Usuario();
         $searchModelUsu = new UsuarioSearch();
-        $dataProviderUsu = $searchModelUsu->search(Yii::$app
-            ->request
-            ->queryParams);
+        $dataProviderUsu = $searchModelUsu->search(Yii::$app->request->queryParams);
         $dataProviderUsu->pagination->pageSize = 7;
 
-        if ($request->isAjax) {
-          return $this->redirect(['firma/update', 'id' => $model->id,'searchModelUsu' => $searchModelUsu, 'dataProviderUsu' => $dataProviderUsu, 'model' => $model ]);
-        }
-        /*
-         *   Process for non-ajax request
-        */
-        if ($this->request->isPost) {
-            $post = $request->post();
-            //verificar porque hay que agregar el indice [0] a diferencia cuando se sube una imagen de perfil
-            $image = UploadedFile::getInstances($model, 'imagen') [0];
-            unset($post['Firma']['imagen']);
-            if ($model->load($request->post()) && $model->save()) {
-                if (!is_null($image) && $image !== "") {
-                    // save with image
-                    // store the source file name
-                    //  $model->imagen = $image->name;
-                    $ext = (explode(".", $image->name));
-                    $ext = end($ext);
-                    // generate a unique file name to prevent duplicate filenames
-                    //  $model->avatar = Yii::$app->security->generateRandomString().".{$ext}";
-                    // the path to save file, you can set an uploadPath
-                    // in Yii::$app->params (as used in example below)d
-                    Yii::$app->params['uploadPath'] = Yii::$app->basePath . '/web/uploads/firmas/';
-                    $nombreEncriptadoImagen = Yii::$app
-                        ->security
-                        ->generateRandomString() . ".{$ext}";
-                    // $path = Yii::$app->params['uploadPath'] . $nombreEncriptadoImagen;
-                    $path = Yii::$app->params['uploadPath'] . $nombreEncriptadoImagen;
-                    // $model->id = Yii::$app->user->getId();
-                    $model->imagen = $nombreEncriptadoImagen;
-                    $image->saveAs($path);
-                    //Redimensionar
-                    Image::thumbnail(Yii::$app->params['uploadPath'] . $nombreEncriptadoImagen, 120, 120)->save(Yii::$app->params['uploadPath'] . 'sqr_' . $nombreEncriptadoImagen, ['quality' => 100]);
-                    Image::thumbnail(Yii::$app->params['uploadPath'] . $nombreEncriptadoImagen, 30, 30)->save(Yii::$app->params['uploadPath'] . 'sm_' . $nombreEncriptadoImagen, ['quality' => 100]);
-                    if ($model->save()) {
-                        Yii::$app->getSession()
-                            ->setFlash('success', ['type' => 'success', 'duration' => 5000, 'icon' => 'fa fa-success', 'message' => "Datos guardados correctamente", 'title' => 'NOTIFICACIÓN', 'positonY' => 'top', 'positonX' => 'right']);
-                    }
-                }
+        if ($this->request->isPost && $model->load($request->post()) ) {
+          $modelbiopsia = Biopsia::find()->where(['and', 'biopsia.id_usuario = ' . $this->findModel($id)->id_usuario])->one();
+          $modelpap = Pap::find()->where(['and', 'pap.id_usuario = ' . $model->id_usuario])->one();
+          if (isset($modelbiopsia) || isset($modelpap)) {
+              $this->setearMensajeError('No se puede modificar la firma porque esta asociada a estudios');
+              return $this->redirect(['update', "id"=>$id]); // Redirigir a la misma página después de guardar con éxito
+          }
+            $image = UploadedFile::getInstance($model, 'imagen');
+            // Manejar la subida de la imagen si está presente
+            if (!is_null($image) && $image !== "") {
+                $this->guadarImagen($model, $image);
+              }
+            if ($model->save()) {
                 return $this->redirect(['view', 'id' => $model->id]);
             }
             else {
@@ -192,26 +150,19 @@ class FirmaController extends Controller {
      */
     public function actionDelete($id) {
         $request = Yii::$app->request;
-        Yii::$app->response->format = Response::FORMAT_JSON;
+        Yii::$app
+            ->response->format = Response::FORMAT_JSON;
         $modelbiopsia = Biopsia::find()->where(['and', 'biopsia.id_usuario = ' . $this->findModel($id)->id_usuario])->one();
         $modelpap = Pap::find()->where(['and', 'pap.id_usuario = ' . $this->findModel($id)->id_usuario])->one();
         if (isset($modelbiopsia) || isset($modelpap)) {
             return ['title' => "Eliminar firma  #" . $id, 'content' => "No se puede eliminar la firma porque esta asociada a estudios", 'footer' => Html::button('Cerrar', ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) ];
         }
-
-        $this->findModel($id)->delete();
         if ($request->isAjax) {
-            /*
-             *   Process for ajax request
-            */
-            Yii::$app
-                ->response->format = Response::FORMAT_JSON;
+          $this->findModel($id)->delete();
+
             return ['forceClose' => true, 'forceReload' => '#crud-datatable-pjax'];
         }
         else {
-            /*
-             *   Process for non-ajax request
-            */
             return $this->redirect(['index']);
         }
     }

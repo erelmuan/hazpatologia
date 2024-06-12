@@ -70,7 +70,7 @@ class AnioProtocolo extends \yii\db\ActiveRecord
 
     }
 
-    public function getAnioProtocoloActivo($fecha) {
+    public static function getAnioProtocoloActivo($fecha) {
         $fechaEntera = strtotime($fecha);
         $anio = date("Y", $fechaEntera);
         $cantidad= AnioProtocolo::find()->andWhere(['and' ,"anio =" .$anio ." and activo=true" ])->count();
@@ -81,7 +81,7 @@ class AnioProtocolo extends \yii\db\ActiveRecord
          }
     }
 
-    public function anioprotocoloActivo(){
+    public static function anioprotocoloActivo(){
       $anioProtocolo = AnioProtocolo::find()->andWhere(['and' ,"activo=true" ])->one();
       return $anioProtocolo ;
     }
@@ -109,7 +109,7 @@ class AnioProtocolo extends \yii\db\ActiveRecord
         return false;
       }
 
-      public function aniosDisponibles()
+      public static function aniosDisponibles()
       {
         $anios =[];
           $registros = AnioProtocolo::find()

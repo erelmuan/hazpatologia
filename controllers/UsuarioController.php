@@ -207,25 +207,29 @@ class UsuarioController extends Controller {
      * @return mixed
      */
     public function actionDelete($id) {
-        Yii::$app->response->format = Response::FORMAT_JSON;
+      Yii::$app->response->format = Response::FORMAT_JSON;
+      $request = Yii::$app->request;
         if (Yii::$app->user->identity->id == $id) {
-            return ['title' => "Eliminar Rol #" . $id, 'content' => "No puede eliminarse a si mismo", 'footer' => Html::button('Cerrar', ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) ];
+            $this->setearMensajeError('No puede eliminarse a si mismo');
+            return ['forceClose' => true, 'forceReload' => '#crud-datatable-pjax','metodo'=>'delete'];
         }
         if (!User::isUserAdmin()) {
-            return ['title' => "Eliminar Rol #" . $id, 'content' => "No puede eliminar usuario si no es administrador", 'footer' => Html::button('Cerrar', ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) ];
+            $this->setearMensajeError('No puede eliminar usuario si no es administrador');
+            return ['forceClose' => true, 'forceReload' => '#crud-datatable-pjax','metodo'=>'delete'];
         }
-        $request = Yii::$app->request;
 
-        Yii::$app->response->format = Response::FORMAT_JSON;
         if (Firma::find()->where(['id_usuario'=>$id])->count()>0 ){
-            return ['title' => "Eliminar usuario #" . $id, 'content' =>'No se puede eliminar el usuario porque esta asociado a una firma', 'footer' => Html::button('Cerrar', ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) ];
+           $this->setearMensajeError('No se puede eliminar el usuario porque esta asociado a una firma');
+           return ['forceClose' => true, 'forceReload' => '#crud-datatable-pjax','metodo'=>'delete'];
           }
           if (Auditoria::find()->where(['id_usuario'=>$id])->count()>0 ){
-              return ['title' => "Eliminar usuario #" . $id, 'content' =>'No se puede eliminar el usuario porque esta asociado a una o más auditorias', 'footer' => Html::button('Cerrar', ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) ];
+            $this->setearMensajeError('No se puede eliminar el usuario porque esta asociado a una o más auditorias');
+            return ['forceClose' => true, 'forceReload' => '#crud-datatable-pjax','metodo'=>'delete'];
             }
-        $this->findModel($id)->delete();
         if ($request->isAjax) {
-            return ['forceClose' => true, 'forceReload' => '#crud-datatable-pjax'];
+          $this->findModel($id)->delete();
+          $this->setearMensajeExito('El registro se eliminó correctamente');
+          return ['forceClose' => true, 'forceReload' => '#crud-datatable-pjax','metodo'=>'delete'];
         }
         else {
             return $this->redirect(['index']);
@@ -285,7 +289,8 @@ class UsuarioController extends Controller {
     public function actionDeletedetalle($id_detalle) {
         Yii::$app->response->format = Response::FORMAT_JSON;
         if (Yii::$app->user->identity->id == $id_detalle) {
-            return ['title' => "Eliminar Rol #" . $id_detalle, 'content' => "No puede eliminarse el rol usted mismo", 'footer' => Html::button('Cerrar', ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) ];
+          $this->setearMensajeError('No puede eliminarse el rol usted mismo');
+          return ['forceClose' => true, 'forceReload' => '#crud-datatable-pjax'];
         }
 
         if (!User::isUserAdmin()) {
@@ -322,75 +327,85 @@ class UsuarioController extends Controller {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
-    public function actionPerfil() {
-        $request = Yii::$app->request;
-        $id = Yii::$app->user->identity->getId();
-        $model = $this->findModel($id);
-        if ($request->isAjax) { // modal para cambiar contraseña
-            Yii::$app->response->format = Response::FORMAT_JSON;
-            if ($dato = $request->post()) {
-                $model->pass_ctrl = $dato['Usuario']['pass_ctrl'];
-                $model->pass_new = $dato['Usuario']['pass_new'];
-                $model->pass_new_check = $dato['Usuario']['pass_new_check'];
-                if ($model->pass_new <> $model->pass_new_check) {
-                    $model->addError('pass_new', 'La contraseña ingresada no coincide.');
-                    $model->addError('pass_new_check', 'La contraseña ingresada no coincide.');
-                }
-                else {
-                    if (md5($model->pass_ctrl) <> $model->contrasenia) {
-                        $model->addError('pass_ctrl', 'La contraseña ingresada no es correcta.');
-                    }
-                    else {
-                        try {
-                            // cambiar solo contraseña
-                            $model->contrasenia = md5($model->pass_new);
-                            if ($model->save()) {
-                                $content = '<span class="text-success">Contraseña cambiada correctamente</span>';
-                                return ['title' => "Cambiar Contraseña", 'content' => $content, ];
-                            }
-                        }
-                        catch(yii\db\Exception $e) {
-                            Yii::$app
-                                ->response->format = Response::FORMAT_HTML;
-                            throw new NotFoundHttpException('Error en la base de datos.', 500);
-                        }
-                    }
-                }
-            }
-            return ['title' => "Cambiar Contraseña", 'content' => $this->renderAjax('_contrasenia', ['model' => $model, ]) , 'footer' => Html::button('Cancelar', ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) . Html::button('Guardar', ['class' => 'btn btn-primary', 'type' => "submit"]) ];
-        }
-        else {
-            if (!$request->post()) {
-                return $this->render('perfil', ['model' => $model, ]);
-            }
-            $post = $request->post();
-            $image = UploadedFile::getInstance($model, 'imagen');
-            if ($model->load($post) && $model->save()) {
-                if (!is_null($image) && $image !== "") {
-                    // save with image
-                    $ext = (explode(".", $image->name));
-                    $ext = end($ext);
-                    Yii::$app->params['uploadPath'] = Yii::$app->basePath . '/web/uploads/avatar/';
-                    $nombreEncriptadoImagen = Yii::$app
-                        ->security
-                        ->generateRandomString() . ".{$ext}";
-                    $path = Yii::$app->params['uploadPath'] . $nombreEncriptadoImagen;
-                    $model->id = Yii::$app->user->getId();
-                    $model->imagen = $nombreEncriptadoImagen;
-                    $image->saveAs($path);
-                    //Redimensionar
-                    Image::thumbnail(Yii::$app->params['uploadPath'] . $nombreEncriptadoImagen, 120, 120)->save(Yii::$app->params['uploadPath'] . 'sqr_' . $nombreEncriptadoImagen, ['quality' => 100]);
-                    Image::thumbnail(Yii::$app->params['uploadPath'] . $nombreEncriptadoImagen, 30, 30)->save(Yii::$app->params['uploadPath'] . 'sm_' . $nombreEncriptadoImagen, ['quality' => 100]);
-                    if ($model->save()) {
-                        Yii::$app->getSession()
-                            ->setFlash('success', ['type' => 'success', 'duration' => 5000, 'icon' => 'fa fa-success', 'message' => "Datos guardados correctamente", 'title' => 'NOTIFICACIÓN', 'positonY' => 'top', 'positonX' => 'right']);
-                    }
-                }
-                return $this->refresh();
-            }
-            return $this->render('perfil', ['model' => $model, ]);
-        }
+    public function actionCambiarcontrasenia(){
+      $request = Yii::$app->request;
+      $id = Yii::$app->user->identity->getId();
+      $model = $this->findModel($id);
+      if ($request->isAjax) { // modal para cambiar contraseña
+          Yii::$app->response->format = Response::FORMAT_JSON;
+          if ($dato = $request->post()) {
+              $model->pass_ctrl = $dato['Usuario']['pass_ctrl'];
+              $model->pass_new = $dato['Usuario']['pass_new'];
+              $model->pass_new_check = $dato['Usuario']['pass_new_check'];
+              if ($model->pass_new <> $model->pass_new_check) {
+                  $model->addError('pass_new', 'La contraseña ingresada no coincide.');
+                  $model->addError('pass_new_check', 'La contraseña ingresada no coincide.');
+              }
+              else {
+                  if (md5($model->pass_ctrl) <> $model->contrasenia) {
+                      $model->addError('pass_ctrl', 'La contraseña ingresada no es correcta.');
+                  }
+                  else {
+                      try {
+                          // cambiar solo contraseña
+                          $model->contrasenia = md5($model->pass_new);
+                          if ($model->save()) {
+                            $this->setearMensajeExito('Datos guardados correctamente');
+                            return $this->redirect(['usuario/perfil']); // Redirigir a la misma página después de guardar con éxito
+
+                          }
+                      }
+                      catch(yii\db\Exception $e) {
+                          Yii::$app
+                              ->response->format = Response::FORMAT_HTML;
+                          throw new NotFoundHttpException('Error en la base de datos.', 500);
+                      }
+                  }
+              }
+          }
+          return ['title' => "Cambiar Contraseña",
+          'content' => $this->renderAjax('_contrasenia', ['model' => $model, ]) ,
+          'footer' => Html::button('Cancelar',
+           ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"])
+           . Html::button('Guardar', ['class' => 'btn btn-primary', 'type' => "submit"]) ];
+      }
     }
+      //Parametros pasados por referencia
+      private function guadarImagen(&$model,&$image){
+        $ext = explode(".", $image->name);
+        $ext = end($ext);
+        Yii::$app->params['uploadPath'] = Yii::$app->basePath . '/web/uploads/avatar/';
+        $nombreEncriptadoImagen = Yii::$app->security->generateRandomString() . ".{$ext}";
+        $path = Yii::$app->params['uploadPath'] . $nombreEncriptadoImagen;
+        $model->imagen = $nombreEncriptadoImagen;
+        $image->saveAs($path);
+        // Redimensionamiento de la imagen (opcional)
+        Image::thumbnail(Yii::$app->params['uploadPath'] . $nombreEncriptadoImagen, 120, 120)
+            ->save(Yii::$app->params['uploadPath'] . 'sqr_' . $nombreEncriptadoImagen, ['quality' => 100]);
+        Image::thumbnail(Yii::$app->params['uploadPath'] . $nombreEncriptadoImagen, 30, 30)
+            ->save(Yii::$app->params['uploadPath'] . 'sm_' . $nombreEncriptadoImagen, ['quality' => 100]);
+      }
+
+      public function actionPerfil() {
+          $request = Yii::$app->request;
+          $id = Yii::$app->user->identity->getId();
+          $model = $this->findModel($id);
+          $post = $request->post();
+          if ($model->load($post)) {
+              $image = UploadedFile::getInstance($model, 'imagen');
+              // Manejar la subida de la imagen si está presente
+              if (!is_null($image) && $image !== "") {
+                  $this->guadarImagen($model, $image);
+              }
+              if ($model->save()) {
+                $this->setearMensajeExito('Datos guardados correctamente');
+                return $this->refresh(); // Redirigir a la misma página después de guardar con éxito
+              }
+          }
+          return $this->render('perfil', ['model' => $model]);
+      }
+
+
 
       public function actionConfiguracion() {
           $temas= ArrayHelper::map(Tema::find()->all(), 'id','descripcion');
@@ -400,18 +415,12 @@ class UsuarioController extends Controller {
           $id = Yii::$app->user->identity->getId();
           $model = $this->findModel($id);
           if ($model->configuracion->load($request->post())  && $model->configuracion->save()) {
-            Yii::$app->getSession()->setFlash('success', ['type' => 'success', 'duration' => 5000, 'icon' => 'fa fa-success', 'message' => "Datos guardados correctamente", 'title' => 'NOTIFICACIÓN', 'positonY' => 'top', 'positonX' => 'right']);
-              return $this->goHome();
+            $this->setearMensajeExito('Datos guardados correctamente');
+            return $this->goHome();
           }else {
             return $this->render('configuracion', ['model' => $model,  'temas'=>$temas , 'menus'=>$menus]);
 
           }
 
       }
-
-
-
-
-
-
 }

@@ -1,4 +1,17 @@
-Version 2.8.2
+Versión 2.8.3
+Aclaración de la versión anterior: En la versión anterior se había modificado el controller ubicado en YII/WEB.
+Se incorpora el script de actualización de la base de la versión 2.8.2
+
+NOTIFICACIONES AL ELIMINAR EL REGISTRO
+* Las eliminaciones de los registros, ahora se indica si el mismo se elimino.
+* Se corrige la validación de tipo de acceso, ademas de restringir a que ingrese valor en procedencia.
+* Se agrega el CrudAsset de gentelella para que incorpore los iconos en la vista horizontal, ademas de corregir
+collapse de esta vista, la cual no fucionaba.
+* Se declaran algunos metodos como estaticos debido a la actualizacion de algunas librerias de yii2.
+* modificacion en las planillas del FOS , las dos fechas ahora se asignaron a la fecha de ingreo y no la fecha de listo.
+* se debe agregar el vendor.
+
+Versión 2.8.2
 Refactorizacion de los permisos, de esta forma ya no va a ser hardcodeado cada vez que se agregue una vista nueva.
 
 

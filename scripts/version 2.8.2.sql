@@ -1,3 +1,8 @@
+
+tube que agregar id_rol en modulo
+tengo que quitar el unique en modulo y poner otro tipo de unique que sea el nombre
+y el id_tipo_acceso
+
 ALTER TABLE public.usuario
 ADD COLUMN id_rol integer;
 

@@ -2,7 +2,6 @@
 use yii\helpers\Html;
 // use yii\widgets\ActiveForm;
 use yii\bootstrap\ActiveForm;
-
 use kartik\widgets\FileInput;
 use kartik\grid\GridView;
 use yii\helpers\Url;
@@ -18,25 +17,11 @@ use yii\helpers\Url;
   </div>
   <div class="usuario-misdatos">
 
-      <?php if (Yii::$app->session->hasFlash('misDatosSubmitted')): ?>
-
-          <div class="alert alert-success">
-              Datos Guardados correctamente.
-          </div>
-
-      <?php else: ?>
-
         <!-- Nav tabs -->
         <ul class="nav nav-tabs" role="tablist">
           <li class="active"><a href="#general" role="tab" data-toggle="tab">Usuario</a></li>
         </ul>
-
-
-
-
           <div class="perfil-form">
-            <?php $form = ActiveForm::begin(); ?>
-
             <div class="tab-content">
               <div class="tab-pane active vertical-pad" id="general">
                 <div class="row">
@@ -51,91 +36,30 @@ use yii\helpers\Url;
                            <div class="help-block"></div>
                          </div>
                          <?=$form->field($model, 'id_usuario')->hiddenInput()->label(false); ?>
-                         <?     echo $form->field($model, 'imagen')->widget(FileInput::classname(), [
-                     'options' => ['multiple' => false, 'accept' => 'image/*',
-              'onchange' => 'setearValue()',
-              'hiddenOptions' => ['id' => "imagen-identificador"]
-
-                   ],
-                     'pluginOptions' => [
-                       'allowedFileExtensions'=>['jpg','gif','png'],
-                                'showPreview' => true,
-                                 'showCaption' => true,
-                                 'showRemove' => true,
-                                 'showUpload' => true,
-                                  'uploadLabel'=> "Guardar",
+                         <?= $form->field($model, 'imagen')->widget(
+                             FileInput::classname(), [
+                                 'options' => ['accept' => 'image/*'],
+                                 'language' => 'es',
+                                 'pluginOptions' => ['allowedFileExtensions' => ['jpg', 'gif', 'png'],
                                ],
-                               'pluginEvents' => [
-                                 "fileclear" => 'clearValue()',
-                                ]
-
-                 ]);?>
+                             ]) ?>
+                     <!-- No hay que cambiar el orden! hiddenInput tiene que estar poder debajo del widget FileInput -->
+                     <?//= $form->field($model, 'imagen')->hiddenInput(['value' => $model->imagen])->label(false); ?>
                       </div>
-
-
                       </div>
                       <?php  if (!$model->isNewRecord ) { ?>
                       <div class="col-md-4">
                           <div class="x_panel">
-                            <?   echo '<img src=uploads/firmas/sqr_'.$model->imagen.' class="img-circle profile_img"   alt="..." >'; ?>
-                          </div>
+                            <?= '<img src="' . Url::base(true) . '/uploads/firmas/' . $model->imagen . '" class="img-square profile_img" width="370" height="450" >'; ?>                          </div>
                       </div>
                         <?  }?>
                   </div>
-
                 </div>
-
-                  <?
-
-
-//                   echo $form->field($model, 'imagen')->widget(FileInput::classname(), [
-//     'options' => ['multiple' => true, 'accept' => 'image/*'],
-//     'pluginOptions' => [
-//                'showPreview' => false,
-//                 'showCaption' => true,
-//                 'showRemove' => true,
-//                 'showUpload' => false]
-// ]);
-    //               echo FileInput::widget([
-    //     'name' => 'Firma[imagen]',
-    //     'pluginOptions' => [
-    //         'showPreview' => false,
-    //         'showCaption' => true,
-    //         'showRemove' => true,
-    //         'showUpload' => false
-    //     ]
-    // ]);
-                  ?>
-
-
-
             </div>
 
-
             <?php ActiveForm::end(); ?>
-
           </div>
-
-
-
-      <?php endif; ?>
-
   </div>
-    <?//php $form = ActiveForm::begin(); ?>
-
-    <?//= $form->field($model, 'firma')->textInput() ?>
-
-    <?//= $form->field($model, 'id_usuario')->textInput() ?>
-
-
-	<?//php if (!Yii::$app->request->isAjax){ ?>
-	  	<!-- <div class="form-group"> -->
-	        <?//= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
-	    <!-- </div> -->
-	<?// php} ?>
-
-    <?//php ActiveForm::end(); ?>
-
 </div>
 
 
@@ -173,18 +97,12 @@ use yii\helpers\Url;
            </div>
        </div>
      </div>
-</div>
+
 <script>
-function setearValue (){
-   document.getElementById('imagen-identificador').value='Hubo un error no se subio la imagen';
-}
-function clearValue (){
-   document.getElementById('imagen-identificador').value='';
-}
+
+
 function agregarFormularioUsu (){
   document.getElementById("firma-usuario").value=  $("tr.success").find("td:eq(2)").text() ;
-
-
   document.getElementById("firma-id_usuario").value=$("tr.success").find("td:eq(1)").text();
   //vacias el contenido de la variable para que no se anexe con otra eleccion de otro campo
   $('button.close.kv-clear-radio').click();

@@ -4,6 +4,12 @@ html , body{
  height:100%;
 
 }
+.text-success {
+  color: #1d751b;
+}
+.text-danger {
+  color: #d93e3b;
+}
 #fecha{
 
 margin: 8px 0 6px;

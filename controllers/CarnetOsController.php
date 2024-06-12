@@ -63,7 +63,7 @@ class CarnetOsController extends Controller {
         }
         return $this->render('create', ['model' => $model, ]);
     }
-    public function createParametros($id_paciente, $obraSocial, $nroAfiliado) {
+    public static function createParametros($id_paciente, $obraSocial, $nroAfiliado) {
       for ($z = 0;$z < count($obraSocial);$z++) {
           if ($modelCarnetOs = new CarnetOs()) {
               $modelCarnetOs->id_obrasocial = $obraSocial[$z];
@@ -80,7 +80,7 @@ class CarnetOsController extends Controller {
           }
       }
     }
-    public function updateParametros($id_paciente, $obraSocial, $nroAfiliado) {
+    public  static function updateParametros($id_paciente, $obraSocial, $nroAfiliado) {
         $models = CarnetOsController::findidpacModel($id_paciente);
         if ($models == null && !empty($obraSocial)) CarnetOsController::createParametros($id_paciente, $obraSocial, $nroAfiliado);
         //Mejorar porque siempre elimino aun no habiendo modificacion
@@ -126,13 +126,13 @@ class CarnetOsController extends Controller {
      * @return CarnetOs the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel($id) {
+    protected static function findModel($id) {
         if (($model = CarnetOs::findOne($id)) !== null) {
             return $model;
         }
         throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
     }
-    public function findidpacModel($id_paciente) {
+    public static function findidpacModel($id_paciente) {
         if (($model = CarnetOs::Find()->where(['id_paciente' => $id_paciente])->all()) !== null) {
             return $model;
         }

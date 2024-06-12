@@ -12,9 +12,9 @@ return [
     [
       'attribute'=>'imagen',
         'label'=>'Imagen',
-        'value' => function($model) {
-            return '<img src=uploads/firmas/'.$model->imagen.' width="90px" height="90px" style="margin-left: auto;margin-right: auto;;position:relative;" >';
-          },
+        'value' => function ($model) {
+                 return Html::img(Yii::$app->urlManager->baseUrl . '/uploads/firmas/' . $model->imagen, ['width' => '75px', 'height' => '75px', 'style' => 'margin-left: auto; margin-right: auto; position: relative;']);
+             },
         'format'=>'raw',
 
  ],
@@ -42,6 +42,8 @@ return [
         'urlCreator' => function($action, $model, $key, $index) {
                 return Url::to([$action,'id'=>$key]);
         },
+        'updateOptions'=>['title'=>'Actualizar', 'data-toggle'=>'tooltip','icon'=>"<button class='btn-primary btn-circle'><span class='glyphicon glyphicon-pencil'></span></button>"],
+        'options' => ['style' => 'width:7%'],
 
     ],
 

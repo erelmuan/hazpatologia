@@ -4,9 +4,16 @@ use yii\widgets\DetailView;
 use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\Pap */
+$isAjax = Yii::$app->request->isAjax;
+
 ?>
 <div class="pap-view letras-grandes">
+  <div id="w0" >
 
+  <?  if (!$isAjax) { ?>
+  <div class="clearfix"> <div class="nav navbar-right panel_toolbox"><?= Html::a('<i class="glyphicon glyphicon-arrow-left"></i> Ir a paps', ['/pap/index'], ['class'=>'btn btn-danger grid-button']) ?></div>
+  <? } ?>
+</div>
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
@@ -64,9 +71,9 @@ use yii\helpers\Html;
             'cantidad',
             'frase',
         ],
-    ]) ;
-
-     if ($model->vph ){ ?>
+    ]) ; ?>
+</div>
+     <?if ($model->vph ){ ?>
         <div id="w0ss" class="x_panel">
         <div class="x_title"><h2><i class="fa fa-table"></i> ESTUDIO vph  </h2>
           <div class="clearfix"> <div class="nav navbar-right panel_toolbox"></div>

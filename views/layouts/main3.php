@@ -11,13 +11,15 @@ use yii\widgets\Breadcrumbs;
 use app\assets\AppAsset;
 use app\models\AnioProtocolo;
 use app\models\User;
-
+use kartik\widgets\Growl;
+use kartik\widgets\SwitchInput;
 use yii\bootstrap\Nav;
 use yii\helpers\Url;
 use rmrevin\yii\fontawesome\FontAwesome;
-// $bundle = yiister\gentelella\assets\Asset::register($this);
 
 AppAsset::register($this);
+$bundle = yiister\gentelella\assets\Asset::register($this);
+
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
@@ -34,6 +36,8 @@ AppAsset::register($this);
    <?= Html::cssFile('@web/css/animate.min.css') ?>
    <?= Html::jsFile('@web/js/jquery.min.js') ?>
    <?= Html::jsFile('@web/js/sweetalert2.all.min.js') ?>
+   <?= Html::jsFile('@web/js/flashjs/dist/flash.min.js') ?>
+
    <link href="<?= Yii::$app->request->baseUrl ?>/css/custom.<?=Yii::$app->user->identity->configuracion->tema->descripcion?>.css" rel="stylesheet" id="estilo-original">
    <?=$this->registerLinkTag(['rel' => 'icon', 'type' => 'image/ico', 'href' => Url::base(true).'/favicon.ico']); ?>
    <style>
@@ -41,6 +45,7 @@ AppAsset::register($this);
        font-size: 80px !important; /* Ajusta el tamaño de fuente según tus necesidades */
    }
    </style>
+
 </head>
 <body class="nav-<?= !empty($_COOKIE['menuIsCollapsed']) && $_COOKIE['menuIsCollapsed'] == 'true' ? 'sm' : 'md' ?>" >
 
@@ -152,7 +157,7 @@ AppAsset::register($this);
       }
       ?>
 
-    ?>
+
 
     <div class="container">
 
@@ -200,6 +205,17 @@ $( document ).ready(function() {
   setTimeout(function(){
     $('#loader-out').fadeOut();
   }, 1300);
+
+  $(document).ajaxSuccess(function(event, xhr, settings) {
+      // Verificar si `event` y `event.target` están definidos
+      if (event && event.target && event.target.id !== 'crud-datatable-pjax') {
+          // Verificar si `xhr.responseJSON` está definido y tiene la propiedad `metodo`
+          if (xhr.responseJSON && xhr.responseJSON.metodo === 'delete') {
+              location.reload();
+          }
+      }
+  });
+
 });
 function cerrarSesion(){
   $.ajax({
@@ -207,6 +223,7 @@ function cerrarSesion(){
       type: 'post',
   });
 }
+
 
 </script>
 </body>
