@@ -83,6 +83,7 @@ class Solicitudbiopsia extends Solicitud
             [['id_materialginecologico'], 'exist', 'skipOnError' => true, 'targetClass' => Paramaterialginecologico::className(), 'targetAttribute' => ['id_materialginecologico' => 'id']],
             [['id_paciente'], 'exist', 'skipOnError' => true, 'targetClass' => Paciente::className(), 'targetAttribute' => ['id_paciente' => 'id']],
             [['id_medico'], 'exist', 'skipOnError' => true, 'targetClass' => Medico::className(), 'targetAttribute' => ['id_medico' => 'id']],
+            [['protocolo'], 'validacion_protocolo_create','on' => 'create'],
             [ ['protocolo'], 'validacion_protocolo_update','on' => 'update'],
 
         ];
