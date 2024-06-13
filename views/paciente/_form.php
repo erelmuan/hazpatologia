@@ -113,9 +113,9 @@ use kartik\datecontrol\DateControl;
                   'enableOnReadonly' => false,
                   'removeButton' => false // Desactivar el botón de eliminación
               ],
-              'pluginEvents' => [
-                  'disabled' => true
-              ]
+              // 'pluginEvents' => [
+              //     'disabled' => true
+              // ]
 
             ]
 
