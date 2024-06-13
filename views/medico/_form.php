@@ -13,9 +13,14 @@ use yii\widgets\ActiveForm;
     <? if($model->estudios()){ ?>
       <span style="color:red">  Advertencia: La modificacion del nombre o apellido impactara en todos los estudios donde se registro al medico <b>(NO CAMBIE LA IDENTIDAD DEL MISMO)</b>.</span>
     <? } ?>
-    <?= $form->field($model, 'apellido')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'nombre')->textInput(['maxlength' => true]) ?>
+    <? if($model->estudios()){
+        echo $form->field($model, 'apellido')->textInput(['maxlength' => true,'readonly' => true]);
+        echo $form->field($model, 'nombre')->textInput(['maxlength' => true,'readonly' => true]);
+          }else {
+        echo $form->field($model, 'apellido')->textInput(['maxlength' => true,'style'=> 'width:100%; text-transform:uppercase;']);
+        echo $form->field($model, 'nombre')->textInput(['maxlength' => true,'style'=> 'width:100%; text-transform:uppercase;']) ;
+        }
+    ?>
 
     <?= $form->field($model, 'id_tipodoc')->dropDownList($model->getTipodocs())->label('Tipo de documento') ;?>
 

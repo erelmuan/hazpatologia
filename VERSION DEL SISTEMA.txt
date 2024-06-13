@@ -1,3 +1,8 @@
+Versión 2.8.4
+RESTRICCIÓN DE MODIFICACIÓN PACIENTES-MÉDICOS.
+No se podrán modificar los datos filiatorios de los pacientes y médicos  una vez
+que los mismos estén en estudios finalizados.
+
 Versión 2.8.3
 Aclaración de la versión anterior: En la versión anterior se había modificado el controller ubicado en YII/WEB.
 Se incorpora el script de actualización de la base de la versión 2.8.2

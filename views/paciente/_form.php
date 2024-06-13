@@ -53,10 +53,20 @@ use kartik\datecontrol\DateControl;
     <div class="row">
     <div class="form-row mt-4">
       <div class="col-sm-5 pb-3">
-          <?= $form->field($model, 'nombre')->input("text",['style'=> 'width:100%; text-transform:uppercase;'])->label('Nombre');?>
+        <? if($model->estudios()){
+            echo $form->field($model, 'nombre')->textInput(['maxlength' => true,'readonly' => true]);
+              }else {
+            echo $form->field($model, 'nombre')->textInput(['maxlength' => true,'style'=> 'width:100%; text-transform:uppercase;']) ;
+            }
+        ?>
       </div>
       <div class="col-sm-5 pb-3">
-        <?= $form->field($model, 'apellido')->input("text",['style'=> 'width:100%; text-transform:uppercase;'])->label('Apellido');?>
+        <? if($model->estudios()){
+            echo $form->field($model, 'apellido')->textInput(['maxlength' => true,'readonly' => true]);
+              }else {
+            echo $form->field($model, 'apellido')->textInput(['maxlength' => true,'style'=> 'width:100%; text-transform:uppercase;']) ;
+            }
+        ?>
       </div>
      </div>
   </div>
@@ -68,7 +78,12 @@ use kartik\datecontrol\DateControl;
         </div>
 
         <div class="col-sm-3 pb-5">
-          <?=$form->field($model, 'num_documento')->input("text",['style'=>'width:100%'])->label('N° doc.');  ?>
+          <? if($model->estudios()){
+              echo $form->field($model, 'num_documento')->textInput(['maxlength' => true,'readonly' => true])->label('N° doc.');;
+                }else {
+              echo $form->field($model, 'num_documento')->textInput(['maxlength' => true,'style'=> 'width:100%; text-transform:uppercase;'])->label('N° doc.'); ;
+              }
+          ?>
         </div>
 
         <div class="col-sm-2 pb-5">
@@ -79,18 +94,47 @@ use kartik\datecontrol\DateControl;
 
        </div>
        <div class="col-dm-2 pb-5">
-         <?
-         echo $form->field($model, 'fecha_nacimiento')->widget(DateControl::classname(), [
-           'options' => ['placeholder' => 'Debe agregar una fecha',
+         <? if($model->estudios()){
+           echo $form->field($model, 'fecha_nacimiento')->widget(DateControl::classname(), [
+            'options' => ['placeholder' => 'Debe agregar una fecha',
+            'value'=> ($model->fecha_nacimiento )?$model->fecha_nacimiento:'' ,
+                  ],
+            'type'=>DateControl::FORMAT_DATE,
+              'displayFormat' => 'php:d/m/Y',
+              'saveFormat' => 'php:Y-m-d',
+              'readonly' => true,
+              'widgetOptions' => [
+              'pluginOptions' => [
+                  'disabled' => true,
+                  'autoclose' => true,
+                  'showMeridian' => false,
+                  'todayHighlight' => true,
+                  'keyboardNavigation' => false,
+                  'enableOnReadonly' => false,
+                  'removeButton' => false // Desactivar el botón de eliminación
+              ],
+              'pluginEvents' => [
+                  'disabled' => true
+              ]
+
+            ]
+
+              ])->label('Fecha de nacimiento');
+
+
+           }else {
+            echo $form->field($model, 'fecha_nacimiento')->widget(DateControl::classname(), [
+             'options' => ['placeholder' => 'Debe agregar una fecha',
              'value'=> ($model->fecha_nacimiento )?$model->fecha_nacimiento:'' ,
                    ],
-           'type'=>DateControl::FORMAT_DATE,
-           'autoWidget'=>true,
-           'displayFormat' => 'php:d/m/Y',
-           'saveFormat' => 'php:Y-m-d',
-         ])->label('Fecha de nacimiento')
-
+             'type'=>DateControl::FORMAT_DATE,
+              'autoWidget'=>true,
+               'displayFormat' => 'php:d/m/Y',
+               'saveFormat' => 'php:Y-m-d',
+               ])->label('Fecha de nacimiento');
+             }
          ?>
+
       </div>
 
     </div>
