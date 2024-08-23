@@ -1,9 +1,11 @@
+Versión 2.8.6
+CORRECCION EN LOS label
+Se cambia usuario por patologo
 Versión 2.8.5
 INCORPORACIÓN DE PATOLOGO Y CAMBIO CAMPO HIQ Y VPH
 Se incorpora el campo patologo en la grilla de los estudios
 Cambio en los iconos de los campos hiq y vph de check y cruz por "si" y "no"
-No se podrán modificar los datos filiatorios de los pacientes y médicos  una vez
-que los mismos estén en estudios finalizados.
+
 Versión 2.8.4
 RESTRICCIÓN DE MODIFICACIÓN PACIENTES-MÉDICOS.
 No se podrán modificar los datos filiatorios de los pacientes y médicos  una vez

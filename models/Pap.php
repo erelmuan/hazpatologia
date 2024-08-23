@@ -128,6 +128,7 @@ class Pap extends \yii\db\ActiveRecord
             'frase' => 'Frase',
             'fecharealizacion' => 'Fecha de realizacion',
             'fechadeingreso' => 'Fecha de ingreso',
+            'usuario'=>'Patólogo'
 
 
         ];

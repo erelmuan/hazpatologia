@@ -91,6 +91,7 @@ class Biopsia extends \yii\db\ActiveRecord
             'diagnostico' => 'Diagnostico',
             'firmado' => 'Firmado',
             'Pagado' => 'Pagado',
+            'usuario' => 'Patólogo',
             'id' => 'ID',
             'id_solicitudbiopsia' => 'Id Solicitudbiopsia',
             'id_plantillamaterial' => 'Id Plantillamaterial',
@@ -208,7 +209,6 @@ class Biopsia extends \yii\db\ActiveRecord
         [
             'class'=>'\kartik\grid\DataColumn',
             'attribute'=>'usuario',
-            'label'=> 'Patólogo',
             'value'=>'usuario.nombre'
         ],
         [
