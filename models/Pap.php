@@ -237,6 +237,12 @@ class Pap extends \yii\db\ActiveRecord
               'attribute'=>'vph',
               'trueLabel' => 'Sí',
               'falseLabel' => 'No',
+               'trueIcon' => '<span class="label label-success" ">Sí</span>',
+               'falseIcon' => '<span class="label label-danger" ">No</span>',
+               'filterInputOptions' => [
+                 'class' => 'form-control',
+                  'prompt' => 'Seleccionar'
+               ],
           ],
           [
             'class'=>'\kartik\grid\DataColumn',
@@ -244,6 +250,12 @@ class Pap extends \yii\db\ActiveRecord
             'label' => 'Estado',
             'value' => 'estado.descripcion',
 
+        ],
+        [
+            'class'=>'\kartik\grid\DataColumn',
+            'attribute'=>'usuario',
+            'label'=> 'Patólogo',
+            'value'=>'usuario.nombre'
         ],
         ];
     }

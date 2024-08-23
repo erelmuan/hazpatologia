@@ -206,10 +206,22 @@ class Biopsia extends \yii\db\ActiveRecord
 
         ],
         [
+            'class'=>'\kartik\grid\DataColumn',
+            'attribute'=>'usuario',
+            'label'=> 'Patólogo',
+            'value'=>'usuario.nombre'
+        ],
+        [
             'class'=>'\kartik\grid\BooleanColumn',
             'attribute'=>'ihq',
             'trueLabel' => 'Sí',
             'falseLabel' => 'No',
+             'trueIcon' => '<span class="label label-success" ">Sí</span>',
+             'falseIcon' => '<span class="label label-danger" ">No</span>',
+             'filterInputOptions' => [
+               'class' => 'form-control',
+                'prompt' => 'Seleccionar'
+             ],
         ],
         ];
     }

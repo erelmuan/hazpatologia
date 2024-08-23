@@ -141,6 +141,12 @@ return [
         'label'=> 'Edad al momento del estudio(años)',
 
     ],
+    [
+        'class'=>'\kartik\grid\DataColumn',
+        'attribute'=>'usuario',
+        'label'=> 'Patólogo',
+        'value'=>'usuario.nombre'
+    ],
 
 
 ];

@@ -24,6 +24,7 @@ class PapSearch extends Pap
     public $fecha_desde;
     public $fecha_hasta;
     public $estado;
+    public $usuario;
 
     /**
      * @inheritdoc
@@ -34,7 +35,7 @@ class PapSearch extends Pap
             [['id', 'id_solicitudpap','protocolo',   'indicepicnotico', 'cantidad', 'id_estado'], 'integer'],
             [['descripcion', 'calificacion', 'indicedemaduracion', 'plegamiento', 'agrupamiento', 'leucocitos', 'hematies', 'histiocitos', 'detritus', 'citolisis', 'flora', 'aspecto', 'pavimentosas', 'glandulares', 'diagnostico',  'fechalisto', 'fecha_desde','fecha_hasta','fecharealizacion'], 'safe'],
             //Se agrego para permitir la habilitacion del filtro en la grilla
-            [['paciente','medico','procedencia','estado','sexo'], 'safe'],
+            [['paciente','medico','procedencia','estado','sexo','usuario'], 'safe'],
             ['fecharealizacion', 'date', 'format' => 'dd/MM/yyyy'],
             ['fechadeingreso', 'date', 'format' => 'dd/MM/yyyy'],
             [['firmado', 'vph'], 'boolean'],
@@ -71,6 +72,7 @@ class PapSearch extends Pap
         ->column();
 
         $query = Pap::find()->innerJoinWith('solicitudpap', true)
+        ->leftJoin('usuario', 'usuario.id = pap.id_usuario')
        ->innerJoin('paciente', 'paciente.id = solicitudpap.id_paciente')
        ->innerJoin('medico', 'medico.id = solicitudpap.id_medico')
       ->innerJoin('procedencia', 'procedencia.id = solicitudpap.id_procedencia')
@@ -141,6 +143,7 @@ class PapSearch extends Pap
         }
 
         $query->andFilterWhere(['ilike', 'descripcion', $this->descripcion])
+            ->andFilterWhere(['ilike', 'usuario.nombre', $this->usuario])
             ->andFilterWhere(['ilike', 'calificacion', $this->calificacion])
             ->andFilterWhere(['ilike', 'indicedemaduracion', $this->indicedemaduracion])
             ->andFilterWhere(['ilike', 'plegamiento', $this->plegamiento])

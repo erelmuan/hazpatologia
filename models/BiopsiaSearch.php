@@ -24,6 +24,8 @@ class BiopsiaSearch extends Biopsia
   public $fecha_desde;
   public $fecha_hasta;
   public $estado;
+  public $usuario;
+
     /**
      * @inheritdoc
      */
@@ -36,7 +38,7 @@ class BiopsiaSearch extends Biopsia
             ['fechadeingreso', 'date', 'format' => 'dd/MM/yyyy'],
             [['firmado', 'ihq'], 'boolean'],
             //Se agrego para permitir la habilitacion del filtro en la grilla
-            [['paciente','medico','procedencia','estado'], 'safe'],
+            [['paciente','medico','procedencia','estado' ,'usuario'], 'safe'],
         ];
     }
 
@@ -69,6 +71,7 @@ class BiopsiaSearch extends Biopsia
         ->column();
 
       $query = Biopsia::find()->innerJoinWith('solicitudbiopsia', true)
+      ->leftJoin('usuario', 'usuario.id = biopsia.id_usuario')
       ->innerJoin('paciente', 'paciente.id = solicitudbiopsia.id_paciente')
       ->innerJoin('procedencia', 'procedencia.id = solicitudbiopsia.id_procedencia')
       ->innerJoin('medico', 'medico.id = solicitudbiopsia.id_medico')
@@ -138,6 +141,7 @@ class BiopsiaSearch extends Biopsia
         $query->andFilterWhere(['ilike', 'material', $this->material])
             ->andFilterWhere(['ilike', 'macroscopia', $this->macroscopia])
             ->andFilterWhere(['ilike', 'microscopia', $this->microscopia])
+            ->andFilterWhere(['ilike', 'usuario.nombre', $this->usuario])
 
             ->andFilterWhere(['=', 'ihq', $this->ihq])
             ->andFilterWhere(['ilike', 'sexo', $this->sexo])

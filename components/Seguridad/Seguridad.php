@@ -49,7 +49,7 @@ class Seguridad {
           $permisoAcceso=$seguridad->acceso($id_usuario,$controller, "index");
            if (!empty($permisoAcceso)){
               $accionbd=\app\models\Accion::find()->where(['id'=>$permisoAcceso->id_accion])->one();
-              return $accionbd->$accion;
+              return ($accionbd)?$accionbd->$accion:false;
            }else {
              return false ;
            }
