@@ -220,6 +220,90 @@ use yii\widgets\Pjax;
                         <?= Html::a('<i class="glyphicon glyphicon-pencil"></i> Modificar Año-Protocolo', ['/anio-protocolo/index'], ['class'=>'btn btn-success grid-button']) ?>
                        </div>
                       <? } ?>
+
+                      <li role="presentation" class="dropdown">
+                            <a href="javascript:;" class="dropdown-toggle info-number" data-toggle="dropdown" aria-expanded="false">
+                                <i title="Enlaces de interés" class="fa fa-external-link" style="color: #ff5733; font-size: 20px; background-color: #f0f0f0; padding: 5px; border-radius: 50%;"></i>                            </a>
+                              <ul id="menu1" class="dropdown-menu list-unstyled msg_list" role="menu">
+                         <li>
+                              <a>
+                                  <span class="image">
+                                      <img src="http://placehold.it/128x128" alt="Profile Image" />
+                                    </span>
+                                    <span>
+                                      <span>John Smith</span>
+                                      <span class="time">3 mins ago</span>
+                                    </span>
+                                    <span class="message">
+                                        Film festivals used to be do-or-die moments for movie makers. They were where...
+                                    </span>
+                               </a>
+                                   </li>
+                                    <li>
+                                <a>  <span class="image">
+                                      <img src="http://placehold.it/128x128" alt="Profile Image" />
+                                      </span>
+                                      <span>
+                                <span>John Smith</span>
+                                  <span class="time">3 mins ago</span>
+                                  </span>
+                                  <span class="message">
+                                                    Film festivals used to be do-or-die moments for movie makers. They were where...
+                                                </span>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a>
+                                  <span class="image">
+                                                    <img src="http://placehold.it/128x128" alt="Profile Image" />
+                                                </span>
+                                  <span>
+                                                    <span>John Smith</span>
+                                  <span class="time">3 mins ago</span>
+                                  </span>
+                                  <span class="message">
+                                                    Film festivals used to be do-or-die moments for movie makers. They were where...
+                                                </span>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a>
+                                  <span class="image">
+                                                    <img src="http://placehold.it/128x128" alt="Profile Image" />
+                                    </span>
+                                  <span>
+                                                    <span>John Smith</span>
+                                  <span class="time">3 mins ago</span>
+                                  </span>
+                                  <span class="message">
+                                                    Film festivals used to be do-or-die moments for movie makers. They were where...
+                                                </span>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a>
+                                  <span class="image">
+                                                    <img src="http://placehold.it/128x128" alt="Profile Image" />
+                                    </span>
+                                  <span>
+                                                    <span>John Smith</span>
+                                  <span class="time">3 mins ago</span>
+                                  </span>
+                                  <span class="message">
+                                                    Film festivals used to be do-or-die moments for movie makers. They were where...
+                                                </span>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <div class="text-center">
+                                                    <a href="/">
+                                                        <strong>See All Alerts</strong>
+                                                        <i class="fa fa-angle-right"></i>
+                                                    </a>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </li>
                     </ul>
 
 
