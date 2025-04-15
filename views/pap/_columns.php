@@ -37,7 +37,7 @@ return [
       'class'=>'\kartik\grid\DataColumn',
       'value'=> 'solicitudpap.paciente.fecha_nacimiento',
       'label'=> 'Fecha de nacimiento',
-      'format' => ['date', 'd/M/Y'],
+      'format' => ['date', 'php:d/m/Y'],
 
    ],
     [
@@ -119,13 +119,13 @@ return [
          'class'=>'\kartik\grid\DataColumn',
          'label'=> 'Fecha de ingreso',
          'value' => 'solicitudpap.fechadeingreso',
-         'format' => ['date', 'd/M/Y'],
+         'format' => ['date', 'php:d/m/Y'],
      ],
      [
          'class'=>'\kartik\grid\DataColumn',
          'label'=> 'Fecha de informe listo',
          'attribute'=>'fechalisto',
-         'format' => ['date', 'd/M/Y'],
+         'format' => ['date', 'php:d/m/Y'],
      ],
      [
          'class'=>'\kartik\grid\BooleanColumn',

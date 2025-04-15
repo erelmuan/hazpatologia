@@ -50,7 +50,7 @@ return [
       'attribute'=>'fecha_nacimiento',
       'label'=> 'Fecha de nacimiento',
       'value'=>'fecha_nacimiento',
-      'format' => ['date', 'd/M/Y'],
+      'format' => ['date', 'php:d/m/Y'],
       'filterInputOptions' => [
           'id' => 'fecha1',
           'class' => 'form-control',

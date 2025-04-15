@@ -9,7 +9,7 @@ $config = [
     // set source language to be English
     'sourceLanguage' => 'en-US',
     'language' => 'es-ES',
-    'timeZone'  => 'America/Buenos_Aires',
+    'timeZone' => 'America/Argentina/Buenos_Aires',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
 
@@ -135,7 +135,7 @@ $config = [
      //     'class' => '\yii2assets\pdfjs\Module',
      // ],
         'datecontrol' =>  [
-           'class' => '\kartik\datecontrol\Module'
+           'class' => '\kartik\datecontrol\Module',
        ],
           'gridview' => ['class' => 'kartik\grid\Module'],
           'i18n' => [

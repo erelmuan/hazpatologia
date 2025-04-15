@@ -132,7 +132,7 @@ class Solicitud extends \yii\db\ActiveRecord
               'attribute'=>'fechadeingreso',
               'label'=> 'Fecha de ingreso',
               'value'=>'fechadeingreso',
-              'format' => ['date', 'd/M/Y'],
+              'format' => ['date', 'php:d/m/Y'],
               'filterInputOptions' => [
                   'id' => 'fecha1',
                   'class' => 'form-control',
@@ -190,7 +190,7 @@ class Solicitud extends \yii\db\ActiveRecord
             'attribute'=>'fecharealizacion',
             'label'=> 'Fecha de realización',
             'value'=>'fecharealizacion',
-            'format' => ['date', 'd/M/Y'],
+            'format' => ['date', 'php:d/m/Y'],
             'filterInputOptions' => [
                 'id' => 'fecha2',
                 'class' => 'form-control',

@@ -40,7 +40,7 @@ $isAjax = Yii::$app->request->isAjax;
         [
           'value'=> $model->solicitudbiopsia->fechadeingreso ,
           'label'=> 'Fecha de ingreso',
-          'format' => ['date', 'd/M/Y'],
+          'format' => ['date', 'php:d/m/Y'],
 
        ],
        [

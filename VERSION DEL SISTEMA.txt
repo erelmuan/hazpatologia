@@ -1,3 +1,10 @@
+Versión 2.8.7
+CORRECCION DEL CAMPO fechadeingreso
+El campo fechadeingreso tenia un comportamiento anomalo, cuando los estudios eran
+dias previos a empezar un año nuevo, mostraba un año mas al que deberia ser.
+Esto se corregio reemplazando esto  'format' => ['date', 'd/M/Y'] por esta sentencia
+'format' => ['date', 'php:d/m/Y'], la cual fuerza a que la fecha no sea alterada
+
 Versión 2.8.6
 CORRECCION EN LOS label
 Se cambia usuario por patologo

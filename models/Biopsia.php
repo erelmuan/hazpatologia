@@ -144,7 +144,7 @@ class Biopsia extends \yii\db\ActiveRecord
               'attribute'=>'fecharealizacion',
               'label'=> 'Fecha de realización',
               'value'=>'solicitudbiopsia.fecharealizacion',
-              'format' => ['date', 'd/M/Y'],
+              'format' => ['date', 'php:d/m/Y'],
               'filterInputOptions' => [
                   'id' => 'fecha1',
                   'class' => 'form-control',
@@ -161,7 +161,7 @@ class Biopsia extends \yii\db\ActiveRecord
               'attribute'=>'fechadeingreso',
               'label'=> 'Fecha de ingreso',
               'value'=>'solicitudbiopsia.fechadeingreso',
-              'format' => ['date', 'd/M/Y'],
+              'format' => ['date', 'php:d/m/Y'],
               'filterInputOptions' => [
                   'id' => 'fecha1',
                   'class' => 'form-control',

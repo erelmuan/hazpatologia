@@ -171,7 +171,7 @@ class Pap extends \yii\db\ActiveRecord
               'attribute'=>'fecharealizacion',
               'label'=> 'Fecha de realización',
               'value'=>'solicitudpap.fecharealizacion',
-              'format' => ['date', 'd/M/Y'],
+              'format' => ['date', 'php:d/m/Y'],
               'filterInputOptions' => [
                   'id' => 'fecha1',
                   'class' => 'form-control',
@@ -189,7 +189,7 @@ class Pap extends \yii\db\ActiveRecord
               'attribute'=>'fechadeingreso',
               'label'=> 'Fecha de ingreso',
               'value'=>'solicitudpap.fechadeingreso',
-              'format' => ['date', 'd/M/Y'],
+              'format' => ['date', 'php:d/m/Y'],
               'filterInputOptions' => [
                   'id' => 'fecha1',
                   'class' => 'form-control',
