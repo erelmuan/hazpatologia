@@ -37,28 +37,35 @@ CrudAsset::register($this);
       <div class="x_panel" >
         <legend class="text-info"><small>CABECERA DE LA SOLICITUD</small></legend>
       <div class='row'>
-      <div class='col-sm-3'>
-      <label >Paciente: <span id='paciente'> </span>
-        <button onclick="quitarSeleccion()"  title="Busqueda avanzada de paciente" type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target=".bs-paciente-modal-lg" style="margin-left: 10px;"><i class="glyphicon glyphicon-search" ></i></button>
-        <?   echo  Html::a('<i class="glyphicon glyphicon-plus"> Crear paciente</i>', ['paciente/create'],
-         ['role'=>'modal-remote','title'=> 'Crear nuevo paciente','class'=>'btn btn-primary btn-xs']); ?>
-      </label>
-      <input type="text" id="pacientebuscar" name="PacienteSearch[num_documento]"  placeholder="Ingresar DNI del paciente" >
-      <button id="button_paciente" type="button" class ="btn btn-primary btn-xs" onclick='pacienteba();'>Buscar y añadir</button>
+        <div class='col-sm-3'>
+        <label >Paciente: <span id='paciente'> </span>
+          <button onclick="quitarSeleccion()" title="Busqueda avanzada de paciente" type="button" class="btn btn-primary btn-xs"
+              data-toggle="modal" data-target=".bs-paciente-modal-lg" style="margin-left: 10px;"
+              <?= (isset($model->estado) && ($model->estado->descripcion == "LISTO" && !Usuario::isPatologo())) ? 'disabled' : '' ?>>
+              <i class="glyphicon glyphicon-search"></i>
+          </button>
+          <?   echo  Html::a('<i class="glyphicon glyphicon-plus"> Crear paciente</i>', ['paciente/create'],
+           ['role'=>'modal-remote','title'=> 'Crear nuevo paciente','class'=>'btn btn-primary btn-xs']); ?>
+        </label>
+        <input type="text" class="form-control" id="pacientebuscar" name="PacienteSearch[num_documento]" placeholder="Ingresar DNI del paciente"
+        <?= (isset($model->estado) && ($model->estado->descripcion == "LISTO" && !Usuario::isPatologo())) ? 'readonly' : '' ?>>
+        <button id="button_paciente" type="button" class ="btn btn-primary btn-xs" onclick='pacienteba();'              <?= (isset($model->estado) && ($model->estado->descripcion == "LISTO" && !Usuario::isPatologo())) ? 'disabled' : '' ?>>Buscar y añadir</button>
 
-      </br>
-      </br>
+        </br>
+        </br>
 
-      <label>Medico:<span id='medico'> </span>
-        <button onclick="quitarSeleccion()" title="Busqueda avanzada de medico" type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target=".bs-medico-modal-lg" style="margin-left: 10px;"><i class="glyphicon glyphicon-search" ></i></button>
-          <?   echo  Html::a('<i class="glyphicon glyphicon-plus"> Crear medico</i>', ['medico/create'],
-           ['role'=>'modal-remote','title'=> 'Crear nuevo medico','class'=>'btn btn-primary btn-xs']); ?>
-      </label>
-      <input type="text" id="medicobuscar" name="MedicoSearch[matricula]" placeholder="Ingresar matricula del medico" >
-      <button id="button_medico" type="button" class ="btn btn-primary btn-xs" onclick='medicoba();'>Buscar y añadir</button>
-      </div>
-
-
+        <label>Medico:<span id='medico'> </span>
+          <button onclick="quitarSeleccion()"  title="Busqueda avanzada de medico" type="button" class="btn btn-primary btn-xs"
+          data-toggle="modal" data-target=".bs-medico-modal-lg" style="margin-left: 10px;"
+            <?= (isset($model->estado) && ($model->estado->descripcion == "LISTO" && !Usuario::isPatologo())) ? 'disabled' : '' ?>>
+            <i class="glyphicon glyphicon-search" ></i></button>
+            <?   echo  Html::a('<i class="glyphicon glyphicon-plus"> Crear medico</i>', ['medico/create'],
+             ['role'=>'modal-remote','title'=> 'Crear nuevo medico','class'=>'btn btn-primary btn-xs']); ?>
+        </label>
+        <input type="text" class="form-control" id="medicobuscar" name="MedicoSearch[matricula]" placeholder="Ingresar matricula del medico"
+          <?= (isset($model->estado) && ($model->estado->descripcion == "LISTO" && !Usuario::isPatologo())) ? 'readonly' : '' ?> >
+        <button id="button_medico"  type="button" class ="btn btn-primary btn-xs" onclick='medicoba();'              <?= (isset($model->estado) && ($model->estado->descripcion == "LISTO" && !Usuario::isPatologo())) ? 'disabled' : '' ?>>Buscar y añadir</button>
+        </div>
       <?
 
      $form = ActiveForm::begin();
@@ -70,20 +77,15 @@ CrudAsset::register($this);
       <div class='col-sm-3'>
         <b>
         <?
-      //   if( isset($protocolo_insertar)){
-      //   echo $form->field($model, 'protocolo')->textInput(['readonly'=> true , 'value'=>$protocolo_insertar,'style'=> 'font-size:23px; color:red;']) ;
-      //  }else {
-      //    echo $form->field($model, 'protocolo')->textInput(['readonly'=> true ,'style'=> 'font-size:23px;color:red;']) ;
-      // }
       echo $form->field($model, 'protocolo')->textInput(['style'=> 'font-size:23px;color:red;','disabled'=>(isset($model->estado) && ($model->estado->descripcion=="LISTO" && !Usuario::isPatologo()))]) ;
 
        ?>
     </b>
       <label> Paciente </label></br>
-      <input id="solicitud-paciente" class="form-control"  style="width:250px;" value='<?=($model->paciente)?$model->paciente->apellido.", ".$model->paciente->nombre:''; ?>' type="text" readonly>
+      <input id="solicitud-paciente" class="form-control"  style="width:250px;" value='<?=($model->paciente)?$model->paciente->apellido.", ".$model->paciente->nombre:''; ?>' type="text" disabled>
       <?=$form->field($model, 'id_paciente')->hiddenInput()->label(false); ?>
       <label> Medico </label> </br>
-      <input id="solicitud-medico" class="form-control"  style="width:250px;" value='<?=($model->medico)?$model->medico->apellido.", ".$model->medico->nombre:'' ?>' type="text" readonly>
+      <input id="solicitud-medico" class="form-control"  style="width:250px;" value='<?=($model->medico)?$model->medico->apellido.", ".$model->medico->nombre:'' ?>' type="text" disabled>
       <?=$form->field($model, 'id_medico')->hiddenInput()->label(false); ?>
 
         </div>
@@ -109,13 +111,17 @@ CrudAsset::register($this);
              <?=$form->field($model, 'id_estudio')->hiddenInput(['value'=> $model->idEstudio()])->label(false); ?>
 
              <?= $form->field($model, 'id_estado')->hiddenInput(['value'=>($model->estado)? $model->id_estado:5])->label(false) ;?>
-             <?= $form->field($model, 'estado')->textInput(['value'=>($model->estado)? $model->estado->descripcion:"PENDIENTE", 'readOnly'=>true])->label("Estado") ;?>
+             <?= $form->field($model, 'estado')->textInput(['value'=>($model->estado)? $model->estado->descripcion:"PENDIENTE", 'disabled'=>true])->label("Estado") ;?>
 
              <?
              echo $form->field($model, 'id_procedencia')->widget(
                  Chosen::className(), [
                      'items' => $mapprocedencia,
                      'placeholder' => 'Selecciona una opción',
+                     'options' => [
+                        'id' => 'id_procedencia',
+                        'disabled'=>(isset($model->estado) && ($model->estado->descripcion=="LISTO" && !Usuario::isPatologo()))
+                      ],
                      'clientOptions' => [
                        'rtl'=> true,
                          'search_contains' => true,
@@ -144,8 +150,7 @@ CrudAsset::register($this);
                             'disabled'=>(isset($model->estado) && ($model->estado->descripcion=="LISTO" && !Usuario::isPatologo()))
                           ])->label('Fecha de ingreso');
                   ?>
-                <?=$form->field($model, "observacion")->textarea(["rows" => 4 ,'disabled'=>(isset($model->estado) && ($model->estado->descripcion=="LISTO" && !Usuario::isPatologo()))]) ; ?>
-
+                <?=$form->field($model, "observacion")->textarea(["rows" => 4]) ; ?>
               </div>
           </div>
 
@@ -268,7 +273,7 @@ CrudAsset::register($this);
 
       <?  if (!Yii::$app->request->isAjax){ ?>
          <div class='pull-right'>
-            <?=Html::submitButton($model->isNewRecord ? 'Guardar' : 'Actualizar', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary','disabled'=>(isset($model->estado) && ($model->estado->descripcion=="LISTO" && !Usuario::isPatologo()))]); ?>
+            <?=Html::submitButton($model->isNewRecord ? 'Guardar' : 'Actualizar', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']); ?>
          </div>
       <? }
           $form = ActiveForm::end();

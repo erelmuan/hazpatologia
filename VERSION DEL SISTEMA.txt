@@ -1,3 +1,9 @@
+
+Version 2.8.8
+Se habilito el campo comentario en las solicitudes de biopsias y paps, cuando
+el mismo esta en estado LISTO, todos los demas campos se bloquean. Unicamente
+el patologo puede modificar los campos en su totalidad.
+
 Versión 2.8.7
 CORRECCION DEL CAMPO fechadeingreso
 El campo fechadeingreso tenia un comportamiento anomalo, cuando los estudios eran
