@@ -13,6 +13,8 @@ use app\models\PlantilladiagnosticoSearch;
 use app\models\PlantillafraseSearch;
 use app\models\Cie10Search;
 use app\models\Usuario;
+use app\models\patronState\EstadoBase;
+use app\models\patronState\EstadoFactory;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -54,69 +56,37 @@ class PapController extends Controller {
             return $this->render('view', ['model' => $this->findModel($id)]);
         }
     }
-    public function cargarEstructuras(&$search, &$array, &$provider, $id_estudio) {
-        //Tendrian que acceder a los modelos por medio de sus controller!!!
-        ////////////Flora/////////////////
-        $searchModelFlora = new PlantillafloraSearch();
-        $arrayflora = $searchModelFlora::find()->all();
-        $dataProviderFlora = $searchModelFlora->search(Yii::$app->request->queryParams);
-        $dataProviderFlora->pagination->pageSize = 7;
-        $search['searchModelFlora'] = $searchModelFlora;
-        $array['arrayflora'] = $arrayflora;
-        $provider['dataProviderFlora'] = $dataProviderFlora;
-        ////////////Aspecto/////////////////
-        $searchModelAsp = new PlantillaaspectoSearch();
-        $arrayaspecto = $searchModelAsp::find()->all();
-        $dataProviderAsp = $searchModelAsp->search(Yii::$app->request->queryParams);
-        $dataProviderAsp->pagination->pageSize = 7;
-        $search['searchModelAsp'] = $searchModelAsp;
-        $array['arrayaspecto'] = $arrayaspecto;
-        $provider['dataProviderAsp'] = $dataProviderAsp;
-        ////////////Glandular/////////////////
-        $searchModelGland = new PlantillaglandularSearch();
-        $arrayglandular = $searchModelGland::find()->all();
-        $dataProviderGland = $searchModelGland->search(Yii::$app->request->queryParams);
-        $dataProviderGland->pagination->pageSize = 7;
-        $search['searchModelGland'] = $searchModelGland;
-        $array['arrayglandular'] = $arrayglandular;
-        $provider['dataProviderGland'] = $dataProviderGland;
-        ////////////Pavimentosas/////////////////
-        $searchModelPav = new PlantillapavimentosaSearch();
-        $arraypavimentosa = $searchModelPav::find()->all();
-        $dataProviderPav = $searchModelPav->search(Yii::$app->request->queryParams);
-        $dataProviderPav->pagination->pageSize = 7;
-        $search['searchModelPav'] = $searchModelPav;
-        $array['arraypavimentosa'] = $arraypavimentosa;
-        $provider['dataProviderPav'] = $dataProviderPav;
-        ////////////Diagnostico/////////////////
-        $searchModelDiag = new PlantilladiagnosticoSearch();
-        //id_estudio=1 es del estudio de pap
-        $arraydiagnostico = $searchModelDiag::find()->where(['id_estudio' => $id_estudio])->all();
-        $dataProviderDiag = $searchModelDiag->search(Yii::$app->request->queryParams, $id_estudio);
-        $dataProviderDiag->pagination->pageSize = 7;
-        $search['searchModelDiag'] = $searchModelDiag;
-        $array['arraydiagnostico'] = $arraydiagnostico;
-        $provider['dataProviderDiag'] = $dataProviderDiag;
-        ////////////Frase/////////////////
-        $searchModelFra = new PlantillafraseSearch();
-        //id_estudio=1 es del estudio de pap
-        $arrayfrase = $searchModelFra::find()->where(['id_estudio' => $id_estudio])->all();
-        $dataProviderFra = $searchModelFra->search(Yii::$app->request->queryParams, $id_estudio);
-        $dataProviderFra->pagination->pageSize = 7;
-        $search['searchModelFra'] = $searchModelFra;
-        $array['arrayfrase'] = $arrayfrase;
-        $provider['dataProviderFra'] = $dataProviderFra;
-        ////////////Cie10/////////////////
-        $searchModelCie = new Cie10Search();
-        $arraycie10 = $searchModelCie::find()->all();
-        $dataProviderCie = $searchModelCie->search(Yii::$app->request->queryParams);
-        $dataProviderCie->pagination->pageSize = 7;
-        $search['searchModelCie'] = $searchModelCie;
-        $array['arraycie10'] = $arraycie10;
-        $provider['dataProviderCie'] = $dataProviderCie;
+    private function cargarEstructuras(int $id_estudio): array
+    {
+        $result = [];
+        $modelos = [
+            'Flora'       => PlantillafloraSearch::class,
+            'Aspecto'     => PlantillaaspectoSearch::class,
+            'Glandular'   => PlantillaglandularSearch::class,
+            'Pavimentosa' => PlantillapavimentosaSearch::class,
+            'Diagnostico' => PlantilladiagnosticoSearch::class,
+            'Frase'       => PlantillafraseSearch::class,
+            'Cie'         => Cie10Search::class,
+        ];
+        foreach ($modelos as $key => $searchClass) {
+            $searchModel = new $searchClass();
+            if (in_array($key, ['Diagnostico', 'Frase'])) {
+                $array = $searchModel::find()->where(['id_estudio' => $id_estudio])->all();
+                $dataProvider = $searchModel->search(Yii::$app->request->queryParams, $id_estudio);
+            } else {
+                $array = $searchModel::find()->all();
+                $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+            }
+            $dataProvider->pagination->pageSize = 7;
+            $result['search']["searchModel{$key}"] = $searchModel;
+            $result['array']["array" . strtolower($key)] = $array;
+            $result['provider']["dataProvider{$key}"] = $dataProvider;
+        }
+
+        return $result;
     }
 
-    public function validar($post) {
+    private function validar($post) {
         if (Yii::$app->user->identity->contrasenia <> md5($post['contrasenia'])) {
           $this->setearMensajeError('CONTRASEÑA INCORRECTA');
             return false;
@@ -128,6 +98,75 @@ class PapController extends Controller {
             return true;
         }
     }
+    /**
+     * Elimina el flag 'firmado' si el estado no es 2.
+     */
+    private function prepararEstado(array &$post)
+    {
+        if (isset($post['Pap']['id_estado']) && $post['Pap']['id_estado'] != EstadoBase::LISTO) {
+            unset($post['Pap']['firmado']);
+        }
+    }
+
+    /**
+     * Valida y ajusta el estado antes de cargar el modelo.
+     */
+    private function aplicarFirma(array &$post, $model)
+    {
+        if (Usuario::esPatologo() && isset($post['Pap']['id_estado'])
+         && $post['Pap']['id_estado'] == EstadoBase::LISTO) {
+            if (!$this->validar($post)) {
+                unset($post['Pap']['id_estado']);
+                return false;
+            }
+                $post['Pap']['fechalisto'] = date('Y-m-d H:i:s');
+                $post['Pap']['id_usuario']  = Yii::$app->user->identity->getId();
+        }
+          return true;
+    }
+
+    /**
+     * Sincroniza estado de solicitud y maneja escaneados VPH.
+     */
+    private function actualizarRelaciones($model, $transaction)
+    {
+        if (!$model->vph && $model->vphEscaneado) {
+            $model->vphEscaneado->baja_logica = true;
+            $model->vphEscaneado->save(false);
+        }
+
+        if ($model->vph) {
+            $transaction->commit();
+            if ($model->vphEscaneado) {
+                return $this->redirect([
+                    'vph-escaneado/update',
+                    'id' => $model->vphEscaneado->id
+                ]);
+            }
+            return $this->redirect([
+                'vph-escaneado/create',
+                'id_pap' => $model->id
+            ]);
+        }
+
+        return null;
+    }
+
+      private function renderForm($model, $estructura,$solicitud)
+    {
+        $stateOptions = \app\models\patronState\EstadoFactory::getAvailableTransitions(
+            $model->id_estado,
+            Yii::$app->user->identity,
+            $model
+        );
+        $viewData = array_merge(
+            ['model'          => $model,
+            'solicitud'          => $solicitud,
+            'stateOptions'   => $stateOptions,],
+            $estructura
+        );
+        return $this->render('_form', $viewData);
+    }
 
     /**
      * Creates a new Pap model.
@@ -135,49 +174,44 @@ class PapController extends Controller {
      * and for non-ajax request if creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate() {
-        $request = Yii::$app->request;
-        $post = $request->post();
-        $model = new Pap();
-        $solicitud = Solicitudpap::findOne($_GET['idsol']);
-        $search = [];  $array = [];  $provider = [];
-        $this->cargarEstructuras($search, $array, $provider, $solicitud->id_estudio);
-        if (isset($post['Pap']['id_estado']) && $post['Pap']['id_estado'] != 2) {
-            unset($post['Pap']['firmado']);
-        }
-        if (Usuario::isPatologo() && isset($post['Pap']['id_estado']) && $post['Pap']['id_estado'] == 2) {
-          if (!$this->validar($post)) {
-              unset($post['Pap']['id_estado']);
-              $model->load($post);
-              return $this->render('_form', ['model' => $model, 'solicitud' => $solicitud, 'search' => $search, 'array' => $array, 'provider' => $provider ]);
-          }
-          $model->fechalisto = date("Y-m-d  H:i:s");
-          $model->id_usuario = Yii::$app->user->identity->getId();
-        }
-        $transaction = Yii::$app->db->beginTransaction();
-        try {
-            if ($model->load($post) && $model->save()) {
-                // cambio de estados
-                if ($solicitud->id_estado !== $model->id_estado) {
-                    $solicitud->id_estado = $model->id_estado;
-                    $solicitud->scenario = 'update';
-                    $solicitud->save();
-                }
-                if ($model->vph) {
-                    $transaction->commit();
-                    return $this->redirect(['vph-escaneado/create', 'id_pap' => $model->id]);
-                }
-                $transaction->commit();
-                return $this->redirect(['view', 'id' => $model->id]);
-            } else {
-                $transaction->rollBack();
-                return $this->render('_form', ['search' => $search, 'array' => $array, 'provider' => $provider, 'model' => $model, 'solicitud' => $solicitud]);
-            }
-        } catch (\Exception $e) {
-            $transaction->rollBack();
-            throw $e;
-        }
-    }
+     public function actionCreate()
+     {
+         $request    = Yii::$app->request;
+         $model      = new Pap();
+         $solicitud  = Solicitudpap::findOne($_GET['idsol']);
+         // Cargamos estructuras de plantillas para el estudio
+         $estructura   = $this->cargarEstructuras($solicitud->id_estudio);
+         $post       = $request->post();
+         // Reutilizamos lógica de firma y estado
+         $this->prepararEstado($post);
+         if(!$this->aplicarFirma($post, $model)){
+           $model->load($post);
+           return $this->renderForm($model, $estructura,$solicitud);
+         };
+         $transaction = Yii::$app->db->beginTransaction();
+         try {
+             if ($model->load($post) && $model->save()) {
+               // Sincronizamos estado de solicitud
+               if ($solicitud->id_estado !== $model->id_estado) {
+                   $solicitud->cambiarEstado($model->id_estado);
+               }
+                 // Manejamos VPH vía actualizarRelaciones
+                 $resultado = $this->actualizarRelaciones($model, $transaction);
+                 if ($resultado !== null) {
+                     return $resultado;
+                 }
+                 $transaction->commit();
+                 return $this->redirect(['view', 'id' => $model->id]);
+             } else {
+                 $transaction->rollBack();
+                 return $this->renderForm($model, $estructura,$solicitud);
+             }
+         } catch (\Exception $e) {
+             $transaction->rollBack();
+             throw $e;
+         }
+     }
+
 
 
 
@@ -188,68 +222,44 @@ class PapController extends Controller {
      * @param integer $id
      * @return mixed
      */
-    public function actionUpdate($id) {
+
+    public function actionUpdate($id)
+    {
         $request = Yii::$app->request;
-        $model = $this->findModel($id);
-        if ($model->estado->descripcion =="ANULADO"){
-          return $this->redirect(['index']);
-        }
+        $model   = $this->findModel($id);
         $post = $request->post();
-        $search = [];$array = [];$provider = [];
-        $this->cargarEstructuras($search, $array, $provider, $model->solicitudpap->id_estudio);
-        if (isset($post['Pap']['id_estado']) && $post['Pap']['id_estado'] != 2) {
-            unset($post['Pap']['firmado']);
-        }
-        //si esta el estudio  en estado listo, ['pap']['id_estado'] no estara definido por lo tanto no entra al if
-        if (Usuario::isPatologo() && isset($post['Pap']['id_estado']) && $post['Pap']['id_estado'] == 2) {
-          if (!$this->validar($post)) {
-              unset($post['Pap']['id_estado']);
-              $model->load($post);
-              return $this->render('_form', ['model' => $model, 'solicitud' => $model->solicitudpap, 'search' => $search, 'array' => $array, 'provider' => $provider ]);
-          }
-          if(isset($post['Pap']['anulado']) && $post['Pap']['anulado']=="1"){
-            unset($post['Pap']['id_estado']);
-            $model->id_estado=6; //estado anulado
-          }else {
-            //fecha cuando esta listo el informe de la biopsia
-            $model->fechalisto = date("Y-m-d  H:i:s");
-            $model->id_usuario = Yii::$app->user->identity->getId();
-          }
-        }
+        $solicitud = $model->solicitudpap;
+        // Cargamos estructuras de plantillas para el estudio
+        $estructura = $this->cargarEstructuras($model->solicitudpap->id_estudio);
+        // Reutilizamos lógica de firma y estado
+        $this->prepararEstado($post);
+        if(!$this->aplicarFirma($post, $model)){
+          $model->load($post);
+          return $this->renderForm($model, $estructura,$model->solicitudpap);
+        };
         $transaction = Yii::$app->db->beginTransaction();
+        try {
+            if ($model->load($post) && $model->save()) {
+              // Sincronizamos estado de solicitud
+                if ($model->solicitudpap->id_estado !== $model->id_estado) {
+                    $model->solicitudpap->cambiarEstado($model->id_estado);
+                }
+                $resultado = $this->actualizarRelaciones($model, $transaction);
+                if ($resultado !== null) {
+                    return $resultado;
+                }
+                $transaction->commit();
+                return $this->redirect(['view', 'id' => $model->id]);
+            } else {
+                $transaction->rollBack();
+                return $this->renderForm($model, $estructura, $solicitud);
+            }
+        } catch (\Exception $e) {
+            $transaction->rollBack();
+            throw $e;
+        }
+    }
 
-         try {
-             if ($model->load($post) && $model->save()) {
-                 if ($model->solicitudpap->id_estado !== $model->id_estado) {
-                     $model->solicitudpap->id_estado = $model->id_estado;
-                     $model->solicitudpap->scenario = 'update';
-                     $model->solicitudpap->save();
-                 }
-
-                 if (!$model->vph && isset($model->vphEscaneado)) {
-                     $model->vphEscaneado->baja_logica = true;
-                     $model->vphEscaneado->save();
-                 }
-
-                 if ($model->vph && isset($model->vphEscaneado)) {
-                     $transaction->commit();
-                     return $this->redirect(['vph-escaneado/update', 'id' => $model->vphEscaneado->id]);
-                 } elseif ($model->vph) {
-                     $transaction->commit();
-                     return $this->redirect(['vph-escaneado/create', 'id_pap' => $model->id]);
-                 }
-
-                 $transaction->commit();
-                 return $this->redirect(['view', 'id' => $model->id]);
-             } else {
-                 $transaction->rollBack();
-                 return $this->render('_form', ['model' => $model, 'solicitud' => $model->solicitudpap, 'search' => $search, 'array' => $array, 'provider' => $provider]);
-             }
-         } catch (\Exception $e) {
-             $transaction->rollBack();
-             throw $e;
-         }
-}
     /**
      * Delete an existing Pap model.
      * For ajax request will return json object
@@ -262,15 +272,14 @@ class PapController extends Controller {
       $model = $this->findModel($id);
       $request = Yii::$app->request;
       if ($request->isAjax) {
-        if ($model->estado->descripcion == 'LISTO') {
+        if ($model->estado->id == EstadoBase::LISTO) {
           $this->setearMensajeError("No se puede eliminar informe en estado listo.");
           return ['forceClose' => true, 'forceReload' => '#crud-datatable-pjax','metodo'=>'delete'];
         }
         $transaction = Yii::$app->db->beginTransaction();
 
         try {
-            $model->solicitudpap->id_estado=5;//Vuelve al estado PENDIENTE
-            $model->solicitudpap->save();
+            $model->solicitudpap->cambiarEstado(EstadoBase::PENDIENTE);//Vuelve al estado PENDIENTE
             if (isset($model->vphEscaneado)) {
                 $model->vphEscaneado->delete();
             }
@@ -298,46 +307,7 @@ class PapController extends Controller {
 
     }
 
-    public function actionAnioselect() {
-        $request = Yii::$app->request;
-        $id_estudio = Solicitudpap::find()
-            ->select(['id_estudio'])
-            ->scalar();
-        if ($request->isAjax) {
-            Yii::$app->response->format = Response::FORMAT_JSON;
-            // Cargar los años disponibles
-            $aniosDisponibles = AnioProtocolo::aniosDisponibles();
-            if (isset($_POST['seleccion'])) {
-              // recibo datos de lo seleccionado, reconstruyo columnas
-              $seleccionAnios = $_POST['seleccion'];
-              ConfiguracionAniosUsuario::deleteAll(["id_usuario"=> Yii::$app->user->id,"id_estudio"=>$id_estudio]);
-            foreach ($seleccionAnios as $anio) {
-                $modelConfAnio= new ConfiguracionAniosUsuario();
-                $modelConfAnio->id_anio_protocolo = $anio;
-                $modelConfAnio->id_usuario= Yii::$app->user->id;
-                $modelConfAnio->id_estudio=$id_estudio;
-                $modelConfAnio->save();
-            }
-            return [$modelConfAnio, 'forceClose' => true, 'forceReload' => '#crud-datatable-pjax'];
-          }else {
-            // Obtener los años seleccionados por el usuario
-              $id_usuario = Yii::$app->user->id;
-              $aniosSeleccionados = ConfiguracionAniosUsuario::getSeleccionAnios($id_usuario, $id_estudio);
-                  return ['success' => true,
-                  'message' => 'Configuración de años guardada correctamente.',
-                   'title' => "Configuración personalizada",
-                   'content' => $this->renderAjax('/../components/Vistas/_anioselect',
-                    ['aniosDisponibles' => $aniosDisponibles,
-                    'aniosSeleccionados'=>$aniosSeleccionados]) ,
-                   'footer' => Html::button('Cancelar',
-                   ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"])
-                   . Html::button('Guardar', ['class' => 'btn btn-primary',
-                   'type' => "submit"]) ];
-          }
-        } else {
-            $this->redirect("index");
-        }
-    }
+
     public function actionInforme($id) {
         $request = Yii::$app->request;
         $pap = $this->findModel($id);

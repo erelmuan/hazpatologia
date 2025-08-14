@@ -1,4 +1,67 @@
 
+
+Version 2.9.0
+
+
+1. Refactorización
+
+    Simplificación de métodos create y update en solicitudes (uso de métodos reutilizables).
+
+    Reemplazo de números mágicos por constantes (EstadoBase::ANULADO, EstadoBase::LISTO, EstadoBase::DERIVADO, EstadoBase::DERIVADO_LISTO, EstadoBase::NO_REALIZADO).
+
+    Optimización de métodos en AnioProtocolo y Solicitud.
+
+    Renombrado de isPatologo a esPatologo.
+
+    Convenciones de nomenclatura de tablas para mantener consistencia.
+    Restrinccion de la fechas de inicio en la solicitudes para que no se elijan fecha mas alla de la actual
+
+2. Solicitudes
+
+    Implementación de Patrón State (EstadoFactory, EstadoBase).
+
+    Nuevos estados: DERIVADO, DERIVADO LISTO, NO REALIZADO.
+
+    Impedir eliminación de solicitudes en estado DERIVADO o NO REALIZADO si tienen adjuntos.
+
+    Creación de clase Adjunto para manejo de archivos.
+
+    Validación de protocolo optimizada.
+
+    Checkbox Anulado integrado al selector de estados.
+
+    Triggers: Esto a debido a que se quito la relacion foreing key con solicitud y adjuntossolicitud  y materialsolicitud_solicitud
+    dado que la clase padre solicitud no tiene los registros de solicitudpap y solicitudbiopsia SOLO LOS VE.
+
+        Bloquean eliminación si hay adjuntos/materiales asociados.
+
+        Bloquean alta/actualización de adjuntos o materiales si la solicitud no existe.
+
+3. Controladores
+
+    Biopsias/Paps: Reducción de métodos repetidos, optimización de create y update.
+
+    Uso de actualizarRelaciones, renderForm y cargarEstructuras para desacoplar lógica.
+
+4. Estudios
+
+    Eliminación de <br> en vistas, uso de clases CSS.
+
+    Optimización de método informe (inmunohistoquímica y VPH).
+
+5. Vistas / UX
+
+    Botón "Volver atrás" en vistas de biopsia y pap.
+
+    Ciudades ordenadas ascendentemente.
+
+    Corrección en vista de permisos (diferencia entre acciones ABM y accesos específicos).
+
+6. Correccion del puco
+  Se modifico el metodo que consultaba al puco debido a que el organismo que habia provisto el endpoint
+  (el sisa) cambio su certificados y por eso no se conectaba, se anulo la validacion de certificados
+  para que si el servidor no actualiza sus certificados no falle la consulta.
+
 Version 2.8.8
 Se habilito el campo comentario en las solicitudes de biopsias y paps, cuando
 el mismo esta en estado LISTO, todos los demas campos se bloquean. Unicamente

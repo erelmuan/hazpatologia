@@ -82,7 +82,7 @@ $this->title = 'Extras';
           <div class="icon"><i class="fa fa-mortar-board"></i>
           </div>
           <div class="count"><?=$cantidadTipoProfesional ?></div>
-          <h3>TIPO DE PROFRESION</h3>
+          <h3>TIPO DE PROFESIÓN</h3>
           <p>Alta-Baja-Modificacion.</p>
       </div>
     </div>
@@ -165,7 +165,7 @@ $this->title = 'Extras';
       <div class="tile-stats">
           <div class="icon"><i class="fas fa-archive"></i>
           </div>
-          <div class="count"><?=$cantidadCie10 ?></div>
+          <div class="count"><?=$solicitudAnulada ?></div>
           <h3> ESTUDIOS ANULADOS</h3>
           <p>Biopsias y paps anulados.</p>
       </div>

@@ -265,10 +265,11 @@ class SiteController extends Controller {
         $cantidadEstado = Estado::find()->count();
         $cantidadEstudios = Estudio::find()->count();
         $cantidadCie10 = Cie10::find()->count();
+        $solicitudAnulada= Solicitud::find()->andWhere(['id_estado'=>6])->count();
 
 
         return $this->render('extras', ['cantidadProcedencia' => $cantidadProcedencia, 'cantidadProvincia' => $cantidadProvincia, 'cantidadLocalidad' => $cantidadLocalidad, 'cantidadTipoProfesional' => $cantidadTipoProfesional, 'cantidadObrasocial' => $cantidadObrasocial, 'cantidadNacionalidad' => $cantidadNacionalidad, 'cantidadTipoDoc' => $cantidadTipoDoc, 'cantidadEstado' => $cantidadEstado
-        ,'cantidadEstudios' =>$cantidadEstudios,'cantidadCie10' =>$cantidadCie10 ]);
+        ,'cantidadEstudios' =>$cantidadEstudios,'cantidadCie10' =>$cantidadCie10 ,'solicitudAnulada'=>$solicitudAnulada ]);
     }
     public function actionPlantillasbiopsias() {
         $cantidadPlantillaDiag = Plantilladiagnostico::find()->count();

@@ -6,7 +6,7 @@ use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use app\models\Pap;
-
+use app\models\patronState\EstadoBase;
 /**
  * PapSearch represents the model behind the search form about `app\models\Pap`.
  */
@@ -78,7 +78,7 @@ class PapSearch extends Pap
       ->innerJoin('procedencia', 'procedencia.id = solicitudpap.id_procedencia')
       ->innerJoinWith('estado', 'estado.id = pap.id_estado')
       ->andWhere(['solicitudpap.id_anio_protocolo' => $selectedYearsQuery])
-      ->andWhere(['and','pap.id_estado <> 6 ' ]); //ANULADO
+      ->andWhere(['and','pap.id_estado <> '.EstadoBase::ANULADO ]); //ANULADO
 
 
        $dataProvider = new ActiveDataProvider([

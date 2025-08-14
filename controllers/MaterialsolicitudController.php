@@ -35,7 +35,10 @@ class MaterialsolicitudController extends Controller {
         if ($request->isAjax) {
             Yii::$app
                 ->response->format = Response::FORMAT_JSON;
-            return ['title' => "Materialsolicitud #" . $id, 'content' => $this->renderAjax('view', ['model' => $this->findModel($id) , ]) , 'footer' => Html::button('Close', ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) . Html::a('Edit', ['update', 'id' => $id], ['class' => 'btn btn-primary', 'role' => 'modal-remote']) ];
+            return ['title' => "Material solicitud #" . $id,
+             'content' => $this->renderAjax('view', ['model' => $this->findModel($id) , ])
+              , 'footer' => Html::button('Cerrar', ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"])
+              . Html::a('Editar', ['update', 'id' => $id], ['class' => 'btn btn-primary', 'role' => 'modal-remote']) ];
         }
         else {
             return $this->render('view', ['model' => $this->findModel($id) , ]);
@@ -57,13 +60,17 @@ class MaterialsolicitudController extends Controller {
             Yii::$app
                 ->response->format = Response::FORMAT_JSON;
             if ($request->isGet) {
-                return ['title' => "Create new Materialsolicitud", 'content' => $this->renderAjax('create', ['model' => $model, ]) , 'footer' => Html::button('Close', ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) . Html::button('Save', ['class' => 'btn btn-primary', 'type' => "submit"]) ];
+                return ['title' => "Crear nuevo material estudio",
+                'content' => $this->renderAjax('create', ['model' => $model, ]) ,
+                 'footer' => Html::button('Cerrar', ['class' => 'btn btn-default pull-left',
+                  'data-dismiss' => "modal"]) .
+                   Html::button('Guardar', ['class' => 'btn btn-primary', 'type' => "submit"]) ];
             }
             else if ($model->load($request->post()) && $model->save()) {
-                return ['forceReload' => '#crud-datatable-pjax', 'title' => "Create new Materialsolicitud", 'content' => '<span class="text-success">Éxito al crear material solicitud</span>', 'footer' => Html::button('Close', ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) . Html::a('Create More', ['create'], ['class' => 'btn btn-primary', 'role' => 'modal-remote']) ];
+                return ['forceReload' => '#crud-datatable-pjax', 'title' => "Crear nuevo material estudio", 'content' => '<span class="text-success">Éxito al crear material solicitud</span>', 'footer' => Html::button('Cerrar', ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) . Html::a('Crear más', ['create'], ['class' => 'btn btn-primary', 'role' => 'modal-remote']) ];
             }
             else {
-                return ['title' => "Create new Materialsolicitud", 'content' => $this->renderAjax('create', ['model' => $model, ]) , 'footer' => Html::button('Close', ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) . Html::button('Save', ['class' => 'btn btn-primary', 'type' => "submit"]) ];
+                return ['title' => "Crear nuevo material estudio", 'content' => $this->renderAjax('create', ['model' => $model, ]) , 'footer' => Html::button('Cerrar', ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) . Html::button('Guardar', ['class' => 'btn btn-primary', 'type' => "submit"]) ];
             }
         }
         else {
@@ -95,13 +102,13 @@ class MaterialsolicitudController extends Controller {
             Yii::$app
                 ->response->format = Response::FORMAT_JSON;
             if ($request->isGet) {
-                return ['title' => "Update Materialsolicitud #" . $id, 'content' => $this->renderAjax('update', ['model' => $model, ]) , 'footer' => Html::button('Close', ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) . Html::button('Save', ['class' => 'btn btn-primary', 'type' => "submit"]) ];
+                return ['title' => "Actualizar nuevo material estudio #" . $id, 'content' => $this->renderAjax('update', ['model' => $model, ]) , 'footer' => Html::button('Cerrar', ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) . Html::button('Guardar', ['class' => 'btn btn-primary', 'type' => "submit",'disabled' =>!empty($model->materialsolicitudSolicituds)]) ];
             }
             else if ($model->load($request->post()) && $model->save()) {
-                return ['forceReload' => '#crud-datatable-pjax', 'title' => "Materialsolicitud #" . $id, 'content' => $this->renderAjax('view', ['model' => $model, ]) , 'footer' => Html::button('Close', ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) . Html::a('Edit', ['update', 'id' => $id], ['class' => 'btn btn-primary', 'role' => 'modal-remote']) ];
+                return ['forceReload' => '#crud-datatable-pjax', 'title' => "Material solicitud #" . $id, 'content' => $this->renderAjax('view', ['model' => $model, ]) , 'footer' => Html::button('Cerrar', ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) . Html::a('Editar', ['update', 'id' => $id], ['class' => 'btn btn-primary', 'role' => 'modal-remote']) ];
             }
             else {
-                return ['title' => "Update Materialsolicitud #" . $id, 'content' => $this->renderAjax('update', ['model' => $model, ]) , 'footer' => Html::button('Close', ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) . Html::button('Save', ['class' => 'btn btn-primary', 'type' => "submit"]) ];
+                return ['title' => "Actualizar nuevo material estudio #" . $id, 'content' => $this->renderAjax('update', ['model' => $model, ]) , 'footer' => Html::button('Cerrar', ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) . Html::button('Guardar', ['class' => 'btn btn-primary', 'type' => "submit",'disabled' =>!empty($model->materialsolicitudSolicituds)]) ];
             }
         }
         else {

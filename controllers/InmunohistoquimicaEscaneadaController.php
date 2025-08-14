@@ -124,10 +124,21 @@ class InmunohistoquimicaEscaneadaController extends Controller {
             return $this->render('update', ['model' => $model]);
         }
     }
+
     public function actionInforme($id) {
         $model = $this->findModel($id);
-        return $this->redirect('@web/uploads/inmunohistoquimicas/' . $model->documento);
+        $filePath = Yii::getAlias("@webroot/uploads/inmunohistoquimicas/{$model->documento}");
+        $fileUrl = Yii::getAlias("@web/uploads/inmunohistoquimicas/{$model->documento}");
+
+        if (file_exists($filePath)) {
+            // Si el archivo existe, se accede al mismo.
+              return Yii::$app->response->sendFile($filePath, $model->documento, ['inline' => true]);
+        } else {
+          $this->setearMensajeError('EL ARCHIVO NO EXISTE O HA SIDO MOVIDO.');
+          return $this->redirect(Yii::$app->request->referrer);
+        }
     }
+
     /**
      * Finds the InmunohistoquimicaEscaneada model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.

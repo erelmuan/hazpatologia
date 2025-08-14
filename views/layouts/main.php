@@ -177,140 +177,106 @@ use yii\widgets\Pjax;
 
         <!-- top navigation -->
         <div class="top_nav">
+      <div class="nav_menu">
+          <nav role="navigation">
+              <div class="nav toggle">
+                  <a id="menu_toggle"><i class="fa fa-bars"></i></a>
+              </div>
 
-            <div class="nav_menu">
-                <nav class="" role="navigation">
-                    <div class="nav toggle">
-                        <a id="menu_toggle"><i class="fa fa-bars"></i></a>
-                    </div>
+              <ul class="nav navbar-nav navbar-right">
+                  <li>
+                      <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                          <?php echo '<img src=' . Url::base(true) . '/uploads/avatar/sm_' . Yii::$app->user->identity->imagen . ' alt="..." >'; ?>
+                          <b style="color:#403d3d;"><?= Yii::$app->user->identity->usuario ?> </b>
+                          <span class="fa fa-angle-down"></span>
+                      </a>
+                      <ul class="dropdown-menu dropdown-usermenu pull-right">
+                          <li>
+                              <a href="<?= Yii::$app->homeUrl . "usuario/perfil"; ?>">
+                                  <i class="fa fa-user-circle-o pull-left"></i>Perfil
+                              </a>
+                          </li>
+                          <li>
+                              <a href="<?= Yii::$app->homeUrl . "usuario/configuracion"; ?>">
+                                  <span class="badge bg-red pull-right">50%</span>
+                                  <span><i class="fa fa-gears pull-left"></i>Configuración</span>
+                              </a>
+                          </li>
+                          <li>
+                              <a href="<?= Yii::$app->homeUrl . "site/ayuda"; ?>">
+                                  <i class="fa fa-question pull-left"></i>Ayuda
+                              </a>
+                          </li>
+                          <li>
+                              <a href="#" onclick="cerrarSesion()">
+                                  <i class="fa fa-sign-out pull-left"></i>Salir
+                              </a>
+                          </li>
+                      </ul>
+                  </li>
 
-                    <ul class="nav navbar-nav navbar-right">
+                  <?php if (Yii::$app->user->identity->id_pantalla == 2) : ?>
+                      <li>
+                          <div id="fecha">
+                              <b>
+                                  <input type="text" class="form-control is-invalid" value="<?= (AnioProtocolo::find()->where(['activo' => true])->one() !== NULL) ? AnioProtocolo::find()->where(['activo' => true])->one()->anio : 'INACTIVOS' ?>" readonly>
+                              </b>
+                              <?= Html::a(
+                                  '<i class="glyphicon glyphicon-pencil"></i> Modificar Año-Protocolo',
+                                  ['/anio-protocolo/index'],
+                                  ['class' => 'btn btn-success grid-button']
+                              ) ?>
+                          </div>
+                      </li>
+                  <?php endif; ?>
 
-                        <li class="">
-                            <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                              <? echo '<img src='.Url::base(true).'/uploads/avatar/sm_'.Yii::$app->user->identity->imagen.'   alt="..." >';?>
-                               <b style="color:#403d3d;"><?=Yii::$app->user->identity->usuario ?> </b>
-                                <span class=" fa fa-angle-down"></span>
-                            </a>
-                            <ul class="dropdown-menu dropdown-usermenu pull-right">
-                                <li><a href=<?=Yii::$app->homeUrl."usuario/perfil"; ?>> <i class="fa fa-user-circle-o pull-left" ></i>Perfil</a>
-                                </li>
-                                <li>
-                                    <a href=<?=Yii::$app->homeUrl."usuario/configuracion"; ?>>
-                                        <span class="badge bg-red pull-right">50%</span>
-                                        <span><i class="fa fa-gears pull-left" ></i>Configuración</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href=<?=Yii::$app->homeUrl."site/ayuda"; ?>><i class="fa fa-question pull-left" ></i>Ayuda</a>
-                                </li>
-                              </li>
-                                 <li>
-                                    <a href="#" onclick="cerrarSesion()"><i class="fa fa-sign-out pull-left" ></i>Salir</a>
-                                 </li>
-
-                              </li>
-                            </ul>
-
-                        </li>
-
-                        <? if (Yii::$app->user->identity->id_pantalla==2) { ?>
-                        <div id="fecha">
-                          <b>   <input type="text" class="form-control is-invalid" value = <?= (AnioProtocolo::find()->where(['activo'=>true])->one()!== NULL)? AnioProtocolo::find()->where(['activo'=>true])->one()->anio:'INACTIVOS'  ?> readonly>  </b>
-                        <?= Html::a('<i class="glyphicon glyphicon-pencil"></i> Modificar Año-Protocolo', ['/anio-protocolo/index'], ['class'=>'btn btn-success grid-button']) ?>
-                       </div>
-                      <? } ?>
-
-                      <li role="presentation" class="dropdown">
-                            <a href="javascript:;" class="dropdown-toggle info-number" data-toggle="dropdown" aria-expanded="false">
-                                <i title="Enlaces de interés" class="fa fa-external-link" style="color: #ff5733; font-size: 20px; background-color: #f0f0f0; padding: 5px; border-radius: 50%;"></i>                            </a>
-                              <ul id="menu1" class="dropdown-menu list-unstyled msg_list" role="menu">
-                         <li>
+                  <li role="presentation" class="dropdown">
+                      <a href="javascript:;" class="dropdown-toggle info-number" data-toggle="dropdown" aria-expanded="false">
+                          <i title="Enlaces de interés" class="fa fa-external-link" style="color: #ff5733; font-size: 20px; background-color: #f0f0f0; padding: 5px; border-radius: 50%;"></i>
+                      </a>
+                      <ul id="menu1" class="dropdown-menu list-unstyled msg_list" role="menu">
+                          <li>
                               <a>
                                   <span class="image">
                                       <img src="http://placehold.it/128x128" alt="Profile Image" />
-                                    </span>
-                                    <span>
+                                  </span>
+                                  <span>
                                       <span>John Smith</span>
                                       <span class="time">3 mins ago</span>
-                                    </span>
-                                    <span class="message">
-                                        Film festivals used to be do-or-die moments for movie makers. They were where...
-                                    </span>
-                               </a>
-                                   </li>
-                                    <li>
-                                <a>  <span class="image">
+                                  </span>
+                                  <span class="message">
+                                      Film festivals used to be do-or-die moments for movie makers. They were where...
+                                  </span>
+                              </a>
+                          </li>
+                          <li>
+                              <a>
+                                  <span class="image">
                                       <img src="http://placehold.it/128x128" alt="Profile Image" />
-                                      </span>
-                                      <span>
-                                <span>John Smith</span>
-                                  <span class="time">3 mins ago</span>
                                   </span>
-                                  <span class="message">
-                                                    Film festivals used to be do-or-die moments for movie makers. They were where...
-                                                </span>
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a>
-                                  <span class="image">
-                                                    <img src="http://placehold.it/128x128" alt="Profile Image" />
-                                                </span>
                                   <span>
-                                                    <span>John Smith</span>
-                                  <span class="time">3 mins ago</span>
+                                      <span>John Smith</span>
+                                      <span class="time">3 mins ago</span>
                                   </span>
                                   <span class="message">
-                                                    Film festivals used to be do-or-die moments for movie makers. They were where...
-                                                </span>
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a>
-                                  <span class="image">
-                                                    <img src="http://placehold.it/128x128" alt="Profile Image" />
-                                    </span>
-                                  <span>
-                                                    <span>John Smith</span>
-                                  <span class="time">3 mins ago</span>
+                                      Film festivals used to be do-or-die moments for movie makers. They were where...
                                   </span>
-                                  <span class="message">
-                                                    Film festivals used to be do-or-die moments for movie makers. They were where...
-                                                </span>
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a>
-                                  <span class="image">
-                                                    <img src="http://placehold.it/128x128" alt="Profile Image" />
-                                    </span>
-                                  <span>
-                                                    <span>John Smith</span>
-                                  <span class="time">3 mins ago</span>
-                                  </span>
-                                  <span class="message">
-                                                    Film festivals used to be do-or-die moments for movie makers. They were where...
-                                                </span>
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <div class="text-center">
-                                                    <a href="/">
-                                                        <strong>See All Alerts</strong>
-                                                        <i class="fa fa-angle-right"></i>
-                                                    </a>
-                                                </div>
-                                            </li>
-                                        </ul>
-                                    </li>
-                    </ul>
-
-
-                </nav>
-            </div>
-
-        </div>
+                              </a>
+                          </li>
+                          <li>
+                              <div class="text-center">
+                                  <a href="/">
+                                      <strong>See All Alerts</strong>
+                                      <i class="fa fa-angle-right"></i>
+                                  </a>
+                              </div>
+                          </li>
+                      </ul>
+                  </li>
+              </ul>
+          </nav>
+      </div>
+  </div>
         <!-- /top navigation -->
 
         <!-- page content -->

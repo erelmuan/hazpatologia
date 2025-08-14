@@ -6,6 +6,7 @@ use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use app\models\Solicitudpap;
+use app\models\patronState\EstadoBase;
 
 /**
  * SolicitudpapSearch represents the model behind the search form about `app\models\Solicitudpap`.
@@ -55,12 +56,7 @@ class SolicitudpapSearch extends Solicitudpap
     public function search($params)
     {
         $query = Solicitudpap::find()
-            //     //No debe tener estudio de biopsia asociado
-            ->leftJoin('pap', 'pap.id_solicitudpap = solicitudpap.id')
-            // //Tiene que se distinto a el estado RECHAZADO id=3
-            ->where(['and','pap.id IS NULL' ])
-            ->andWhere(['and','solicitudpap.id_estado <> 3 ' ]);
-
+        ->where(['and','id_estado = '.EstadoBase::PENDIENTE ]);
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,

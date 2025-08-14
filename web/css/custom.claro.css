@@ -4286,3 +4286,22 @@ background: #D5EBD5;
      a:hover {
        color: #4a3b36;
      }
+
+     .spacing-top-6{
+       margin-top: 7.2em;
+    }
+    .spacing-top-1{
+      margin-top: 2.2em;
+   }
+    .spacing-top-2{
+      margin-top: 3.2em;
+   }
+   .spacing-top-3{
+       margin-top: 4.2em;
+    }
+   .spacing-top-4{
+       margin-top: 5.2em;
+    }
+     .spacing-top-5{
+       margin-top: 6.2em;
+    }

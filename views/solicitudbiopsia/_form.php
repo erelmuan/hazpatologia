@@ -17,6 +17,7 @@ use yii\widgets\MaskedInput;
 use kartik\datecontrol\DateControl;
 use nex\chosen\Chosen;
 use app\models\Usuario;
+use app\models\patronState\EstadoBase;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\SolicitudSearch */
@@ -29,7 +30,7 @@ CrudAsset::register($this);
 ?>
 
 <div id="w022" class="x_panel">
-  <div class="x_title"><h2><i class="glyphicon glyphicon-plus"></i> Nueva solicitud de biopsia <? if ((isset($model->estado) && ($model->estado->descripcion=="LISTO" && !Usuario::isPatologo()))) echo "(SOLO EL PATOLOGO PUEDE MODIFICAR LA SOLICITUD EN ESTADO LISTO)" ?></h2>
+  <div class="x_title"><h2><i class="glyphicon glyphicon-plus"></i> Nueva solicitud de biopsia <? if ((isset($model->estado) && ($model->estado->descripcion=="LISTO" && !Usuario::esPatologo()))) echo "(SOLO EL PATOLOGO PUEDE MODIFICAR LA SOLICITUD EN ESTADO LISTO)" ?></h2>
     <div class="clearfix"> <div class="nav navbar-right panel_toolbox"><?echo Html::button('<i class="glyphicon glyphicon-arrow-left"></i> Atrás',array('name' => 'btnBack','onclick'=>'js:history.go(-1);returnFalse;','id'=>'botonAtras')); ?></div>
 </div>
   </div>
@@ -45,15 +46,15 @@ CrudAsset::register($this);
           <label >Paciente: <span id='paciente'> </span>
             <button onclick="quitarSeleccion()" title="Busqueda avanzada de paciente" type="button" class="btn btn-primary btn-xs"
                 data-toggle="modal" data-target=".bs-paciente-modal-lg" style="margin-left: 10px;"
-                <?= (isset($model->estado) && ($model->estado->descripcion == "LISTO" && !Usuario::isPatologo())) ? 'disabled' : '' ?>>
+                <?= (isset($model->estado) && ($model->estado->descripcion == "LISTO" && !Usuario::esPatologo())) ? 'disabled' : '' ?>>
                 <i class="glyphicon glyphicon-search"></i>
             </button>
             <?   echo  Html::a('<i class="glyphicon glyphicon-plus"> Crear paciente</i>', ['paciente/create'],
              ['role'=>'modal-remote','title'=> 'Crear nuevo paciente','class'=>'btn btn-primary btn-xs']); ?>
           </label>
           <input type="text" class="form-control" id="pacientebuscar" name="PacienteSearch[num_documento]" placeholder="Ingresar DNI del paciente"
-          <?= (isset($model->estado) && ($model->estado->descripcion == "LISTO" && !Usuario::isPatologo())) ? 'readonly' : '' ?>>
-          <button id="button_paciente" type="button" class ="btn btn-primary btn-xs" onclick='pacienteba();'              <?= (isset($model->estado) && ($model->estado->descripcion == "LISTO" && !Usuario::isPatologo())) ? 'disabled' : '' ?>>Buscar y añadir</button>
+          <?= (isset($model->estado) && ($model->estado->descripcion == "LISTO" && !Usuario::esPatologo())) ? 'readonly' : '' ?>>
+          <button id="button_paciente" type="button" class ="btn btn-primary btn-xs" onclick='pacienteba();'              <?= (isset($model->estado) && ($model->estado->descripcion == "LISTO" && !Usuario::esPatologo())) ? 'disabled' : '' ?>>Buscar y añadir</button>
 
           </br>
           </br>
@@ -61,28 +62,49 @@ CrudAsset::register($this);
           <label>Medico:<span id='medico'> </span>
             <button onclick="quitarSeleccion()"  title="Busqueda avanzada de medico" type="button" class="btn btn-primary btn-xs"
             data-toggle="modal" data-target=".bs-medico-modal-lg" style="margin-left: 10px;"
-              <?= (isset($model->estado) && ($model->estado->descripcion == "LISTO" && !Usuario::isPatologo())) ? 'disabled' : '' ?>>
+              <?= (isset($model->estado) && ($model->estado->descripcion == "LISTO" && !Usuario::esPatologo())) ? 'disabled' : '' ?>>
               <i class="glyphicon glyphicon-search" ></i></button>
               <?   echo  Html::a('<i class="glyphicon glyphicon-plus"> Crear medico</i>', ['medico/create'],
                ['role'=>'modal-remote','title'=> 'Crear nuevo medico','class'=>'btn btn-primary btn-xs']); ?>
           </label>
           <input type="text" class="form-control" id="medicobuscar" name="MedicoSearch[matricula]" placeholder="Ingresar matricula del medico"
-            <?= (isset($model->estado) && ($model->estado->descripcion == "LISTO" && !Usuario::isPatologo())) ? 'readonly' : '' ?> >
-          <button id="button_medico"  type="button" class ="btn btn-primary btn-xs" onclick='medicoba();'              <?= (isset($model->estado) && ($model->estado->descripcion == "LISTO" && !Usuario::isPatologo())) ? 'disabled' : '' ?>>Buscar y añadir</button>
+            <?= (isset($model->estado) && ($model->estado->descripcion == "LISTO" && !Usuario::esPatologo())) ? 'readonly' : '' ?> >
+          <button id="button_medico"  type="button" class ="btn btn-primary btn-xs" onclick='medicoba();' <?= (isset($model->estado) && ($model->estado->descripcion == "LISTO" && !Usuario::esPatologo())) ? 'disabled' : '' ?>>Buscar y añadir</button>
+          <p>
+        <?
+
+        if ( $model->puedeMostrarAdjuntos() ){
+
+          echo Html::button('<i class="glyphicon glyphicon-open-file"></i> Gestión de adjuntos', [
+              'class' => 'btn btn-default grid-button',
+              'title' => "Debe crearse primero la solicitud",
+              'disabled'=>($model->id)?false:true,
+              'onclick' => "location.href='" . Yii::$app->urlManager->createUrl(['/adjuntosolicitud/index', 'id_solicitud' => $model->id]) . "';",
+          ]);
+          echo Html::button('<i class="glyphicon glyphicon-open-file"></i> Ver archivos adjuntos', [
+              'class' => 'btn btn-default grid-button',
+              'title' => "Debe crearse primero la solicitud",
+              'disabled' => ($model->id) ? false : true,
+              'data-url' => Yii::$app->urlManager->createUrl(['/adjuntosolicitud/view-files', 'id_solicitud' => $model->id]),
+              'data-toggle' => 'modal',
+              'role'=> 'modal-remote',
+              'data-target' => '#modal',
+          ]);
+
+        }
+
+
+        ?>
+         </p>
           </div>
+
           <?
             $form = ActiveForm::begin();
-
-          $mapprocedencia = ArrayHelper::map(Procedencia::find()->all() , 'id',  'nombre'  );
-          $mapmaterial = ArrayHelper::map(Plantillamaterial::find()->all() , 'id',  'material'  );
           ?>
-
-
-
           <div class='col-sm-3'>
             <b>
             <?
-            echo $form->field($model, 'protocolo')->textInput(['style'=> 'font-size:23px;color:red;','disabled'=>(isset($model->estado) && ($model->estado->descripcion=="LISTO" && !Usuario::isPatologo()))]) ;
+            echo $form->field($model, 'protocolo')->textInput(['style'=> 'font-size:23px;color:red;','disabled'=>(isset($model->estado) && ($model->estado->descripcion=="LISTO" && !Usuario::esPatologo()))]) ;
           ?>
         </b>
 
@@ -92,36 +114,34 @@ CrudAsset::register($this);
           <label> Medico </label> </br>
           <input id="solicitud-medico" class="form-control" style="width:250px;" value='<?=($model->medico)?$model->medico->apellido.", ".$model->medico->nombre:'' ?>' type="text" disabled>
           <?=$form->field($model, 'id_medico')->hiddenInput()->label(false); ?>
-  </div>
+
+       </div>
                 <div class='col-sm-3'>
                   <?
                   echo $form->field($model, 'fecharealizacion')->widget(DateControl::classname(), [
                             'options' => ['placeholder' => 'Ingrese fecha (opcional)',
                             'value'=> ($model->fecharealizacion)?$model->fecharealizacion:"" ,
                                     ],
-                            'disabled'=>(isset($model->estado) && ($model->estado->descripcion=="LISTO" && !Usuario::isPatologo())),
+                            'disabled'=>(isset($model->estado) && ($model->estado->descripcion=="LISTO" && !Usuario::esPatologo())),
                             'type'=>DateControl::FORMAT_DATE,
                             'autoWidget'=>true,
                             'displayFormat' => 'php:d/m/Y',
                             'saveFormat' => 'php:Y-m-d',
                           ])->label('Fecha de realización');
-
                   ?>
+                  <?=$form->field($model, 'id_estudio')->hiddenInput(['value'=> $model->idEstudio()])->label(false); //BIOPSIA ID 2  ?>
+                  <?=$form->field($model, 'id_estado')->dropDownList(
+                      $stateOptions,
+                      ['prompt' => 'Seleccione estado']
+                  ) ?>
 
-                  <?=$form->field($model, 'id_estudio')->hiddenInput(['value'=> $model->idEstudio()])->label(false); //BIOPSIA ID 2  CORREGIR?>
-
-                  <?= $form->field($model, 'id_estado')->hiddenInput(['value'=>($model->estado)? $model->id_estado:5])->label(false) ;?>
-                  <?= $form->field($model, 'estado')->textInput(['value'=>($model->estado)? $model->estado->descripcion:"PENDIENTE", 'readOnly'=>true])->label("Estado") ;?>
-
-                  <?
-
-                  echo $form->field($model, 'id_procedencia')->widget(
+                  <?=$form->field($model, 'id_procedencia')->widget(
                     Chosen::className(), [
                      'items' => $mapprocedencia,
                       'placeholder' => 'Selecciona una opción',
                       'options' => [
                           'id' => 'id_procedencia',
-                          'disabled'=>(isset($model->estado) && ($model->estado->descripcion=="LISTO" && !Usuario::isPatologo()))
+                          'disabled'=>(isset($model->estado) && ($model->estado->descripcion=="LISTO" && !Usuario::esPatologo()))
                       ],
                      'clientOptions' => [
                        'language' => 'es',
@@ -129,27 +149,28 @@ CrudAsset::register($this);
                          'search_contains' => true,
                          'single_backstroke_delete' => false,
                      ],])->label("Procedencia");
-
-           //Cuando se incorpore esta funcionalidad hay que cambiar la base de datos por NOT NULL
-            echo $form->field($model, 'protocolo_automatico')->checkBox([
-       'onclick' => 'cambioProtocoloAutomatico();', 'checked' => '1','value' => '0'])->hiddenInput()->label(false);
-
-       ?>
-
+                      ?>
 
                  </div>
 
                  <div class='col-sm-3'>
-                   <?          echo $form->field($model, 'fechadeingreso')->widget(DateControl::classname(), [
-                                     'options' => ['placeholder' => 'Debe agregar una fecha',
-                                     'value'=> ($model->fechadeingreso)?$model->fechadeingreso:"" ,
-                                             ],
-                                    'disabled'=>(isset($model->estado) && ($model->estado->descripcion=="LISTO" && !Usuario::isPatologo())),
-                                     'type'=>DateControl::FORMAT_DATE,
-                                     'autoWidget'=>true,
-                                     'displayFormat' => 'php:d/m/Y',
-                                     'saveFormat' => 'php:Y-m-d',
-                                   ])->label('Fecha de ingreso');
+       <?       echo $form->field($model, 'fechadeingreso')->widget(DateControl::classname(), [
+                'options' => [
+                    'placeholder' => 'Debe agregar una fecha',
+                    'value' => ($model->fechadeingreso) ? $model->fechadeingreso : "",
+                ],
+                'disabled' => (isset($model->estado) && ($model->estado->descripcion == "LISTO" && !Usuario::esPatologo())),
+                'type' => DateControl::FORMAT_DATE,
+                'autoWidget' => true,
+                'displayFormat' => 'php:d/m/Y',
+                'saveFormat' => 'php:Y-m-d',
+                // ← SOLO añade esto para restringir fechas futuras:
+                'widgetOptions' => [
+                    'pluginOptions' => [
+                      'endDate' => '0d'// ← Esta es la clave
+                    ],
+                ],
+            ])->label('Fecha de ingreso');
 
                    ?>
 
@@ -165,8 +186,33 @@ CrudAsset::register($this);
               <legend class="text-info"><small>INFORMACIÓN ADICIONAL</small></legend>
               <div class="x_content" style="display: none;">
                 <div class='col-sm-6'>
-                  <?= $form->field($model, 'id_materialsolicitud')->dropDownList($model->getMaterialsolicitudes())->label('Material') ;?>
+                  <?
+                  echo '<label class="control-label">Material de la solicitud</label>';
 
+                  echo Select2::widget([
+                      'name' => 'MaterialArray',
+                       'value' => $valorMateriales, // initial value
+                       'data' => $materialesSolicitud,
+                       'maintainOrder' => true,
+                       'options' => [
+                        'placeholder' => 'Material...',
+
+                      'multiple' => true],
+                      'pluginOptions' => [
+                            'maximumSelectionLength'=> 7,
+                      ],
+                      'pluginEvents' => [
+                            "select2:select"  => "function(e){
+                                 agregarInput(e.params.data.id ,e.params.data.text ,'');
+                            }",
+                            "select2:unselect" => "function(e) {
+                                quitarInput(e.params.data.id);
+                            }"
+                                 ],
+                  ]);
+
+                  ?>
+                  <br>
                   <?= $form->field($model, 'sitio_prec_toma')->textInput() ?>
                   <?= $form->field($model, 'datos_clin_interes')->textInput() ?>
                 </div>
@@ -176,11 +222,7 @@ CrudAsset::register($this);
 
                 </div>
              </div>
-
-
-
           <div class="x_panel" >
-
                 <legend class="text-info"><center>PARA MATERIAL GINECOLOGICO</center></legend>
                 <div class="x_content" style="display: none;">
               <div class='col-sm-6'>
@@ -208,11 +250,12 @@ CrudAsset::register($this);
                              ],
                          ])->label('Ultima fecha de parto');;
                              ?>
-              <?//= $form->field($model, 'materialginecologico')->textInput(['value'=>($model->materialginecologico)?$model->materialginecologico->fecha_ult_parto:''])->label('Última fecha de parto') ?>
               <?= $form->field($model, 'materialginecologico')->textInput(['value'=>($model->materialginecologico)?$model->materialginecologico->tratamiento_hormonal:''])->label('Tratamiento hormonal') ?>
 
               </div>
              </div>
+           </div>
+       </div>
          <div class="x_content">
                <div class="modal fade bs-paciente-modal-lg" tabindex="-1" role="dialog" aria-hidden="true">
                  <div class="modal-dialog modal-lg">
@@ -222,8 +265,8 @@ CrudAsset::register($this);
                            <div id="ajaxCrudDatatable">
                              <?=GridView::widget([
                                  'id'=>'crud-paciente',
-                                 'dataProvider' => $dataProviderPac,
-                                 'filterModel' => $searchModelPac,
+                                 'dataProvider' => $modelosDat['dataProviderPac'],
+                                 'filterModel' =>$modelosDat['searchModelPac'] ,
                                  'pjax'=>true,
                                  'columns' => require(dirname(__DIR__).'/solicitud/_columnsPaciente.php'),
                                  'toolbar'=> [
@@ -237,7 +280,7 @@ CrudAsset::register($this);
                            </div>
                        </div>
                        <div class="modal-footer">
-                         <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                         <button type="button" id="botonCerrarPaciente" class="btn btn-default" data-dismiss="modal">Cerrar</button>
                          <button type="button"  onclick='agregarFormularioPac();' class="btn btn-primary">Agregar al formulario</button>
                        </div>
                  </div>
@@ -254,8 +297,8 @@ CrudAsset::register($this);
                          <div id="ajaxCrudDatatable">
                            <?=GridView::widget([
                                'id'=>'crud-medico',
-                               'dataProvider' => $dataProviderMed,
-                               'filterModel' => $searchModelMed,
+                               'dataProvider' => $modelosDat['dataProviderMed'],
+                               'filterModel' => $modelosDat['searchModelMed'],
                                'pjax'=>true,
                                'columns' => require(dirname(__DIR__).'/solicitud/_columnsMedico.php'),
                                'toolbar'=> [
@@ -269,7 +312,7 @@ CrudAsset::register($this);
                          </div>
                      </div>
                      <div class="modal-footer">
-                       <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                       <button type="button" id="botonCerrarMedico" class="btn btn-default" data-dismiss="modal">Cerrar</button>
                        <button type="button"  onclick='agregarFormularioMed();' class="btn btn-primary">Agregar al formulario</button>
                      </div>
                </div>
@@ -312,28 +355,7 @@ input.addEventListener("keyup", function(event) {
   }
 });
 
-function cambioProtocoloAutomatico(){
-    if(document.getElementById("solicitudbiopsia-protocolo_automatico").value==1 ){
-      document.getElementById("solicitudbiopsia-protocolo").readOnly = false;
-      document.getElementById("solicitudbiopsia-protocolo_automatico").value =0;
 
-    }else {
-      $.ajax({
-          url: '<?php echo Url::to(['/solicitud/buscarprotocolo']) ?>',
-         type: 'get',
-         data: {
-               _csrf : '<?=Yii::$app->request->getCsrfToken()?>'
-               },
-         success: function (data) {
-             var content = JSON.parse(data);
-            document.getElementById("solicitudbiopsia-protocolo").value=  content.protocolo;
-         }
-
-    });
-      document.getElementById("solicitudbiopsia-protocolo_automatico").value =1;
-      document.getElementById("solicitudbiopsia-protocolo").readOnly = true;
-    }
-}
 function pacienteba(){
 
   $.ajax({
@@ -414,7 +436,7 @@ if ($("tr.success").find("td:eq(1)").text() != ""){
   document.getElementById("solicitudbiopsia-id_paciente").value=$("tr.success").find("td:eq(1)").text();
   //vacias el contenido de la variable para que no se anexe con otra eleccion de otro campo
   $('span.kv-clear-radio').click();
-  $('button.btn.btn-default').click();
+  $('#botonCerrarPaciente').click();
 
   swal({
        title: "Confirmado!",
@@ -442,7 +464,7 @@ if ($("tr.success").find("td:eq(1)").text() != ""){
   document.getElementById("solicitudbiopsia-id_medico").value=$("tr.success").find("td:eq(1)").text();
   //vacias el contenido de la variable para que no se anexe con otra eleccion de otro campo
   $('span.kv-clear-radio').click();
-  $('button.btn.btn-default').click();
+  $('#botonCerrarMedico').click();
 
   swal({
        title: "Confirmado!",

@@ -2,7 +2,7 @@
 
 namespace app\models;
 use yii\helpers\ArrayHelper;
-
+use app\models\patronState\EstadoBase;
 use Yii;
 
 /**
@@ -41,6 +41,8 @@ use Yii;
  * @property Cirugiaprevia $cirugiaPrevia
  * @property Metodoanticonceptivo $metodoAnticonceptivo
  * @property Tipomuestra $tipoMuestra
+ * @property Adjuntosolicitud[] $adjuntosolicituds
+
 
  */
  use app\components\behaviors\AuditoriaBehaviors;
@@ -87,13 +89,7 @@ class Solicitudpap extends Solicitud
             [['id_paciente'], 'required',  'message' => 'El campo paciente no puede estar vacío.'],
             [['id_medico'], 'required',  'message' => 'El campo medico no puede estar vacío.'],
             [['id_procedencia'], 'required',  'message' => 'Procedencia no puede estar vacío.'],
-
-        //     [['protocolo'], 'required',  'whenClient' => "function (attribute, value) {
-        //     return $('#solicitudpap-protocolo_automatico').val() == 0;
-        // }"],
-         // [['protocolo','protocolo_automatico'], 'required'],
-         [['protocolo'], 'required'],
-
+            [['protocolo'], 'required'],
             [['id_paciente','id_medico',  'fechadeingreso', 'id_estudio', 'id_estado'], 'required'],
             [['id_paciente', 'id_procedencia', 'id_medico', 'id_materialsolicitud', 'id_tipo_muestra', 'id_metodo_anticonceptivo', 'id_cirugia_previa', 'id_estudio', 'id_estado','protocolo'], 'integer'],
             [['fecharealizacion', 'fechadeingreso', 'fecha_ult_parto'], 'safe'],
@@ -102,30 +98,41 @@ class Solicitudpap extends Solicitud
             [['id_cirugia_previa'], 'exist', 'skipOnError' => true, 'targetClass' => Cirugiaprevia::className(), 'targetAttribute' => ['id_cirugia_previa' => 'id']],
             [['id_metodo_anticonceptivo'], 'exist', 'skipOnError' => true, 'targetClass' => Metodoanticonceptivo::className(), 'targetAttribute' => ['id_metodo_anticonceptivo' => 'id']],
             [['id_tipo_muestra'], 'exist', 'skipOnError' => true, 'targetClass' => Tipomuestra::className(), 'targetAttribute' => ['id_tipo_muestra' => 'id']],
-            // [['id_anio_protocolo', 'protocolo'], 'unique','message' => 'El numero de protocolo ya fue asignado para el año seleccionado','targetAttribute' => ['id_anio_protocolo', 'protocolo']],
-            [['protocolo'], 'validacion_protocolo_create','on' => 'create'],
-            [['protocolo'], 'validacion_protocolo_update','on' => 'update'],
+            [['protocolo'], 'validacion_protocolo', 'on' => ['create', 'update']],
+            [['fechadeingreso'] ,'validacion_fechainicio', 'on'=>['create','update']],
+            [['fecharealizacion'], 'validacion_fecharealizacion' ,'on'=>['create','update']]
 
         ];
     }
-    public function validacion_protocolo_create($attribute, $params){
-        $solicitud=Solicitud::find()
-        ->where(['protocolo' =>$this->protocolo,'id_anio_protocolo' => $this->id_anio_protocolo])
-        ->andWhere(['<>', 'id_estado', 6]) // No debe tener id_estado igual a 6 ANULADO
-        ->one();
-        if(isset($solicitud)){
-          $this->addError('protocolo','El numero de protocolo ya fue asignado para el año seleccionado');
+    public function validacion_protocolo($attribute, $unusedParams = [])
+    {
+        $query = Solicitud::find()
+            ->where([
+                'protocolo' => $this->protocolo,
+                'id_anio_protocolo' => $this->id_anio_protocolo
+            ])
+            ->andWhere(['<>', 'id_estado', EstadoBase::ANULADO]); // Excluir estado ANULADO
+        // Si estamos en el contexto `update`, se debe excluir el registro actual
+        if (!$this->isNewRecord) {
+            $query->andWhere(['<>', 'id', $this->id]);
+        }
+        $solicitud = $query->one();
+        if ($solicitud) {
+            $this->addError($attribute, 'El número de protocolo ya fue asignado para el año seleccionado.');
         }
     }
-    public function validacion_protocolo_update($attribute, $params){
-        $solicitud=Solicitud::find()
-        ->where(['protocolo' =>$this->protocolo,'id_anio_protocolo' => $this->id_anio_protocolo])
-        ->andWhere(['<>', 'id_estado', 6]) // No debe tener id_estado igual a 6 ANULADO
-        ->andWhere(['<>', 'id', $this->id]) // No debe evaluarse si mismo
-        ->one();
-        if(isset($solicitud)){
-          $this->addError('protocolo','El numero de protocolo ya fue asignado para el año seleccionado');
+    public function validacion_fechainicio($attribute, $unusedParams = []) {
+        //valida si el año de la fecha es el mismo al año del protocolo vigente
+        $fechaValida = AnioProtocolo::getAnioProtocoloActivo($this->fechadeingreso);
+        if (!$fechaValida) {
+            $this->addError($attribute, 'No se puede crear la solicitud. La fecha de inicio debe coincidir con un año de protocolo activo.');
         }
+    }
+    public function validacion_fecharealizacion($attribute, $unusedParams = []){
+        if($this->fecharealizacion < $this->fechadeingreso){
+          $this->addError($attribute,'La fecha de realizacion debe ser mayor o igual a la fecha de inicio');
+        }
+
     }
 
     /**
@@ -160,7 +167,7 @@ class Solicitudpap extends Solicitud
             'colposcopia' => 'Colposcopia',
             'conclusion' => 'Conclusion',
             'id_estudio' => 'Id Estudio',
-            'id_estado' => 'Id Estado',
+            'id_estado' => 'Estado',
         ];
     }
 
@@ -205,6 +212,13 @@ class Solicitudpap extends Solicitud
     public function getTipoMuestras() {
         return ArrayHelper::map(Tipomuestra::find()->orderBy(['id' => SORT_ASC])->all(), 'id','descripcion');
 
+    }
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getAdjuntosolicituds()
+    {
+        return $this->hasMany(Adjuntosolicitud::className(), ['id_solicitud' => 'id']);
     }
 
 }

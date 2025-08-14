@@ -67,7 +67,7 @@ class Biopsia extends \yii\db\ActiveRecord
            [['id_solicitudbiopsia', 'id_plantillamaterial',  'id_estado', 'id_usuario'], 'default', 'value' => null],
             [['id_solicitudbiopsia', 'id_plantillamaterial', 'id_estado', 'id_usuario'], 'integer'],
             [['fechalisto'], 'safe'],
-            // [['ID_Diagnostico'], 'string', 'max' => 55],
+            [['id_solicitudbiopsia', 'id_estado'], 'required'],
             [['id_solicitudbiopsia'], 'unique'],
             [['id_estado'], 'exist', 'skipOnError' => true, 'targetClass' => Estado::className(), 'targetAttribute' => ['id_estado' => 'id']],
             [['id_plantillamaterial'], 'exist', 'skipOnError' => true, 'targetClass' => Plantillamaterial::className(), 'targetAttribute' => ['id_plantillamaterial' => 'id']],

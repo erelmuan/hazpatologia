@@ -73,8 +73,9 @@ class Estado extends \yii\db\ActiveRecord
     }
 
     //ESTO ES PARA LOS FORMULARIOS DE LOS ESTUDIOS
+/*
     public static function estadosEstudio(){
-      if (Usuario::isPatologo()){
+      if (Usuario::esPatologo()){
         return ArrayHelper::map(Estado::find()->where(['or', "descripcion='EN PROCESO'", "descripcion='LISTO'"])
         ->all(), 'id','descripcion');
         }
@@ -82,5 +83,19 @@ class Estado extends \yii\db\ActiveRecord
         return ArrayHelper::map(Estado::find()->where(['and', "descripcion='EN PROCESO'"])
                 ->all(), 'id','descripcion');
               }
-  }
+    }
+
+    public static function getDropdownOptions( $model,  $user): array
+      {
+          // Fallback: solo estados válidos para el tipo de entidad
+          if (method_exists($model, 'getEstadosDisponibles')) {
+            return $model->getEstadosDisponibles($user);
+          }
+          // Último fallback
+          return ArrayHelper::map(Estado::find()->all(), 'id', 'descripcion');
+      }
+*/
+
+
+
 }

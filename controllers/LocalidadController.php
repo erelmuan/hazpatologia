@@ -138,7 +138,7 @@ class LocalidadController extends Controller {
         }
     }
     public static function findidproModel($id) {
-        if (($model = Localidad::Find()->where(['id_provincia' => $id])->all()) !== null) {
+        if (($model = Localidad::Find()->where(['id_provincia' => $id])->orderBy('nombre ASC')->all()) !== null) {
             return $model;
         }
         throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));

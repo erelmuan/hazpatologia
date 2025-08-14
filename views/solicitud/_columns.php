@@ -11,7 +11,7 @@ return [
     [
       'class'=>'\kartik\grid\DataColumn',
        'attribute' => 'fechadeingreso',
-       'format' => ['date', 'd/M/Y'],
+       'format' => ['date', 'php:d/m/Y'],
        'filterInputOptions' => [MaskedInput::widget([
         'name' => 'input-31',
         'clientOptions' => [
@@ -24,7 +24,7 @@ return [
    [
        'class'=>'\kartik\grid\DataColumn',
        'attribute'=>'fecharealizacion',
-       'format' => ['date', 'd/M/Y'],
+       'format' => ['date', 'php:d/m/Y'],
    ],
 
     [
@@ -69,6 +69,16 @@ return [
         'label' => 'Estado',
         'value' => 'estado.descripcion',
     ],
+      [
+        'class'=>'\kartik\grid\DataColumn',
+        'label' => 'Material/es',
+        'attribute'=> 'materialsolicitudSolicituds',
+        'format'    => 'html',
+        'value'     => function ($model){
+          return $model->getListaMateriales();
+        },
+      ],
+
     [
         'class'=>'\kartik\grid\DataColumn',
         'attribute'=>'edad',
@@ -77,6 +87,7 @@ return [
         'label'=> 'Edad al momento del estudio(años)',
 
     ],
+
 
 
 ];

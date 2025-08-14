@@ -48,22 +48,21 @@ use yii\helpers\Html;
             ],
 
             [
-              'attribute' => 'Acciones',
+              'attribute' => ($model->accion)?'Acciones':"Acceso",
                   'format'    => 'html',
                   'value'     => call_user_func(function($model)
                   {
                     $items = "";
-                      $index=($model->accion->index)?"verdadero":"falso";
-                      $create=($model->accion->create)?"verdadero":"falso";
-                      $delete=($model->accion->delete)?"verdadero":"falso";
-                      $update=($model->accion->update)?"verdadero":"falso";
-                      $listdetalle=($model->accion->listdetalle)?"verdadero":"falso";
+                    if($model->accion){
+                      $items .= "Crear: <b>".(($model->accion->create)?"verdadero":"falso")." </b><br>";
+                      $items .= "Eliminar: <b>".(($model->accion->delete)?"verdadero":"falso")." </b><br>";
+                      $items .= "Actualizar: <b>".(($model->accion->update)?"verdadero":"falso")." </b><br>";
+                      $items .= "Ver: <b>".(($model->accion->view)?"verdadero":"falso")." </b><br>";
 
-                    $items .= "Index/Ver: <b>".$index." </b><br>";
-                    $items .= "Crear: <b>".$create." </b><br>";
-                    $items .= "Eliminar: <b>".$delete." </b><br>";
-                    $items .= "Actualizar: <b>".$update." </b><br>";
-                    $items .= "Ver listado: <b>".$listdetalle." </b><br>";
+                    }else {
+                      $items .= "<b>".$model->modulo->tipoAcceso->nombre."</b><br>";
+
+                    }
 
                       return $items;
                   }, $model)

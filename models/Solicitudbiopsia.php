@@ -4,7 +4,7 @@ namespace app\models;
 
 use Yii;
 use app\components\behaviors\AuditoriaBehaviors;
-
+use app\models\patronState\EstadoBase;
 /**
  * This is the model class for table "solicitudbiopsia".
  *
@@ -16,6 +16,7 @@ use app\components\behaviors\AuditoriaBehaviors;
  * @property string $fecharealizacion
  * @property string $fechadeingreso
  * @property string $observacion
+ * @property Adjuntosolicitud[] $adjuntosolicituds
  * @property int $protocolo
  * @property string $sitio_prec_toma
  * @property string $datos_clin_interes
@@ -73,41 +74,60 @@ class Solicitudbiopsia extends Solicitud
                [['id_medico'], 'required',  'message' => 'El campo medico no puede estar vacío.'],
                [['id_procedencia'], 'required',  'message' => 'Procedencia no puede estar vacío.'],
                [['id_paciente', 'id_procedencia', 'id_medico',  'fechadeingreso', 'id_estudio', 'id_estado'], 'required'],
-
-
-            [['protocolo'], 'required'],
-            [['id_paciente', 'id_procedencia', 'id_medico', 'id_materialsolicitud', 'id_materialginecologico', 'id_estudio', 'id_estado'], 'integer'],
-            [['fecharealizacion', 'fechadeingreso'], 'safe'],
-            [['fechadeingreso'], 'required'],
-            [['observacion', 'sitio_prec_toma', 'datos_clin_interes', 'diagnostico_presuntivo', 'biopsia_anterior_resultado'], 'string'],
-            [['id_materialginecologico'], 'exist', 'skipOnError' => true, 'targetClass' => Paramaterialginecologico::className(), 'targetAttribute' => ['id_materialginecologico' => 'id']],
-            [['id_paciente'], 'exist', 'skipOnError' => true, 'targetClass' => Paciente::className(), 'targetAttribute' => ['id_paciente' => 'id']],
-            [['id_medico'], 'exist', 'skipOnError' => true, 'targetClass' => Medico::className(), 'targetAttribute' => ['id_medico' => 'id']],
-            [['protocolo'], 'validacion_protocolo_create','on' => 'create'],
-            [ ['protocolo'], 'validacion_protocolo_update','on' => 'update'],
+               [['protocolo'], 'required'],
+               [['id_paciente', 'id_procedencia', 'id_medico', 'id_materialsolicitud', 'id_materialginecologico', 'id_estudio', 'id_estado'], 'integer'],
+               [['fecharealizacion', 'fechadeingreso'], 'safe'],
+               [['observacion', 'sitio_prec_toma', 'datos_clin_interes', 'diagnostico_presuntivo', 'biopsia_anterior_resultado'], 'string'],
+               [['id_materialginecologico'], 'exist', 'skipOnError' => true, 'targetClass' => Paramaterialginecologico::className(), 'targetAttribute' => ['id_materialginecologico' => 'id']],
+               [['id_paciente'], 'exist', 'skipOnError' => true, 'targetClass' => Paciente::className(), 'targetAttribute' => ['id_paciente' => 'id']],
+               [['id_medico'], 'exist', 'skipOnError' => true, 'targetClass' => Medico::className(), 'targetAttribute' => ['id_medico' => 'id']],
+               [['protocolo'], 'validacion_protocolo', 'on' => ['create', 'update']],
+               [['fechadeingreso'] ,'validacion_fechainicio', 'on'=>['create','update']],
+               [['fecharealizacion'], 'validacion_fecharealizacion' ,'on'=>['create','update']],
+               [['id_estado'], 'validarAdjuntoSiDerivado', 'on' =>['update']]
 
         ];
     }
-    public function validacion_protocolo_create($attribute, $params){
-        $solicitud=Solicitud::find()
-        ->where(['protocolo' =>$this->protocolo,'id_anio_protocolo' => $this->id_anio_protocolo])
-        ->andWhere(['<>', 'id_estado', 6]) // No debe tener id_estado igual a 6 ANULADO
-        ->one();
-        if(isset($solicitud)){
-          $this->addError('protocolo','El numero de protocolo ya fue asignado para el año seleccionado');
-        }
-    }
-    public function validacion_protocolo_update($attribute, $params){
-        $solicitud=Solicitud::find()
-        ->where(['protocolo' =>$this->protocolo,'id_anio_protocolo' => $this->id_anio_protocolo])
-        ->andWhere(['<>', 'id_estado', 6]) // No debe tener id_estado igual a 6 ANULADO
-        ->andWhere(['<>', 'id', $this->id]) // No debe evaluarse si mismo
-        ->one();
-        if(isset($solicitud)){
-          $this->addError('protocolo','El numero de protocolo ya fue asignado para el año seleccionado');
+    public function validarAdjuntoSiDerivado($attribute)
+    {
+        // Si id_estado == el valor numérico correspondiente a DERIVADO_LISTO
+        if ($this->$attribute == EstadoBase::DERIVADO_LISTO) {
+            if (empty($this->adjuntosolicituds) || count($this->adjuntosolicituds) === 0) {
+                $this->addError($attribute, 'Debe adjuntar al menos un archivo para poder establecer el estado DERIVADO LISTO.');
+            }
         }
     }
 
+      public function validacion_protocolo($attribute, $unusedParams = [])
+      {
+          $query = Solicitud::find()
+              ->where([
+                  'protocolo' => $this->protocolo,
+                  'id_anio_protocolo' => $this->id_anio_protocolo
+              ])
+              ->andWhere(['<>', 'id_estado', EstadoBase::ANULADO]); // Excluir estado ANULADO
+          // Si estamos en el contexto `update`, se debe excluir el registro actual
+          if (!$this->isNewRecord) {
+              $query->andWhere(['<>', 'id', $this->id]);
+          }
+          $solicitud = $query->one();
+          if ($solicitud) {
+              $this->addError($attribute, 'El número de protocolo ya fue asignado para el año seleccionado.');
+          }
+      }
+      public function validacion_fechainicio($attribute, $unusedParams = []) {
+          //valida si el año de la fecha es el mismo al año del protocolo vigente
+          $fechaValida = AnioProtocolo::getAnioProtocoloActivo($this->fechadeingreso);
+          if (!$fechaValida) {
+              $this->addError($attribute, 'No se puede crear la solicitud. La fecha de inicio debe coincidir con un año de protocolo activo.');
+          }
+      }
+      public function validacion_fecharealizacion($attribute, $unusedParams = []){
+          if($this->fecharealizacion < $this->fechadeingreso){
+            $this->addError($attribute,'La fecha de realizacion debe ser mayor o igual a la fecha de inicio');
+          }
+
+      }
 
     /**
      * {@inheritdoc}
@@ -130,7 +150,7 @@ class Solicitudbiopsia extends Solicitud
             'biopsia_anterior_resultado' => 'Biopsia Anterior Resultado',
             'id_materialginecologico' => 'Id Materialginecologico',
             'id_estudio' => 'Id Estudio',
-            'id_estado' => 'Id Estado',
+            'id_estado' => 'Estado',
         ];
     }
 
@@ -165,4 +185,12 @@ class Solicitudbiopsia extends Solicitud
    	   {
   	      return $this->hasOne(Paciente::className(), ['id' => 'id_paciente']);
   	   }
+       /**
+        * @return \yii\db\ActiveQuery
+        */
+       public function getAdjuntosolicituds()
+       {
+           return $this->hasMany(Adjuntosolicitud::className(), ['id_solicitud' => 'id']);
+       }
+
 }

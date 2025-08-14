@@ -229,61 +229,97 @@ class PacienteController extends Controller {
 
     //delete hereda de Controller
 
+    public function actionPuco()
+    {
+        if (Yii::$app->request->isAjax) {
+            if (!empty($_POST['dni'])) {
 
+                $data = Yii::$app->request->post();
+                $dni = explode(":", $data['dni'])[0];
+                $url = 'https://sisa.msal.gov.ar/sisa/services/rest/puco/' . $dni;
 
-    public function actionPuco() {
+                $ch = curl_init($url);
+                $payload = json_encode([
+                    'usuario' => Yii::$app->params['usuarioPuco'],
+                    'clave'   => Yii::$app->params['clavePuco']
+                ]);
 
-      if (Yii::$app->request->isAjax) {
-        $out = [];
-        if (isset($_POST['dni'])  && $_POST['dni'] !=="") {
-            $data = Yii::$app->request->post();
-            $dni= explode(":", $data['dni']);
-            $dni= $dni[0];
-            $url = 'https://sisa.msal.gov.ar/sisa/services/rest/puco/'.$dni;
+                curl_setopt($ch, CURLOPT_POSTFIELDS, $payload);
+                curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type:application/json']);
+                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); // ⚠️ Cambiar a true cuando actualices certificados
+                curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
+                curl_setopt($ch, CURLOPT_TIMEOUT, 30);
 
-            $ch = curl_init( $url );
-            # Setup request to send json via POST.
-            $data = array(
-                  'usuario' => Yii::$app->params['usuarioPuco'],
-                  'clave' => Yii::$app->params['clavePuco']
-              );
-            $payload = json_encode($data );
-            curl_setopt( $ch, CURLOPT_POSTFIELDS, $payload );
-            curl_setopt( $ch, CURLOPT_HTTPHEADER, array('Content-Type:application/json'));
-            # Return response instead of printing.
-            curl_setopt( $ch, CURLOPT_RETURNTRANSFER, true);
-            # Send request.
+                $result = curl_exec($ch);
+                $curlError = curl_error($ch);
+                $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+                curl_close($ch);
 
-            $result = curl_exec($ch);
-            $oXML = new \SimpleXMLElement($result);
-            curl_close($ch);
-
-            $items = "";
-            $cant=1;
-            $obrasoc=array();
-            if ($oXML->resultado == "OK"){
-              foreach ($oXML->puco as $puco) {
-                if (!in_array(trim($puco[0]->coberturaSocial), $obrasoc)){
-                    $obrasoc[$cant]=$puco[0]->coberturaSocial;
-                  $items .="Obra social ".$cant.": ".$obrasoc[$cant]."\r\n";
-                  $cant ++;
+                // Si hubo error de conexión
+                if ($curlError) {
+                    echo Json::encode(["error" => "Error de conexión: $curlError"]);
+                    return;
                 }
-              }
-              $out = $items;
-              echo Json::encode([$out]);
-            }else {
-              $out = $oXML->resultado;
-              echo Json::encode($out);
-            }
-            return;
 
-          }else {
-            $out = "No se completo el campo Nº doc.";
-            echo Json::encode([$out]);
-            return;
-          }
+                // Si el servicio respondió con código distinto de 200
+                if ($httpCode !== 200) {
+                    echo Json::encode(["error" => "HTTP Code: $httpCode", "respuesta" => $result]);
+                    return;
+                }
+
+                // Si la respuesta está vacía
+                if (empty($result)) {
+                    echo Json::encode(["error" => "Respuesta vacía del servicio"]);
+                    return;
+                }
+
+                // Intentar parsear como XML
+                libxml_use_internal_errors(true);
+                $oXML = simplexml_load_string($result);
+
+                if ($oXML === false) {
+                    // No es XML válido, devolvemos el texto plano
+                    echo Json::encode(["resultado" => trim($result)]);
+                    return;
+                }
+
+                // Si el XML dice OK, procesamos obras sociales
+                if (isset($oXML->resultado) && (string)$oXML->resultado === "OK") {
+                    $items = "";
+                    $cant = 1;
+                    $obrasoc = [];
+
+                    foreach ($oXML->puco as $puco) {
+                        if (!in_array(trim($puco[0]->coberturaSocial), $obrasoc)) {
+                            $obrasoc[$cant] = $puco[0]->coberturaSocial;
+                            $items .= "Obra social $cant: {$obrasoc[$cant]}\r\n";
+                            $cant++;
+                        }
+                    }
+
+                    if (trim($items) === "") {
+                        // No hay obras sociales
+                        echo Json::encode(["resultado" => "NO_ENCONTRADO"]);
+                    } else {
+                        echo Json::encode([$items]);
+                    }
+                    return;
+                }
+
+                // Si el XML no es OK, devolvemos el resultado
+                echo Json::encode(["resultado" => (string)$oXML->resultado]);
+                return;
+
+            } else {
+                echo Json::encode(["error" => "No se completó el campo Nº doc."]);
+                return;
+            }
         }
-      }
+    }
+
+
+
     /**
      * Finds the Paciente model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.

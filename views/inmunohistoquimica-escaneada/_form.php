@@ -18,7 +18,12 @@ $form = ActiveForm::begin(['options'=>['enctype'=>'multipart/form-data'],'type'=
 ?>
 <div id="w0" class="x_panel">
   <div class="x_title"><h2> <?=$model->isNewRecord ? "<i class='glyphicon glyphicon-plus'></i> NUEVA INMUNOHISTOQUIMICA" : "<i class='glyphicon glyphicon-pencil'></i> ACTUALIZAR INMUNOHISTOQUIMICA" ; ?> </h2>
-  <div class="clearfix"> <div class="nav navbar-right panel_toolbox"><?echo Html::button('<i class="glyphicon glyphicon-arrow-left"></i> Atrás',array('name' => 'btnBack','onclick'=>'js:history.go(-1);returnFalse;','id'=>'botonAtras')); ?></div>
+  <div class="clearfix"> <div class="nav navbar-right panel_toolbox">
+           <?echo Html::button('<i class="glyphicon glyphicon-arrow-left">
+           </i> Atrás',array('name' => 'btnBack',
+           'onclick' => "window.location.href = '" . Url::to(['biopsia/update', 'id' => $model->biopsia->id]) . "'",
+           'id'=>'botonAtras')); ?>
+  </div>
   <ul class="nav navbar-right panel_toolbox">
                       <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                       </li>
@@ -60,7 +65,7 @@ $form = ActiveForm::begin(['options'=>['enctype'=>'multipart/form-data'],'type'=
                   'language' => 'es',
             'allowedFileExtensions' => [ 'pdf'],
     ],
-    'disabled'=> ($model->biopsia->estado->descripcion=="LISTO" && !Usuario::isPatologo()),
+    'disabled'=> ($model->biopsia->estado->descripcion=="LISTO" && !Usuario::esPatologo()),
 
 ]);?>
     </div>

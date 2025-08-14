@@ -6,7 +6,7 @@ use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use app\models\Biopsia;
-
+use app\models\patronState\EstadoBase;
 /**
  * BiopsiaSearch represents the model behind the search form about `app\models\Biopsia`.
  */
@@ -77,7 +77,7 @@ class BiopsiaSearch extends Biopsia
       ->innerJoin('medico', 'medico.id = solicitudbiopsia.id_medico')
       ->innerJoinWith('estado', 'estado.id = biopsia.id_estado')
       ->andWhere(['solicitudbiopsia.id_anio_protocolo' => $selectedYearsQuery])
-      ->andWhere(['and','biopsia.id_estado <> 6 ' ]); //ANULADO
+      ->andWhere(['and','biopsia.id_estado <> '.EstadoBase::ANULADO ]); //ANULADO
 
 
         $dataProvider = new ActiveDataProvider([

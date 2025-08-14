@@ -71,9 +71,10 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
     <legend class="text-info"><small style="margin-left: 18px;">Datos de la biopsia</small></legend>
 
     <div class="col-md-4 col-sm-12 col-xs-12 form-group">
-    </br>  </br>
+      <div class="form-group spacing-top-2">
+
         <?  echo (Html::label('Código material', 'username', ['class' => 'form-group field-biopsias-material has-success']));
-        if( !isset($model->estado) || $model->estado->descripcion!=="LISTO" || Usuario::isPatologo()){
+        if( !isset($model->estado) || $model->estado->descripcion!=="LISTO" || Usuario::esPatologo()){
 
         ?>
         <button type="button" class="btn btn-primary btn-xs" onclick="quitarSeleccion()" data-toggle="modal"
@@ -94,15 +95,16 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
             ],
             'options' => [
                   'onchange' => 'onEnviarMat (this.value)',
-                  'disabled'=>(isset($model->estado) && ($model->estado->descripcion=="LISTO" && !Usuario::isPatologo())),
+                  'disabled'=>(isset($model->estado) && ($model->estado->descripcion=="LISTO" && !Usuario::esPatologo())),
 
                   ],
         ]);
-
                     ?>
-          </br>  </br>   </br>  </br>  </br>  </br>
+            </div>
+      <div class="form-group spacing-top-6">
+
         <? echo ( Html::label('Código macroscopia', 'macro', ['class' => 'form-group field-biopsias-macroscopia has-success']));
-        if( !isset($model->estado) || $model->estado->descripcion!=="LISTO" || Usuario::isPatologo()){
+        if( !isset($model->estado) || $model->estado->descripcion!=="LISTO" || Usuario::esPatologo()){
 
          ?>
         <button type="button" class="btn btn-primary btn-xs" onclick="quitarSeleccion()" data-toggle="modal"
@@ -123,54 +125,58 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
                    ],
                    'options' => [
                          'onchange' => 'onEnviarMac (this.value)',
-                         'disabled'=>(isset($model->estado) && ($model->estado->descripcion=="LISTO" && !Usuario::isPatologo())),
+                         'disabled'=>(isset($model->estado) && ($model->estado->descripcion=="LISTO" && !Usuario::esPatologo())),
                          ],
                ]);
 
                  ?>
-         </br>  </br>  </br>  </br>  </br> </br>
-        <?  echo (Html::label('Código microscopia', 'username', ['class' => 'form-group field-biopsias-microscopia has-success']));
-        if( !isset($model->estado) || $model->estado->descripcion!=="LISTO" || Usuario::isPatologo()){
+      </div>
+
+         <div class="form-group spacing-top-6">
+            <?  echo (Html::label('Código microscopia', 'username', ['class' => 'form-group field-biopsias-microscopia has-success']));
+            if( !isset($model->estado) || $model->estado->descripcion!=="LISTO" || Usuario::esPatologo()){
+            ?>
+
+            <button type="button" class="btn btn-primary btn-xs" onclick="quitarSeleccion()" data-toggle="modal"
+                data-target=".bs-microscopia-modal-lg" style="margin-left: 10px;"><i
+                    class="glyphicon glyphicon-plus"></i></button>
+            <button type="button" class="btn btn-danger btn-xs" onclick="quitarMicroscopia()"><i
+                    class="glyphicon glyphicon-minus"></i></button>
+            <?}
+                 $mapMicroscopia= ArrayHelper::map($array['arraymicroscopia'] , 'id',  'codigo' );
+                 echo Chosen::widget([
+                       'name' => 'id_microscopia',
+                       'items' => $mapMicroscopia,
+                       'allowDeselect' => true,
+                       'placeholder' => 'Seleccionar código..',
+                       'clientOptions' => [
+                           'search_contains' => true,
+                           'no_results_text'=>"Oops, nothing found!",
+                       ],
+                       'options' => [
+                             'onchange' => 'onEnviarMic (this.value)',
+                             'disabled'=>(isset($model->estado) && ($model->estado->descripcion=="LISTO" && !Usuario::esPatologo())),
+
+                             ],
+                   ]);
+
+            ?>
+      </div>
+      <div class="form-group spacing-top-2">
+
+          <?
+        echo ( $form->field($model, 'ihq')->widget(SwitchInput::classname(), [    'pluginOptions' => [
+          'onText' => 'Si',
+          'offText' => 'No',
+        ],
+        'disabled'=>isset($model->estado) && ($model->estado->descripcion=="LISTO" && !Usuario::esPatologo()),
+      ]))->label('Estudio inmunostoquimica');
         ?>
-
-        <button type="button" class="btn btn-primary btn-xs" onclick="quitarSeleccion()" data-toggle="modal"
-            data-target=".bs-microscopia-modal-lg" style="margin-left: 10px;"><i
-                class="glyphicon glyphicon-plus"></i></button>
-        <button type="button" class="btn btn-danger btn-xs" onclick="quitarMicroscopia()"><i
-                class="glyphicon glyphicon-minus"></i></button>
-        <?}
-             $mapMicroscopia= ArrayHelper::map($array['arraymicroscopia'] , 'id',  'codigo' );
-             echo Chosen::widget([
-                   'name' => 'id_microscopia',
-                   'items' => $mapMicroscopia,
-                   'allowDeselect' => true,
-                   'placeholder' => 'Seleccionar código..',
-                   'clientOptions' => [
-                       'search_contains' => true,
-                       'no_results_text'=>"Oops, nothing found!",
-                   ],
-                   'options' => [
-                         'onchange' => 'onEnviarMic (this.value)',
-                         'disabled'=>(isset($model->estado) && ($model->estado->descripcion=="LISTO" && !Usuario::isPatologo())),
-
-                         ],
-               ]);
-
-        ?>
-        </br></br></br>
-        <?
-      echo ( $form->field($model, 'ihq')->widget(SwitchInput::classname(), [    'pluginOptions' => [
-        'onText' => 'Si',
-        'offText' => 'No',
-      ],
-      'disabled'=>isset($model->estado) && ($model->estado->descripcion=="LISTO" && !Usuario::isPatologo()),
-    ]))->label('Estudio inmunostoquimica');
-      ?>
-      </br>
-      </br>
+      </div>
+      <div class="form-group spacing-top-2">
         <?
       echo (Html::label('Código diagnostico', 'codigo diagnostico', ['class' => 'form-group field-biopsias-diagnostico has-success']));
-      if( !isset($model->estado) || $model->estado->descripcion!=="LISTO" || Usuario::isPatologo()){
+      if( !isset($model->estado) || $model->estado->descripcion!=="LISTO" || Usuario::esPatologo()){
       ?>
         <button type="button" class="btn btn-primary btn-xs" onclick="quitarSeleccion()" data-toggle="modal"
             data-target=".bs-diagnostico-modal-lg" style="margin-left: 10px;"><i
@@ -190,113 +196,84 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
            ],
            'options' => [
                  'onchange' => 'onEnviarDiag (this.value)',
-                 'disabled'=>(isset($model->estado) && ($model->estado->descripcion=="LISTO" && !Usuario::isPatologo())),
+                 'disabled'=>(isset($model->estado) && ($model->estado->descripcion=="LISTO" && !Usuario::esPatologo())),
 
                  ],
        ]);
-  ?></br> </br>
-    <!-- <?//= (Html::label('Código CIE10', 'codigo diagnostico', ['class' => 'form-group field-biopsia-diagnostico has-success'])); ?>
+  ?>
+  </div>
+  <div class="form-group spacing-top-6">
 
-      <button type="button" class="btn btn-primary btn-xs" onclick="quitarSeleccion()" data-toggle="modal"
-          data-target=".bs-cie10-modal-lg" style="margin-left: 10px;"><i
-              class="glyphicon glyphicon-plus"></i></button>
-      <button type="button" class="btn btn-danger btn-xs" onclick="quitarCie10()"><i
-          class="glyphicon glyphicon-minus"></i></button>
-       <input type="hidden" id="biopsia-id_cie10" name =Biopsia[id_cie10]> -->
-      <!-- <input type="text" id="biopsia-cie10" class="form-control" value='<?=($model->biopsiacie10)?$model->biopsiacie10->cie10->codigo:''; ?>' style="width:30%" aria-invalid="false" readonly> -->
-      <!-- <input type="text" id="biopsia-cie10" class="form-control"  style="width:30%" aria-invalid="false" readonly> -->
+ <?
+   echo (Html::label('Código frase', 'frase', ['class' => 'form-group field-biopsias-frase has-success'])) ;
+   if( !isset($model->estado) || $model->estado->descripcion!=="LISTO" || Usuario::esPatologo()){
+   ?>
+     <button type="button" class="btn btn-primary btn-xs" onclick="quitarSeleccion()" data-toggle="modal"
+         data-target=".bs-frase-modal-lg" style="margin-left: 10px;"><i
+             class="glyphicon glyphicon-plus"></i></button>
+     <button type="button" class="btn btn-danger btn-xs" onclick="quitarFrase()"><i
+             class="glyphicon glyphicon-minus"></i></button>
+     <?
+   }
+   $mapFrases= ArrayHelper::map($array['arrayfrase'] , 'id',  'codigo' );
+   echo Chosen::widget([
+         'name' => 'ChosenTest',
+         'items' => $mapFrases,
+         'allowDeselect' => true,
+         'placeholder' => 'Seleccionar código..',
+         'clientOptions' => [
+             'search_contains' => true,
+             'no_results_text'=>"Oops, nothing found!",
+         ],
+         'options' => [
+               'onchange' => 'onEnviarFra (this.value)',
+               'disabled'=>(isset($model->estado) && ($model->estado->descripcion=="LISTO" && !Usuario::esPatologo())),
 
-  </br>
-  </br>
-  </br>
-    <?
-      echo (Html::label('Código frase', 'frase', ['class' => 'form-group field-biopsias-frase has-success'])) ;
-      if( !isset($model->estado) || $model->estado->descripcion!=="LISTO" || Usuario::isPatologo()){
-      ?>
-        <button type="button" class="btn btn-primary btn-xs" onclick="quitarSeleccion()" data-toggle="modal"
-            data-target=".bs-frases-modal-lg" style="margin-left: 10px;"><i
-                class="glyphicon glyphicon-plus"></i></button>
-        <button type="button" class="btn btn-danger btn-xs" onclick="quitarFrase()"><i
-                class="glyphicon glyphicon-minus"></i></button>
-        <?
-      }
-      $mapFrases= ArrayHelper::map($array['arrayfrase'] , 'id',  'codigo' );
-      echo Chosen::widget([
-            'name' => 'ChosenTest',
-            'items' => $mapFrases,
-            'allowDeselect' => true,
-            'placeholder' => 'Seleccionar código..',
-            'clientOptions' => [
-                'search_contains' => true,
-                'no_results_text'=>"Oops, nothing found!",
-            ],
-            'options' => [
-                  'onchange' => 'onEnviarFra (this.value)',
-                  'disabled'=>(isset($model->estado) && ($model->estado->descripcion=="LISTO" && !Usuario::isPatologo())),
+               ],
+     ]);
 
-                  ],
-        ]);
-
-        ?>
-        </br> </br>
-        <?   if( !isset($model->estado) || $model->estado->descripcion!=="LISTO"){
-              echo $form->field($model, 'id_estado')->dropDownList($model->estados())->label('Estado') ;
-
-        }else {
-            echo $form->field($model, 'id_estado')->hiddenInput()->label(false);
-             echo  $form->field($model, 'estado')->input("text",['readonly' => true , "value"=>$model->estado->descripcion])->label('Estado');
-
-        }?>
-
-        <?//= $form->field($model, 'observacion')->textarea(['rows' => 6]) ?>
+     ?>
+     </div>
+      <div class="form-group spacing-top-2">
+        <?=$form->field($model, 'id_estado')->dropDownList(
+            $stateOptions,
+            ['prompt' => 'Seleccione estado']
+        ) ?>
+      </div>
 
     </div>
 
 
     <div class="col-md-8 col-sm-12 col-xs-12 form-group">
-        <?=$form->field($model, 'material')->textarea(['rows' => 4,'style'=> 'font-size:17px;', 'disabled'=>(isset($model->estado) && ($model->estado->descripcion=="LISTO" && !Usuario::isPatologo()))])  ?>
+        <?=$form->field($model, 'material')->textarea(['rows' => 4,'style'=> 'font-size:17px;', 'disabled'=>(isset($model->estado) && ($model->estado->descripcion=="LISTO" && !Usuario::esPatologo()))])  ?>
     </div>
     <div class="col-md-8 col-sm-12 col-xs-12 form-group">
-        <?= $form->field($model, 'macroscopia')->textarea(['rows' => 4,'style'=> 'font-size:17px;', 'disabled'=>(isset($model->estado) && ($model->estado->descripcion=="LISTO" && !Usuario::isPatologo()))]) ?>
+        <?= $form->field($model, 'macroscopia')->textarea(['rows' => 4,'style'=> 'font-size:17px;', 'disabled'=>(isset($model->estado) && ($model->estado->descripcion=="LISTO" && !Usuario::esPatologo()))]) ?>
     </div>
     <div class="col-md-8 col-sm-12 col-xs-12 form-group">
-        <?= $form->field($model, 'microscopia')->textarea(['rows' => 4,'style'=> 'font-size:17px;', 'disabled'=>(isset($model->estado) && ($model->estado->descripcion=="LISTO" && !Usuario::isPatologo()))]) ?>
+        <?= $form->field($model, 'microscopia')->textarea(['rows' => 4,'style'=> 'font-size:17px;', 'disabled'=>(isset($model->estado) && ($model->estado->descripcion=="LISTO" && !Usuario::esPatologo()))]) ?>
     </div>
     <div class="col-md-8 col-sm-12 col-xs-12 form-group">
-          </br>
-          </br>
-          </br>
-          <?= $form->field($model, 'diagnostico')->textarea(['rows' => 4,'style'=> 'font-size:17px;', 'disabled'=>(isset($model->estado) && ($model->estado->descripcion=="LISTO" && !Usuario::isPatologo()))]) ?>
+        <div class="form-group spacing-top-2">
+          <?= $form->field($model, 'diagnostico')->textarea(['rows' => 4,'style'=> 'font-size:17px;', 'disabled'=>(isset($model->estado) && ($model->estado->descripcion=="LISTO" && !Usuario::esPatologo()))]) ?>
+        </div>
     </div>
     <div class="col-md-8 col-sm-12 col-xs-12 form-group">
-        <?= $form->field($model, 'frase')->textarea(['rows' => 4,'style'=> 'font-size:17px;', 'disabled'=>(isset($model->estado) && ($model->estado->descripcion=="LISTO" && !Usuario::isPatologo()))]) ?>
-        <? if (Usuario::isPatologo() && isset($model->estado) && $model->estado->descripcion=="LISTO")  {?>
-          <div class="col-lg-2"  style="background-color: #f2dede; border: 0.5px solid #ebccd1; padding: 10px;">
-            <label class="control-label">
-            Anular estudio
-            </label>
-          <input type="checkbox" id="biopsia-anulado" class="form-control" name="Biopsia[anulado]" value="1" title="Si esta activo, y actualiza se anulara el estudio">
-          </div>
-        <? } ?>
+        <?= $form->field($model, 'frase')->textarea(['rows' => 4,'style'=> 'font-size:17px;', 'disabled'=>(isset($model->estado) && ($model->estado->descripcion=="LISTO" && !Usuario::esPatologo()))]) ?>
     </div>
 
     <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-        <?= Html::submitButton($model->isNewRecord ? 'Guardar' : 'Actualizar', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary','disabled'=>(isset($model->estado) && ($model->estado->descripcion=="LISTO" && !Usuario::isPatologo()))]);
+        <?= Html::submitButton($model->isNewRecord ? 'Guardar' : 'Actualizar', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary','disabled'=>(isset($model->estado) && ($model->estado->descripcion=="LISTO" && !Usuario::esPatologo()))]);
 
         if( !$model->isNewRecord &&  $model->ihq){
             if ($model->ihq && isset($model->inmunohistoquimicaEscaneada)){
               echo Html::a('<i class="glyphicon glyphicon-arrow-right"></i> Ir inmunostoquimica',['/inmunohistoquimica-escaneada/update', 'id'=>$model->inmunohistoquimicaEscaneada->id], ['class'=>'btn btn-success grid-button']) ;
-            }else {
-              echo Html::a('<i class="glyphicon glyphicon-arrow-right"></i> Crear inmunostoquimica',['/inmunohistoquimica-escaneada/create', 'id_biopsia'=>$model->id], ['class'=>'btn btn-success grid-button']) ;
             }
-
         }
         ?>
 
-
-
     </div>
-    <? if (Usuario::isPatologo()) { ?>
+    <? if (Usuario::esPatologo()) { ?>
     <div class="col-md-8 col-sm-12 col-xs-12 form-group">
         <div class='col-sm-5'>
             <label class="control-label" for="biopsia-contraseña">Contraseña</label>
@@ -341,9 +318,6 @@ function onEnviarDiag(val) {
         success: function(data) {
             var current_value = textArea.value;
             var content = JSON.parse(data);
-          //   document.getElementById("biopsia-cie10").value = content[1];
-        //     document.getElementById("biopsia-id_cie10").value = content[0].id_cie10;
-
             if (current_value.trim() == "") {
                 document.getElementById("biopsia-diagnostico").value = content[0].diagnostico;
             } else {

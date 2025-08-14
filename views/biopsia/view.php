@@ -78,10 +78,10 @@ $isAjax = Yii::$app->request->isAjax;
             [
               'value'=> Html::a('<i class="fa fa-file-pdf-o"></i> Generar informe inmunostoquimica', ['/inmunohistoquimica-escaneada/informe', 'id' => $model->inmunohistoquimicaEscaneada->id], [
                     'class'=>'btn btn-primary',
-                    'role'=>'modal-remote',
-                    'target'=>'_blank',
+                    'target'=>'_blank', // Abrir en nueva pestaña
                     'data-toggle'=>'tooltip',
-                    'title'=>'Se abrirá el archivo PDF generado en una nueva pestaña'
+                    'title'=>'Se abrirá el archivo PDF generado en una nueva pestaña',
+                    'data-pjax' => '0' // Evitar el manejo de PJAX
                 ]) ,
               'label'=> 'Documento',
               'format'=>'raw',

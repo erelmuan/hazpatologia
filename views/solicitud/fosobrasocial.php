@@ -111,10 +111,16 @@ use yii\helpers\Html;
               dni: dni_paciente
           },
           success: function(data) {
-              document.getElementById("resultadoPuco").value="";
+              document.getElementById("resultadoPuco").value = "";
               var content = JSON.parse(data);
+              // Si es array indexado
+              if (Array.isArray(content)) {
                   document.getElementById("resultadoPuco").value = content[0];
-
+              }
+              // Si es objeto con propiedad "resultado"
+              else if (content.resultado) {
+                  document.getElementById("resultadoPuco").value = content.resultado;
+              }
           }
 
       });

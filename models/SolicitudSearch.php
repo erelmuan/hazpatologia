@@ -7,6 +7,7 @@ use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use app\models\Solicitud;
 use app\models\AnioProtocolo;
+use app\models\patronState\EstadoBase;
 use DateTime;
 
 
@@ -25,6 +26,8 @@ class SolicitudSearch extends Solicitud
   public $id_tipodoc; // Propiedad para paciente.id_tipodoc
   public $fecha_desde;
   public $fecha_hasta;
+  public $materialsolicitudSolicituds;
+
     /**
      * @inheritdoc
      */
@@ -40,7 +43,7 @@ class SolicitudSearch extends Solicitud
             ['fecharealizacion', 'date', 'format' => 'dd/MM/yyyy'],
             ['fechadeingreso', 'date', 'format' => 'dd/MM/yyyy'],
             [[ 'fecha_desde','fecha_hasta','observacion','solicitud'], 'safe'],
-            [['paciente','medico','procedencia','estudio','estado' ,'num_documento'], 'safe'],
+            [['paciente','medico','procedencia','estudio','estado' ,'num_documento','materialsolicitudSolicituds'], 'safe'],
             [['id_tipodoc'], 'safe'],
 
         ];
@@ -118,11 +121,13 @@ class SolicitudSearch extends Solicitud
         ->innerJoinWith('paciente', 'paciente.id = solicitud.id_paciente')
         ->innerJoinWith('medico', 'medico.id = solicitud.id_medico')
         ->innerJoinWith('estado', 'estado.id = solicitud.id_estado')
-        ->innerJoinWith('estudio', 'estudio.id = solicitud.id_estudio');
+        ->innerJoinWith('estudio', 'estudio.id = solicitud.id_estudio')
+        ->leftJoin('materialsolicitud_solicitud mss', 'mss.id_solicitud = solicitud.id')
+        ->leftJoin('materialsolicitud ms', 'ms.id = mss.id_materialsolicitud');
         if($busqueda=="anulado"){
-        $query->andWhere(['and','id_estado = 6 ' ]);
+        $query->andWhere(['and','id_estado = '.EstadoBase::ANULADO ]);
         }else {
-          $query->andWhere(['and','id_estado <> 6 ' ]);
+          $query->andWhere(['and','id_estado <> '.EstadoBase::ANULADO ]);
         }
         $dataProvider = new ActiveDataProvider([
            'query' => $query,
@@ -135,7 +140,7 @@ class SolicitudSearch extends Solicitud
            // $query->where('0=1');
            return $dataProvider;
        }
-
+       $query->andFilterWhere(['ilike', 'ms.descripcion', $this->materialsolicitudSolicituds]);
          $dataProvider->setSort([
              'attributes' => [
                'protocolo','estado','id','fechadeingreso','fecharealizacion','sexo',
@@ -160,7 +165,7 @@ class SolicitudSearch extends Solicitud
           $query->andFilterWhere(['=', 'fechadeingreso', $this->fechadeingreso]);
           $query->andFilterWhere([  'id_procedencia' => $this->id_procedencia,]);
           $query->andFilterWhere([  'id_estudio' => $this->id_estudio,]);
-          $query->andFilterWhere([ "paciente.num_documento" => trim($this->num_documento),]);
+          // $query->andFilterWhere([ "paciente.num_documento" => trim($this->num_documento),]);
 
           $paciente= trim($this->paciente);
         if (is_numeric($paciente)){
@@ -191,8 +196,9 @@ class SolicitudSearch extends Solicitud
         ->andFilterWhere(['ilike', 'estado.descripcion', $this->estado])
         ->andFilterWhere(['ilike', 'estudio.descripcion', $this->estudio])
         ->andFilterWhere(['ilike', 'procedencia.nombre', $this->procedencia]);
+        $query->distinct(true);
         //Si busqueda tiene el valor "consulta" el metodo search es invocado por la funcion actionConsulta del controlador
-        if($busqueda){
+        if($busqueda=="consulta"){
           $dataProvider=  $this->searchConsulta($params, $query,$dataProvider);
         }
 

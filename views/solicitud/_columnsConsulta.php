@@ -2,6 +2,7 @@
 use yii\helpers\Url;
 use yii\widgets\MaskedInput;
 use yii\helpers\Html;
+use app\models\patronState\EstadoBase;
 return [
 
     [
@@ -13,7 +14,7 @@ return [
       'class'=>'\kartik\grid\DataColumn',
        'attribute' => 'fechadeingreso',
        'label'=> 'Fecha de ingreso',
-       'format' => ['date', 'd/M/Y'],
+       'format' => ['date', 'php:d/m/Y'],
        'filterInputOptions' => [MaskedInput::widget([
         'name' => 'input-31',
         'clientOptions' => [
@@ -72,15 +73,27 @@ return [
          },
          'contentOptions' => function ($model, $key, $index, $column) {
             switch($model->id_estado){
-              case 1:
+              case EstadoBase::EN_PROCESO:
               $color =  'background-color:#2e99b3;';
               break;
-              case 2:
+              case EstadoBase::LISTO:
               $color =  'background-color:#5dc271;';
               break;
-              case 5:
+              case EstadoBase::DERIVADO:
+              $color =  'background-color:#ffa669;';
+              break;
+              case EstadoBase::NO_REALIZADO:
+              $color =  'background-color:#44444;';
+              break;
+              case EstadoBase::PENDIENTE:
               $color =  'background-color:#a4d149;';
               break;
+              case EstadoBase::DERIVADO_LISTO:
+              $color =  'background-color:#ff5c5a;';
+              break;
+              default:
+               $color = 'background-color:#cccccc;';
+               break;
             }
               return ['style' => $color .' text-align:center; font-weight:bold;','class' =>'badge badge-secondary',];
           },

@@ -2,6 +2,7 @@
 
 namespace app\models;
 use app\components\behaviors\AuditoriaBehaviors;
+use app\models\patronState\EstadoBase;
 use Yii;
 use yii\helpers\ArrayHelper;
 
@@ -121,7 +122,7 @@ class Medico extends \yii\db\ActiveRecord
      {
          return $this->hasMany(Solicitudpap::className(), ['id_medico' => 'id']);
      }
-
+//medicos que estan incluidos en los estudios
     public function Estudios()
    {
        if (!isset($this->id))
@@ -131,7 +132,7 @@ class Medico extends \yii\db\ActiveRecord
       ->innerJoinWith('medico', 'medico.id = solicitudpap.id_medico')
       ->innerJoinWith('pap', 'pap.id_solicitudpap = solicitudpap.id')
       //Estado 2 pap
-      ->where(['and', "medico.id=".$id, "pap.id_estado=2"])
+      ->where(['and', "medico.id=".$id, "pap.id_estado=".EstadoBase::LISTO])
       ->count('*');
       if ($estudiosPap >0)
           return true;

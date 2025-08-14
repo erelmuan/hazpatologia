@@ -232,17 +232,13 @@ class Usuario extends \yii\db\ActiveRecord  implements \yii\web\IdentityInterfac
      {
          return $this->hasOne(Firma::className(), ['id_usuario' => 'id']);
      }
-     public static function isPatologo() {
-         $id= Yii::$app->user->identity->id;
-         $rol_patologo = Usuario::find()
-          //el id_rol 4 es del patologo
-          ->where(['and', "id=".$id ,"id_rol=4"])->count('*');
-          if ($rol_patologo >0){
-            return true;
-          }
-          else {
-            return false;
-          }
+     public static function esPatologo() {
+       return Usuario::find()
+              ->where([
+                  'id' => Yii::$app->user->id,
+                  'id_rol' => 4 // rol patólogo
+              ])
+              ->exists();
 
       }
 

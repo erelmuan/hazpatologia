@@ -71,8 +71,6 @@ $columns[]=
             'columns' => $columns,
             'toolbar'=> [
               ['content'=>
-                  // Html::a('<i class="glyphicon glyphicon-th"></i>', ['select'],
-                  // ['role'=>'modal-remote','title'=> 'Personalizar','class'=>'btn btn-default']).
                   Html::a('<i class="glyphicon glyphicon-repeat"></i>', [''],
                   ['data-pjax'=>1, 'class'=>'btn btn-default', 'title'=>'Refrescar'])
               ]

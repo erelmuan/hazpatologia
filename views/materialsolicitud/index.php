@@ -29,7 +29,7 @@ CrudAsset::register($this);
             'toolbar'=> [
                 ['content'=>
                     Html::a('<i class="glyphicon glyphicon-plus"></i>', ['create'],
-                    ['role'=>'modal-remote','title'=> 'Create new Materialsolicituds','class'=>'btn btn-default']).
+                    ['role'=>'modal-remote','title'=> 'Crear nuevo material solicitud','class'=>'btn btn-default']).
                     Html::a('<i class="glyphicon glyphicon-repeat"></i>', [''],
                     ['data-pjax'=>1, 'class'=>'btn btn-default', 'title'=>'Reset Grid'])
                 ],
@@ -40,7 +40,7 @@ CrudAsset::register($this);
             'responsiveWrap' => false,
             'panel' => [
                 'type' => 'primary',
-                'heading' => '<i class="glyphicon glyphicon-list"></i> Lista material de estudios',
+                'heading' => '<i class="glyphicon glyphicon-list"></i> Lista material de solicitudes',
                 'before'=>'<em>* Para buscar algún registro tipear en el filtro y presionar ENTER </em>',
 
             ]

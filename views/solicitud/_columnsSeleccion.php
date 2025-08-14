@@ -19,12 +19,11 @@ return [
         'attribute'=>'protocolo',
     ],
     [
-        //nombre
         'class'=>'\kartik\grid\DataColumn',
         'attribute'=>'fechadeingreso',
         'label'=> 'Fecha de ingreso',
         'value'=>'fechadeingreso',
-        'format' => ['date', 'd/M/Y'],
+        'format' => ['date', 'php:d/m/Y'],
         'filterInputOptions' => [
             'id' => 'fecha1',
             'class' => 'form-control',
@@ -52,22 +51,7 @@ return [
         'value' => function($model) { return $model->medico->apellido  . " " . $model->medico->nombre ;},
         'label'=>'Medico'
     ],
-    // [
-        // 'class'=>'\kartik\grid\DataColumn',
-        // 'attribute'=>'idplantillamaterialb',
-    // ],
-    // [
-        // 'class'=>'\kartik\grid\DataColumn',
-        // 'attribute'=>'fecharealizacion',
-    // ],
-    // [
-        // 'class'=>'\kartik\grid\DataColumn',
-        // 'attribute'=>'fechadeingreso',
-    // ],
-    // [
-    //     'class'=>'\kartik\grid\DataColumn',
-    //     'attribute'=>'estudio',
-    // ],
+
     [
         'class'=>'\kartik\grid\DataColumn',
         'value'=>'estado.descripcion',

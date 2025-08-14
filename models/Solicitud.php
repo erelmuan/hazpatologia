@@ -5,6 +5,7 @@ use kartik\grid\GridView;
 use yii\helpers\ArrayHelper;
 use Yii;
 use yii\helpers\Html;
+use app\models\patronState\EstadoBase;
 
 /**
  * This is the model class for table "solicitud".
@@ -13,7 +14,6 @@ use yii\helpers\Html;
  * @property int $id_paciente
  * @property int $id_procedencia
  * @property int $id_medico
- * @property int $id_materialsolicitud
  * @property string $fecharealizacion
  * @property string $fechadeingreso
  * @property string $observacion
@@ -22,13 +22,13 @@ use yii\helpers\Html;
  * @property int $id_estado
  * @property int $id_anio_protocolo
  * @property bool $protocolo_automatico Esto para tener un checkeo, dado que se prodra cargar el protocolo tambien de manera manual
-   *
+ * @property Adjuntosolicitud[] $adjuntosolicituds
  * @property AnioProtocolo $anioProtocolo
  * @property Estado $estado
  * @property Estudio $estudio
  * @property Medico $medico
  * @property Paciente $paciente
- * @property Materialsolicitud $materialsolicitud
+ * @property MaterialsolicitudSolicitud[] $materialsolicitudSolicituds
  * @property Procedencia $procedencia
  */
  use app\components\behaviors\AuditoriaBehaviors;
@@ -68,24 +68,17 @@ class Solicitud extends \yii\db\ActiveRecord
           [['id_paciente'], 'required',  'message' => 'El campo paciente no puede estar vacío.'],
           [['id_medico'], 'required',  'message' => 'El campo medico no puede estar vacío.'],
           [['id_paciente', 'id_procedencia', 'id_medico',  'fechadeingreso', 'id_estudio', 'id_estado'], 'required'],
-
-            [['id_paciente', 'id_procedencia', 'id_medico', 'id_materialsolicitud', 'id_estudio', 'id_estado' ,'num_documento'], 'integer'],
-            [['fecharealizacion', 'fechadeingreso'], 'safe'],
-            [['fechadeingreso', 'protocolo'], 'required'],
-            [['observacion'], 'string'],
-
-            // [['protocolo', 'id_anio_protocolo'], 'unique','message' => 'El numero de protocolo ya fue asignado para el año seleccionado', 'targetAttribute' => ['protocolo', 'id_anio_protocolo']],
-            // [['id_anio_protocolo', 'protocolo'], 'unique','message' => 'El numero de protocolo ya fue asignado para el año seleccionado','targetAttribute' => ['id_anio_protocolo', 'protocolo']],
-
-            // [['id_anio_protocolo', 'protocolo'], 'unique','message' => 'El numero de protocolo ya fue asignado para el año seleccionado','targetAttribute' => ['id_anio_protocolo', 'protocolo']],
-            [['protocolo_automatico'], 'boolean'],
-            [['id_estado'], 'exist', 'skipOnError' => true, 'targetClass' => Estado::className(), 'targetAttribute' => ['id_estado' => 'id']],
-            [['id_estudio'], 'exist', 'skipOnError' => true, 'targetClass' => Estudio::className(), 'targetAttribute' => ['id_estudio' => 'id']],
-            [['id_medico'], 'exist', 'skipOnError' => true, 'targetClass' => Medico::className(), 'targetAttribute' => ['id_medico' => 'id']],
-            [['id_paciente'], 'exist', 'skipOnError' => true, 'targetClass' => Paciente::className(), 'targetAttribute' => ['id_paciente' => 'id']],
-            [['id_materialsolicitud'], 'exist', 'skipOnError' => true, 'targetClass' => Materialsolicitud::className(), 'targetAttribute' => ['id_materialsolicitud' => 'id']],
-            [['id_procedencia'], 'exist', 'skipOnError' => true, 'targetClass' => Procedencia::className(), 'targetAttribute' => ['id_procedencia' => 'id']],
- 	          [['id_anio_protocolo'], 'exist', 'skipOnError' => true, 'targetClass' => AnioProtocolo::className(), 'targetAttribute' => ['id_anio_protocolo' => 'id']],
+          [['id_paciente', 'id_procedencia', 'id_medico',  'id_estudio', 'id_estado' ,'num_documento'], 'integer'],
+          [['fecharealizacion', 'fechadeingreso'], 'safe'],
+          [['fechadeingreso', 'protocolo'], 'required'],
+          [['observacion'], 'string'],
+          [['protocolo_automatico'], 'boolean'],
+          [['id_estado'], 'exist', 'skipOnError' => true, 'targetClass' => Estado::className(), 'targetAttribute' => ['id_estado' => 'id']],
+          [['id_estudio'], 'exist', 'skipOnError' => true, 'targetClass' => Estudio::className(), 'targetAttribute' => ['id_estudio' => 'id']],
+          [['id_medico'], 'exist', 'skipOnError' => true, 'targetClass' => Medico::className(), 'targetAttribute' => ['id_medico' => 'id']],
+          [['id_paciente'], 'exist', 'skipOnError' => true, 'targetClass' => Paciente::className(), 'targetAttribute' => ['id_paciente' => 'id']],
+          [['id_procedencia'], 'exist', 'skipOnError' => true, 'targetClass' => Procedencia::className(), 'targetAttribute' => ['id_procedencia' => 'id']],
+	        [['id_anio_protocolo'], 'exist', 'skipOnError' => true, 'targetClass' => AnioProtocolo::className(), 'targetAttribute' => ['id_anio_protocolo' => 'id']],
 
         ];
     }
@@ -100,7 +93,6 @@ class Solicitud extends \yii\db\ActiveRecord
             'id_paciente' => 'Id Paciente',
             'id_procedencia' => 'Procedencia',
             'id_medico' => 'Id Medico',
-            'id_materialsolicitud' => 'Id materialsolicitud',
             'fecharealizacion' => 'Fecha de realizacion',
             'fechadeingreso' => 'Fecha de ingreso',
             'observacion' => 'Observacion',
@@ -109,6 +101,8 @@ class Solicitud extends \yii\db\ActiveRecord
             'id_estado' => 'Estado',
             'id_anio_protocolo' => 'Id Anio Protocolo',
              'protocolo_automatico' => 'Protocolo Automatico',
+             'materialsolicitudSolicituds' => 'Material/es',
+
         ];
     }
     public function attributeColumns()
@@ -176,14 +170,13 @@ class Solicitud extends \yii\db\ActiveRecord
               'label'=> 'Estudio',
               'value'=>'estudio.descripcion',
           ],
-
           [
             'class'=>'\kartik\grid\DataColumn',
             'attribute' => 'estado',
             'label' => 'Estado',
             'value' => 'estado.descripcion',
+         ],
 
-        ],
           [
             //nombre
             'class'=>'\kartik\grid\DataColumn',
@@ -201,6 +194,14 @@ class Solicitud extends \yii\db\ActiveRecord
 
             ]
 
+        ],
+
+        [
+          'class'=>'\kartik\grid\DataColumn',
+          'label' => 'Material/es',
+          'attribute'=> 'materialsolicitudSolicituds',
+          'format'    => 'html',
+          'value'     => 'listaMateriales'
         ],
           [
               'class'=>'\kartik\grid\DataColumn',
@@ -242,13 +243,6 @@ class Solicitud extends \yii\db\ActiveRecord
         return $this->hasOne(Paciente::className(), ['id' => 'id_paciente']);
     }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getMaterialsolicitud()
-    {
-        return $this->hasOne(Materialsolicitud::className(), ['id' => 'id_materialsolicitud']);
-    }
 
     /**
      * @return \yii\db\ActiveQuery
@@ -256,7 +250,15 @@ class Solicitud extends \yii\db\ActiveRecord
     public function getProcedencia(){
         return $this->hasOne(Procedencia::className(), ['id' => 'id_procedencia']);
     }
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getAdjuntosolicituds()
+    {
+        return $this->hasMany(Adjuntosolicitud::className(), ['id_solicitud' => 'id']);
+    }
 
+  //estaba pensado para los protocolos automaticos
     public static function obtenerProtocolo()  {
         $anioprotocolo= AnioProtocolo::anioprotocoloActivo();
         if ($anioprotocolo!== NULL){
@@ -281,11 +283,7 @@ class Solicitud extends \yii\db\ActiveRecord
         return $estudio[0]->id;
 
     }
-    public function getMaterialsolicitudes() {
-        $id_estudio= $this->idEstudio();
-        return ArrayHelper::map(Materialsolicitud::find()->where(['id_estudio' => $id_estudio])->orderBy(['id' => SORT_ASC])->all(), 'id','descripcion');
 
-    }
     public static function getSolicitudesAnio($anio) {
         $cantidad= Solicitud::find()->andWhere(['and' ,' "fechadeingreso"::text  like '. "'%".$anio."%'"])->count();
         if ($cantidad >0){
@@ -327,13 +325,49 @@ class Solicitud extends \yii\db\ActiveRecord
            ,[    'class' => 'text-success','role'=>'modal-remote','title'=>'Datos del medico','data-toggle'=>'tooltip']
           );
        }
+       public function getListaMateriales(){
+             $items = "";
+             $num=1;
+             foreach ($this->materialsolicitudSolicituds as $mtss) {
+                 $items .="<b>".$num."-) </b>";
+                 $items .= $mtss->materialsolicitud->descripcion."<br></br>";
+                 $num ++;
+             }
+             return $items;
+       }
 
        public function getTipodocs() {
                return ArrayHelper::map(Tipodoc::find()->all(), 'id','documento');
-
-           }
+       }
         public function getEstudios() {
                return ArrayHelper::map(Estudio::find()->all(), 'id','descripcion');
-           }
+        }
 
-}
+
+        /**
+       * Replica el estado del estudio en la propia solicitud.
+       *
+       * @param int $nuevoEstado ID del nuevo estado
+       */
+      public function cambiarEstado(int $nuevoEstado): void
+      {
+          $this->id_estado = $nuevoEstado;
+          $this->save(false);
+      }
+      /**
+	    * @return \yii\db\ActiveQuery
+	    */
+	   public function getMaterialsolicitudSolicituds()
+	   {
+	       return $this->hasMany(MaterialsolicitudSolicitud::className(), ['id_solicitud' => 'id']);
+	   }
+     public function puedeMostrarAdjuntos(): bool
+    {
+        return in_array($this->id_estado, [
+            EstadoBase::DERIVADO_LISTO,
+            EstadoBase::NO_REALIZADO,
+            EstadoBase::DERIVADO_NO_REALIZADO
+        ]);
+    }
+
+    }

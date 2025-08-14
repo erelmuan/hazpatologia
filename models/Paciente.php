@@ -4,6 +4,7 @@ namespace app\models;
 
 use Yii;
 use app\components\behaviors\AuditoriaBehaviors;
+use app\models\patronState\EstadoBase;
 use yii\helpers\ArrayHelper;
 
 /**
@@ -211,14 +212,14 @@ class Paciente extends \yii\db\ActiveRecord
              ->innerJoinWith('paciente', 'paciente.id = solicitudpap.id_paciente')
              ->innerJoinWith('pap', 'pap.id_solicitudpap = solicitudpap.id')
              //Estado 2 pap
-             ->where(['and', "paciente.id=".$id, "pap.id_estado=2"])
+             ->where(['and', "paciente.id=".$id, "pap.id_estado=". EstadoBase::LISTO])
              ->count('*');
              if ($estudiosPap >0)
                  return true;
              $estudiosBiopsia = Solicitudbiopsia::find()
               ->innerJoinWith('paciente', 'paciente.id = solicitudbiopsia.id_paciente')
               ->innerJoinWith('biopsia', 'biopsia.id_solicitudbiopsia = solicitudbiopsia.id')
-              ->where(['and', "paciente.id=".$id, "biopsia.id_estado=2"])
+              ->where(['and', "paciente.id=".$id, "biopsia.id_estado=".EstadoBase::LISTO])
               ->count('*');
 
             if ($estudiosBiopsia >0)

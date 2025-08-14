@@ -71,19 +71,15 @@ class AnioProtocolo extends \yii\db\ActiveRecord
     }
 
     public static function getAnioProtocoloActivo($fecha) {
-        $fechaEntera = strtotime($fecha);
-        $anio = date("Y", $fechaEntera);
-        $cantidad= AnioProtocolo::find()->andWhere(['and' ,"anio =" .$anio ." and activo=true" ])->count();
-        if ($cantidad == 1){
-          return true;
-        }else {
-          return false;
-         }
+        $anio = date("Y", strtotime($fecha));
+        return AnioProtocolo::find()
+        ->where(["anio" =>$anio ,
+         "activo"=>true ])->exists();
+
     }
 
     public static function anioprotocoloActivo(){
-      $anioProtocolo = AnioProtocolo::find()->andWhere(['and' ,"activo=true" ])->one();
-      return $anioProtocolo ;
+      return AnioProtocolo::find()->where(["activo"=> true ])->one();
     }
     /**
 		    * @return \yii\db\ActiveQuery
@@ -95,18 +91,13 @@ class AnioProtocolo extends \yii\db\ActiveRecord
 
        public function Estudios()
       {
-          if (!isset($this->id))
-              return false;
-          $id= $this->id;
-          $estudios = Solicitud::find()
-           ->innerJoinWith('anioProtocolo', 'anio_protocolo.id = solicitud.id_anio_protocolo')
-           //Estado 2 pap
-           ->where(['and', "anio_protocolo.id=".$id])
-           ->count('*');
-         if ($estudios >0)
-             return true;
-
-        return false;
+          if (!isset($this->id)){
+            return false;
+          }
+         return Solicitud::find()
+                  ->innerJoinWith('anioProtocolo') // Relación definida en el modelo
+                  ->where(['anio_protocolo.id' => $this->id])
+                  ->exists();
       }
 
       public static function aniosDisponibles()

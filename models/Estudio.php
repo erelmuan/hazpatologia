@@ -11,7 +11,7 @@ use Yii;
  * @property string $descripcion
  * @property string $modelo
  * @property string $codigo
- *
+ * @property MaterialsolicitudSolicitud[] $materialsolicitudSolicituds
  * @property Materialsolicitud[] $materialsolicituds
  * @property Plantilladiagnostico[] $plantilladiagnosticos
  * @property Plantillafrase[] $plantillafrases
@@ -89,4 +89,12 @@ class Estudio extends \yii\db\ActiveRecord
  		       return $this->hasMany(Solicitud::className(), ['id_estudio' => 'id']);
  		   }
 
+       /**
+  		    * @return \yii\db\ActiveQuery
+  		    */
+  		   public function getMaterialsolicitudSolicituds()
+  		   {
+  		       return $this->hasMany(MaterialsolicitudSolicitud::className(), ['id_estudio' => 'id']);
+  		   }
+  		
 }

@@ -6,11 +6,8 @@ use app\models\SolicitudSearch;
 use app\models\Biopsia;
 use app\models\Solicitudpap;
 use app\models\Solicitudbiopsia;
-use yii\web\Controller;
-use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
-use \yii\web\Response;
-use yii\helpers\Html;
+use app\models\Procedencia;
+use app\models\Plantillamaterial;
 use app\models\PacienteSearch;
 use app\models\Paciente;
 use app\models\MedicoSearch;
@@ -18,9 +15,21 @@ use app\models\Medico;
 use app\models\Pap;
 use app\models\AnioProtocolo;
 use app\models\CarnetOs;
+use app\models\patronState\EstadoBase;
+use app\models\Materialsolicitud;
+use app\models\MaterialsolicitudSolicitud;
+use yii\web\Controller;
+use yii\web\NotFoundHttpException;
+use yii\filters\VerbFilter;
+use \yii\web\Response;
+use yii\helpers\Html;
 use app\components\Metodos\Metodos;
 use yii\data\ActiveDataProvider;
 use yii\helpers\Json;
+use app\models\patronState\EstadoFactory;
+use yii\helpers\ArrayHelper;
+
+
 /**
  * SolicitudController implements the CRUD actions for Solicitud model.
  */
@@ -44,7 +53,6 @@ class SolicitudController extends Controller {
         $columnas = Metodos::obtenerColumnas($model);
         return $this->render('anulado', ['searchModel' => $searchModel, 'dataProvider' => $dataProvider, 'columns' => $columnas, ]);
     }
-
 
     public function actionConsulta() {
         $searchModel = new SolicitudSearch();
@@ -80,16 +88,30 @@ class SolicitudController extends Controller {
         $solicitud = $this->findModel($id);
         if($request->isAjax){
             Yii::$app->response->format = Response::FORMAT_JSON;
-            //Si es distinto de un estado listo
-            if ($solicitud->id_estado !==2){
-              return ['title' => "ESTUDIO ".$solicitud->estado->descripcion ,
-              'content' => '<h3>'.$solicitud->estado->explicacion.'</h3>', 'footer' => Html::button('Cerrar', ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) ];
-
+            //muestros la vista de la solicitud, en los casos donde el administrativo finaliza el estudio
+            // y carga el adjunto del estudio que realizan en otro laboratorio
+            if ($solicitud->id_estado == EstadoBase::DERIVADO_LISTO && !empty($solicitud->adjuntosolicituds)){
+              //tengo que ver si tiene adjunto, si tiene adjunto MOSTRAR EL ARCHIVO.
+              return [
+                       'title'=> "ESTUDIO DE ".strtoupper($solicitud->estudio->modelo)." - ".$solicitud->estado->descripcion,
+                      'content' => $this->renderAjax(
+                             '/solicitud' . ($solicitud->estudio->modelo) . '/view',
+                             ['model' => $solicitud]
+                         ),
+                      'footer'=> Html::button('Cerrar',['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"])
+                  ];
+            }
+            else {
+              //Si es distinto de un estado listo
+              if ($solicitud->id_estado !==EstadoBase::LISTO){
+                return ['title' => "ESTUDIO ".$solicitud->estado->descripcion ,
+                'content' => '<h3>'.$solicitud->estado->explicacion.'</h3>', 'footer' => Html::button('Cerrar', ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) ];
+              }
             }
             $Model= $namespace.ucfirst($solicitud->estudio->modelo);
             //Puede ser una solicitud de biopsia o de pap
             $estudio = $Model::findOne(['id_solicitud'.$solicitud->estudio->modelo=>$id]);
-
+            //muestro la vista de las BIOPSIAS o PAPS
             return [
                     'title'=> "ESTUDIO DE ".strtoupper($solicitud->estudio->modelo)." - ".$solicitud->estado->descripcion. " #".$estudio->id,
                     'content'=>$this->renderAjax('/'.$solicitud->estudio->modelo.'/view', [
@@ -105,7 +127,8 @@ class SolicitudController extends Controller {
         //El metodo Seleccionar es invocado desde la clase hija
         //por eso puede usar el metodo returnModelSearch que esta en la misma y no el de solicitudController
         $searchModel = $this->returnModelSearch();
-        //En el modelo de solicitudes de pap y biopsias solo busca la solicitudes que no tienen informes asociados
+        //En el modelo de solicitudes de pap y biopsias solo busca la solicitudes
+        //que estan en estado PENDIENTE
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams, false);
         if (isset($_POST['idsol'])) {
             if ($_POST['idsol'] == '') {
@@ -118,8 +141,8 @@ class SolicitudController extends Controller {
                 $id = $id[0];
                 $model = $this->findModel($id);
                 $modelestudio = $model->estudio->modelo;
-                //En caso que esten trabajando en forma concurrente, valida la apropiacin de la solicitud
-                //es decir si alguien hizo uso de la misma, otro no pueda reutilizarla
+                //En caso que estén trabajando en forma concurrente, valida la apropiación de la solicitud
+                //es decir si alguíen hizo uso de la misma, otro no pueda reutilizarla
                 if ($model->$modelestudio !== null) {
                     $this->setearMensajeError('La solicitud que eligio ya fue agregada a un formulario de un informe');
                     return $this->redirect(['/' . $searchModel->tableName() . '/seleccionar']);
@@ -150,42 +173,105 @@ class SolicitudController extends Controller {
             return $this->render('view', ['model' => $model ]);
         }
     }
-    public function validar($fecha) {
-        //Si no encuentra protocolo año vigente para la fecha
-        if (!AnioProtocolo::getAnioProtocoloActivo($fecha)) {
-            $this->setearMensajeError('NO SE PUEDE CREAR LA SOLICITUD SI FECHA DE REALIZACION NO COINCIDE CON EL AÑO DE PROTOCOLO ACTIVO ');
-            return false;
-        }
-        return true;
-    }
-    public function actionBuscarprotocolo() {
-        $request = Yii::$app->request;
-        if ($request->isAjax) {
-            return Json::encode(["protocolo" => Solicitud::obtenerProtocolo() ]);
-        }
-    }
 
 
-    public function devolverModelos(){
-      ////////////PACIENTE/////////////////
-      $modelPac = new Paciente();
-      $searchModelPac = new PacienteSearch();
-      $dataProviderPac = $searchModelPac->search(Yii::$app->request->queryParams,false);
-      $dataProviderPac->pagination->pageSize = 7;
-      ////////////MEDICO/////////////////
-      $modelMed = new Medico();
-      $searchModelMed = new MedicoSearch();
-      $dataProviderMed = $searchModelMed->search(Yii::$app->request->queryParams,false);
-      $dataProviderMed->pagination->pageSize = 7;
-      return [
-              'modelPac' => $modelPac,
-              'searchModelPac' => $searchModelPac,
-              'dataProviderPac' => $dataProviderPac,
-              'modelMed' => $modelMed,
-              'searchModelMed' => $searchModelMed,
-              'dataProviderMed' => $dataProviderMed,
-          ];
+
+      public function devolverModelos(){
+        ////////////PACIENTE/////////////////
+        $modelPac = new Paciente();
+        $searchModelPac = new PacienteSearch();
+        $dataProviderPac = $searchModelPac->search(Yii::$app->request->queryParams,false);
+        $dataProviderPac->pagination->pageSize = 7;
+        ////////////MEDICO/////////////////
+        $modelMed = new Medico();
+        $searchModelMed = new MedicoSearch();
+        $dataProviderMed = $searchModelMed->search(Yii::$app->request->queryParams,false);
+        $dataProviderMed->pagination->pageSize = 7;
+        return [
+                'searchModelPac' => $searchModelPac,
+                'dataProviderPac' => $dataProviderPac,
+                'searchModelMed' => $searchModelMed,
+                'dataProviderMed' => $dataProviderMed,
+            ];
+      }
+    /**
+     * Renderiza el formulario con todos los datos necesarios
+     * @param ActiveRecord $model
+     * @return string
+     */
+    private function renderForm($model) {
+        // Calculamos las opciones de estado
+        $stateOptions = \app\models\patronState\EstadoFactory::getAvailableTransitions(
+            $model->id_estado,
+            Yii::$app->user->identity,
+            $model
+        );
+        // Preparamos los datos para los dropdowns
+
+        $viewData = [
+            'model' => $model,
+            'modelosDat' => $this->devolverModelos(),
+            'mapprocedencia' => ArrayHelper::map(Procedencia::find()->all(), 'id', 'nombre'),
+            'materialesSolicitud' => ArrayHelper::map(Materialsolicitud::find()
+            ->where([ 'id_estudio'=> $model->idEstudio()])
+            ->all(), 'id', 'descripcion'),
+            'valorMateriales' => ArrayHelper::map(MaterialsolicitudSolicitud::find()
+            ->where(['id_solicitud' => $model->id ])
+                ->all() , 'id_materialsolicitud', 'id_materialsolicitud'),
+
+            'stateOptions' => $stateOptions,
+        ];
+
+        return $this->render('_form', $viewData);
     }
+
+    /**
+     * Registra materiales asociados a un modelo.
+     *
+     * @param Model $model Modelo que contiene id_estudio e id
+     * @param array $arrayMaterial Lista de IDs de materiales a registrar
+     * @return void
+     */
+     private function registrarMaterial($model, $arrayMaterial): void
+     {
+         // Asegurar que $arrayMaterial sea un array, incluso si es null
+         $arrayMaterial = is_array($arrayMaterial) ? $arrayMaterial : [];
+
+         // Obtener materiales actuales asociados a esta solicitud
+         $materialesActuales = MaterialsolicitudSolicitud::find()
+             ->select('id_materialsolicitud')
+             ->where([
+                 'id_estudio' => $model->id_estudio,
+                 'id_solicitud' => $model->id,
+             ])
+             ->column();
+
+         // Calcular diferencias
+         $aAgregar = array_diff($arrayMaterial, $materialesActuales);
+         $aEliminar = array_diff($materialesActuales, $arrayMaterial);
+
+         // Agregar nuevos materiales
+         foreach ($aAgregar as $materialId) {
+             $materialSolicitud = new MaterialsolicitudSolicitud([
+                 'id_materialsolicitud' => $materialId,
+                 'id_estudio' => $model->id_estudio,
+                 'id_solicitud' => $model->id,
+             ]);
+
+             if (!$materialSolicitud->save()) {
+                 Yii::error("Error al guardar material ID: $materialId - " . json_encode($materialSolicitud->errors));
+             }
+         }
+
+         // Eliminar materiales que ya no están en el nuevo array
+         if (!empty($aEliminar)) {
+             MaterialsolicitudSolicitud::deleteAll([
+                 'id_estudio' => $model->id_estudio,
+                 'id_solicitud' => $model->id,
+                 'id_materialsolicitud' => $aEliminar,
+             ]);
+         }
+     }
 
     /**
      * Creates a new Solicitud model.
@@ -200,47 +286,16 @@ class SolicitudController extends Controller {
         $request = Yii::$app->request;
         $model = $this->returnModel();
         $model->scenario = 'create'; //es para validar el protocolo unico por año
-        $modelos = $this->devolverModelos();
 
-        if ($this->request->isPost) {
-            //Si no valida
-            if (!$this->validar($_POST[$model->classNameM() ]["fechadeingreso"])) {
-                return $this->redirect([$model->tableName() . "/create"]);
-            }
+        if ($request->isPost) {
             $anioprotocolo = AnioProtocolo::anioprotocoloActivo();
             $model->id_anio_protocolo = $anioprotocolo->id;
-            //si protocolo automatico esta activado si o si va insertar el valor que obtiene de la base
-            // con esto me aseguro que por mas que se edite el campo va editar
-            //ESTA FUNCIONALIDAD NO ESTA FUNCIONANDO PERO SE ACTIVARA CUANDO SE INCORPORE EL PROTOCOLO AUTOMATICO
-            //PROTOCOLO_INSERTAR NO TIENE INCIDENCIA
-            if ($_POST[$model->classNameM() ]["protocolo_automatico"] == "1") {
-                unset($_POST[$model->classNameM() ]["protocolo"]);
-                $model->protocolo = Solicitud::obtenerProtocolo();
-            }
             if ($model->load($request->post()) && $model->save()) {
+                $this->registrarMaterial($model,$request->post('MaterialArray'));
                 return $this->redirect(['view', 'id' => $model->id]);
             }
-            else {
-                return $this->render('_form', ['model' => $model,
-                'searchModelPac' => $modelos['searchModelPac'],
-                'dataProviderPac' => $modelos['dataProviderPac'],
-                'modelPac' => $modelos['modelPac'],
-                'searchModelMed' => $modelos['searchModelMed'],
-                'dataProviderMed' => $modelos['dataProviderMed'],
-                'modelMed' => $modelos['modelMed'],
-                'protocolo_insertar' => $model->protocolo, ]);
-            }
         }
-        else {
-            return $this->render('_form', ['model' => $model,
-            'searchModelPac' => $modelos['searchModelPac'],
-            'dataProviderPac' => $modelos['dataProviderPac'],
-            'modelPac' => $modelos['modelPac'],
-            'searchModelMed' => $modelos['searchModelMed'],
-            'dataProviderMed' => $modelos['dataProviderMed'],
-            'modelMed' => $modelos['modelMed'],
-              'protocolo_insertar' => Solicitud::obtenerProtocolo() , ]);
-        }
+        return $this->renderForm($model);
     }
 
 
@@ -258,45 +313,13 @@ class SolicitudController extends Controller {
         $request = Yii::$app->request;
         $model = $this->findModel($id);
         $model->scenario = 'update'; //es para validar el protocolo unico por año
-        $modelestudio = $model->estudio->modelo;
-        $modelos = $this->devolverModelos();
-        /*
-         *   Process for non-ajax request
-        */
         if ($this->request->isPost) {
-            if (!$this->validar($_POST[$model->classNameM() ]["fechadeingreso"])) {
-                return $this->render('_form', ['model' => $model,
-                'searchModelPac' => $modelos['searchModelPac'],
-                 'dataProviderPac' => $modelos['dataProviderPac'],
-                 'modelPac' => $modelos['modelPac'],
-                 'searchModelMed' => $modelos['searchModelMed'],
-                 'dataProviderMed' => $modelos['dataProviderMed'],
-                 'modelMed' => $modelos['modelMed'],
-               ]);
-            }
-            if ($model->load($request->post()) && $model->validate()) {
-                $model->save();
+            if ($model->load($request->post()) && $model->save()) {
+              $this->registrarMaterial($model,$request->post('MaterialArray'));
                 return $this->redirect(['view', 'id' => $model->id]);
             }
-            else {
-                return $this->render('_form', ['model' => $model,
-                'searchModelPac' => $modelos['searchModelPac'],
-                'dataProviderPac' => $modelos['dataProviderPac'],
-                 'modelPac' => $modelos['modelPac'],
-                 'searchModelMed' =>$modelos['searchModelMed'],
-                 'dataProviderMed' => $modelos['dataProviderMed'],
-                  'modelMed' => $modelos['modelMed'], ]);
-            }
         }
-        else {
-            return $this->render('_form', ['model' => $model,
-            'searchModelPac' => $modelos['searchModelPac'],
-            'dataProviderPac' => $modelos['dataProviderPac'],
-             'modelPac' => $modelos['modelPac'],
-             'searchModelMed' =>$modelos['searchModelMed'],
-             'dataProviderMed' => $modelos['dataProviderMed'],
-              'modelMed' => $modelos['modelMed'],]);
-        }
+        return $this->renderForm($model);
     }
 
     /**
@@ -315,36 +338,44 @@ class SolicitudController extends Controller {
         }
     }
 
-    private function contieneEstudio($id_solicitud){
-      $modelbiopsia = Biopsia::find()->where(['and', 'biopsia.id_solicitudbiopsia = ' . $id_solicitud])->one();
-      $modelpap = Pap::find()->where(['and', 'pap.id_solicitudpap = ' . $id_solicitud])->one();
-       if (isset($modelbiopsia) || isset($modelpap)) {
-         return true;
-       }else {
-         return false;
-       }
+    private function contieneEstudio($id_solicitud)
+    {
+        return Biopsia::find()
+                ->where(['id_solicitudbiopsia' => $id_solicitud])
+                ->exists()
+            ||
+            Pap::find()
+                ->where(['id_solicitudpap' => $id_solicitud])
+                ->exists();
     }
 
 
     public function actionDelete($id) {
         Yii::$app->response->format = Response::FORMAT_JSON;
+        $model = $this->findModel($id);
+
        if ($this->contieneEstudio($id)) {
             $this->setearMensajeError("No se puede eliminar la solicitud porque tiene un informe asociado");
             return ['forceClose' => true, 'forceReload' => '#crud-datatable-pjax', 'metodo' => 'delete'];
 
        }
-        $model = $this->findModel($id);
+
+       if (!empty($model->adjuntosolicituds)){
+            $this->setearMensajeError("No se puede eliminar la solicitud porque tiene archivos adjuntos");
+            return ['forceClose' => true, 'forceReload' => '#crud-datatable-pjax', 'metodo' => 'delete'];
+       }
         $request = Yii::$app->request;
         if ($request->isAjax) {
             try {
-                if ($model->delete()) {
+                if ($model->delete()) { 
+
                   $this->setearMensajeExito('El registro se eliminó correctamente.');
                   return ['forceClose' => true, 'forceReload' => '#crud-datatable-pjax', 'metodo' => 'delete'];
                 }
             }
             catch(yii\db\Exception $e) {
                 Yii::$app->response->format = Response::FORMAT_HTML;
-                throw new NotFoundHttpException('Error en la base de datos. La solicitud esta asociada a un estudio', 500);
+                throw new NotFoundHttpException($e->getMessage(), 500);
             }
         }
         else {
@@ -358,21 +389,7 @@ class SolicitudController extends Controller {
     }
     function returnModelSearch() {
     }
-    public function actionDocumento($id) {
-        $request = Yii::$app->request;
-        // Si entra en el if es porque el estudio esta en estado EN_PROCESO
-        //Ver el view de biopsia donde se accde al informe
-        if ($request->isAjax) {
-            Yii::$app
-                ->response->format = Response::FORMAT_JSON;
-            return ['forceReload' => '#crud-datatable-pjax', 'title' => "AVISO!", 'content' => 'EL SIGUIENTE DOCUMENTO TIENE UN ESTADO <b>EN PROCESO</b> (NO ESTA TERMINADO) CONFIRME SI DESEA GENERAR EL DOCUMENTO', 'footer' => Html::button('Cerrar', ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) . Html::a('<i class="fa glyphicon glyphicon-hand-up"></i> Confirmar', ['/biopsia/informe', 'id' => $id], ['class' => 'btn btn-primary', 'data-toggle' => 'tooltip', 'target' => '_blank', 'title' => 'Se abrirá el archivo PDF generado en una nueva ventana']) ];
-        }
-        else {
-            //Esto es correcto?? revisar el id
-            $solicitud = $this->findModel($id);
-            return $this->render('documento', ['model' => $solicitud ]);
-        }
-    }
+
     public function actionFos($tipoSolicitud,$id, $id_carnet=null) {
         $request = Yii::$app->request;
         $modelsolicitud = $tipoSolicitud::find()->where(['and', 'id = ' . $id])->one();

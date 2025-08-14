@@ -2,11 +2,17 @@
 
 use yii\widgets\DetailView;
 use yii\helpers\Html;
-
+use app\models\patronState\EstadoBase;
 /* @var $this yii\web\View */
 /* @var $model app\models\Solicitudpap */
+$isAjax = Yii::$app->request->isAjax;
 ?>
 <div class="solicitudpap-view">
+  <div id="w0" >
+      <?  if (!$isAjax) { ?>
+      <div class="clearfix"> <div class="nav navbar-right panel_toolbox"><?= Html::a('<i class="glyphicon glyphicon-arrow-left"></i> Ir a Solicitudes', ['/solicitud/index'], ['class'=>'btn btn-danger grid-button']) ?></div>
+      <? } ?>
+  </div>
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
@@ -48,7 +54,7 @@ use yii\helpers\Html;
         ],
     ]) ?>
 <?
-  if ($model->estado->descripcion=="LISTO" or $model->estado->descripcion=="ANULADO" )
+  if ($model->id_estado==EstadoBase::LISTO or $model->id_estado== EstadoBase::ANULADO )
     {
       echo Html::a('<i class="fa fa-file-pdf-o"></i> Documento del informe', ['/pap/informe', 'id' => $model->pap->id], [
             'class'=>'btn btn-danger',
@@ -59,8 +65,41 @@ use yii\helpers\Html;
     }
 
     else {
-      echo "<b>LA SOLICITUD AÚN NO POSEE EL INFORME"; echo ($model->estado->descripcion=='EN PROCESO')?" VERIFICADO":""; echo " DE ".$model->estudio->descripcion." </b>";
+
+      if (!$model->puedeMostrarAdjuntos()){
+
+        echo "<b>LA SOLICITUD AÚN NO POSEE EL INFORME";
+        echo ($model->id_estado== EstadoBase::EN_PROCESO)?" VERIFICADO":"";
+         echo " DE ".$model->estudio->descripcion." </b>";
+         }
     }
 
      ?>
+     
+</div>
+<?php if ($model->puedeMostrarAdjuntos() && !empty($model->adjuntosolicituds)): ?>
+<div class="adjuntos-view">
+    <h4>Archivos Adjuntos</h4>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Nombre asignado</th>
+                <th>Observación</th>
+                <th>Acción</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach ($model->adjuntosolicituds as $adjunto): ?>
+                <tr>
+                    <td><?= Html::encode($adjunto->nombre_asignado) ?></td>
+                    <td><?= Html::encode($adjunto->observacion) ?></td>
+                    <td>
+                        <?= Html::a('Descargar', ['/adjuntosolicitud/descargar', 'id' => $adjunto->id], ['class' => 'btn btn-success', 'target'=> '_blank']) ?>
+                    </td>
+                </tr>
+            <?php endforeach; ?>
+        </tbody>
+    </table>
+</div>
+<?php endif; ?>
 </div>
