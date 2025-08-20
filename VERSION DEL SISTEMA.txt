@@ -1,3 +1,6 @@
+Version 2.9.3
+Correccion del documento de fos
+
 Version 2.9.2
 La facturacion se realiza ahora desde las solicitudes y no en los estudios.
 Se mejora el guardado de los adjuntos incoporandose un nombre automatico
