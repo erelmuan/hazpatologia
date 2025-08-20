@@ -1,3 +1,6 @@
+Version 2.9.1
+Modificacion en el modelo materialsolicitud ingresando como campo obligatorio id_estado y descripcion
+Modificaicon en el modelo MaterialsolicitudSearch  al incoporar el parametro ilike en vez de like en descripcion
 
 
 Version 2.9.0
