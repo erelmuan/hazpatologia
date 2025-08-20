@@ -41,8 +41,9 @@ class Materialsolicitud extends \yii\db\ActiveRecord
     {
         return [
             [['descripcion'], 'string'],
-            [['id_estudio'], 'default', 'value' => null],
+            [['descripcion', 'id_estudio'], 'required'],
             [['id_estudio'], 'integer'],
+            [['descripcion', 'id_estudio'], 'unique', 'targetAttribute' => ['descripcion', 'id_estudio']], 
             [['id_estudio'], 'exist', 'skipOnError' => true, 'targetClass' => Estudio::className(), 'targetAttribute' => ['id_estudio' => 'id']],
         ];
     }

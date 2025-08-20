@@ -60,7 +60,7 @@ class MaterialsolicitudSearch extends Materialsolicitud
             'id_estudio' => $this->id_estudio,
         ]);
 
-        $query->andFilterWhere(['like', 'descripcion', $this->descripcion]);
+        $query->andFilterWhere(['ilike', 'descripcion', $this->descripcion]);
 
         return $dataProvider;
     }
