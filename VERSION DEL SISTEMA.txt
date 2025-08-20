@@ -1,3 +1,8 @@
+Version 2.9.2
+La facturacion se realiza ahora desde las solicitudes y no en los estudios.
+Se mejora el guardado de los adjuntos incoporandose un nombre automatico
+
+
 Version 2.9.1
 Modificacion en el modelo materialsolicitud ingresando como campo obligatorio id_estado y descripcion
 Modificaicon en el modelo MaterialsolicitudSearch  al incoporar el parametro ilike en vez de like en descripcion

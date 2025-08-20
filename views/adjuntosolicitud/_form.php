@@ -12,7 +12,7 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'nombre_asignado')->textInput() ?>
+    <?= $form->field($model, 'nombre_asignado')->textInput(['readOnly'=>true]) ?>
 
     <?= $form->field($model, 'nombre_archivo')->textInput(['readOnly'=>true]) ?>
 

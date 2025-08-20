@@ -30,6 +30,7 @@ class AdjuntosolicitudController extends Controller
     public function actionIndex($id_solicitud)
     {
         $model = new Adjuntosolicitud();
+        $solicitud= Solicitud::findOne(["id"=>$id_solicitud]);
         $model->id_solicitud = $id_solicitud;
         $model->baja_logica = false;
         $dataProvider = new ActiveDataProvider([
@@ -39,7 +40,7 @@ class AdjuntosolicitudController extends Controller
         return $this->render('index', [
             'model' => $model,
             'dataProvider' => $dataProvider,
-            'id_solicitud' => $id_solicitud,
+            'solicitud' => $solicitud,
         ]);
 
     }
@@ -94,49 +95,92 @@ class AdjuntosolicitudController extends Controller
       		       }
       		   }
 
-    private function guardarDocumento($model,$solicitud){
+
+    // Método sencillo para sanear una cadena para usarla en nombre de archivo
+  private function sanitizeSimple(string $str): string {
+      $trans = @iconv('UTF-8', 'ASCII//TRANSLIT', $str);
+      if ($trans !== false) $str = $trans;
+      $str = preg_replace('/\s+/', '_', $str);
+      $str = preg_replace('/[^A-Za-z0-9_\-]/', '', $str);
+      return mb_substr($str, 0, 150);
+  }
+
+  private function guardarDocumento($model, $solicitud) {
       $file = UploadedFile::getInstance($model, 'nombre_archivo');
-      $ext = (explode(".", $file->name));
-      $ext = end($ext);
-      if ($file) {
-        if ($solicitud->id_estado==EstadoBase::DERIVADO || $solicitud->id_estado==EstadoBase::DERIVADO_LISTO ){
-          $directorio = Yii::getAlias('@webroot/uploads/adjuntos/derivados/');
-        }elseif ($solicitud->id_estado==EstadoBase::NO_REALIZADO || $solicitud->id_estado==EstadoBase::DERIVADO_NO_REALIZADO){
-          $directorio = Yii::getAlias('@webroot/uploads/adjuntos/no-realizados/') ;
-        }
-        $model->nombre_archivo = $file->name;
-
-        // Verificar si el archivo ya existe en la carpeta
-        if (file_exists($directorio.$model->nombre_asignado)) {
-            $i = 1;
-            while (file_exists($directorio.$model->nombre_asignado."(".$i .")" )) {
-                $i++;
-            }
-            $resguardo =  $model->nombre_asignado ."(".$i .")" ;
-            // Renombrar el archivo, rename (nombre_actual, nombre nuevo)
-            rename($directorio. $model->nombre_asignado,$directorio.$resguardo);
-        }
-
-        $file->saveAs($directorio. $model->nombre_asignado.".{$ext}");
+      if (!$file) {
+          return false;
       }
 
-    }
-    private function actualizarDocumento($model,$nombre_asignadoAnterior){
-      if ($model->nombre_asignado !== $nombre_asignadoAnterior) {
-              $solicitud= Solicitud::findOne($model->id_solicitud);
-              $ext = pathinfo($model->nombre_archivo, PATHINFO_EXTENSION);
-              if ($solicitud->id_estado==EstadoBase::DERIVADO || $solicitud->id_estado==EstadoBase::DERIVADO_LISTO ){
-                $rutaBase = Yii::getAlias('@webroot/uploads/adjuntos/derivados/');
-              }elseif ($solicitud->id_estado==EstadoBase::NO_REALIZADO || $solicitud->id_estado==EstadoBase::DERIVADO_NO_REALIZADO ){
-                $rutaBase = Yii::getAlias('@webroot/uploads/adjuntos/no-realizados/') ;
-              }
-              $archivoAnterior = $rutaBase . $nombre_asignadoAnterior . '.' . $ext;
-              $archivoNuevo    = $rutaBase . $model->nombre_asignado . '.' . $ext;
-              if (file_exists($archivoAnterior)) {
-                  rename($archivoAnterior, $archivoNuevo);
-              }
-          }
-    }
+      $ext = $file->extension ?: pathinfo($file->name, PATHINFO_EXTENSION);
+
+      // directorio según estado
+      if ($solicitud->id_estado == EstadoBase::DERIVADO || $solicitud->id_estado == EstadoBase::DERIVADO_LISTO) {
+          $directorio = Yii::getAlias('@webroot/uploads/adjuntos/derivados/');
+      } elseif ($solicitud->id_estado == EstadoBase::NO_REALIZADO || $solicitud->id_estado == EstadoBase::DERIVADO_NO_REALIZADO) {
+          $directorio = Yii::getAlias('@webroot/uploads/adjuntos/no-realizados/');
+      } else {
+          $directorio = Yii::getAlias('@webroot/uploads/adjuntos/otros/');
+      }
+
+      // campos para armar el nombre descriptivo
+      $nombre = $solicitud->paciente->nombre;
+      $apellido = $solicitud->paciente->apellido;
+      $tipoEstudio = $solicitud->estudio->descripcion;
+      $estado = $solicitud->estado->descripcion;
+      $protocolo = $solicitud->protocolo;
+
+      $baseRaw = $apellido . '_' . $nombre . '_S-' . $tipoEstudio . '_P-' . $protocolo . '_'. '_E-' . $estado . '_' . date('Ymd_His');
+      $base = $this->sanitizeSimple($baseRaw);
+      $nombreConExt = $base . '.' . $ext;
+
+      // Si por algún motivo ya existe (misma fecha/hora y mismo tipo), añadir (1), (2), ...
+      $i = 1;
+      while (file_exists($directorio . $nombreConExt)) {
+          $nombreConExt = $base . '(' . $i . ').' . $ext;
+          $i++;
+      }
+
+      // guardar en el modelo
+      $model->nombre_archivo = $file->name; // nombre original
+      $model->nombre_asignado = pathinfo($nombreConExt, PATHINFO_FILENAME); // sin extensión
+
+      // guardar archivo en disco
+      return $file->saveAs($directorio . $nombreConExt);
+  }
+
+  private function actualizarDocumento($model, $nombre_asignadoAnterior) {
+      // si no cambió, no hacemos nada
+      if ($model->nombre_asignado === $nombre_asignadoAnterior) {
+          return true;
+      }
+
+      $solicitud = Solicitud::findOne($model->id_solicitud);
+      if ($solicitud->id_estado == EstadoBase::DERIVADO || $solicitud->id_estado == EstadoBase::DERIVADO_LISTO) {
+          $rutaBase = Yii::getAlias('@webroot/uploads/adjuntos/derivados/');
+      } elseif ($solicitud->id_estado == EstadoBase::NO_REALIZADO || $solicitud->id_estado == EstadoBase::DERIVADO_NO_REALIZADO) {
+          $rutaBase = Yii::getAlias('@webroot/uploads/adjuntos/no-realizados/');
+      } else {
+          $rutaBase = Yii::getAlias('@webroot/uploads/adjuntos/otros/');
+      }
+
+      // buscar el archivo anterior (cualquier extensión)
+      $files = glob($rutaBase . $nombre_asignadoAnterior . '.*');
+      if (empty($files)) {
+          return false; // no existe archivo para renombrar
+      }
+
+      $archivoAnterior = $files[0];
+      $ext = pathinfo($archivoAnterior, PATHINFO_EXTENSION);
+      $archivoNuevo = $rutaBase . $model->nombre_asignado . '.' . $ext;
+
+      $i = 1;
+      while (file_exists($archivoNuevo)) {
+          $archivoNuevo = $rutaBase . $model->nombre_asignado . '(' . $i . ').' . $ext;
+          $i++;
+      }
+
+      return rename($archivoAnterior, $archivoNuevo);
+  }
 
     /**
      * Creates a new AdjuntosSolicitud model.
@@ -236,26 +280,16 @@ class AdjuntosolicitudController extends Controller
 
 
         if($request->isAjax){
-            if($solicitud->id_estado==EstadoBase::DERIVADO_LISTO){
-              $mensaje= 'No se puede eliminar el archivo adjunto en estado DERIVADO LISTO';
-            }else {
-              $mensaje= 'El registro se eliminó correctamente';
-              $this->findModel($id)->delete();
-            }
-
+            $mensaje= 'El registro se eliminó correctamente';
+            $this->findModel($id)->delete();
             Yii::$app->response->format = Response::FORMAT_JSON;
             $this->setearMensajeExito($mensaje);
 
             return ['forceClose'=>true,'forceReload'=>'#crud-datatable-pjax'];
         }else{
-          if($solicitud->id_estado==EstadoBase::DERIVADO_LISTO){
-            $this->setearMensajeError('No se puede eliminar el archivo adjunto en estado DERIVADO LISTO');
-
-          }else {
             $this->setearMensajeExito('El registro se eliminó correctamente');
-
             $this->findModel($id)->delete();
-          }
+
 
             Yii::$app->response->format = Response::FORMAT_JSON;
 
@@ -265,36 +299,6 @@ class AdjuntosolicitudController extends Controller
 
     }
 
-     /**
-     * Delete multiple existing Adjuntosolicitud model.
-     * For ajax request will return json object
-     * and for non-ajax request if deletion is successful, the browser will be redirected to the 'index' page.
-     * @param integer $id
-     * @return mixed
-     */
-    public function actionBulkDelete()
-    {
-        $request = Yii::$app->request;
-        $pks = explode(',', $request->post( 'pks' )); // Array or selected records primary keys
-        foreach ( $pks as $pk ) {
-            $model = $this->findModel($pk);
-            $model->delete();
-        }
-
-        if($request->isAjax){
-            /*
-            *   Process for ajax request
-            */
-            Yii::$app->response->format = Response::FORMAT_JSON;
-            return ['forceClose'=>true,'forceReload'=>'#crud-datatable-pjax'];
-        }else{
-            /*
-            *   Process for non-ajax request
-            */
-            return $this->redirect(['index']);
-        }
-
-    }
 
 
     public function actionDescargar($id) {

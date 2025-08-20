@@ -1,12 +1,12 @@
 <?php
 use yii\helpers\Html;
-use yii\widgets\ActiveForm;
 use kartik\grid\GridView;
 use yii\helpers\Url;
 use yii\bootstrap\Modal;
 use johnitvn\ajaxcrud\CrudAsset;
 use johnitvn\ajaxcrud\BulkButtonWidget;
-
+use kartik\builder\Form;
+use kartik\widgets\ActiveForm;
 /** @var yii\web\View $this */
 /** @var app\models\Archivo $model */
 /** @var yii\data\ActiveDataProvider $dataProvider */
@@ -37,18 +37,46 @@ CrudAsset::register($this);
   <div class="archivo-index container">
 
     <div class="card p-4 mb-4 shadow-sm">
-      <h4>Adjuntar nuevo archivo</h4>
 
       <?php $form = ActiveForm::begin([
         'action'=>['adjuntosolicitud/create' ,'id_solicitud'=>$model->id_solicitud ],
         'options' => ['enctype' => 'multipart/form-data']
       ]); ?>
 
+<div class="x_panel">
+    <ul class="nav navbar-right panel_toolbox">
+        <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+        </li>
+    </ul>
+    <legend class="text-info"><small>Datos de la solicitud</small></legend>
+    <div class="x_content" style="display: block;">
+      <?
+      echo Form::widget([ // fields with labels
+          'model'=>$model,
+          'form'=>$form,
+           'columns'=>5,
+           'attributes'=>[
+           'Protocolo'=>['label'=>'Protocolo', 'options'=>['value'=>$solicitud->protocolo ,'readonly'=> true ],'columnOptions'=>['class'=>'col-sm-1',],],
+           'Paciente'=>['label'=> Html::a('<i class="glyphicon glyphicon-eye-open"></i>'.' '.'Paciente', ['paciente/view' ,'id'=> $solicitud->id_paciente],
+             ['role'=>'modal-remote','title'=> 'Ver paciente']), 'options'=>['value'=>$solicitud->paciente->apellido." ". $solicitud->paciente->nombre ,'readonly'=> true ,'url' => '#' ],'columnOptions'=>['class'=>'col-lg-3',],],
+             'DNI'=>['label'=>'DNI', 'options'=>['value'=>$solicitud->paciente->num_documento, 'placeholder'=>'Documento...','readonly'=> true],'columnOptions'=>['class'=>'col-sm-2']],
+             'Edad'=>['label'=>'Edad', 'options'=>['value'=>$solicitud->calcular_edad(), 'placeholder'=>'Edad...','readonly'=> true],'columnOptions'=>['class'=>'col-sm-1']],
+             'Medico'=>['label'=> Html::a('<i class="glyphicon glyphicon-eye-open"></i>'.' '.'Medico', ['medico/view' ,'id'=> $solicitud->id_medico],
+            ['role'=>'modal-remote','title'=> 'Ver medico']), 'options'=>['value'=>$solicitud->medico->apellido ." ". $solicitud->medico->nombre, 'readonly'=> true ,'url' => '#' ],'columnOptions'=>['class'=>'col-lg-3',],],
+           'id_solicitudbiopsia'=>['type'=>Form::INPUT_HIDDEN, 'columnOptions'=>['colspan'=>0], 'options'=>['value'=>$solicitud->id ]],
+
+          ]
+      ]);
+      ?>
+      </div>
+</div>
+<div class="x_panel">
+
+      <h4>Adjuntar nuevo archivo</h4>
+
       <div class="row">
         <?= $form->field($model, 'id_solicitud')->hiddenInput()->label(false) ?>
-        <div class="col-md-4">
-          <?= $form->field($model, 'nombre_asignado')->textInput(['maxlength' => true])?>
-        </div>
+
         <div class="col-md-4">
           <?= $form->field($model, 'nombre_archivo')->fileInput() ?>
         </div>
@@ -137,6 +165,7 @@ CrudAsset::register($this);
     </div>
 
   </div>
+</div>
 </div>
 <?php Modal::begin([
     "id"=>"ajaxCrudModal",

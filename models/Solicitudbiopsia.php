@@ -84,18 +84,8 @@ class Solicitudbiopsia extends Solicitud
                [['protocolo'], 'validacion_protocolo', 'on' => ['create', 'update']],
                [['fechadeingreso'] ,'validacion_fechainicio', 'on'=>['create','update']],
                [['fecharealizacion'], 'validacion_fecharealizacion' ,'on'=>['create','update']],
-               [['id_estado'], 'validarAdjuntoSiDerivado', 'on' =>['update']]
 
         ];
-    }
-    public function validarAdjuntoSiDerivado($attribute)
-    {
-        // Si id_estado == el valor numérico correspondiente a DERIVADO_LISTO
-        if ($this->$attribute == EstadoBase::DERIVADO_LISTO) {
-            if (empty($this->adjuntosolicituds) || count($this->adjuntosolicituds) === 0) {
-                $this->addError($attribute, 'Debe adjuntar al menos un archivo para poder establecer el estado DERIVADO LISTO.');
-            }
-        }
     }
 
       public function validacion_protocolo($attribute, $unusedParams = [])

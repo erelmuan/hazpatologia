@@ -54,8 +54,17 @@ $columns[]=
     [
         'class' => 'kartik\grid\ActionColumn',
         'dropdown' => false,
+        'urlCreator' => function($action, $model, $key, $index) {
+            return Url::to([$action,'id'=>$key]);
+        },
+        'template'=> '{fos}{view}{update}{delete}',
+
         'vAlign'=>'middle',
             'buttons' => [
+              'fos' => function ($url, $model, $key) {
+                return Html::a(
+                  "<button class='btn-warning btn-circle'><b>F</b></button>", ['solicitud/fos', 'tipoSolicitud'=>'app\models\Solicitudbiopsia','id' => $model->id,'id_carnet' => null], ['data-pjax'=>"0",'role'=>'modal-remote','title'=>"O.S - FOS"]) ;
+                },
               'view' => function ($url, $model, $key) {
                 return Html::a("<button class='btn-success btn-circle'><span class='glyphicon glyphicon-eye-open'></span></button>", [$model::tableName().$model->estudio->modelo.'/view',"id"=> $key]
                 ,[ 'role'=>'modal-remote',

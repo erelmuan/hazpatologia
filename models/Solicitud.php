@@ -369,5 +369,12 @@ class Solicitud extends \yii\db\ActiveRecord
             EstadoBase::DERIVADO_NO_REALIZADO
         ]);
     }
+    public function puedeVerFos(): bool
+   {
+       return in_array($this->id_estado, [
+           EstadoBase::DERIVADO_LISTO,
+           EstadoBase::LISTO,
+       ]);
+   }
 
     }

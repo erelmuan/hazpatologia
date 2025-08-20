@@ -367,7 +367,7 @@ class SolicitudController extends Controller {
         $request = Yii::$app->request;
         if ($request->isAjax) {
             try {
-                if ($model->delete()) { 
+                if ($model->delete()) {
 
                   $this->setearMensajeExito('El registro se eliminó correctamente.');
                   return ['forceClose' => true, 'forceReload' => '#crud-datatable-pjax', 'metodo' => 'delete'];
@@ -390,15 +390,15 @@ class SolicitudController extends Controller {
     function returnModelSearch() {
     }
 
-    public function actionFos($tipoSolicitud,$id, $id_carnet=null) {
+    public function actionFos($id, $id_carnet=null) {
         $request = Yii::$app->request;
-        $modelsolicitud = $tipoSolicitud::find()->where(['and', 'id = ' . $id])->one();
+        $modelsolicitud = Solicitud::find()->where(['and', 'id = ' . $id])->one();
         if ($request->isAjax) {
             Yii::$app->response->format = Response::FORMAT_JSON;
                 return ['title' => "Obra Social - FOS", 'content' => $this->renderAjax('fosobrasocial',
-                 ['solicitud' => $modelsolicitud, 'tipoSolicitud'=>$tipoSolicitud]) , 'footer' => Html::button('Cerrar', ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"])  ];
+                 ['solicitud' => $modelsolicitud]) , 'footer' => Html::button('Cerrar', ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"])  ];
           }
-        if ($id_carnet !=null && $modelsolicitud->estado->descripcion ==="LISTO"){
+        if ($id_carnet !=null && $modelsolicitud->puedeVerFos()){
 
           $carnet= CarnetOs::findOne($id_carnet);
           return $this->render('fos', ['solicitud' => $modelsolicitud, 'carnet' =>$carnet ]);

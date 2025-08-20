@@ -74,18 +74,11 @@ $columns[]=
         'urlCreator' => function($action, $model, $key, $index) {
             return Url::to([$action,'id'=>$key]);
         },
-        'template'=> '{fos}{view}{update}{delete}',
-        'buttons'=>[
-          'fos' => function ($url, $model, $key) {
-            return Html::a(
-              "<button class='btn-warning btn-circle'><b>F</b></button>", ['solicitud/fos', 'tipoSolicitud'=>'app\models\Solicitudbiopsia','id' => $model->solicitudbiopsia->id,'id_carnet' => null], ['data-pjax'=>"0",'role'=>'modal-remote','title'=>"O.S - FOS"]) ;
-            },
-        ],
+        'template'=> '{view}{update}{delete}',
         'updateOptions'=>['title'=>'Actualizar', 'data-toggle'=>'tooltip','icon'=>"<button class='btn-primary btn-circle'><span class='glyphicon glyphicon-pencil'></span></button>"],
         'options' => ['style' => 'width:7%'],
 
            'visibleButtons'=>[
-            'fos'=> ['fos'],
             'view'=> ['view'],
             'update'=> ['update'],
             'delete'=> ['delete']
