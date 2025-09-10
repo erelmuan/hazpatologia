@@ -52,7 +52,7 @@ class Obrasocial extends \yii\db\ActiveRecord
             [['telefono'], 'integer'],
             [['observaciones', 'correoelectronico', 'codigo'], 'string'],
             [['sigla'], 'string', 'max' => 15],
-            [['denominacion'], 'string', 'max' => 80],
+            [['denominacion'], 'string', 'max' => 150],
             [['direccion'], 'string', 'max' => 70],
             [['paginaweb'], 'string', 'max' => 35],
 

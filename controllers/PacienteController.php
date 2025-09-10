@@ -8,6 +8,7 @@ use app\models\Localidad;
 use app\models\Solicitud;
 use app\models\Obrasocial;
 use app\models\CarnetOs;
+use app\models\Pacientecheckos;
 use app\controllers\CarnetOsController;
 use yii\helpers\ArrayHelper;
 use yii\web\Controller;
@@ -21,6 +22,8 @@ use app\components\Metodos\Metodos;
 use yii\db\Schema;
 use yii\helpers\Inflector;
 use yii\helpers\FileHelper;
+use yii\db\Query;
+
 /**
  * PacienteController implements the CRUD actions for Paciente model.
  */
@@ -64,15 +67,23 @@ class PacienteController extends Controller {
         $carnet = CarnetOsController::findidpacModel($id);
         $model = $this->findModel($id);
         $model->fecha_nacimiento = date('d/m/Y', strtotime($model->fecha_nacimiento));
+        $lastCheck = \app\models\Pacientecheckos::find()
+        ->where(['id_paciente' => $model->id])
+        ->orderBy(['fechahora' => SORT_DESC])
+        ->one();
         if ($request->isAjax) {
             Yii::$app
                 ->response->format = Response::FORMAT_JSON;
-            return ['title' => "Paciente #" . $id, 'content' => $this->renderAjax('view', ['model' => $model, 'carnet' => $carnet, ]) , 'footer' => Html::button('Cerrar', ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) ];
+            return ['title' => "Paciente #" . $id,
+            'content' => $this->renderAjax('view', ['model' => $model, 'carnet' => $carnet, 'lastCheck' => $lastCheck, ]) ,
+             'footer' => Html::button('Cerrar', ['class' => 'btn btn-default pull-left',
+              'data-dismiss' => "modal"]) ];
         }
         else {
-            return $this->render('view', ['model' => $model, 'carnet' => $carnet, ]);
+            return $this->render('view', ['model' => $model, 'carnet' => $carnet, 'lastCheck' => $lastCheck, ]);
         }
     }
+
     protected function devolverArray($model, &$provincias, &$localidades, &$valorObrasocial, &$afiliado, &$obrasociales) {
         $provincias = ArrayHelper::map(Provincia::find()->all() , 'id', 'nombre');
         $valorObrasocial = ArrayHelper::map(CarnetOs::Find()->where(['id_paciente' => $model
@@ -87,6 +98,32 @@ class PacienteController extends Controller {
             $localidades[$value['id']] = $value['nombre'];
         }
     }
+
+    private function registrarChequeo($checkbox ,$model){
+        // al guardar paciente
+        $tieneOs = $model->getCarnetOs()->exists();
+        // buscar si ya existe registro en pacientecheckos
+        $checkOS = Pacientecheckos::find()->where(['id_paciente' => $model->id])->one();
+
+        if (!$checkOS) {
+            // si no existe, se crea uno nuevo
+            $checkOS = new Pacientecheckos();
+            $checkOS->id_paciente = $model->id;
+        }
+
+        // si tiene obra social -> setear true
+        if ($tieneOs) {
+            $checkOS->tiene_os = true;
+        }else {
+          $checkOS->tiene_os = false;
+
+        }
+
+        $checkOS->fechahora = date('Y-m-d H:i:s');
+        $checkOS->save(false);
+    }
+
+
     /**
      * Creates a new Paciente model.
      * For ajax request will return json object
@@ -96,30 +133,43 @@ class PacienteController extends Controller {
     public function actionCreate() {
         $request = Yii::$app->request;
         $model = new Paciente();
-        // $model->fecha_nacimiento = date('d/m/Y',strtotime($model->fecha_nacimiento));
         $valorObrasocial = [];
         $afiliado = [];
         $provincias = [];
         $localidades = [];
         $obrasociales = [];
+        $lastCheck = null;
+        $this->chequeoOs( $lastCheck ,$model);
         $this->devolverArray($model, $provincias, $localidades, $valorObrasocial, $afiliado, $obrasociales);
         if ($request->isAjax) {
             Yii::$app
                 ->response->format = Response::FORMAT_JSON;
             if ($request->isGet) {
-                return ['title' => "Crear nuevo Paciente", 'content' => $this->renderAjax('create', ['model' => $model, 'provincias' => $provincias, 'localidades' => $localidades, 'obrasociales' => $obrasociales, 'valorObrasocial' => $valorObrasocial, 'afiliado' => $afiliado, ]) , 'footer' => Html::button('Cerrar', ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) . Html::button('Guardar', ['class' => 'btn btn-primary', 'type' => "submit"]) ];
+                return ['title' => "Crear nuevo Paciente",
+                'content' => $this->renderAjax('_form', ['model' => $model, 'provincias' => $provincias,
+                'localidades' => $localidades, 'obrasociales' => $obrasociales,
+                 'valorObrasocial' => $valorObrasocial, 'afiliado' => $afiliado,'lastCheck' => $lastCheck ]) , 'footer' => Html::button('Cerrar', ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) . Html::button('Guardar', ['class' => 'btn btn-primary', 'type' => "submit"]) ];
             }
             else if ($model->load($request->post()) && $model->save()) {
                 if (isset($_POST['id_obrasocial'])) {
                     CarnetOsController::createParametros($model->id, $_POST['id_obrasocial'], $_POST['nroafiliado']);
                 }
+                // regla: si tiene OS registrar siempre, si no tiene OS registrar solo si checkbox está marcado
+                 $tieneOs = $model->getCarnetOs()->exists();
+                 $checkbox = Yii::$app->request->post('obra_social_check');
+                 if ($tieneOs || $checkbox) {
+                     $this->registrarChequeo(true, $model);
+                 }
                 return [
                 // comentado para que funcione cuando llamo desde la vista de solicitudes en la creacion
                 // 'forceReload'=>'#crud-datatable-pjax',
-                'title' => "Crear nuevo Paciente", 'content' => '<span class="text-success">Éxito al crear paciente</span>', 'footer' => Html::button('Cerrar', ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) . Html::a('Crear otro', ['create'], ['class' => 'btn btn-primary', 'role' => 'modal-remote']) ];
+                'title' => "Crear nuevo Paciente", 'content' => '<span class="text-success">Éxito al crear paciente</span>', 'footer' => Html::button('Cerrar', ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) . Html::a('Crear otro', ['_form'], ['class' => 'btn btn-primary', 'role' => 'modal-remote']) ];
             }
             else {
-                return ['title' => "Crear nuevo paciente", 'content' => $this->renderAjax('create', ['model' => $model, 'provincias' => $provincias, 'localidades' => $localidades, 'obrasociales' => $obrasociales, 'valorObrasocial' => $valorObrasocial, 'afiliado' => $afiliado, ]) , 'footer' => Html::button('Cerrar', ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) . Html::button('Guardar', ['class' => 'btn btn-primary', 'type' => "submit"]) ];
+                return ['title' => "Crear nuevo paciente", 'content' => $this->renderAjax('_form', ['model' => $model,
+                'provincias' => $provincias, 'localidades' => $localidades,
+                 'obrasociales' => $obrasociales, 'valorObrasocial' => $valorObrasocial,
+                  'afiliado' => $afiliado, 'lastCheck' => $lastCheck]) , 'footer' => Html::button('Cerrar', ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) . Html::button('Guardar', ['class' => 'btn btn-primary', 'type' => "submit"]) ];
             }
         }
         else {
@@ -129,11 +179,22 @@ class PacienteController extends Controller {
             if ($model->load($request->post()) && $model->save()) {
                 if (isset($_POST['id_obrasocial'])) {
                     CarnetOsController::createParametros($model->id, $_POST['id_obrasocial'], $_POST['nroafiliado']);
+                    // regla: si tiene OS registrar siempre, si no tiene OS registrar solo si checkbox está marcado
+                }
+                $tieneOs = $model->getCarnetOs()->exists();
+                $checkbox = Yii::$app->request->post('obra_social_check');
+
+                if ($tieneOs || $checkbox) {
+                  die();
+                    $this->registrarChequeo(true, $model);
                 }
                 return $this->redirect(['view', 'id' => $model->id]);
             }
             else {
-                return $this->render('create', ['model' => $model, 'provincias' => $provincias, 'localidades' => $localidades, 'obrasociales' => $obrasociales, 'valorObrasocial' => $valorObrasocial, 'afiliado' => $afiliado, ]);
+                return $this->render('_form', ['model' => $model, 'provincias' => $provincias,
+                'localidades' => $localidades, 'obrasociales' => $obrasociales,
+                'valorObrasocial' => $valorObrasocial, 'afiliado' => $afiliado,
+                'lastCheck' => $lastCheck ]);
             }
         }
     }
@@ -162,7 +223,18 @@ class PacienteController extends Controller {
         }
         echo Json::encode(['output' => '', 'selected' => '']);
     }
-    //////////////////////////////////////
+
+
+    private function chequeoOs( &$lastCheck ,$model){
+      if (isset($model->id) && $model->id) {
+          // ¿hay al menos un registro de chequeo para este paciente?
+          $lastCheck = (new Query())
+              ->from('pacientecheckos')
+              ->where(['id_paciente' => $model->id])
+              ->orderBy(['fechahora' => SORT_DESC])
+              ->one();
+      }
+    }
 
     /**
      * Updates an existing Paciente model.
@@ -182,6 +254,10 @@ class PacienteController extends Controller {
         $localidades = [];
         $obrasociales = [];
         $this->devolverArray($model, $provincias, $localidades, $valorObrasocial, $afiliado, $obrasociales);
+        $todasOsAntes = $model->getCarnetOs()->select('id_obrasocial')->column();
+        $lastCheck = null;
+        $this->chequeoOs($lastCheck ,$model);
+
         if ($request->isAjax) {
             /*
              *   Process for ajax request
@@ -189,7 +265,12 @@ class PacienteController extends Controller {
             Yii::$app
                 ->response->format = Response::FORMAT_JSON;
             if ($request->isGet) {
-                return ['title' => "Actualizar Paciente #" . $id, 'content' => $this->renderAjax('update', ['model' => $model, 'provincias' => $provincias, 'localidades' => $localidades, 'obrasociales' => $obrasociales, 'valorObrasocial' => $valorObrasocial, 'afiliado' => $afiliado, ]) , 'footer' => Html::button('Cerrar', ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) . Html::button('Guardar', ['class' => 'btn btn-primary', 'type' => "submit"]) ];
+                return ['title' => "Actualizar Paciente #" . $id,
+                'content' => $this->renderAjax('_form', ['model' => $model,
+                 'provincias' => $provincias, 'localidades' => $localidades,
+                 'obrasociales' => $obrasociales, 'valorObrasocial' => $valorObrasocial,
+                  'afiliado' => $afiliado,'lastCheck' => $lastCheck ]) ,
+                   'footer' => Html::button('Cerrar', ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) . Html::button('Guardar', ['class' => 'btn btn-primary', 'type' => "submit"]) ];
             }
             else if ($model->load($request->post()) && $model->save()) {
                 $obraSocial = [];
@@ -199,11 +280,34 @@ class PacienteController extends Controller {
                     $nroAfiliado = $_POST['nroafiliado'];
                 }
                 CarnetOsController::updateParametros($model->id, $obraSocial, $nroAfiliado);
+                $todasOsDespues = $model->getCarnetOs()->select('id_obrasocial')->column();
+                // solo registrar si el checkbox vino marcado
+                $checkbox = Yii::$app->request->post('obra_social_check');
+                // regla actualización:
+                // - si cambió el conjunto de OS → registrar siempre
+                // - si es igual → registrar solo si checkbox
+                if (($todasOsAntes !== $todasOsDespues) || $checkbox) {
+
+                    $this->registrarChequeo(true, $model);
+                }
                 $carnet = CarnetOsController::findidpacModel($model->id);
-                return ['forceReload' => '#crud-datatable-pjax', 'title' => "Paciente #" . $id, 'content' => $this->renderAjax('view', ['model' => $model, 'carnet' => $carnet, 'provincias' => $provincias, 'localidades' => $localidades, 'valorObrasocial' => $valorObrasocial, 'afiliado' => $afiliado, 'obrasociales' => $obrasociales, ]) , 'footer' => Html::button('Cerrar', ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) . Html::a('Editar', ['update', 'id' => $id], ['class' => 'btn btn-primary', 'role' => 'modal-remote']) ];
+
+                $this->chequeoOs($lastCheck ,$model);
+
+                return ['forceReload' => '#crud-datatable-pjax', 'title' => "Paciente #" . $id,
+                'content' => $this->renderAjax('view', ['model' => $model,
+                  'lastCheck' => $lastCheck]) ,
+                  'footer' => Html::button('Cerrar',
+                  ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) .
+                   Html::a('Editar', ['update', 'id' => $id], ['class' => 'btn btn-primary',
+                   'role' => 'modal-remote']) ];
             }
             else {
-                return ['title' => "Actualizar Paciente #" . $id, 'content' => $this->renderAjax('update', ['model' => $model, 'provincias' => $provincias, 'localidades' => $localidades, 'valorObrasocial' => $valorObrasocial, 'afiliado' => $afiliado, 'obrasociales' => $obrasociales, ]) , 'footer' => Html::button('Cerrar', ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) . Html::button('Guardar', ['class' => 'btn btn-primary', 'type' => "submit"]) ];
+                return ['title' => "Actualizar Paciente #" . $id,
+                 'content' => $this->renderAjax('_form',
+                 ['model' => $model, 'provincias' => $provincias,
+                 'localidades' => $localidades, 'valorObrasocial' => $valorObrasocial,
+                 'afiliado' => $afiliado, 'obrasociales' => $obrasociales,'lastCheck' => $lastCheck ]) , 'footer' => Html::button('Cerrar', ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) . Html::button('Guardar', ['class' => 'btn btn-primary', 'type' => "submit"]) ];
             }
         }
         else {
@@ -218,10 +322,21 @@ class PacienteController extends Controller {
                     $nroAfiliado = $_POST['nroafiliado'];
                 }
                 CarnetOsController::updateParametros($model->id, $obraSocial, $nroAfiliado);
+                $todasOsDespues = $model->getCarnetOs()->select('id_obrasocial')->column();
+                // solo registrar si el checkbox vino marcado
+                $checkbox = Yii::$app->request->post('obra_social_check');
+                // regla actualización:
+                // - si cambió el conjunto de OS → registrar siempre
+                // - si es igual → registrar solo si checkbox
+                if ($todasOsAntes !== $todasOsDespues || $checkbox) {
+                    $this->registrarChequeo(true, $model);
+                }
                 return $this->redirect(['view', 'id' => $model->id]);
             }
             else {
-                return $this->render('update', ['model' => $model, 'provincias' => $provincias, 'localidades' => $localidades, 'obrasociales' => $obrasociales, 'valorObrasocial' => $valorObrasocial, 'afiliado' => $afiliado, ]);
+                return $this->render('_form', ['model' => $model, 'provincias' => $provincias,
+                 'localidades' => $localidades, 'obrasociales' => $obrasociales,
+                 'valorObrasocial' => $valorObrasocial, 'afiliado' => $afiliado,'lastCheck' => $lastCheck ]);
             }
         }
     }
@@ -236,7 +351,9 @@ class PacienteController extends Controller {
 
                 $data = Yii::$app->request->post();
                 $dni = explode(":", $data['dni'])[0];
-                $url = 'https://sisa.msal.gov.ar/sisa/services/rest/puco/' . $dni;
+                $urlPuco = Yii::$app->params['urlPuco'] ?? null;
+
+                $url = $urlPuco.$dni;
 
                 $ch = curl_init($url);
                 $payload = json_encode([
@@ -318,6 +435,88 @@ class PacienteController extends Controller {
         }
     }
 
+
+    public function actionRenaper()
+    {
+        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+
+        $dni = Yii::$app->request->post('dni');
+        $sexo = Yii::$app->request->post('sexo');
+
+        // Validar que se recibieron los parámetros necesarios
+        if (empty($dni) || empty($sexo)) {
+            return ['success' => false, 'error' => 'DNI y sexo son requeridos'];
+        }
+
+        // Obtener credenciales desde params
+        $usuario = Yii::$app->params['usuarioRenaper'] ?? null;
+        $clave = Yii::$app->params['claveRenaper'] ?? null;
+        $area = Yii::$app->params['areaHospital'] ?? null;
+        $urlRenaper = Yii::$app->params['urlRenaper'] ?? null;
+
+
+        if (!$usuario || !$clave) {
+            return ['success' => false, 'error' => 'Credenciales no configuradas'];
+        }
+
+        // Construir URL del endpoint
+        $url = "$urlRenaper&id_area=$area&dni=$dni&sexo=$sexo";
+
+        try {
+            // Inicializar cURL
+            $ch = curl_init();
+
+            // Configurar opciones de cURL
+            curl_setopt($ch, CURLOPT_URL, $url);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
+            curl_setopt($ch, CURLOPT_USERPWD, "$usuario:$clave");
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); // Solo para desarrollo, en producción debería ser true
+            curl_setopt($ch, CURLOPT_TIMEOUT, 30);
+
+            // Ejecutar la solicitud
+            $response = curl_exec($ch);
+            $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+
+            // Verificar errores
+            if (curl_errno($ch)) {
+                throw new Exception('Error en la conexión: ' . curl_error($ch));
+            }
+
+            // Cerrar la conexión
+            curl_close($ch);
+
+            // Verificar código de respuesta HTTP
+            if ($httpCode !== 200) {
+                return [
+                    'success' => false,
+                    'error' => "Error en el servicio. Código HTTP: $httpCode"
+                ];
+            }
+
+            // Decodificar la respuesta JSON
+            $data = json_decode($response, true);
+
+            if (json_last_error() !== JSON_ERROR_NONE) {
+                return [
+                    'success' => false,
+                    'error' => 'Error al decodificar la respuesta del servicio'
+                ];
+            }
+
+            // Devolver los datos obtenidos
+            return [
+                'success' => true,
+                'data' => $data
+            ];
+
+        } catch (Exception $e) {
+            return [
+                'success' => false,
+                'error' => $e->getMessage()
+            ];
+        }
+    }
 
 
     /**

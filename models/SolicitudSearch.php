@@ -164,7 +164,7 @@ class SolicitudSearch extends Solicitud
           $query->andFilterWhere(['=', 'fecharealizacion', $this->fecharealizacion]);
           $query->andFilterWhere(['=', 'fechadeingreso', $this->fechadeingreso]);
           $query->andFilterWhere([  'id_procedencia' => $this->id_procedencia,]);
-          $query->andFilterWhere([  'id_estudio' => $this->id_estudio,]);
+          $query->andFilterWhere([  'solicitud.id_estudio' => $this->id_estudio,]);
           // $query->andFilterWhere([ "paciente.num_documento" => trim($this->num_documento),]);
 
           $paciente= trim($this->paciente);

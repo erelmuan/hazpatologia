@@ -4305,3 +4305,32 @@ background: #D5EBD5;
      .spacing-top-5{
        margin-top: 6.2em;
     }
+
+    /* Spinner personalizado para botones pequeños */
+    .btn-renaper {
+        padding: 0 4px !important;
+        font-size: 10px !important;
+        line-height: 1 !important;
+        margin-left: 6px;
+        height: 17px;
+        border-radius: 3px;
+        font-weight: bold;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 20px;
+    }
+
+    /* Spinner personalizado para botones pequeños */
+    .mini-spinner {
+        width: 8px;
+        height: 8px;
+        border: 2px solid currentColor;
+        border-right-color: transparent;
+        border-radius: 50%;
+        animation: spinner-rotate 0.75s linear infinite;
+    }
+
+    @keyframes spinner-rotate {
+        to { transform: rotate(360deg); }
+    }

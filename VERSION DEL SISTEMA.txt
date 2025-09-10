@@ -1,3 +1,9 @@
+Version 2.9.4
+Se incopora consulta al renaper en el formulario de usuario
+Activacion de la registro de chequeo de obra social, eliminacion de la obra social "SIN OBRA SOCIAL"
+Correccion en la base de datos de la tabla carnet_os e insercion de registros en la tabla pacientecheckos
+Ampliacion del campo descripcion de obra social a 150 caracteres
+
 Version 2.9.3
 Correccion del documento de fos
 

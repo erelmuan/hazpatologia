@@ -35,6 +35,7 @@ use yii\helpers\ArrayHelper;
  * @property Solicitud[] $solicituds
  * @property Solicitudbiopsia[] $solicitudbiopsias
  * @property Solicitudpap[] $solicitudpaps
+ * @property Pacientecheckos[] $pacientecheckos
  */
 
 class Paciente extends \yii\db\ActiveRecord
@@ -207,26 +208,34 @@ class Paciente extends \yii\db\ActiveRecord
           {
               if (!isset($this->id))
                 return false;
-            $id= $this->id;
-            $estudiosPap = Solicitudpap::find()
-             ->innerJoinWith('paciente', 'paciente.id = solicitudpap.id_paciente')
-             ->innerJoinWith('pap', 'pap.id_solicitudpap = solicitudpap.id')
-             //Estado 2 pap
-             ->where(['and', "paciente.id=".$id, "pap.id_estado=". EstadoBase::LISTO])
-             ->count('*');
+                $estudiosPap = Solicitudpap::find()
+              ->innerJoinWith('paciente')
+              ->where(['paciente.id' => $this->id])
+              ->andWhere([
+                  'or',['solicitudpap.id_estado' => EstadoBase::LISTO],
+                  ['solicitudpap.id_estado' => EstadoBase::DERIVADO_LISTO],
+              ])->count();
              if ($estudiosPap >0)
                  return true;
-             $estudiosBiopsia = Solicitudbiopsia::find()
-              ->innerJoinWith('paciente', 'paciente.id = solicitudbiopsia.id_paciente')
-              ->innerJoinWith('biopsia', 'biopsia.id_solicitudbiopsia = solicitudbiopsia.id')
-              ->where(['and', "paciente.id=".$id, "biopsia.id_estado=".EstadoBase::LISTO])
-              ->count('*');
-
+                 $estudiosBiopsia = Solicitudbiopsia::find()
+               ->innerJoinWith('paciente')
+               ->where(['paciente.id' => $this->id])
+               ->andWhere([
+                   'or', ['solicitudbiopsia.id_estado' => EstadoBase::LISTO],
+                   ['solicitudbiopsia.id_estado' => EstadoBase::DERIVADO_LISTO],
+               ])->count();
             if ($estudiosBiopsia >0)
                 return true;
 
             return false;
           }
+          /**
+            * @return \yii\db\ActiveQuery
+         */
+        public function getPacientecheckos()
+        {
+            return $this->hasMany(Pacientecheckos::className(), ['id_paciente' => 'id']);
+        }
 
 
 }

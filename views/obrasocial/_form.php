@@ -20,7 +20,7 @@ use yii\widgets\ActiveForm;
     ?>
     <!--si existen pacientes asociados no se puede modificar el denominacion  -->
     <? if($model->carnetOs){
-            echo  $form->field($model, 'denominacion')->input("text",['readonly' => true])->label('Nombre');
+            echo  $form->field($model, 'denominacion')->input("text",['readonly' => true])->label('Denominación');
           }else {
             echo  $form->field($model, 'denominacion')->input("text",['style'=> 'width:100%; text-transform:uppercase;'])->label('Denominación');
         }

@@ -237,9 +237,6 @@ use yii\widgets\Pjax;
                       <ul id="menu1" class="dropdown-menu list-unstyled msg_list" role="menu">
                           <li>
                               <a>
-                                  <span class="image">
-                                      <img src="http://placehold.it/128x128" alt="Profile Image" />
-                                  </span>
                                   <span>
                                       <span>John Smith</span>
                                       <span class="time">3 mins ago</span>
@@ -251,9 +248,6 @@ use yii\widgets\Pjax;
                           </li>
                           <li>
                               <a>
-                                  <span class="image">
-                                      <img src="http://placehold.it/128x128" alt="Profile Image" />
-                                  </span>
                                   <span>
                                       <span>John Smith</span>
                                       <span class="time">3 mins ago</span>
