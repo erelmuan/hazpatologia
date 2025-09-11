@@ -1,3 +1,7 @@
+Version 2.9.5
+Correccion de etiqueta que no dejaba buscar en el modal a paciente y medico
+<div id="w0notocar" class="x_panel">
+
 Version 2.9.4
 Se incopora consulta al renaper en el formulario de usuario
 Activacion de la registro de chequeo de obra social, eliminacion de la obra social "SIN OBRA SOCIAL"
