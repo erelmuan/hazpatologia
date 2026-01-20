@@ -194,33 +194,36 @@ $pdf->MultiCell(0,5, utf8_decode($model->glandulares));
 
 $Inicio = $pdf->GetY() + 10;
 $pdf->SetFont('Times','B',10);
-$pdf->Text(14,$Inicio ,"DIAGNOSTICO:");
+$pdf->Text(14, $Inicio, "DIAGNOSTICO:");
 $pdf->SetFont('Times','',10);
-   // Imprimimos el texto justificado
-$pdf->SetXY(30, $Inicio+2 );
-$pdf->MultiCell(0,5, utf8_decode($model->diagnostico));
 
-$Inicio = $pdf->GetY() + 2;
+// Diagnóstico
+$pdf->SetXY(30, $Inicio + 1);
+$pdf->MultiCell(0, 5, utf8_decode($model->diagnostico));
 
-if($model->firmado){
-  $pdf->Image( Yii::$app->basePath .'/web/uploads/firmas/'.$model->usuario->firma->imagen,151,$Inicio ,49 ,45 ,'PNG' );
+// Posición final del diagnóstico
+$Inicio = $pdf->GetY();
 
+// Frase (opcional)
+if (!empty($model->frase)) {
+    $pdf->Ln(2);
+    $pdf->SetXY(30, $Inicio +12);
+    $pdf->MultiCell(0, 5, utf8_decode($model->frase));
+    $Inicio = $pdf->GetY();
 }
 
-// $pdf->Ln();
-$Inicio = $pdf->GetY() + 10;
-$pdf->SetFont('Times','',10);
-   // Imprimimos el texto justificado
-$pdf->SetXY(30, $Inicio+2 );
-$pdf->MultiCell(0,5, utf8_decode($model->frase));
-$pdf->Ln();
+// ---------------- FIRMA ----------------
+if ($model->firmado) {
+    $imgFile = Yii::$app->basePath . '/web/uploads/firmas/' . $model->usuario->firma->imagen;
+    $imgW = 49;
+    $imgH = 45;
+    // Posición tentativa
+    $imgY = $Inicio -8;
 
-$Inicio = 49;
-$x = 100;
-$y = 200;
-$s = 50;
-$background = array(250,250,250);
-$color = array(0,0,0);
+  $pdf->Image( $imgFile,151,$imgY ,$imgW ,$imgH ,'PNG' );
+    $Inicio = $imgY + $imgH;
+}
+// --------------------------------------
 $pdf->Output("I","PAP --- ".utf8_decode($model->solicitudpap->paciente->apellido." ".$model->solicitudpap->paciente->nombre).".pdf");
 
 exit;

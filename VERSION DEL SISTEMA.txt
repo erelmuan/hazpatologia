@@ -1,3 +1,8 @@
+Version 2.9.6
+Mejora en la inserción de las firmas(sellos)
+Se cambia de forma las firmas a png y se modifica el orden de la ejecucion campos
+de del informe, de esta manera. Diagnostico, frase y firma.
+
 Version 2.9.5
 Correccion de etiqueta que no dejaba buscar en el modal a paciente y medico
 <div id="w0notocar" class="x_panel">
