@@ -3,29 +3,48 @@
 namespace app\controllers;
 
 use Yii;
-use app\models\Cirugiaprevia;
-use app\models\CirugiapreviaSearch;
+use app\models\Barrio;
+use app\models\BarrioSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use \yii\web\Response;
 use yii\helpers\Html;
-
+use app\components\helpers\HtmlHelpers;
 /**
- * CirugiapreviaController implements the CRUD actions for Cirugiaprevia model.
+ * BarrioController implements the CRUD actions for Barrio model.
  */
-class CirugiapreviaController extends Controller
+class BarrioController extends Controller
 {
-
-  // behaviors heredado
-
     /**
-     * Lists all Cirugiaprevia models.
+     * @inheritdoc
+     */
+    public function behaviors()
+    {
+        return [
+            'verbs' => [
+                'class' => VerbFilter::className(),
+                'actions' => [
+                    'delete' => ['post'],
+                    'bulk-delete' => ['post'],
+                ],
+            ],
+        ];
+    }
+    // BarrioController
+    public function actionArraybarriosJson() {
+        Yii::$app->response->format = Response::FORMAT_JSON;
+        return Barrio::find()
+            ->where(['id_localidad' => Yii::$app->request->get('id')])
+            ->select(['id', 'nombre'])->asArray()->all();
+    }
+    /**
+     * Lists all Barrio models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new CirugiapreviaSearch();
+        $searchModel = new BarrioSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -36,7 +55,7 @@ class CirugiapreviaController extends Controller
 
 
     /**
-     * Displays a single Cirugiaprevia model.
+     * Displays a single Barrio model.
      * @param integer $id
      * @return mixed
      */
@@ -46,7 +65,7 @@ class CirugiapreviaController extends Controller
         if($request->isAjax){
             Yii::$app->response->format = Response::FORMAT_JSON;
             return [
-                    'title'=> "Cirugiaprevia #".$id,
+                    'title'=> "Barrio #".$id,
                     'content'=>$this->renderAjax('view', [
                         'model' => $this->findModel($id),
                     ]),
@@ -61,7 +80,7 @@ class CirugiapreviaController extends Controller
     }
 
     /**
-     * Creates a new Cirugiaprevia model.
+     * Creates a new Barrio model.
      * For ajax request will return json object
      * and for non-ajax request if creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
@@ -69,7 +88,7 @@ class CirugiapreviaController extends Controller
     public function actionCreate()
     {
         $request = Yii::$app->request;
-        $model = new Cirugiaprevia();
+        $model = new Barrio();
 
         if($request->isAjax){
             /*
@@ -78,7 +97,7 @@ class CirugiapreviaController extends Controller
             Yii::$app->response->format = Response::FORMAT_JSON;
             if($request->isGet){
                 return [
-                    'title'=> "Create new Cirugiaprevia",
+                    'title'=> "Create new Barrio",
                     'content'=>$this->renderAjax('create', [
                         'model' => $model,
                     ]),
@@ -89,15 +108,15 @@ class CirugiapreviaController extends Controller
             }else if($model->load($request->post()) && $model->save()){
                 return [
                     'forceReload'=>'#crud-datatable-pjax',
-                    'title'=> "Create new Cirugiaprevia",
-                    'content'=>'<span class="text-success">Create Cirugiaprevia success</span>',
+                    'title'=> "Create new Barrio",
+                    'content'=>'<span class="text-success">Create Barrio success</span>',
                     'footer'=> Html::button('Close',['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
                             Html::a('Create More',['create'],['class'=>'btn btn-primary','role'=>'modal-remote'])
 
                 ];
             }else{
                 return [
-                    'title'=> "Create new Cirugiaprevia",
+                    'title'=> "Create new Barrio",
                     'content'=>$this->renderAjax('create', [
                         'model' => $model,
                     ]),
@@ -122,7 +141,7 @@ class CirugiapreviaController extends Controller
     }
 
     /**
-     * Updates an existing Cirugiaprevia model.
+     * Updates an existing Barrio model.
      * For ajax request will return json object
      * and for non-ajax request if update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
@@ -140,7 +159,7 @@ class CirugiapreviaController extends Controller
             Yii::$app->response->format = Response::FORMAT_JSON;
             if($request->isGet){
                 return [
-                    'title'=> "Update Cirugiaprevia #".$id,
+                    'title'=> "Update Barrio #".$id,
                     'content'=>$this->renderAjax('update', [
                         'model' => $model,
                     ]),
@@ -150,7 +169,7 @@ class CirugiapreviaController extends Controller
             }else if($model->load($request->post()) && $model->save()){
                 return [
                     'forceReload'=>'#crud-datatable-pjax',
-                    'title'=> "Cirugiaprevia #".$id,
+                    'title'=> "Barrio #".$id,
                     'content'=>$this->renderAjax('view', [
                         'model' => $model,
                     ]),
@@ -159,7 +178,7 @@ class CirugiapreviaController extends Controller
                 ];
             }else{
                  return [
-                    'title'=> "Update Cirugiaprevia #".$id,
+                    'title'=> "Update Barrio #".$id,
                     'content'=>$this->renderAjax('update', [
                         'model' => $model,
                     ]),
@@ -181,17 +200,78 @@ class CirugiapreviaController extends Controller
         }
     }
 
-
     /**
-     * Finds the Cirugiaprevia model based on its primary key value.
+     * Delete an existing Barrio model.
+     * For ajax request will return json object
+     * and for non-ajax request if deletion is successful, the browser will be redirected to the 'index' page.
+     * @param integer $id
+     * @return mixed
+     */
+    public function actionDelete($id)
+    {
+        $request = Yii::$app->request;
+        $this->findModel($id)->delete();
+
+        if($request->isAjax){
+            /*
+            *   Process for ajax request
+            */
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            return ['forceClose'=>true,'forceReload'=>'#crud-datatable-pjax'];
+        }else{
+            /*
+            *   Process for non-ajax request
+            */
+            return $this->redirect(['index']);
+        }
+
+
+    }
+
+     /**
+     * Delete multiple existing Barrio model.
+     * For ajax request will return json object
+     * and for non-ajax request if deletion is successful, the browser will be redirected to the 'index' page.
+     * @param integer $id
+     * @return mixed
+     */
+    public function actionBulkDelete()
+    {
+        $request = Yii::$app->request;
+        $pks = explode(',', $request->post( 'pks' )); // Array or selected records primary keys
+        foreach ( $pks as $pk ) {
+            $model = $this->findModel($pk);
+            $model->delete();
+        }
+
+        if($request->isAjax){
+            /*
+            *   Process for ajax request
+            */
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            return ['forceClose'=>true,'forceReload'=>'#crud-datatable-pjax'];
+        }else{
+            /*
+            *   Process for non-ajax request
+            */
+            return $this->redirect(['index']);
+        }
+
+    }
+
+    public function actionArraybarrios($id){
+        echo HtmlHelpers::dropDownList(Barrio::className(), 'id_localidad', $id, 'id', 'nombre');
+    }
+    /**
+     * Finds the Barrio model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return Cirugiaprevia the loaded model
+     * @return Barrio the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Cirugiaprevia::findOne($id)) !== null) {
+        if (($model = Barrio::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

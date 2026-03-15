@@ -9,6 +9,7 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use \yii\web\Response;
 use yii\helpers\Html;
+use app\components\helpers\HtmlHelpers;
 /**
  * LocalidadController implements the CRUD actions for Localidad model.
  */
@@ -27,6 +28,15 @@ class LocalidadController extends Controller {
             ->queryParams);
         return $this->render('index', ['searchModel' => $searchModel, 'dataProvider' => $dataProvider, ]);
     }
+    // LocalidadController
+public function actionArraylocalidadesJson() {
+    Yii::$app->response->format = Response::FORMAT_JSON;
+    return Localidad::find()
+        ->where(['id_provincia' => Yii::$app->request->get('id')])
+        ->select(['id', 'nombre' ,'codigopostal'])
+        ->orderBy(['nombre' => SORT_ASC])
+        ->asArray()->all();
+}
     /**
      * Displays a single Localidad model.
      * @param integer $id
@@ -142,5 +152,8 @@ class LocalidadController extends Controller {
             return $model;
         }
         throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
+    }
+    public function actionArraylocalidades($id){
+        echo HtmlHelpers::dropDownList(Localidad::className(), 'id_provincia', $id, 'id', 'nombre');
     }
 }

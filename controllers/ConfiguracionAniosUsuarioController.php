@@ -11,55 +11,85 @@ use yii\filters\VerbFilter;
 use app\models\AnioProtocolo;
 use \yii\web\Response;
 use yii\helpers\Html;
-use app\components\Metodos\Metodos;
 use yii\filters\AccessControl;
 /**
  * ConfiguracionAniosUsuarioController implements the CRUD actions for ConfiguracionAniosUsuario model.
  */
 class ConfiguracionAniosUsuarioController extends Controller
 {
-  
 
-    public function actionAnioselect($modelo) {
-            $request = Yii::$app->request;
-            $id_estudio = $modelo::find()
-                ->select(['id_estudio'])
-                ->scalar();
-            if ($request->isAjax) {
-                Yii::$app->response->format = Response::FORMAT_JSON;
-                // Cargar los años disponibles
-                $aniosDisponibles = AnioProtocolo::aniosDisponibles();
-                if (isset($_POST['seleccion'])) {
-                  // recibo datos de lo seleccionado, reconstruyo columnas
-                  $seleccionAnios = $_POST['seleccion'];
-                  ConfiguracionAniosUsuario::deleteAll(["id_usuario"=> Yii::$app->user->id,"id_estudio"=>$id_estudio]);
-                foreach ($seleccionAnios as $anio) {
-                    $modelConfAnio= new ConfiguracionAniosUsuario();
-                    $modelConfAnio->id_anio_protocolo = $anio;
-                    $modelConfAnio->id_usuario= Yii::$app->user->id;
-                    $modelConfAnio->id_estudio=$id_estudio;
-                    $modelConfAnio->save();
-                }
-                return [$modelConfAnio, 'forceClose' => true, 'forceReload' => '#crud-datatable-pjax'];
-              }else {
-                // Obtener los años seleccionados por el usuario
-                  $id_usuario = Yii::$app->user->id;
-                  $aniosSeleccionados = ConfiguracionAniosUsuario::getSeleccionAnios($id_usuario , $id_estudio);
-                      return ['success' => true,
-                      'message' => 'Configuración de años guardada correctamente.',
-                       'title' => "Configuración personalizada",
-                       'content' => $this->renderAjax('/../components/Vistas/_anioselect',
-                        ['aniosDisponibles' => $aniosDisponibles,
-                        'aniosSeleccionados'=>$aniosSeleccionados]) ,
-                       'footer' => Html::button('Cancelar',
-                       ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"])
-                       . Html::button('Guardar', ['class' => 'btn btn-primary',
-                       'type' => "submit"]) ];
-              }
-            } else {
-                $this->redirect("index");
+
+  public function actionAnioselect( $id_estudio)
+  {
+    $request = Yii::$app->request;
+
+    if ($request->isAjax) {
+        Yii::$app->response->format = Response::FORMAT_JSON;
+
+        // Cargar los años disponibles
+        $aniosDisponibles = AnioProtocolo::aniosDisponibles();
+
+        if ($request->isPost) {
+
+            // recibo datos seleccionados
+            $seleccionAnios = $request->post('seleccion');
+
+            ConfiguracionAniosUsuario::deleteAll([
+                "id_usuario" => Yii::$app->user->id,
+                "id_estudio" => $id_estudio
+            ]);
+
+            foreach ($seleccionAnios as $anio) {
+
+                $modelConfAnio = new ConfiguracionAniosUsuario();
+                $modelConfAnio->id_anio_protocolo = $anio;
+                $modelConfAnio->id_usuario = Yii::$app->user->id;
+                $modelConfAnio->id_estudio = $id_estudio;
+                $modelConfAnio->save();
             }
+
+            return [
+                'forceClose' => true,
+                'forceReload' => '#crud-datatable-pjax'
+            ];
+
+        } else {
+
+            // Obtener los años seleccionados por el usuario
+            $id_usuario = Yii::$app->user->id;
+
+            $aniosSeleccionados = ConfiguracionAniosUsuario::getSeleccionAnios(
+                $id_usuario,
+                $id_estudio
+            );
+
+            return [
+                'success' => true,
+                'message' => 'Configuración de años cargada correctamente.',
+                'title' => "Configuración personalizada",
+                'content' => $this->renderAjax(
+                    '/../components/Vistas/_anioselect',
+                    [
+                        'aniosDisponibles' => $aniosDisponibles,
+                        'aniosSeleccionados' => $aniosSeleccionados
+                    ]
+                ),
+                'footer' =>
+                    Html::button(
+                        'Cancelar',
+                        ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]
+                    )
+                    . Html::button(
+                        'Guardar',
+                        ['class' => 'btn btn-primary', 'type' => "submit"]
+                    )
+            ];
         }
+
+    } else {
+        return $this->redirect(['index']);
+    }
+  }
 
     /**
      * Deletes an existing ConfiguracionAniosUsuario model.

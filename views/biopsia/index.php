@@ -8,7 +8,7 @@ use johnitvn\ajaxcrud\BulkButtonWidget;
 use yii\widgets\Pjax;
 use kartik\export\ExportMenu;
 use yii\bootstrap\Collapse;
-
+use app\models\Estudio;
 use kartik\widgets\AlertBlock;
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\BiopsiaSearch */
@@ -112,7 +112,7 @@ $columns[]=
             'columns' => $columns,
             'toolbar'=> [
                 ['content'=>
-                    Html::a('<i class="glyphicon glyphicon-calendar"></i>', ['configuracion-anios-usuario/anioselect','modelo' => 'app\models\Solicitudbiopsia'],
+                    Html::a('<i class="glyphicon glyphicon-calendar"></i>', ['configuracion-anios-usuario/anioselect','id_estudio' => Estudio::BIOPSIA],
                     ['role'=>'modal-remote','title'=> 'Personalizar','class'=>'btn btn-default']).
                     Html::a('<i class="glyphicon glyphicon-th"></i>', ['vista/select','modelo' => 'app\models\Biopsia'],
                     ['role'=>'modal-remote','title'=> 'Personalizar','class'=>'btn btn-default']).

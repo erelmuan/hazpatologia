@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 //namespace app\models;
-namespace app\components\Metodos;
+namespace app\components\helpers;
 
 use yii\helpers\Html;
 use Yii;

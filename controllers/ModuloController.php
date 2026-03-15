@@ -9,7 +9,6 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use \yii\web\Response;
 use yii\helpers\Html;
-use app\components\Metodos\Metodos;
 /**
  * ModuloController implements the CRUD actions for Modulo model.
  */

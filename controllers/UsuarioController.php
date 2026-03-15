@@ -13,7 +13,7 @@ use \yii\web\Response;
 use yii\helpers\Html;
 use app\models\RolSearch;
 use app\models\Rol;
-use app\components\Metodos\Metodos;
+use app\components\helpers\Metodos;
 use yii\web\UploadedFile;
 use yii\helpers\Url;
 use yii\imagine\Image;

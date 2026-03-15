@@ -13,7 +13,6 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use \yii\web\Response;
 use yii\helpers\Html;
-use app\components\Metodos\Metodos;
 use app\components\behaviors\AuditoriaBehaviors;
 use yii\filters\AccessControl;
 /**

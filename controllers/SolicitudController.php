@@ -23,7 +23,7 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use \yii\web\Response;
 use yii\helpers\Html;
-use app\components\Metodos\Metodos;
+use app\components\helpers\Metodos;
 use yii\data\ActiveDataProvider;
 use yii\helpers\Json;
 use app\models\patronState\EstadoFactory;

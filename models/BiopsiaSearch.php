@@ -66,10 +66,11 @@ class BiopsiaSearch extends Biopsia
       $selectedYearsQuery = (new \yii\db\Query())
         ->select('id_anio_protocolo')
         ->from('configuracion_anios_usuario')
-        ->andWhere(['id_usuario' => Yii::$app->user->id])
-        ->andWhere(['id_estudio' =>  $id_estudio])
-        ->column();
-
+        ->andWhere(['id_usuario' => Yii::$app->user->id]);
+        if($id_estudio!==null && $id_estudio !==false){
+          $selectedYearsQuery ->andWhere(['id_estudio' =>  $id_estudio])
+          ->column();
+        }
       $query = Biopsia::find()->innerJoinWith('solicitudbiopsia', true)
       ->leftJoin('usuario', 'usuario.id = biopsia.id_usuario')
       ->innerJoin('paciente', 'paciente.id = solicitudbiopsia.id_paciente')

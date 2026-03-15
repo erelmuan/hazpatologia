@@ -14,7 +14,6 @@ use app\models\Biopsia;
 use app\models\Pap;
 use yii\web\UploadedFile;
 use yii\imagine\Image;
-use app\components\Metodos\Metodos;
 /**
  * FirmaController implements the CRUD actions for Firma model.
  */

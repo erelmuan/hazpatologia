@@ -10,14 +10,14 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use \yii\web\Response;
 use yii\helpers\Html;
-use app\components\Metodos\Metodos;
+use app\components\helpers\Metodos;
 
 /**
  * VistaController implements the CRUD actions for Vista model.
  */
 class VistaController extends Controller
 {
-    
+
     public function actionSelect($modelo) {
         $request = Yii::$app->request;
         $model = new $modelo;

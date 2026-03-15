@@ -3,14 +3,14 @@
 namespace app\models;
 
 use Yii;
-
+use yii\helpers\ArrayHelper;
 /**
  * This is the model class for table "localidad".
  *
  * @property int $id
  * @property int $id_provincia
  * @property string $nombre
- * @property int $codigopostal
+ * @property string $codigopostal
  *
  * @property Provincia $provincia
  * @property Paciente[] $pacientes
@@ -44,8 +44,8 @@ class Localidad extends \yii\db\ActiveRecord
     {
         return [
             [[ 'id_provincia', 'codigopostal'], 'default', 'value' => null],
-            [[ 'id_provincia', 'codigopostal'], 'integer'],
-            [['nombre'], 'string', 'max' => 65],
+            [[ 'id_provincia'], 'integer'],
+            [['nombre', 'codigopostal'], 'string', 'max' => 65],
             [['id_provincia'], 'exist', 'skipOnError' => true, 'targetClass' => Provincia::className(), 'targetAttribute' => ['id_provincia' => 'id']],
         ];
     }
@@ -77,5 +77,10 @@ class Localidad extends \yii\db\ActiveRecord
     public function getPacientes()
     {
         return $this->hasMany(Paciente::className(), ['id_localidad' => 'id']);
+    }
+
+    public static function getMapByProvincia($id_provincia){
+      return ArrayHelper::map(self::find()->where(['id_provincia'=>$id_provincia])
+      ->orderBy('nombre')->all(),'id','nombre');
     }
 }

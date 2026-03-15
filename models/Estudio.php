@@ -21,6 +21,9 @@ use Yii;
 
 class Estudio extends \yii\db\ActiveRecord
 {
+
+  const PAP = 1;
+  const BIOPSIA = 2;
   public function behaviors()
   {
 
@@ -96,5 +99,5 @@ class Estudio extends \yii\db\ActiveRecord
   		   {
   		       return $this->hasMany(MaterialsolicitudSolicitud::className(), ['id_estudio' => 'id']);
   		   }
-  		
+
 }

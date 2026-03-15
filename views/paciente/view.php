@@ -24,20 +24,65 @@ use yii\bootstrap\Modal;
             'value'=> $model->nacionalidad->gentilicio,
             'label'=> 'Nacionalidad',
         ],
-        'fecha_nacimiento',
         [
-            'value'=> ($model->localidad)?$model->localidad->nombre:'No definido',
-            'label'=> 'Localidad',
+          'attribute'=> 'fecha_nacimiento',
+          "value"=>Yii::$app->formatter->asDate($model->fecha_nacimiento,'php:d/m/Y'),
         ],
         [
-            'value'=> ($model->localidad)?$model->localidad->provincia->nombre:'No definido',
-            'label'=> 'Provincia',
-        ],
-        'direccion',
-        'cp',
-        'telefono',
-        'email',
+            'label' => 'Domicilio',
+            'format' => 'html',
+            'value' => function($model){
 
+                $html = '';
+                $num = 1;
+
+                foreach ($model->domicilios as $d) {
+
+                    $html .= "<div'>
+                                <b  class='text-primary mb-2'>DOMICILIO {$num}</b>
+
+                                <div style='display:flex;flex-wrap:wrap;gap:10px;margin-top:5px'>
+                                    <div><b>Calle:</b> ".($d->calle ?? 'No definido')."</div>
+                                    <div><b>N°:</b> ".($d->numero ?? 'S/N')."</div>
+                                    <div><b>Tipo:</b> ".($d->tipodom->descripcion ?? 'No definido')."</div>
+                                    <div><b>Provincia:</b> ".($d->provincia->nombre ?? 'No definido')."</div>
+                                    <div><b>Localidad:</b> ".($d->localidad->nombre ?? 'No definido')."</div>
+                                    <div><b>Barrio:</b> ".($d->barrio->nombre ?? 'No definido')."</div>
+                                    <div><b>Principal:</b> ".($d->principal ? 'SI' : 'NO')."</div>
+                                </div>
+                              </div>";
+
+                    $num++;
+                }
+
+                return $html ?: 'Sin domicilios';
+            }
+        ],
+        [
+            'label' => 'Contacto',
+            'format' => 'raw',
+            'value' => function ($model) {
+                if (empty($model->contactos)) {
+                    return '<span class="text-muted">Sin medio de contacto</span>';
+                }
+                // wrapper que recibe padding pero no margenes
+                $html = '<div class="contactos-cell">';
+                foreach ($model->contactos as $contacto) {
+                    $tipo  = Html::encode($contacto->tipocontacto->descripcion ?? '');
+                    $valor = Html::encode($contacto->valor ?? '');
+                    $uso   = Html::encode($contacto->tipouso->descripcion ?? '');
+
+                    // tarjeta COMPACTA: sin margin vertical, solo padding interior
+                    $html .= '<div class="contacto-item">';
+                    $html .= "  <div class='text-primary mb-2'>{$tipo}</div>";
+                    $html .= "  <div><strong>Valor:</strong> {$valor}</div>";
+                    $html .= "  <div><strong>Uso:</strong> {$uso}</div>";
+                    $html .= '</div>';
+                }
+                $html .= '</div>';
+                return $html;
+            },
+        ],
         [
             'attribute' => 'Obra social',
             'format'    => 'html',
@@ -56,7 +101,7 @@ use yii\bootstrap\Modal;
             'label' => 'Último chequeo OS',
             'format'=>'raw',
 
-            'value' => function($model) use ($lastCheck) {
+            'value' => function($model) {
               // Botón que abre el modal para editar paciente
               $url = \yii\helpers\Url::to(['paciente/update', 'id' => $model->id]);
                     $btn = \yii\helpers\Html::a(
@@ -68,8 +113,8 @@ use yii\bootstrap\Modal;
                             'target' => '_blank' // 🔑 abre en nueva pestaña
                         ]
                     );
-                if ($lastCheck) {
-                  $dateTime = new DateTime($lastCheck['fechahora']);
+                if ($model->ultimoChequeo) {
+                  $dateTime = new DateTime($model->ultimoChequeo->fechahora);
                   // Configurar el formatter con locale español
                   $formatter = new \yii\i18n\Formatter([
                       'locale' => 'es-AR', // o 'es-ES'

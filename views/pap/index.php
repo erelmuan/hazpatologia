@@ -9,6 +9,7 @@ use johnitvn\ajaxcrud\BulkButtonWidget;
 use kartik\export\ExportMenu;
 use yii\bootstrap\Collapse;
 use kartik\widgets\AlertBlock;
+use app\models\Estudio;
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\PapSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -109,7 +110,7 @@ $columns[]=
             'columns' => $columns,
             'toolbar'=> [
               ['content'=>
-                  Html::a('<i class="glyphicon glyphicon-calendar"></i>', ['configuracion-anios-usuario/anioselect','modelo' => 'app\models\Solicitudpap'],
+                  Html::a('<i class="glyphicon glyphicon-calendar"></i>', ['configuracion-anios-usuario/anioselect','id_estudio' => Estudio::PAP],
                   ['role'=>'modal-remote','title'=> 'Personalizar','class'=>'btn btn-default']).
                   Html::a('<i class="glyphicon glyphicon-th"></i>', ['vista/select','modelo' => 'app\models\Pap'],
                   ['role'=>'modal-remote','title'=> 'Personalizar','class'=>'btn btn-default']).

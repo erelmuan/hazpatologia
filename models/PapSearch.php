@@ -67,9 +67,11 @@ class PapSearch extends Pap
       $selectedYearsQuery = (new \yii\db\Query())
         ->select('id_anio_protocolo')
         ->from('configuracion_anios_usuario')
-        ->andWhere(['id_usuario' => Yii::$app->user->id])
-        ->andWhere(['id_estudio' => $id_estudio])
-        ->column();
+        ->andWhere(['id_usuario' => Yii::$app->user->id]);
+        if($id_estudio!==null && $id_estudio !==false){
+          $selectedYearsQuery ->andWhere(['id_estudio' =>  $id_estudio])
+          ->column();
+        }
 
         $query = Pap::find()->innerJoinWith('solicitudpap', true)
         ->leftJoin('usuario', 'usuario.id = pap.id_usuario')

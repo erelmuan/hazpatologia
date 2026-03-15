@@ -5,6 +5,7 @@ $db = require __DIR__ . '/db.php';
 
 $config = [
     'id' => 'basic',
+     'charset' => 'UTF-8',
     'name' => 'HAZ PATOLOGIA',
     // set source language to be English
     'sourceLanguage' => 'en-US',

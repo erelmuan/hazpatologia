@@ -3,7 +3,7 @@
 namespace app\models;
 
 use Yii;
-
+use yii\helpers\ArrayHelper;
 /**
  * This is the model class for table "obrasocial".
  *
@@ -87,4 +87,9 @@ class Obrasocial extends \yii\db\ActiveRecord
 		       return $this->hasMany(CarnetOs::className(), ['id_obrasocial' => 'id']);
 		   }
 
+     public static function getMap(){
+
+       return ArrayHelper::map(self::find()->all(),'id','denominacion');
+
+     }
 }

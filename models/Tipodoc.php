@@ -2,7 +2,7 @@
 
 namespace app\models;
 use yii\helpers\Html;
-
+use yii\helpers\ArrayHelper;
 use Yii;
 
 /**
@@ -66,4 +66,8 @@ class Tipodoc extends \yii\db\ActiveRecord
  {
     return Html::dropDownList(Tipodoc::find()->all(),['id'=>'documento']);
  }
+
+  public static function getMap(){
+    return ArrayHelper::map(self::find()->all(), 'id','documento');
+  }
 }

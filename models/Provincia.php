@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use yii\helpers\ArrayHelper;
 
 /**
  * This is the model class for table "provincia".
@@ -64,5 +65,8 @@ class Provincia extends \yii\db\ActiveRecord
     public function getPacientes()
     {
       return $this->hasMany(Paciente::className(), ['id_provincia' => 'id']);
+    }
+    public static function getMap(){
+        return ArrayHelper::map(self::find()->all(),'id','nombre');
     }
 }

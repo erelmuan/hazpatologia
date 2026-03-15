@@ -12,7 +12,7 @@ use app\models\PacienteSearch;
 use app\models\Paciente;
 use app\models\MedicoSearch;
 use app\models\Medico;
-use app\components\Metodos\Metodos;
+use app\components\helpers\Metodos;
 /**
  * SolicitudbiopsiaController implements the CRUD actions for Solicitudbiopsia model.
  */

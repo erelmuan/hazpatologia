@@ -1,3 +1,16 @@
+Version 3.0.0
+Modificacion de paciente y refactorizaciones
+Se modifico al paciente en cuanto a los datos como domicilio y contacto
+ahora estan por separado tambien se agrego el genero y se reacomodo la posicion
+de los inputs
+Refactorizacion:
+de Component: se incorpora los helpers
+los js se alojan en la carpeta WEB
+Creacion de Base para ingresar model.
+
+Se crea las clases necesarias para la modificacion de paciente. Los scripts necesarios
+estan documentados para el cambio
+
 Version 2.9.6
 Mejora en la inserción de las firmas(sellos)
 Se cambia de forma las firmas a png y se modifica el orden de la ejecucion campos

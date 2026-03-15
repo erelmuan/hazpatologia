@@ -14,7 +14,8 @@ use app\models\PermisoSearch;
 use app\models\Permiso;
 use app\models\AccionSearch;
 use app\models\Accion;
-use app\components\Metodos\Metodos;
+use app\components\helpers\Metodos;
+
 /**
  * RolController implements the CRUD actions for Rol model.
  */

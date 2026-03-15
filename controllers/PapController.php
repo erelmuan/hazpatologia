@@ -21,7 +21,7 @@ use yii\filters\VerbFilter;
 use \yii\web\Response;
 use yii\helpers\Html;
 use app\models\Solicitudpap;
-use app\components\Metodos\Metodos;
+use app\components\helpers\Metodos;
 use app\components\behaviors\AuditoriaBehaviors;
 use app\models\Auditoria;
 /**

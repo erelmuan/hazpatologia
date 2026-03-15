@@ -1,0 +1,42 @@
+/* Estilos para el form más vistoso */
+.paciente-form .note-warning{
+  color: #8a1f1f;
+  background: #fff3f2;
+  border-left: 4px solid #d9534f;
+  padding: 10px 12px;
+  border-radius: 4px;
+  margin-bottom: 16px;
+}
+.section-card{
+  border: 1px solid #e6e6e6;
+  border-radius: 8px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+  margin-bottom: 18px;
+  background: #ffffff;
+}
+.section-card .card-header{
+  background: linear-gradient(90deg, #f7fbff, #ffffff);
+  border-bottom: 1px solid #eef2f7;
+  padding: 10px 14px;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+  font-weight: 600;
+}
+.section-legend{
+  display:inline-block;
+  padding: 4px 10px;
+  border-radius: 16px;
+  font-size: 0.9rem;
+  background:#eef7ff;
+  color:#2a6fb3;
+  margin-left: 6px;
+}
+.field-compact .form-group{ margin-bottom: 0.75rem; }
+.small-muted{ font-size: 0.85rem; color:#6c757d; }
+.form-actions{ margin-top: 14px; }
+#resultadoPuco{ min-height:80px; }
+.btn-renaper{ padding: 3px 7px; font-weight:600; }
+.legend-icon{ margin-right:8px; opacity:0.9; }
+@media (max-width:575px){
+  .section-card .card-header{ font-size: 0.95rem; }
+}
