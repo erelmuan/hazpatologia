@@ -1,3 +1,8 @@
+version 3.1.1
+Correccion login
+Correccion del inicio de sesion tanto en la plantilla login como en modelo LoginForm,
+que gestiona las validaciones.
+
 version 3.1.0
 Se corrigio el vendor quitando las modificaciones que habian sido implementadas
 promoviendo la buena practica de no cambiar las librerias que estan en el. De esta
@@ -23,7 +28,7 @@ ahi si implemento la logica se seguridad, de mensajes, busqueda de registros y d
     view inmunohistoquímica, view metodoanticonceptivo, view pantalla, viiew plantilladiagnosticop
     Mejora en la pantalla principal en cuanto al estilo donde sobresalia una franja negra.
     Reduccion de la descripcion en la tarjeta de BIOPSIA
-    Se quita las opciones de exportacion pdf y txt 
+    Se quita las opciones de exportacion pdf y txt
 
 
 Version 3.0.0
