@@ -33,7 +33,7 @@ use yii\helpers\ArrayHelper;
 /**
  * SolicitudController implements the CRUD actions for Solicitud model.
  */
-class SolicitudController extends Controller {
+class SolicitudController extends AppController {
   // behaviors heredado
 
 

@@ -15,7 +15,10 @@ use yii\helpers\Url;
 
     <?= $form->field($model, 'usuario')->textInput(['maxlength' => true,'style'=> 'width:100%; text-transform:uppercase;']) ?>
 
-    <?= $form->field($model, 'contrasenia')->textInput(['maxlength' => true]) ?>
+    <?php if ($model->isNewRecord): ?>
+        <?= $form->field($model, 'contrasenia')->textInput(['maxlength' => true]) ?>
+    <?php endif; ?>    
+    <?= $form->field($model, 'cambioforzadocontrasenia')->checkbox() ?>
 
     <?= $form->field($model, 'nombre')->textInput(['maxlength' => true,'style'=> 'width:100%; text-transform:uppercase;']) ?>
 

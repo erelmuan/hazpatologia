@@ -76,6 +76,16 @@ class Medico extends \yii\db\ActiveRecord
         ];
     }
 
+    public function beforeSave($insert)
+    {
+        if (!parent::beforeSave($insert)) {
+            return false;
+        }
+        $this->nombre = strtoupper($this->nombre);
+        $this->apellido=strtoupper($this->apellido);
+        return true;
+    }
+
     /**
      * @return \yii\db\ActiveQuery
      */

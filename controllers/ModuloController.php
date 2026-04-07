@@ -12,7 +12,7 @@ use yii\helpers\Html;
 /**
  * ModuloController implements the CRUD actions for Modulo model.
  */
-class ModuloController extends Controller {
+class ModuloController extends AppController {
   // behaviors heredado
 
     /**

@@ -1,7 +1,7 @@
 <?php
 use yii\helpers\Url;
 use yii\helpers\Html;
-
+use app\components\grid\MyActionColumn;
 return [
 
     [
@@ -49,7 +49,7 @@ return [
         'attribute'=>'cierre_sesion',
     ],
     [
-        'class' => 'kartik\grid\ActionColumn',
+        'class' => MyActionColumn::class,
         'dropdown' => false,
         'vAlign'=>'middle',
         'template' => '{view}',

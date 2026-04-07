@@ -12,7 +12,7 @@ use yii\helpers\Json;
 /**
  * PlantillafraseController implements the CRUD actions for Plantillafrase model.
  */
-class PlantillafraseController extends Controller {
+class PlantillafraseController extends AppController {
   // behaviors heredado
 
     /**

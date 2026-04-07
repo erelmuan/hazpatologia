@@ -18,7 +18,7 @@ use yii\filters\AccessControl;
 /**
  * ViewestudioController implements the CRUD actions for Viewestudio model.
  */
-class ViewestudioController extends Controller
+class ViewestudioController extends AppController
 {
   // behaviors heredado
 

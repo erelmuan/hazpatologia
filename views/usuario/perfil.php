@@ -5,13 +5,19 @@ use yii\bootstrap\Modal;
 use johnitvn\ajaxcrud\CrudAsset;
 use kartik\widgets\FileInput;
 use yii\helpers\Url;
-
+use yii\web\JsExpression;
 $this->title = 'Perfil';
 $this->params['breadcrumbs'][] = $this->title;
 
 CrudAsset::register($this);
 
 ?>
+<style>
+.file-input .kv-upload,
+.file-input .fileinput-upload-button {
+    display: none;
+}
+</style>
 <div id="w0" class="x_panel">
   <h2><i class="fa fa-table"></i> PERFIL  </h2>
 <div class="usuario-misdatos">
@@ -34,7 +40,7 @@ CrudAsset::register($this);
 
                         <?= $form->field($model, 'email')->textInput(['maxlength' => true, 'style' => 'width:50%']); ?>
 
-                        <?= $form->field($model, 'descripcion')->textInput(['maxlength' => true, 'style' => 'width:50%']); ?>
+                        <?= $form->field($model, 'descripcion')->textarea(['maxlength' => true, 'style' => 'width:50%']); ?>
                         <?= $form->field($model, 'contrasenia')->hiddenInput()->label(false) ?>
 
                         <?= $form->field($model, 'id_pantalla')->hiddenInput()->label(false); ?>
@@ -58,15 +64,28 @@ CrudAsset::register($this);
            </div>
               <div class="tab-pane vertical-pad" id="photo">
 
-                <?= $form->field($model, 'imagen')->widget(
-                    FileInput::classname(), [
-                        'options' => ['accept' => 'image/*'],
-                        'language' => 'es',
-                        'pluginOptions' => ['allowedFileExtensions' => ['jpg', 'gif', 'png'],
-                      ],
-                    ]) ?>
-                    <!-- No hay que cambiar el orden! hiddenInput tiene que estar poder debajo del widget FileInput -->
-                    <?= $form->field($model, 'imagen')->hiddenInput(['value' => $model->imagen])->label(false); ?>
+                <?=$form->field($model, 'imagen')->widget(FileInput::classname(), [
+                  'options' => ['accept' => 'image/*'],
+                  'language' => 'es',
+                  'pluginOptions' => [
+                      'allowedFileExtensions' => ['jpg', 'gif', 'png'],
+                      'showUpload' => true,
+                      'showRemove' => true,
+                      'uploadAsync' => false,
+                  ],
+                  'pluginEvents' => [
+                      'filebatchselected' => new JsExpression("
+                          function() {
+                              $(this).closest('.file-input').find('.kv-upload, .fileinput-upload-button').show();
+                          }
+                      "),
+                      'fileclear' => new JsExpression("
+                          function() {
+                              $(this).closest('.file-input').find('.kv-upload, .fileinput-upload-button').hide();
+                          }
+                      "),
+                  ],
+              ]); ?>
               </div> <!-- end of upload photo tab -->
 
           </div>
@@ -82,6 +101,7 @@ CrudAsset::register($this);
 
 <?php Modal::begin([
     "id" => "ajaxCrudModal",
+    'size'=> Modal::SIZE_DEFAULT,
     "footer" => "", // always need it for jquery plugin
 ]) ?>
 <?php Modal::end(); ?>

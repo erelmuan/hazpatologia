@@ -1,3 +1,31 @@
+version 3.1.0
+Se corrigio el vendor quitando las modificaciones que habian sido implementadas
+promoviendo la buena practica de no cambiar las librerias que estan en el. De esta
+forma ya se puede actualizar el composer.js si que afecte al funcionamiento.
+
+Al hacer esto se hicieron las siguiente modificaciones:
+Agregue un component llamado MyActionColumn para formatear los botones
+Implementacion de un controlador AppController del cual heredan todos los controladores
+ahi si implemento la logica se seguridad, de mensajes, busqueda de registros y de eliminaciones
+
+ Implementacion de contraseña segura, se instalo el widget yii2-password para la contraseñas seguras
+ con un minimo de 8 caracteres, una mayuscula, una minuscula y un caracter especial,
+ Implementacion de cambio forzado de contraseña desde el panel de usuario.
+
+ Sustitucion de metodo de encriptado md5 por encrypt a travez de Yii::$app->security->generatePasswordHash
+
+
+ Cambios menores:
+ Visualizacion de contraseña en el login
+ Transformacion a mayusculas de los campos como procedencia, medicos, obras social.
+ Eliminacion de vistas y controladores que no se usaban.
+    PermisoController, view carnet-os, view cirugia previa,view estudiocie10
+    view inmunohistoquímica, view metodoanticonceptivo, view pantalla, viiew plantilladiagnosticop
+    Mejora en la pantalla principal en cuanto al estilo donde sobresalia una franja negra.
+    Reduccion de la descripcion en la tarjeta de BIOPSIA
+    Se quita las opciones de exportacion pdf y txt 
+
+
 Version 3.0.0
 Modificacion de paciente y refactorizaciones
 Se modifico al paciente en cuanto a los datos como domicilio y contacto

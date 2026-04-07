@@ -123,7 +123,7 @@ CrudAsset::register($this);
             'buttons' => [
               'download' => function ($url, $model) {
                    return Html::a('<i class="fa fa-download"></i>', ['/adjuntosolicitud/descargar', 'id' => $model->id], [
-                       'class' => 'btn btn-warning btn-sm',
+                       'class' => 'btn btn-warning btn-circle btn-sm',
                        'title' => 'Descargar archivo',
                        'target' => '_blank',
                        'data-toggle' => 'tooltip',
@@ -132,7 +132,7 @@ CrudAsset::register($this);
                },
               'view' => function ($url, $model) {
                 return Html::a('<i class="fa fa-eye"></i>', ['adjuntosolicitud/view', 'id' => $model->id], [
-                  'class' => 'btn btn-success btn-sm',
+                  'class' => 'btn btn-success btn-circle btn-sm',
                   'title' => 'Ver archivo',
                   'data-toggle' => 'tooltip',
                   'role' => 'modal-remote',
@@ -142,7 +142,7 @@ CrudAsset::register($this);
               },
               'update' => function ($url, $model) {
                 return Html::a('<i class="fa fa-pencil"></i>', ['adjuntosolicitud/update', 'id' => $model->id], [
-                  'class' => 'btn btn-primary btn-sm',
+                  'class' => 'btn btn-primary btn-circle btn-sm',
                   'title' => 'Modificar archivo',
                   'data-toggle' => 'tooltip',
                   'role' => 'modal-remote',
@@ -155,7 +155,7 @@ CrudAsset::register($this);
                 return Html::a('<i class="fa fa-trash"></i>', ['adjuntosolicitud/delete', 'id' => $model->id], [
                   'data-confirm' => '¿Estás seguro de eliminar este archivo?',
                   'data-method' => 'post',
-                  'class' => 'btn btn-danger btn-sm'
+                  'class' => 'btn btn-danger btn-circle btn-sm',
                 ]);
               }
             ]

@@ -14,7 +14,7 @@ use yii\helpers\Html;
 /**
  * ProcedenciaController implements the CRUD actions for Procedencia model.
  */
-class ProcedenciaController extends Controller {
+class ProcedenciaController extends AppController {
   // behaviors heredado
 
     /**
@@ -121,7 +121,7 @@ class ProcedenciaController extends Controller {
             }
         }
     }
-  
+
     /**
      * Finds the Procedencia model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.

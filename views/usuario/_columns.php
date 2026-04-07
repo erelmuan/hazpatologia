@@ -4,6 +4,7 @@ use kartik\grid\GridView;
 use yii\helpers\Html;
 use yii\helpers\ArrayHelper;
 use app\models\Pantalla;
+use app\components\grid\MyActionColumn;
 return [
       [
         'class' => '\kartik\grid\ExpandRowColumn',
@@ -27,12 +28,9 @@ return [
     [
         'class'=>'\kartik\grid\DataColumn',
           'label'=> 'Contraseña',
-
           'value' => function($dataProvider,  $widget) {
-            return Html::a('Resetear Contraseña', [ "usuario/index","id"=> $dataProvider->id]
-
+            return Html::a('Resetear Contraseña', [ "usuario/resetpassword","id"=> $dataProvider->id]
             ,[    'class' => 'text-success','role'=>'modal-remote','title'=>'Sugerencia:ingrese 123','data-toggle'=>'tooltip'
-
            ]);
 
            }
@@ -74,7 +72,7 @@ return [
         ],
     ],
     [
-        'class' => 'kartik\grid\ActionColumn',
+        'class' =>MyActionColumn::class,
         'dropdown' => false,
         'vAlign'=>'middle',
         'urlCreator' => function($action, $model, $key, $index) {

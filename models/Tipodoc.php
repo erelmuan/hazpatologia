@@ -54,6 +54,22 @@ class Tipodoc extends \yii\db\ActiveRecord
             'documento' => 'Documento',
         ];
     }
+    public function beforeSave($insert)
+    {
+        if (!parent::beforeSave($insert)) {
+            return false;
+        }
+        $this->documento = strtoupper($this->documento);
+        return true;
+    }
+    public static function getListTipodoc()
+   {
+      return Html::dropDownList(Tipodoc::find()->all(),['id'=>'documento']);
+   }
+
+    public static function getMap(){
+      return ArrayHelper::map(self::find()->all(), 'id','documento');
+    }
 
     /**
      * @return \yii\db\ActiveQuery
@@ -62,12 +78,4 @@ class Tipodoc extends \yii\db\ActiveRecord
     {
         return $this->hasMany(Paciente::className(), ['id_tipodoc' => 'id']);
     }
-    public static function getListTipodoc()
- {
-    return Html::dropDownList(Tipodoc::find()->all(),['id'=>'documento']);
- }
-
-  public static function getMap(){
-    return ArrayHelper::map(self::find()->all(), 'id','documento');
-  }
 }

@@ -14,7 +14,7 @@ use yii\helpers\Html;
 /**
  * TipoAccesoController implements the CRUD actions for TipoAcceso model.
  */
-class TipoAccesoController extends Controller
+class TipoAccesoController extends AppController
 {
 
   // behaviors heredado

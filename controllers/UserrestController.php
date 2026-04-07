@@ -2,7 +2,7 @@
 namespace app\controllers;
 use yii\rest\Controller;
 
-class UserrestController extends Controller
+class UserrestController extends AppController
 {
   // behaviors heredado
 
@@ -19,8 +19,7 @@ class UserrestController extends Controller
         //$password=$_POST['password' ];
 
         if($u=\app\models\Usuario::findOne(['usuario'=>$username]))
-            if($u->contrasenia==md5($password)) {//o crypt, según esté en la BD
-
+              if (Yii::$app->security->validatePassword($u->contrasenia, $password)) {
                 return ['token'=>$u->token,'id'=>$u->id,'usuario'=>$u->usuario];
             }
 

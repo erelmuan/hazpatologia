@@ -10,6 +10,7 @@ use kartik\export\ExportMenu;
 use yii\bootstrap\Collapse;
 use app\models\Estudio;
 use kartik\widgets\AlertBlock;
+use app\components\grid\MyActionColumn;
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\BiopsiaSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -36,14 +37,10 @@ $export = ExportMenu::widget([
     'exportConfig' => [
         ExportMenu::FORMAT_TEXT => false,
         ExportMenu::FORMAT_HTML => false,
-        ExportMenu::FORMAT_PDF => [
-            'icon' => 'fa fa-file-pdf-o',
-        ],
+        ExportMenu::FORMAT_PDF => false,
+
         ExportMenu::FORMAT_CSV => [
             'icon' => 'fa fa-file-text-o',
-        ],
-        ExportMenu::FORMAT_TEXT => [
-            'icon' => 'fa fa-file-text',
         ],
         ExportMenu::FORMAT_EXCEL => [
             'icon' => 'fa fa-file-excel-o',
@@ -68,14 +65,18 @@ $export = ExportMenu::widget([
 
 $columns[]=
     [
-        'class' => 'kartik\grid\ActionColumn',
+        'class' => MyActionColumn::class,
         'dropdown' => false,
         'vAlign'=>'middle',
         'urlCreator' => function($action, $model, $key, $index) {
             return Url::to([$action,'id'=>$key]);
         },
-        'template'=> '{view}{update}{delete}',
-        'updateOptions'=>['title'=>'Actualizar', 'data-toggle'=>'tooltip','icon'=>"<button class='btn-primary btn-circle'><span class='glyphicon glyphicon-pencil'></span></button>"],
+        'updateOptions'=>[
+            'title' => 'Actualizar',
+            'data-toggle' => 'tooltip',
+            'class' => 'btn btn-primary btn-circle btn-sm',
+            'icon' => "<i class='fas fa-pen'></i>", // 👈 solo ícono
+        ],
         'options' => ['style' => 'width:7%'],
 
            'visibleButtons'=>[

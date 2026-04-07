@@ -11,7 +11,7 @@ use yii\helpers\Html;
 /**
  * ObrasocialController implements the CRUD actions for Obrasocial model.
  */
-class ObrasocialController extends Controller {
+class ObrasocialController extends AppController {
   // behaviors heredado
 
     /**

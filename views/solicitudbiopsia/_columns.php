@@ -1,6 +1,6 @@
 <?php
 use yii\helpers\Url;
-
+use app\components\grid\MyActionColumn;
 return [
     [
         'class' => 'kartik\grid\CheckboxColumn',
@@ -75,7 +75,7 @@ return [
         // 'attribute'=>'id_estado',
     // ],
     [
-        'class' => 'kartik\grid\ActionColumn',
+        'class' => MyActionColumn::class,
         'dropdown' => false,
         'vAlign'=>'middle',
         'urlCreator' => function($action, $model, $key, $index) {

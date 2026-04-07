@@ -12,7 +12,7 @@ use yii\helpers\Json;
 /**
  * PlantillafloraController implements the CRUD actions for Plantillaflora model.
  */
-class PlantillafloraController extends Controller {
+class PlantillafloraController extends AppController {
   // behaviors heredado
 
     /**

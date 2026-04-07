@@ -44,7 +44,7 @@ use app\models\User;
 use app\models\Registrosesion;
 use yii\web\Cookie;
 use app\components\Seguridad\Seguridad;
-class SiteController extends Controller {
+class SiteController extends AppController {
     /**
      * {@inheritdoc}
      */

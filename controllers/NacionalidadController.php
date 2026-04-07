@@ -12,7 +12,7 @@ use yii\helpers\Html;
 /**
  * NacionalidadController implements the CRUD actions for Nacionalidad model.
  */
-class NacionalidadController extends Controller {
+class NacionalidadController extends AppController {
   // behaviors heredado
 
     /**

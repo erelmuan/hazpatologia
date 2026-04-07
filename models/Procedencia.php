@@ -51,7 +51,39 @@ class Procedencia extends \yii\db\ActiveRecord
             [['nombre'],'unique'],
         ];
     }
+      public function beforeSave($insert)
+      {
+          if (!parent::beforeSave($insert)) {
+              return false;
+          }
+          $this->nombre = strtoupper($this->nombre);
+          return true;
+      }
 
+       public function Estudios()
+      {
+          if (!isset($this->id))
+              return false;
+          $id= $this->id;
+          $estudiosPap = Solicitudpap::find()
+           ->innerJoinWith('procedencia', 'procedencia.id = solicitudpap.id_procedencia')
+           ->innerJoinWith('pap', 'pap.id_solicitudpap = solicitudpap.id')
+           //Estado 2 pap
+           ->where(['and', "procedencia.id=".$id])
+           ->count('*');
+         if ($estudiosPap >0)
+             return true;
+         $estudiosBiopsia = Solicitudbiopsia::find()
+          ->innerJoinWith('procedencia', 'procedencia.id = solicitudbiopsia.id_procedencia')
+          ->innerJoinWith('biopsia', 'biopsia.id_solicitudbiopsia = solicitudbiopsia.id')
+          ->where(['and', "procedencia.id=".$id])
+          ->count('*');
+
+        if ($estudiosBiopsia >0)
+            return true;
+
+        return false;
+      }
     /**
      * {@inheritdoc}
      */
@@ -73,50 +105,19 @@ class Procedencia extends \yii\db\ActiveRecord
         return $this->hasMany(Solicitud::className(), ['id_procedencia' => 'id']);
     }
     /**
-   		    * @return \yii\db\ActiveQuery
-   		    */
-   		   public function getSolicitudbiopsias()
-   		   {
-   		       return $this->hasMany(Solicitudbiopsia::className(), ['id_procedencia' => 'id']);
-   		   }
+	    * @return \yii\db\ActiveQuery
+	    */
+	   public function getSolicitudbiopsias()
+	   {
+	       return $this->hasMany(Solicitudbiopsia::className(), ['id_procedencia' => 'id']);
+	   }
 
-   		   /**
-   		    * @return \yii\db\ActiveQuery
-   		    */
-   		   public function getSolicitudpaps()
-   		   {
-   		       return $this->hasMany(Solicitudpap::className(), ['id_procedencia' => 'id']);
-   		   }
-         public function beforeSave($insert){
-         //DE FORMA INDIVIDUAL
-          if ($insert) {
-           $this->nombre = strtoupper($this->nombre);
-         }
-           return parent::beforeSave($insert);
-         }
+	   /**
+	    * @return \yii\db\ActiveQuery
+	    */
+	   public function getSolicitudpaps()
+	   {
+	       return $this->hasMany(Solicitudpap::className(), ['id_procedencia' => 'id']);
+	   }
 
-    public function Estudios()
-   {
-       if (!isset($this->id))
-           return false;
-       $id= $this->id;
-       $estudiosPap = Solicitudpap::find()
-        ->innerJoinWith('procedencia', 'procedencia.id = solicitudpap.id_procedencia')
-        ->innerJoinWith('pap', 'pap.id_solicitudpap = solicitudpap.id')
-        //Estado 2 pap
-        ->where(['and', "procedencia.id=".$id])
-        ->count('*');
-      if ($estudiosPap >0)
-          return true;
-      $estudiosBiopsia = Solicitudbiopsia::find()
-       ->innerJoinWith('procedencia', 'procedencia.id = solicitudbiopsia.id_procedencia')
-       ->innerJoinWith('biopsia', 'biopsia.id_solicitudbiopsia = solicitudbiopsia.id')
-       ->where(['and', "procedencia.id=".$id])
-       ->count('*');
-
-     if ($estudiosBiopsia >0)
-         return true;
-
-     return false;
-   }
 }

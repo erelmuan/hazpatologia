@@ -19,7 +19,7 @@ use app\components\helpers\Metodos;
 /**
  * RolController implements the CRUD actions for Rol model.
  */
-class RolController extends Controller {
+class RolController extends AppController {
   // behaviors heredado
 
     /**

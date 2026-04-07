@@ -49,8 +49,14 @@ class Provincia extends \yii\db\ActiveRecord
             'codigo' => 'Codigo',
         ];
     }
-
-
+    public function beforeSave($insert)
+    {
+        if (!parent::beforeSave($insert)) {
+            return false;
+        }
+        $this->nombre = strtoupper($this->nombre);
+        return true;
+    }
     /**
      * @return \yii\db\ActiveQuery
      */

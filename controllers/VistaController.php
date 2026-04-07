@@ -15,7 +15,7 @@ use app\components\helpers\Metodos;
 /**
  * VistaController implements the CRUD actions for Vista model.
  */
-class VistaController extends Controller
+class VistaController extends AppController
 {
 
     public function actionSelect($modelo) {

@@ -13,7 +13,7 @@ use yii\helpers\Html;
 /**
  * ProvinciaController implements the CRUD actions for Provincia model.
  */
-class ProvinciaController extends Controller {
+class ProvinciaController extends AppController {
   // behaviors heredado
 
     /**
@@ -118,7 +118,7 @@ class ProvinciaController extends Controller {
             }
         }
     }
-  
+
     /**
      * Finds the Provincia model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.

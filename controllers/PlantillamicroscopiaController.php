@@ -12,7 +12,7 @@ use yii\helpers\Json;
 /**
  * PlantillamicroscopiaController implements the CRUD actions for Plantillamicroscopia model.
  */
-class PlantillamicroscopiaController extends Controller {
+class PlantillamicroscopiaController extends AppController {
   // behaviors heredado
 
     /**

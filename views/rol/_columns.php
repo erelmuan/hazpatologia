@@ -1,6 +1,7 @@
 <?php
 use yii\helpers\Url;
 use kartik\grid\GridView;
+use app\components\grid\MyActionColumn;
 return [
     [
       'class' => '\kartik\grid\ExpandRowColumn',
@@ -33,7 +34,7 @@ return [
         'attribute'=>'descripcion',
     ],
     [
-        'class' => 'kartik\grid\ActionColumn',
+        'class' => MyActionColumn::class,
         'dropdown' => false,
         'vAlign'=>'middle',
         'urlCreator' => function($action, $model, $key, $index) {

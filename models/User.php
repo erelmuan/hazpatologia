@@ -108,7 +108,7 @@ class User extends \yii\base\BaseObject implements \yii\web\IdentityInterface
      */
     public function validatePassword($password)
     {
-        return ($this->password === md5($password));
+      return Yii::$app->security->validatePassword($password, $this->password);
     }
 
     public function attributeLabels()

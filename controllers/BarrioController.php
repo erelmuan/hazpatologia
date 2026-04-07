@@ -14,8 +14,8 @@ use app\components\helpers\HtmlHelpers;
 /**
  * BarrioController implements the CRUD actions for Barrio model.
  */
-class BarrioController extends Controller
-{
+class BarrioController extends AppController {
+
     /**
      * @inheritdoc
      */

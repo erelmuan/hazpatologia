@@ -12,7 +12,7 @@ use yii\helpers\Json;
 /**
  * PlantillaaspectoController implements the CRUD actions for Plantillaaspecto model.
  */
-class PlantillaaspectoController extends Controller {
+class PlantillaaspectoController extends AppController {
   // behaviors heredado
 
     /**

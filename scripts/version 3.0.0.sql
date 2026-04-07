@@ -1,4 +1,6 @@
 ---
+TENGO QUE VER TODOS LOS CAMPOS QUE AGREGUE POR QUERY PORQUE NO TENIA
+EL ABM EN LA Vista
 
 delete from carnet_os co
 where not exists (
@@ -21,8 +23,46 @@ where not exists( select 1
         DELETE 113802
 
 Query returned successfully in 2 min 50 secs.
+-- Table: public.genero
+
+-- DROP TABLE public.genero;
+
+----
+-- SEQUENCE: public.genero_id_seq
+
+-- DROP SEQUENCE public.genero_id_seq;
+
+CREATE SEQUENCE public.genero_id_seq
+    INCREMENT 1
+    START 1
+    MINVALUE 1
+    MAXVALUE 2147483647
+    CACHE 1;
+
+ALTER SEQUENCE public.genero_id_seq
+    OWNER TO postgres;
+
+		CREATE TABLE public.genero
+		(
+		    id integer NOT NULL DEFAULT nextval('genero_id_seq'::regclass),
+		    nombre character varying COLLATE pg_catalog."default" NOT NULL,
+		    CONSTRAINT genero_pkey PRIMARY KEY (id)
+		)
+
+		TABLESPACE pg_default;
+
+		ALTER TABLE public.genero
+		    OWNER to postgres;
 
 
+		-----
+		ALTER TABLE paciente
+		ADD COLUMN id_genero INTEGER;
+
+		ALTER TABLE paciente
+ADD CONSTRAINT paciente_id_genero_fkey
+FOREIGN KEY (id_genero)
+REFERENCES genero(id);
 -- SEQUENCE: public.tipotel_id_seq
 
 -- DROP SEQUENCE public.tipotel_id_seq;

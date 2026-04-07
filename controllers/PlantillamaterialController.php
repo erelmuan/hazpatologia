@@ -14,7 +14,7 @@ use yii\helpers\Json;
 /**
  * PlantillamaterialController implements the CRUD actions for Plantillamaterial model.
  */
-class PlantillamaterialController extends Controller {
+class PlantillamaterialController extends AppController {
   // behaviors heredado
 
     /**

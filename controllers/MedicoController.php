@@ -15,7 +15,7 @@ use yii\helpers\Json;
 /**
  * MedicoController implements the CRUD actions for Medico model.
  */
-class MedicoController extends Controller {
+class MedicoController extends AppController {
   // behaviors heredado
 
     public function actionSearch() {
@@ -143,7 +143,7 @@ class MedicoController extends Controller {
             }
         }
     }
-  
+
 
     /**
      * Finds the Medico model based on its primary key value.

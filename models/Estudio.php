@@ -63,6 +63,15 @@ class Estudio extends \yii\db\ActiveRecord
              'codigo' => 'Codigo',
         ];
     }
+    public function beforeSave($insert)
+    {
+        if (!parent::beforeSave($insert)) {
+            return false;
+        }
+        $this->descripcion = strtoupper($this->descripcion);
+        $this->modelo = strtolower($this->modelo);
+        return true;
+    }
 
     /**
      * @return \yii\db\ActiveQuery
@@ -93,11 +102,11 @@ class Estudio extends \yii\db\ActiveRecord
  		   }
 
        /**
-  		    * @return \yii\db\ActiveQuery
-  		    */
-  		   public function getMaterialsolicitudSolicituds()
-  		   {
-  		       return $this->hasMany(MaterialsolicitudSolicitud::className(), ['id_estudio' => 'id']);
-  		   }
+	    * @return \yii\db\ActiveQuery
+	    */
+	   public function getMaterialsolicitudSolicituds()
+	   {
+	       return $this->hasMany(MaterialsolicitudSolicitud::className(), ['id_estudio' => 'id']);
+	   }
 
 }

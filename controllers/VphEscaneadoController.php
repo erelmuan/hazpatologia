@@ -15,7 +15,7 @@ use yii\web\UploadedFile;
 /**
  * VphEscaneadoController implements the CRUD actions for VphEscaneado model.
  */
-class VphEscaneadoController extends Controller
+class VphEscaneadoController extends AppController
 {
 
 

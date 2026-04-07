@@ -15,7 +15,7 @@ use app\models\ConfiguracionAniosUsuario;
 /**
  * AnioProtocoloController implements the CRUD actions for AnioProtocolo model.
  */
-class AnioProtocoloController extends Controller {
+class AnioProtocoloController extends AppController {
   // behaviors heredado
 
     /**

@@ -12,7 +12,7 @@ use yii\helpers\Json;
 /**
  * PlantillapavimentosaController implements the CRUD actions for Plantillapavimentosa model.
  */
-class PlantillapavimentosaController extends Controller {
+class PlantillapavimentosaController extends AppController {
   // behaviors heredado
 
     /**

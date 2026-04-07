@@ -14,8 +14,8 @@ use yii\helpers\Html;
 /**
  * RegistrosesionController implements the CRUD actions for Registrosesion model.
  */
-class RegistrosesionController extends Controller
-{
+class RegistrosesionController extends AppController {
+
 // behaviors heredado
 
     /**

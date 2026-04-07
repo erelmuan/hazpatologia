@@ -1,7 +1,7 @@
 <?php
 use yii\helpers\Url;
 use yii\helpers\Html;
-
+use app\components\grid\MyActionColumn;
 return [
 
     [
@@ -23,7 +23,6 @@ return [
         'attribute'=>'usuario.usuario',
         'width' => '170px',
         'value' => function($model) {
-
           return Html::a( $model->usuario->usuario, ['usuario/view',"id"=> $model->usuario->id]
 
             ,[    'class' => 'text-success','role'=>'modal-remote','title'=>'Datos del paciente','data-toggle'=>'tooltip']
@@ -31,20 +30,17 @@ return [
 
          }
          ,
-
          'filterInputOptions' => ['placeholder' => 'Ingrese Dni,HC o nombre'],
          'format' => 'raw',
     ],
     [
-        'class' => 'kartik\grid\ActionColumn',
-        'dropdown' => false,
-        'vAlign'=>'middle',
-        'urlCreator' => function($action, $model, $key, $index) {
-                return Url::to([$action,'id'=>$key]);
-        },
-        'updateOptions'=>['title'=>'Actualizar', 'data-toggle'=>'tooltip','icon'=>"<button class='btn-primary btn-circle'><span class='glyphicon glyphicon-pencil'></span></button>"],
-        'options' => ['style' => 'width:7%'],
-
+        'class' => MyActionColumn::class,
+        'updateOptions'=>[
+            'title' => 'Actualizar',
+            'data-toggle' => 'tooltip',
+            'class' => 'btn btn-primary btn-circle btn-sm',
+            'icon' => "<i class='fas fa-pen'></i>", // 👈 solo ícono
+        ],
     ],
 
 ];

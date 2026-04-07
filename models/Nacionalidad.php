@@ -53,7 +53,14 @@ class Nacionalidad extends \yii\db\ActiveRecord
             'gentilicio' => 'Gentilicio',
         ];
     }
-
+    public function beforeSave($insert)
+    {
+        if (!parent::beforeSave($insert)) {
+            return false;
+        }
+        $this->gentilicio = strtoupper($this->gentilicio);
+        return true;
+    }
     /**
      * @return \yii\db\ActiveQuery
      */

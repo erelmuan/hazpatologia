@@ -81,7 +81,7 @@ use yii\widgets\Pjax;
                         \yiister\gentelella\widgets\Menu::widget(
                             [
                                 "items" => [
-                                    ["label" => "Inicio", "url" => ["/site/index"], "icon" => "fa fa-home"]
+                                    ["label" => "Inicio", "url" => ["/site/index"], "icon" => "fas fa-home"]
 
                                 ],
                             ]
@@ -91,9 +91,13 @@ use yii\widgets\Pjax;
                         \yiister\gentelella\widgets\Menu::widget(
                             [
                                 "items" => [
-                                    ["label" => "Inicio", "url" => ["/site/index"], "icon" => "fa fa-home"],
+                                    ["label" => "Inicio", "url" => ["/site/index"], "icon" => "fas fa-home"],
+                                    ["label" => "Solicitudes", "url" => ["/solicitud/index"], "icon" => "fas fa-file-text-o"],
+                                    [ 'separator' => '<br>',"label" => "Biopsias",   "url" => ["/biopsia/index","sort"=>"-id"],  'icon' =>"fas fa-microscope"],
+                                    ["label" => "Paps","url" => ["/pap/index","sort"=>"-id"], "icon" => "fas fa-flask"],
+                                    ["label" => "Pacientes", "url" => ["/paciente/index"], "icon" => "fas fa-group"],
                                     [   "label" => "Plant. biopsia",
-                                        "icon" => "fa fa-files-o",
+                                        "icon" => "fas fa-files-o",
                                         "url" => "#",
                                         "items" => [
                                             ["label" => "Diagnostico", "url" => ["/plantilladiagnostico/index"]],
@@ -106,7 +110,7 @@ use yii\widgets\Pjax;
                                         ],
                                     ],
                                     [   "label" => "Plant. pap",
-                                        "icon" => "fa fa-files-o",
+                                        "icon" => "fas fa-files-o",
                                         "url" => "#",
                                         "items" => [
                                             ["label" => "Diagnostico", "url" => ["/plantilladiagnostico/index"]],
@@ -119,11 +123,8 @@ use yii\widgets\Pjax;
 
                                         ],
                                     ],
-                                    ["label" => "Pacientes", "url" => ["/paciente/index"], "icon" => "fa fa-group"],
-                                    [ 'separator' => '<br>',"label" => "Biopsias",   "url" => ["/biopsia/index","sort"=>"-id"],  'icon' =>"fa fa-microscope"],
-                                    ["label" => "Paps","url" => ["/pap/index","sort"=>"-id"], "icon" => "fa fa-flask"],
-                                    ["label" => "Solicitudes", "url" => ["/solicitud/index"], "icon" => "fa fa-file-text-o"],
-                                    ["label" => "Consulta", "url" => ["/solicitud/consulta"], "icon" => "fa fa-search"],
+
+                                    ["label" => "Consulta", "url" => ["/solicitud/consulta"], "icon" => "fas fa-search"],
 
 
                                 ],

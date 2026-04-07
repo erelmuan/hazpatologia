@@ -18,8 +18,8 @@ use yii\data\ActiveDataProvider;
 /**
  * AdjuntosolicitudController implements the CRUD actions for Adjuntosolicitud model.
  */
-class AdjuntosolicitudController extends Controller
-{
+class AdjuntosolicitudController extends AppController {
+
   // behaviors heredado
 
 

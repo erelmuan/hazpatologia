@@ -27,7 +27,7 @@ use app\models\Auditoria;
 /**
  * PapController implements the CRUD actions for Pap model.
  */
-class PapController extends Controller {
+class PapController extends AppController {
     /**
      * Lists all Pap models.
      * @return mixed
@@ -86,13 +86,19 @@ class PapController extends Controller {
         return $result;
     }
 
-    private function validar($post) {
-        if (Yii::$app->user->identity->contrasenia <> md5($post['contrasenia'])) {
-          $this->setearMensajeError('CONTRASEÑA INCORRECTA');
-            return false;
-        }
+    public function validar($post) {
+
         if ($post['Pap']['firmado'] !== "1") {
           $this->setearMensajeError('EN ESTADO LISTO, DEBE POSEER LA FIRMA');
+          return false;
+        }
+        if(empty($post['contrasenia'])){
+          $this->setearMensajeError("EN ESTADO LISTO, DEBE ESCRIBIR LA CONTRASEÑA");
+          return false;
+        }
+      if (!Yii::$app->security->validatePassword($post['contrasenia'], Yii::$app->user->identity->contrasenia)) {
+          $this->setearMensajeError('CONTRASEÑA INCORRECTA');
+            return false;
         }
         else {
             return true;

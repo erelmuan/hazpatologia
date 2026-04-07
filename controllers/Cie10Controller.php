@@ -14,8 +14,8 @@ use yii\helpers\Html;
 /**
  * Cie10Controller implements the CRUD actions for Cie10 model.
  */
-class Cie10Controller extends Controller
-{
+class Cie10Controller extends AppController {
+
 
     /**
      * Lists all Cie10 models.

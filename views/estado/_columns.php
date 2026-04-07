@@ -1,6 +1,6 @@
 <?php
 use yii\helpers\Url;
-
+use app\components\grid\MyActionColumn;
 return [
 
 
@@ -17,7 +17,7 @@ return [
         'attribute'=>'explicacion',
     ],
     [
-        'class' => 'kartik\grid\ActionColumn',
+        'class' => MyActionColumn::class,
         'dropdown' => false,
         'template' => '{view}',
         'vAlign'=>'middle',

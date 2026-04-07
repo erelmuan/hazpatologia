@@ -53,7 +53,14 @@ class Tipoprofesional extends \yii\db\ActiveRecord
             'profesion' => 'Profesion',
         ];
     }
-
+    public function beforeSave($insert)
+    {
+        if (!parent::beforeSave($insert)) {
+            return false;
+        }
+        $this->profesion = strtoupper($this->profesion);
+        return true;
+    }
     /**
      * @return \yii\db\ActiveQuery
      */

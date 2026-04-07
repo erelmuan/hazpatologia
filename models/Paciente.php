@@ -118,6 +118,59 @@ class Paciente extends \yii\db\ActiveRecord
         ];
     }
 
+    public function beforeSave($insert)
+    {
+        if (!parent::beforeSave($insert)) {
+            return false;
+        }
+        $this->nombre = strtoupper($this->nombre);
+        $this->apellido = strtoupper($this->apellido);
+        return true;
+    }
+    public function Estudios()
+   {
+       if (!isset($this->id))
+         return false;
+         $estudiosPap = Solicitudpap::find()
+       ->innerJoinWith('paciente')
+       ->where(['paciente.id' => $this->id])
+       ->andWhere([
+           'or',['solicitudpap.id_estado' => EstadoBase::LISTO],
+           ['solicitudpap.id_estado' => EstadoBase::DERIVADO_LISTO],
+       ])->count();
+      if ($estudiosPap >0)
+          return true;
+          $estudiosBiopsia = Solicitudbiopsia::find()
+        ->innerJoinWith('paciente')
+        ->where(['paciente.id' => $this->id])
+        ->andWhere([
+            'or', ['solicitudbiopsia.id_estado' => EstadoBase::LISTO],
+            ['solicitudbiopsia.id_estado' => EstadoBase::DERIVADO_LISTO],
+        ])->count();
+     if ($estudiosBiopsia >0)
+         return true;
+
+     return false;
+   }
+     public function registrarChequeo(): bool
+   {
+       $tieneOs = $this->getCarnetOs()->exists();
+
+       $checkOS = Pacientecheckos::find()
+           ->where(['id_paciente' => $this->id])
+           ->one();
+
+       if ($checkOS === null) {
+           $checkOS = new Pacientecheckos();
+           $checkOS->id_paciente = $this->id;
+       }
+
+       $checkOS->tiene_os = $tieneOs;
+       $checkOS->fechahora = new \yii\db\Expression('NOW()');
+
+       return $checkOS->save(false);
+   }
+
     /**
      * @return \yii\db\ActiveQuery
      */
@@ -169,16 +222,6 @@ class Paciente extends \yii\db\ActiveRecord
           return $this->hasMany(Solicitud::className(), ['id_paciente' => 'id']);
       }
 
-      public function beforeSave($insert){
-      //DE FORMA INDIVIDUAL
-       if ($insert) {
-        $this->nombre = strtoupper($this->nombre);
-        $this->apellido = strtoupper($this->apellido);
-      }
-        return parent::beforeSave($insert);
-      }
-
-
 
     /**
 	    * @return \yii\db\ActiveQuery
@@ -196,31 +239,7 @@ class Paciente extends \yii\db\ActiveRecord
 	       return $this->hasMany(Solicitudpap::className(), ['id_paciente' => 'id']);
 	   }
 
-     public function Estudios()
-    {
-        if (!isset($this->id))
-          return false;
-          $estudiosPap = Solicitudpap::find()
-        ->innerJoinWith('paciente')
-        ->where(['paciente.id' => $this->id])
-        ->andWhere([
-            'or',['solicitudpap.id_estado' => EstadoBase::LISTO],
-            ['solicitudpap.id_estado' => EstadoBase::DERIVADO_LISTO],
-        ])->count();
-       if ($estudiosPap >0)
-           return true;
-           $estudiosBiopsia = Solicitudbiopsia::find()
-         ->innerJoinWith('paciente')
-         ->where(['paciente.id' => $this->id])
-         ->andWhere([
-             'or', ['solicitudbiopsia.id_estado' => EstadoBase::LISTO],
-             ['solicitudbiopsia.id_estado' => EstadoBase::DERIVADO_LISTO],
-         ])->count();
-      if ($estudiosBiopsia >0)
-          return true;
 
-      return false;
-    }
         /**
           * @return \yii\db\ActiveQuery
        */
@@ -275,22 +294,5 @@ class Paciente extends \yii\db\ActiveRecord
 	       return $this->hasMany(Contacto::className(), ['id_paciente' => 'id']);
 	   }
 
-       public function registrarChequeo(): bool
-     {
-         $tieneOs = $this->getCarnetOs()->exists();
 
-         $checkOS = Pacientecheckos::find()
-             ->where(['id_paciente' => $this->id])
-             ->one();
-
-         if ($checkOS === null) {
-             $checkOS = new Pacientecheckos();
-             $checkOS->id_paciente = $this->id;
-         }
-
-         $checkOS->tiene_os = $tieneOs;
-         $checkOS->fechahora = new \yii\db\Expression('NOW()');
-
-         return $checkOS->save(false);
-     }
 }

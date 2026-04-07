@@ -1,6 +1,6 @@
 <?php
 use yii\helpers\Url;
-
+use app\components\grid\MyActionColumn;
 return [
 
 
@@ -18,14 +18,13 @@ return [
         // 'attribute'=>'id',
     // ],
     [
-        'class' => 'kartik\grid\ActionColumn',
-        'dropdown' => false,
-        'vAlign'=>'middle',
-        'urlCreator' => function($action, $model, $key, $index) {
-                return Url::to([$action,'id'=>$key]);
-        },
-        'updateOptions'=>['title'=>'Actualizar', 'data-toggle'=>'tooltip','icon'=>"<button class='btn-primary btn-circle'><span class='glyphicon glyphicon-pencil'></span></button>"],
-
+        'class' => MyActionColumn::class,
+        'updateOptions'=>[
+            'title' => 'Actualizar',
+            'data-toggle' => 'tooltip',
+            'class' => 'btn btn-primary btn-circle btn-sm',
+            'icon' => "<i class='fas fa-pen'></i>", // 👈 solo ícono
+        ],
     ],
 
 ];

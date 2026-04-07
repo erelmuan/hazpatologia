@@ -14,8 +14,8 @@ use yii\helpers\Html;
 /**
  * EstadoController implements the CRUD actions for Estado model.
  */
-class EstadoController extends Controller
-{
+class EstadoController extends AppController {
+
 
   // behaviors heredado
 

@@ -9,7 +9,7 @@ use yii\filters\VerbFilter;
 /**
  * PantallaController implements the CRUD actions for Pantalla model.
  */
-class PantallaController extends Controller {
+class PantallaController extends AppController {
   // behaviors heredado
 
     /**

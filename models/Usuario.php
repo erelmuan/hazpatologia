@@ -33,10 +33,11 @@ use Yii;
  * @property Localidad $localidad
  * @property Provincia $provincia
  * @property Rol $rol
-
+ * @property bool $cambioforzadocontrasenia
  */
  use yii\filters\AccessControl;
  use app\components\behaviors\AuditoriaBehaviors;
+ use kartik\password\StrengthValidator;
 
 class Usuario extends \yii\db\ActiveRecord  implements \yii\web\IdentityInterface
 {
@@ -65,6 +66,8 @@ class Usuario extends \yii\db\ActiveRecord  implements \yii\web\IdentityInterfac
           $model->imagen=$usuario->imagen;
           $model->id_pantalla=$usuario->id_pantalla;
           $model->id_configuracion=$usuario->id_configuracion;
+          $model->cambioforzadocontrasenia=$usuario->cambioforzadocontrasenia;
+
 
         //  $model->administrador=$usuario->administrador;
 
@@ -105,17 +108,45 @@ class Usuario extends \yii\db\ActiveRecord  implements \yii\web\IdentityInterfac
     public function rules()
     {
         return [
-            [['usuario', 'contrasenia', 'nombre'], 'required'],
+            [['usuario', 'nombre'], 'required'],
+            [['contrasenia'], 'required', 'on' => 'create'],
             [['activo'], 'default', 'value' => null],
-            // [['activo'], 'integer'],
+            [['activo','cambioforzadocontrasenia'], 'boolean'],
             [['descripcion', 'imagen'], 'string'],
             [['id_pantalla','id_configuracion','id_provincia', 'id_localidad','id_rol'], 'default', 'value' => null],
             [['id_pantalla','id_configuracion','id_provincia', 'id_localidad','id_rol'], 'integer'],
             [['usuario', 'nombre'], 'string', 'max' => 45],
-            [['contrasenia'], 'string', 'max' => 50],
+            [['contrasenia'], 'string', 'max' => 100],
             [['email'], 'string', 'max' => 35],
             [['id_configuracion'], 'unique'],
             [['usuario'], 'unique'],
+            // Requeridos solo en cambio de contraseña
+            [['pass_ctrl', 'pass_new', 'pass_new_check'], 'required', 'on' => 'change_password'],
+            // Comparar contraseñas
+            [['pass_new_check'], 'compare','compareAttribute' => 'pass_new','message' => 'Las contraseñas no coinciden.',
+                'on' => 'change_password'
+            ],
+            // Validar contraseña actual
+            [['pass_ctrl'], 'validatePasswordActual', 'on' => 'change_password'],
+            // Validar que no sea igual a la anterior
+            [['pass_new'], 'validatePasswordNueva', 'on' => 'change_password'],
+            [['pass_new'], StrengthValidator::className(),
+                'min' => 8,
+                'upper' => 1,
+                'lower' => 1,
+                'digit' => 1,
+                'special' => 1,
+                'userAttribute' => 'usuario',
+            ],
+            [['pass_new_check'], StrengthValidator::className(),
+              'min' => 8,
+              'upper' => 1,
+              'lower' => 1,
+              'digit' => 1,
+              'special' => 1,
+              'userAttribute' => 'usuario',
+            ],
+            [['pass_new'], 'required', 'on' => 'admin_reset_password'],
             [['id_localidad'], 'exist', 'skipOnError' => true, 'targetClass' => Localidad::className(), 'targetAttribute' => ['id_localidad' => 'id']],
             [['id_provincia'], 'exist', 'skipOnError' => true, 'targetClass' => Provincia::className(), 'targetAttribute' => ['id_provincia' => 'id']],
             [['id_configuracion'], 'exist', 'skipOnError' => true, 'targetClass' => Configuracion::className(), 'targetAttribute' => ['id_configuracion' => 'id']],
@@ -124,7 +155,6 @@ class Usuario extends \yii\db\ActiveRecord  implements \yii\web\IdentityInterfac
             [['id_rol'], 'exist', 'skipOnError' => true, 'targetClass' => Rol::className(), 'targetAttribute' => ['id_rol' => 'id']],
         ];
     }
-
     /**
      * {@inheritdoc}
      */
@@ -133,7 +163,7 @@ class Usuario extends \yii\db\ActiveRecord  implements \yii\web\IdentityInterfac
         return [
             'id' => 'Id',
             'usuario' => 'Usuario',
-            'contrasenia' => 'Contrasenia',
+            'contrasenia' => 'Contraseña',
             'nombre' => 'Nombre',
             'email' => 'Email',
             'activo' => 'Activo',
@@ -147,9 +177,38 @@ class Usuario extends \yii\db\ActiveRecord  implements \yii\web\IdentityInterfac
              'id_provincia' => 'Id Provincia',
              'id_localidad' => 'Id Localidad',
              'id_rol' => 'Id Rol',
+             'cambioforzadocontrasenia' => 'Cambio forzado de contraseña',
+
 
         ];
     }
+    public function validatePasswordActual($attribute, $params)
+    {
+        if (!$this->hasErrors()) {
+            if (!Yii::$app->security->validatePassword($this->$attribute, $this->contrasenia)) {
+                $this->addError($attribute, 'La contraseña ingresada no es correcta.');
+            }
+        }
+    }
+    public function validatePasswordNueva($attribute, $params)
+    {
+        if (!$this->hasErrors()) {
+
+            // Que no sea igual a la actual
+            if (Yii::$app->security->validatePassword($this->$attribute, $this->contrasenia)) {
+                $this->addError($attribute, 'La nueva contraseña no puede ser igual a la actual.');
+            }
+        }
+    }
+    public function scenarios()
+    {
+        $scenarios = parent::scenarios();
+
+        $scenarios['change_password'] = ['pass_ctrl', 'pass_new', 'pass_new_check' ,'cambioforzadocontrasenia'];
+        $scenarios['admin_reset_password'] = ['pass_new'];
+        return $scenarios;
+    }
+
 
     public function afterFind(){
 
@@ -159,37 +218,77 @@ class Usuario extends \yii\db\ActiveRecord  implements \yii\web\IdentityInterfac
 
   public function beforeSave($insert)
   {
-      // tareas antes de encontrar el objeto
-      if (parent::beforeSave($insert)) {
-          $this->usuario = strtoupper($this->usuario);
-          $this->nombre = strtoupper($this->nombre);
-          $this->email = strtoupper($this->email);
-
-          if($this->isNewRecord){
-              $this->contrasenia=md5($this->contrasenia);
-          }else{
-              // es un update de usuario , sin cambio de contraseña
-          }
-          // Place your custom code here
-          return true;
-      } else {
+      if (!parent::beforeSave($insert)) {
           return false;
       }
+
+      // normalizar
+      $this->usuario = strtoupper(trim($this->usuario));
+      $this->nombre  = strtoupper(trim($this->nombre));
+      $this->email   = strtolower(trim($this->email));
+
+      // 🔥 CONTRASEÑA BIEN MANEJADA
+      if (!empty($this->pass_new)) {
+          // siempre que haya nueva contraseña → se actualiza
+          $this->contrasenia = Yii::$app->security->generatePasswordHash($this->pass_new);
+      } else {
+          // si no se tocó → mantener la anterior
+          $this->contrasenia = $this->getOldAttribute('contrasenia');
+      }
+
+      return true;
   }
 
-  public function deleteImage($path,$filename) {
-             $file =array();
-             $file[] = $path.$filename;
-             $file[] = $path.'sqr_'.$filename;
-             $file[] = $path.'sm_'.$filename;
-             foreach ($file as $f) {
-               // check if file exists on server
-               if (!empty($f) && file_exists($f)) {
-                 // delete file
-                 unlink($f);
-               }
-             }
+    public function deleteImage($path,$filename) {
+       $file =array();
+       $file[] = $path.$filename;
+       $file[] = $path.'sqr_'.$filename;
+       $file[] = $path.'sm_'.$filename;
+       foreach ($file as $f) {
+         // check if file exists on server
+         if (!empty($f) && file_exists($f)) {
+           // delete file
+           unlink($f);
          }
+       }
+       }
+
+     public function puedeEliminar()
+     {
+         // No eliminarse a sí mismo
+         if ($this->id == Yii::$app->user->id) {
+             return 'No puede eliminarse a sí mismo';
+         }
+         // Solo admin puede eliminar
+         if (!User::isUserAdmin()) {
+             return 'No puede eliminar usuario si no es administrador';
+         }
+         // Relaciones
+         if (Firma::find()->where(['id_usuario' => $this->id])->exists()) {
+             return 'No se puede eliminar el usuario porque está asociado a una firma';
+         }
+         if (Auditoria::find()->where(['id_usuario' => $this->id])->exists()) {
+             return 'No se puede eliminar el usuario porque está asociado a auditorías';
+         }
+
+         return true;
+     }
+
+     public static function esPatologo() {
+       return Usuario::find()
+              ->where([
+                  'id' => Yii::$app->user->id,
+                  'id_rol' => 4 // rol patólogo
+              ])
+              ->exists();
+
+      }
+
+    public function nuevaContrasenia($contrasenia){
+
+
+
+    }
          /**
     		    * @return \yii\db\ActiveQuery
     		    */
@@ -225,22 +324,14 @@ class Usuario extends \yii\db\ActiveRecord  implements \yii\web\IdentityInterfac
      }
 
 
-     /**
-     * @return \yii\db\ActiveQuery
-      */
-     public function getFirma()
-     {
-         return $this->hasOne(Firma::className(), ['id_usuario' => 'id']);
-     }
-     public static function esPatologo() {
-       return Usuario::find()
-              ->where([
-                  'id' => Yii::$app->user->id,
-                  'id_rol' => 4 // rol patólogo
-              ])
-              ->exists();
+       /**
+       * @return \yii\db\ActiveQuery
+        */
+       public function getFirma()
+       {
+           return $this->hasOne(Firma::className(), ['id_usuario' => 'id']);
+       }
 
-      }
 
          /**
           * @inheritdoc

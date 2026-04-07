@@ -30,7 +30,8 @@
         "bower-asset/bootstrap-progressbar": "^0.9.0",
         "bower-asset/gentelella": "^1.4",
         "yiisoft/yii2-bootstrap": "^2.0",
-        "kullarkert/yii2-dynamicform": "*"
+        "kullarkert/yii2-dynamicform": "*",
+        "kartik-v/yii2-password": "^1.5"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.0.0",

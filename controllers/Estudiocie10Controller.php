@@ -14,8 +14,8 @@ use yii\helpers\Html;
 /**
  * Estudiocie10Controller implements the CRUD actions for Estudiocie10 model.
  */
-class Estudiocie10Controller extends Controller
-{
+class Estudiocie10Controller extends AppController {
+
   // behaviors heredado
 
     /**

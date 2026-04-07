@@ -19,25 +19,21 @@ CrudAsset::register($this);
 
 
 $export = ExportMenu::widget([
-    'exportConfig' => [
-        ExportMenu::FORMAT_TEXT => false,
-        ExportMenu::FORMAT_HTML => false,
-        ExportMenu::FORMAT_PDF => [
-            'icon' => 'fa fa-file-pdf-o',
-        ],
-        ExportMenu::FORMAT_CSV => [
-            'icon' => 'fa fa-file-text-o',
-        ],
-        ExportMenu::FORMAT_TEXT => [
-            'icon' => 'fa fa-file-text',
-        ],
-        ExportMenu::FORMAT_EXCEL => [
-            'icon' => 'fa fa-file-excel-o',
-        ],
-        ExportMenu::FORMAT_EXCEL_X => [
-            'icon' => 'fa fa-file-excel-o',
-        ],
-    ],
+  'exportConfig' => [
+      ExportMenu::FORMAT_TEXT => false,
+      ExportMenu::FORMAT_HTML => false,
+      ExportMenu::FORMAT_PDF => false,
+
+      ExportMenu::FORMAT_CSV => [
+          'icon' => 'fa fa-file-text-o',
+      ],
+      ExportMenu::FORMAT_EXCEL => [
+          'icon' => 'fa fa-file-excel-o',
+      ],
+      ExportMenu::FORMAT_EXCEL_X => [
+          'icon' => 'fa fa-file-excel-o',
+      ],
+  ],
     'dataProvider' => $dataProvider,
     'columns' => require(__DIR__ . '/_columns.php'),
     'dropdownOptions' => [
@@ -80,7 +76,8 @@ $columns[]=
                 return Html::a("<button class='btn-primary btn-circle'><span class='glyphicon glyphicon-pencil'></span></button>", [$model::tableName().$model->estudio->modelo.'/update',"id"=> $key]
                 ,[
                    'title'=>'Actualizar',
-                  'data-toggle'=>'tooltip'
+                  'data-toggle'=>'tooltip',
+                  'data-pjax'=>'0'
                   ]
 
               );

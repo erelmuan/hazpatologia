@@ -13,7 +13,7 @@ use yii\web\UploadedFile;
 /**
  * InmunohistoquimicaEscaneadaController implements the CRUD actions for InmunohistoquimicaEscaneada model.
  */
-class InmunohistoquimicaEscaneadaController extends Controller {
+class InmunohistoquimicaEscaneadaController extends AppController {
 
     /**
      * Lists all InmunohistoquimicaEscaneada models.

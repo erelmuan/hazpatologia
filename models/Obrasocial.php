@@ -77,7 +77,16 @@ class Obrasocial extends \yii\db\ActiveRecord
         ];
     }
 
+    public function beforeSave($insert)
+    {
+        if (!parent::beforeSave($insert)) {
+            return false;
+        }
+        $this->sigla = strtoupper($this->sigla);
+        $this->denominacion = strtoupper($this->denominacion);
 
+        return true;
+    }
 
     /**
 		    * @return \yii\db\ActiveQuery

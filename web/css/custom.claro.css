@@ -158,7 +158,7 @@ white-space: nowrap;
     padding: 0 0 4px 0
 }
 .left_col {
-    /* background: #131416  */
+    background: black;
     /* background-size: cover; /* la imagen se ajustará al tamaño del contenedor, cubriendo todo el espacio disponible */ */
     background-attachment: fixed; /* la imagen quedará fija en su posición, sin importar si el usuario hace scroll */
     /* position: fixed; */
@@ -166,7 +166,7 @@ white-space: nowrap;
 }
 .main_container {
     /* background: #131416  */
-    background-image: url('/hazpatologia/web/img/negro.jpg');;
+    background: black;
     /* opacity: 0.9; */
     background-position: left center; /* la imagen se centrará en el contenedor */
     background-size: cover; /* la imagen se ajustará al tamaño del contenedor, cubriendo todo el espacio disponible */
@@ -4252,11 +4252,16 @@ background: #D5EBD5;
  .btn-circle {
      width: 25px;
      height: 25px;
-     /* padding: 6px 0px; */
-     border-radius: 15px;
-     text-align: center;
-     font-size: 12px;
-     line-height: 1.42857;
+     padding: 0;
+     display: inline-flex;
+     align-items: center;
+     justify-content: center;
+     border-radius: 50%;
+ }
+
+ .btn-circle i {
+     line-height: 1;
+     font-size: 10px;
  }
 
  .expanded-row > td {

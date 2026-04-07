@@ -29,7 +29,7 @@ use app\components\Seguridad\Seguridad;
 /**
  * BiopsiaController implements the CRUD actions for Biopsia model.
  */
-class BiopsiaController extends Controller {
+class BiopsiaController extends AppController {
   // behaviors heredado
 
     /**
@@ -67,7 +67,11 @@ class BiopsiaController extends Controller {
           $this->setearMensajeError('EN ESTADO LISTO, DEBE POSEER LA FIRMA');
           return false;
         }
-        if (Yii::$app->user->identity->contrasenia <> md5($post['contrasenia'])) {
+        if(empty($post['contrasenia'])){
+          $this->setearMensajeError("EN ESTADO LISTO, DEBE ESCRIBIR LA CONTRASEÑA");
+          return false;
+        }
+      if (!Yii::$app->security->validatePassword($post['contrasenia'], Yii::$app->user->identity->contrasenia)) {
           $this->setearMensajeError('CONTRASEÑA INCORRECTA');
             return false;
         }

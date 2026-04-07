@@ -83,7 +83,7 @@ $this->title = 'Inicio';
           <div class="count"><?=$cantidadBiopsias ?></div>
 
           <h3>BIOPSIAS</h3>
-          <p>Información de las biopsias - Informe - ABM.</p>
+          <p>Info. de las biopsias - Informe - ABM.</p>
         </div>
       </div>
       </a>

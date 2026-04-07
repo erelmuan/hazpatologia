@@ -14,10 +14,9 @@ use yii\helpers\Html;
 /**
  * Biopsiacie10Controller implements the CRUD actions for Biopsiacie10 model.
  */
-class Biopsiacie10Controller extends Controller
+class Biopsiacie10Controller extends AppController {
 // behaviors heredado
 
-{
     /**
      * @inheritdoc
      */

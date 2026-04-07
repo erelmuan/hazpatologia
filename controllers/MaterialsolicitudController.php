@@ -11,7 +11,7 @@ use yii\helpers\Html;
 /**
  * MaterialsolicitudController implements the CRUD actions for Materialsolicitud model.
  */
-class MaterialsolicitudController extends Controller {
+class MaterialsolicitudController extends AppController {
   // behaviors heredado
 
     /**

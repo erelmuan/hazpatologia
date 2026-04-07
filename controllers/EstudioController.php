@@ -11,7 +11,7 @@ use yii\helpers\Html;
 /**
  * EstudioController implements the CRUD actions for Estudio model.
  */
-class EstudioController extends Controller {
+class EstudioController extends AppController {
   // behaviors heredado
 
     /**

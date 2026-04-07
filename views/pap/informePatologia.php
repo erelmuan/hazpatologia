@@ -2,7 +2,7 @@
 <?
 use yii\helpers\Url;
 use yii\helpers\Html;
-$path2 = Yii::getAlias("@vendor/setasign/fpdf/rotation.php");
+$path2 = Yii::getAlias("@app/components/fpdf/rotation.php");
 
 require_once($path2);
 

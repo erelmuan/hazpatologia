@@ -50,71 +50,7 @@ $export= ExportMenu::widget([
     <div class="clearfix"> <div class="nav navbar-right panel_toolbox"><?= Html::a('<i class="glyphicon glyphicon-arrow-left"></i> Atrás', ['/site/auditorias'], ['class'=>'btn btn-danger grid-button']) ?></div>
 </div>
   </div>
-  <?=$export;
-    $columns=[
-
-            [
-            'class'=>'\kartik\grid\DataColumn',
-            'attribute'=>'id',
-        ],
-        [
-            'class'=>'\kartik\grid\DataColumn',
-            'attribute'=>'usuario',
-            'width' => '170px',
-            'value' => function($model) {
-              return Html::a( $model->usuario->usuario, ['usuario/view',"id"=> $model->usuario->id]
-
-                ,[    'class' => 'text-success','role'=>'modal-remote','title'=>'Datos del paciente','data-toggle'=>'tooltip']
-               );
-
-             }
-             ,
-
-             'filterInputOptions' => [ 'class' => 'form-control','placeholder' => 'Nombre de usuario'],
-             'format' => 'raw',
-        ],
-        [
-            'class'=>'\kartik\grid\DataColumn',
-            'attribute'=>'accion',
-        ],
-        [
-        'class'=>'\kartik\grid\DataColumn',
-        'attribute'=>'registro',
-        ],
-        [
-            'class'=>'\kartik\grid\DataColumn',
-            'attribute'=>'tabla',
-        ],
-        [
-            'class'=>'\kartik\grid\DataColumn',
-            'attribute'=>'fecha',
-        ],
-        [
-            'class'=>'\kartik\grid\DataColumn',
-            'attribute'=>'hora',
-        ],
-        [
-            'class'=>'\kartik\grid\DataColumn',
-            'attribute'=>'ip',
-        ],
-        [
-            'class'=>'\kartik\grid\DataColumn',
-            'attribute'=>'informacion_usuario',
-        ],
-        [
-            'class' => 'kartik\grid\ActionColumn',
-            'dropdown' => false,
-            'vAlign'=>'middle',
-            'template' => '{view}',
-
-            'urlCreator' => function($action, $model, $key, $index) {
-                    return Url::to([$action,'id'=>$key]);
-            },
-
-        ],
-
-    ];
-  ?>
+  <?=$export;?>
 <div class="auditoria-index">
     <div id="ajaxCrudDatatable">
         <?=GridView::widget([
@@ -124,8 +60,7 @@ $export= ExportMenu::widget([
             'pjax'=>true,
             //Para que no busque automaticamente, sino que espere a que se teclee ENTER
             'filterOnFocusOut'=>false,
-            'columns' => $columns,
-
+            'columns' => require(__DIR__ . '/_columns.php'),
             'toolbar'=> [
                 ['content'=>
                     Html::a('<i class="glyphicon glyphicon-repeat"></i>', [''],

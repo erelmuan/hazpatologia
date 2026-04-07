@@ -12,7 +12,7 @@ use yii\helpers\Html;
 /**
  * AccionController implements the CRUD actions for Accion model.
  */
-class AccionController extends Controller {
+class AccionController extends AppController {
   // behaviors heredado
 
     /**
@@ -107,7 +107,7 @@ class AccionController extends Controller {
             return $this->redirect(['index']);
         }
     }
-  
+
     /**
      * Finds the Accion model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.

@@ -1,5 +1,6 @@
 <?php
 use yii\helpers\Url;
+use app\components\grid\MyActionColumn;
 
 return [
 
@@ -22,7 +23,7 @@ return [
         'attribute'=>'codigopostal',
     ],
     [
-        'class' => 'kartik\grid\ActionColumn',
+        'class' => MyActionColumn::class,
         'dropdown' => false,
         'vAlign'=>'middle',
         'urlCreator' => function($action, $model, $key, $index) {

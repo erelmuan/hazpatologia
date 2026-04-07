@@ -3,7 +3,7 @@ use yii\helpers\Url;
 use kartik\grid\GridView;
 use yii\helpers\ArrayHelper;
 use app\models\Tipodoc;
-
+use app\components\grid\MyActionColumn;
 return [
       [
       'class'=>'\kartik\grid\DataColumn',
@@ -96,12 +96,8 @@ return [
     // ],
 
     [
-        'class' => 'kartik\grid\ActionColumn',
-        'dropdown' => false,
-        'vAlign'=>'middle',
-        'urlCreator' => function($action, $model, $key, $index) {
-                return Url::to([$action,'id'=>$key]);
-        },
+        'class' => MyActionColumn::class,
+        'template'=> '{view} {update} {delete}'
 
     ],
 

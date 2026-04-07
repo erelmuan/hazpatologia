@@ -11,7 +11,7 @@ use yii\helpers\Html;
 /**
  * TipomuestraController implements the CRUD actions for Tipomuestra model.
  */
-class TipomuestraController extends Controller {
+class TipomuestraController extends AppController {
   // behaviors heredado
 
     /**

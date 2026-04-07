@@ -12,7 +12,7 @@ use yii\helpers\Json;
 /**
  * PlantillaglandularController implements the CRUD actions for Plantillaglandular model.
  */
-class PlantillaglandularController extends Controller {
+class PlantillaglandularController extends AppController {
   // behaviors heredado
 
     /**

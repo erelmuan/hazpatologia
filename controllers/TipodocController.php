@@ -12,7 +12,7 @@ use yii\helpers\Html;
 /**
  * TipodocController implements the CRUD actions for Tipodoc model.
  */
-class TipodocController extends Controller {
+class TipodocController extends AppController {
   // behaviors heredado
 
     /**

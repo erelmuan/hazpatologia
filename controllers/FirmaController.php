@@ -17,7 +17,7 @@ use yii\imagine\Image;
 /**
  * FirmaController implements the CRUD actions for Firma model.
  */
-class FirmaController extends Controller {
+class FirmaController extends AppController {
   // behaviors heredado
 
     /**

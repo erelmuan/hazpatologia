@@ -27,48 +27,87 @@ use app\models\User;
 /**
  * UsuarioController implements the CRUD actions for Usuario model.
  */
-class UsuarioController extends Controller {
+class UsuarioController extends AppController {
   // behaviors heredado
 
     /**
      * Lists all Usuario models.
      * @return mixed
      */
-    public function actionIndex() {
-        $searchModel = new UsuarioSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-        $request = Yii::$app->request;
-        if ($request->isAjax) { // modal para cambiar contraseña
-            Yii::$app->response->format = Response::FORMAT_JSON;
+     public function actionIndex()
+     {
+         $request = Yii::$app->request;
+         // Vista normal
+         $searchModel = new UsuarioSearch();
+         $dataProvider = $searchModel->search($request->queryParams);
 
-            if (!User::isUserAdmin()) {
-                return ['title' => "Cambiar contraseña #", 'content' => "No puede cambiar una contraseña si no es administrador", 'footer' => Html::button('Cerrar', ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) ];
-            }
-            $model = $this->findModel($_GET['id']);
-            if ($dato = $request->post()) {
-                $model->pass_new = $dato['Usuario']['pass_new'];
-                try {
-                    // cambiar solo contraseña
-                    $model->contrasenia = md5($model->pass_new);
-                    if ($model->save()) {
-                        $content = '<span class="text-success">Contraseña cambiada correctamente</span>';
-                        return ['title' => "Cambiar Contraseña", 'content' => $content, ];
-                    }
-                    else {
-                        $content = '<span class="text-success">Recuerde que tiene que estar activo</span>';
-                        return ['title' => "Cambiar Contraseña", 'content' => $content, ];
-                    }
-                }
-                catch(yii\db\Exception $e) {
-                    Yii::$app
-                        ->response->format = Response::FORMAT_HTML;
-                    throw new NotFoundHttpException('Error en la base de datos.', 500);
-                }
-            }
-            return ['title' => "Resetear Contraseña", 'content' => $this->renderAjax('_contraseniaReset', ['model' => $model, ]) , 'footer' => Html::button('Cancelar', ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) . Html::button('Guardar', ['class' => 'btn btn-primary', 'type' => "submit"]) ];
-        }
-        return $this->render('index', ['searchModel' => $searchModel, 'dataProvider' => $dataProvider, ]);
-    }
+         return $this->render('index', [
+             'searchModel' => $searchModel,
+             'dataProvider' => $dataProvider,
+         ]);
+     }
+
+
+
+     public function actionResetpassword($id){
+         $request = Yii::$app->request;
+         $model = $this->findModel($id);
+         $model->scenario = 'admin_reset_password';
+
+         // AJAX: modal / guardado de contraseña
+         if ($request->isAjax) {
+             Yii::$app->response->format = Response::FORMAT_JSON;
+
+             if (!User::isUserAdmin()) {
+                 return [
+                     'title' => 'Cambiar contraseña',
+                     'content' => 'No puede cambiar una contraseña si no es administrador',
+                     'footer' => Html::button('Cerrar', [
+                         'class' => 'btn btn-default pull-left',
+                         'data-dismiss' => 'modal',
+                     ]),
+                 ];
+             }
+
+         if ($model->load($request->post())) {
+             if ($model->validate()) {
+                 try {
+                     if ($model->save(false)) {
+                         return [
+                             'title' => 'Cambiar contraseña',
+                             'content' => '<span class="text-success">Contraseña cambiada correctamente</span>',
+                         ];
+                     }
+
+                     return [
+                         'title' => 'Cambiar contraseña',
+                         'content' => '<span class="text-warning">No se pudo cambiar la contraseña. Verifique el estado del usuario.</span>',
+                     ];
+                 } catch (\Throwable $e) {
+                     Yii::error($e->getMessage(), __METHOD__);
+                     throw new \yii\web\ServerErrorHttpException('Error en la base de datos.');
+                 }
+             }
+         }
+
+         return [
+             'title' => 'Resetear contraseña',
+             'content' => $this->renderAjax('_contraseniaReset', [
+                 'model' => $model,
+             ]),
+             'footer' =>
+                 Html::button('Cancelar', [
+                     'class' => 'btn btn-default pull-left',
+                     'data-dismiss' => 'modal',
+                 ]) .
+                 Html::button('Guardar', [
+                     'class' => 'btn btn-primary',
+                     'type' => 'submit',
+                 ]),
+         ];
+     }
+   }
+
     /**
      * Displays a single Usuario model.
      * @param integer $id
@@ -103,6 +142,7 @@ class UsuarioController extends Controller {
     public function actionCreate() {
         $request = Yii::$app->request;
         $model = new Usuario();
+        $model->scenario = 'create';
         $provincias = [];
         $localidades = [];
         $this->devolverArray($model,$provincias, $localidades);
@@ -114,28 +154,36 @@ class UsuarioController extends Controller {
             else if ($model->load($request->post()) ) {
                   $configuracion=$this->crearConfiguracion();
                   $model->id_configuracion= $configuracion->id;
-                if($model->save())
+                if($model->save()){
                   return [
                     'forceReload' => '#crud-datatable-pjax',
-                  'title' => "Crear nuevo Usuario", 'content' => '<span class="text-success">Usuario creado satisfactoriamente</span>', 'footer' => Html::button('Cerrar', ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) . Html::a('Crear más', ['create'], ['class' => 'btn btn-primary', 'role' => 'modal-remote']) ];
+                  'title' => "Crear nuevo Usuario",
+                  'content' => '<span class="text-success">Usuario creado satisfactoriamente</span>',
+                  'footer' => Html::button('Cerrar', ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"])
+                   . Html::a('Crear más', ['create'], ['class' => 'btn btn-primary', 'role' => 'modal-remote']) ];
+                }
+                return [
+                    'title' => "Crear nuevo Usuario",
+                    'content' => $this->renderAjax('create', [
+                        'model' => $model,
+                        'provincias' => $provincias,
+                        'localidades' => $localidades
+                    ]),
+                    'footer' => Html::button('Cerrar', [
+                        'class' => 'btn btn-default pull-left',
+                        'data-dismiss' => "modal"
+                    ]) . Html::button('Guardar', [
+                        'class' => 'btn btn-primary',
+                        'type' => "submit"
+                    ])
+                ];
             }
             else {
-                return ['title' => "Crear nuevo Usuario", 'content' => $this->renderAjax('create', ['model' => $model, ]) , 'footer' => Html::button('Cerrar', ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) . Html::button('Guardar', ['class' => 'btn btn-primary', 'type' => "submit"]) ];
+                return ['title' => "Crear nuevo usuario", 'content' => $this->renderAjax('create', ['model' => $model, ]) , 'footer' => Html::button('Cerrar', ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) . Html::button('Guardar', ['class' => 'btn btn-primary', 'type' => "submit"]) ];
 
             }
         }
-        else {
 
-            if ($model->load($request->post())) {
-              $configuracion=$this->crearConfiguracion();
-              $model->id_configuracion= $configuracion->id;
-              if($model->save())
-                return $this->redirect(['view', 'id' => $model->id]);
-            }
-            else {
-                return $this->render('create', ['model' => $model,'provincias'=> $provincias,'localidades'=> $localidades ]);
-            }
-        }
     }
     public function devolverArray($model,&$provincias, &$localidades){
 
@@ -155,6 +203,7 @@ class UsuarioController extends Controller {
     public function actionUpdate($id) {
         $request = Yii::$app->request;
         $model = $this->findModel($id);
+        $model->scenario = 'default';
         $provincias = [];
         $localidades = [];
         $this->devolverArray($model,$provincias, $localidades);
@@ -189,15 +238,7 @@ class UsuarioController extends Controller {
                 'footer' => Html::button('Cerrar', ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) . Html::button('Guardar', ['class' => 'btn btn-primary', 'type' => "submit"]) ];
             }
         }
-        else {
-            if ($model->load($request->post()) && $model->save()) {
-                return $this->redirect(['view', 'id' => $model->id]);
-            }
-            else {
 
-                return $this->render('update', ['model' => $model, 'provincias'=> $provincias,'localidades'=> $localidades]);
-            }
-        }
     }
     /**
      * Delete an existing Usuario model.
@@ -206,35 +247,25 @@ class UsuarioController extends Controller {
      * @param integer $id
      * @return mixed
      */
-    public function actionDelete($id) {
-      Yii::$app->response->format = Response::FORMAT_JSON;
-      $request = Yii::$app->request;
-        if (Yii::$app->user->identity->id == $id) {
-            $this->setearMensajeError('No puede eliminarse a si mismo');
-            return ['forceClose' => true, 'forceReload' => '#crud-datatable-pjax','metodo'=>'delete'];
-        }
-        if (!User::isUserAdmin()) {
-            $this->setearMensajeError('No puede eliminar usuario si no es administrador');
-            return ['forceClose' => true, 'forceReload' => '#crud-datatable-pjax','metodo'=>'delete'];
-        }
-
-        if (Firma::find()->where(['id_usuario'=>$id])->count()>0 ){
-           $this->setearMensajeError('No se puede eliminar el usuario porque esta asociado a una firma');
-           return ['forceClose' => true, 'forceReload' => '#crud-datatable-pjax','metodo'=>'delete'];
-          }
-          if (Auditoria::find()->where(['id_usuario'=>$id])->count()>0 ){
-            $this->setearMensajeError('No se puede eliminar el usuario porque esta asociado a una o más auditorias');
-            return ['forceClose' => true, 'forceReload' => '#crud-datatable-pjax','metodo'=>'delete'];
-            }
-        if ($request->isAjax) {
-          $this->findModel($id)->delete();
-          $this->setearMensajeExito('El registro se eliminó correctamente');
-          return ['forceClose' => true, 'forceReload' => '#crud-datatable-pjax','metodo'=>'delete'];
-        }
-        else {
-            return $this->redirect(['index']);
-        }
-    }
+       public function actionDelete($id)
+     {
+         Yii::$app->response->format = Response::FORMAT_JSON;
+         $request = Yii::$app->request;
+         $model = $this->findModel($id);
+         // Validación de negocio (modelo)
+         $puede = $model->puedeEliminar();
+         if ($puede !== true) {
+             $this->setearMensajeError($puede);
+             return $this->responseAjax();
+         }
+         // Ejecución
+         if ($request->isAjax) {
+             $model->delete();
+             $this->setearMensajeExito('El registro se eliminó correctamente');
+             return $this->responseAjax();
+         }
+         return $this->redirect(['index']);
+     }
 
     public function actionListdetalle() {
         if (isset($_POST['expandRowKey'])) {
@@ -327,49 +358,43 @@ class UsuarioController extends Controller {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
-    public function actionCambiarcontrasenia(){
-      $request = Yii::$app->request;
-      $id = Yii::$app->user->identity->getId();
-      $model = $this->findModel($id);
-      if ($request->isAjax) { // modal para cambiar contraseña
-          Yii::$app->response->format = Response::FORMAT_JSON;
-          if ($dato = $request->post()) {
-              $model->pass_ctrl = $dato['Usuario']['pass_ctrl'];
-              $model->pass_new = $dato['Usuario']['pass_new'];
-              $model->pass_new_check = $dato['Usuario']['pass_new_check'];
-              if ($model->pass_new <> $model->pass_new_check) {
-                  $model->addError('pass_new', 'La contraseña ingresada no coincide.');
-                  $model->addError('pass_new_check', 'La contraseña ingresada no coincide.');
-              }
-              else {
-                  if (md5($model->pass_ctrl) <> $model->contrasenia) {
-                      $model->addError('pass_ctrl', 'La contraseña ingresada no es correcta.');
-                  }
-                  else {
-                      try {
-                          // cambiar solo contraseña
-                          $model->contrasenia = md5($model->pass_new);
-                          if ($model->save()) {
-                            $this->setearMensajeExito('Datos guardados correctamente');
-                            return $this->redirect(['usuario/perfil']); // Redirigir a la misma página después de guardar con éxito
 
-                          }
-                      }
-                      catch(yii\db\Exception $e) {
-                          Yii::$app
-                              ->response->format = Response::FORMAT_HTML;
-                          throw new NotFoundHttpException('Error en la base de datos.', 500);
-                      }
-                  }
+
+      public function actionCambiarcontrasenia(){
+          $request = Yii::$app->request;
+          $id = Yii::$app->user->identity->getId();
+          $model = $this->findModel($id);
+          $model->scenario = 'change_password';
+
+          if ($request->isAjax) { // modal para cambiar contraseña
+              Yii::$app->response->format = Response::FORMAT_JSON;
+              if ($model->load($request->post())) {
+                $model->cambioforzadocontrasenia = false;
+                if ($model->save()) {
+                  $this->setearMensajeExito('Datos guardados correctamente');
+                  return $this->redirect(['usuario/perfil']); // Redirigir a la misma página después de guardar con éxito
+                }
+             }
+              return ['title' => "Cambiar Contraseña",
+              'content' => $this->renderAjax('_contrasenia', ['model' => $model, ]) ,
+              'footer' => Html::button('Cancelar',
+               ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"])
+               . Html::button('Actualizar', ['class' => 'btn btn-primary', 'id'=> 'submit-btn','type' => "submit"]) ];
+          }else {
+            if ($model->load($request->post()) ) {
+              $model->cambioforzadocontrasenia = false;
+              if( $model->save()){
+                $this->setearMensajeExito('Datos guardados correctamente');
+                return $this->redirect(['usuario/perfil']); // Redirigir a la misma página después de guardar con éxito
               }
+
+            }
+            return $this->render("_contrasenia",["model"=> $model]);
           }
-          return ['title' => "Cambiar Contraseña",
-          'content' => $this->renderAjax('_contrasenia', ['model' => $model, ]) ,
-          'footer' => Html::button('Cancelar',
-           ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"])
-           . Html::button('Guardar', ['class' => 'btn btn-primary', 'type' => "submit"]) ];
+
       }
-    }
+
+
       //Parametros pasados por referencia
       private function guadarImagen(&$model,&$image){
         $ext = explode(".", $image->name);

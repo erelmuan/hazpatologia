@@ -35,7 +35,7 @@ use app\base\Model;
 /**
  * PacienteController implements the CRUD actions for Paciente model.
  */
-class PacienteController extends Controller {
+class PacienteController extends AppController {
   // behaviors heredado
 
 
@@ -189,6 +189,7 @@ class PacienteController extends Controller {
                  if ($this->guardarPaciente($model, $modelsDomicilios, $modelsContactos,$modelsCarnetOs,$registrar)) {
 
                      return [
+                         'forceReload' => '#crud-datatable-pjax',
                          'title' => "Crear nuevo Paciente",
                          'content' => '<span class="text-success">Éxito al crear paciente</span>',
                          'footer' =>
@@ -347,6 +348,7 @@ class PacienteController extends Controller {
 
                 if ($this->actualizarPaciente($model, $modelsDomicilios, $modelsContactos, $modelsCarnetOs,$registrar)) {
                     return [
+                        'forceReload' => '#crud-datatable-pjax',
                         'title'   => "Actualizar Paciente",
                         'content' => '<span class="text-success">Paciente actualizado correctamente</span>',
                         'footer'  =>

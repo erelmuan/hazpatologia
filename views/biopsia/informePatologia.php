@@ -1,6 +1,6 @@
 
 <?
-$path2 = Yii::getAlias("@vendor/setasign/fpdf/rotation.php");
+ $path2 = Yii::getAlias("@app/components/fpdf/rotation.php");
 require_once($path2);
 $estado = $model->estado->descripcion;
 global $estado;

@@ -15,8 +15,7 @@ use yii\filters\AccessControl;
 /**
  * ConfiguracionAniosUsuarioController implements the CRUD actions for ConfiguracionAniosUsuario model.
  */
-class ConfiguracionAniosUsuarioController extends Controller
-{
+class ConfiguracionAniosUsuarioController extends AppController {
 
 
   public function actionAnioselect( $id_estudio)

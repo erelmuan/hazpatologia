@@ -78,7 +78,14 @@ class Localidad extends \yii\db\ActiveRecord
     {
         return $this->hasMany(Paciente::className(), ['id_localidad' => 'id']);
     }
-
+    public function beforeSave($insert)
+    {
+        if (!parent::beforeSave($insert)) {
+            return false;
+        }
+        $this->nombre = strtoupper($this->nombre);
+        return true;
+    }
     public static function getMapByProvincia($id_provincia){
       return ArrayHelper::map(self::find()->where(['id_provincia'=>$id_provincia])
       ->orderBy('nombre')->all(),'id','nombre');

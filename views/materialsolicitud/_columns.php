@@ -3,6 +3,7 @@ use yii\helpers\Url;
 use kartik\grid\GridView;
 use yii\helpers\ArrayHelper;
 use app\models\Estudio;
+use app\components\grid\MyActionColumn;
 return [
     // [
     //     'class' => 'kartik\grid\CheckboxColumn',
@@ -36,13 +37,13 @@ return [
         ],
     ],
     [
-        'class' => 'kartik\grid\ActionColumn',
+        'class' => MyActionColumn::class,
         'dropdown' => false,
         'vAlign'=>'middle',
         'urlCreator' => function($action, $model, $key, $index) {
                 return Url::to([$action,'id'=>$key]);
         },
-      
+
     ],
 
 ];
