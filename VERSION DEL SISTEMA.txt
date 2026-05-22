@@ -1,3 +1,5 @@
+version 3.1.2
+Se hacen pequeñas modificaciones y se cambia la descripcion del documento del  fos
 version 3.1.1
 Correccion login
 Correccion del inicio de sesion tanto en la plantilla login como en modelo LoginForm,

@@ -66,7 +66,6 @@ $this->params['breadcrumbs'][] = $this->title;
     }
     //codigo duplicado CORREGIR!!!
     function submitAddaccion(id_permiso){
-        var keys = $('#cruddetalle-datatable').yiiGridView('getSelectedRows');
           var keys =$("tr.detalle-seleccionado").find("td:eq(0)").text();
           // Verificar si al menos una opción ha sido seleccionada
          if (keys.length === 0) {

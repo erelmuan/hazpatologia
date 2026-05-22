@@ -21,8 +21,7 @@ $pdf->Text(8.5,34.5,utf8_decode("DE BENEFICIARIOS DE OBRAS SOCIALES"));
 $pdf->SetFont('Arial','B',10);
 $pdf->Text(190,75,$solicitud->paciente->num_documento);
 $pdf->Text(13,75,utf8_decode(trim($solicitud->paciente->apellido).", ".trim($solicitud->paciente->nombre)));
-$pdf->Text(80,110,"LABORATORIO");
-$pdf->Text(80,115,utf8_decode("ANATOMIA PATOLÓGICA"));
+$pdf->Text(80,113,utf8_decode("ANATOMIA PATOLÓGICA"));
 
 $pdf->SetFont('Arial','B',8);
 $pdf->Text(48,127,utf8_decode("DIAGNOSTICO DE EGRESO"));

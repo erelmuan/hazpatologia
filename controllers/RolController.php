@@ -124,7 +124,7 @@ class RolController extends AppController {
     public function actionCreatedetalle() {
 
         if (!Yii::$app->request->isAjax) {
-          $this->redirect(['index']);
+          return $this->redirect(['index']);
         }
         // Verifico si es el POST de createdetalle con la seleccion
         if (isset($_POST['keylist']) and isset($_POST['id_maestro'])) {
@@ -135,7 +135,7 @@ class RolController extends AppController {
                     $existePermiso= Permiso::find()->andWhere(['id_modulo'=>$value,'id_rol'=>$id_maestro])->one();
                     if ($existePermiso != null){
                       Yii::$app->getSession()->setFlash('danger', ['type' => 'danger', 'duration' => 5000, 'icon' => 'fa fa-danger', 'message' => "No se permiten modulos duplicados", 'title' => 'NOTIFICACIÓN', 'positonY' => 'top', 'positonX' => 'right']);
-                        $this->redirect(["index"]);
+                       return  $this->redirect(["index"]);
                         $lerror = true;
                         break;
                     }
@@ -195,7 +195,7 @@ class RolController extends AppController {
     public function actionAddaccion() {
         // Verifico si es el POST de createdetalle con la seleccion
         if (!Yii::$app->request->isAjax) {
-          $this->redirect(['index']);
+          return $this->redirect(['index']);
         }
         if (isset($_POST['keylist']) and isset($_POST['id_permiso'])) {
             $lerror = false;
