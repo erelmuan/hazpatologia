@@ -15,6 +15,7 @@ use Yii;
  * @property Solicitud[] $solicituds
  * @property Solicitudbiopsia[] $solicitudbiopsias
  * @property Solicitudpap[] $solicitudpaps
+ * @property string $tipoprocedencia
  */
  use app\components\behaviors\AuditoriaBehaviors;
 
@@ -44,7 +45,7 @@ class Procedencia extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['direccion'], 'string'],
+            [['direccion','tipoprocedencia'], 'string'],
             [['nombre'], 'string', 'max' => 30],
             [['contacto'], 'string', 'max' => 40],
             [['nombre'], 'required'],
@@ -94,6 +95,7 @@ class Procedencia extends \yii\db\ActiveRecord
             'nombre' => 'Nombre',
             'contacto' => 'Contacto',
             'direccion' => 'Direccion',
+            'tipoprocedencia' => 'Tipo de procedencia', 
         ];
     }
 

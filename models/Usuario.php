@@ -200,6 +200,13 @@ class Usuario extends \yii\db\ActiveRecord  implements \yii\web\IdentityInterfac
             }
         }
     }
+    public function validarContrasenia(string $contrasenia): bool
+    {
+        return Yii::$app->security->validatePassword(
+            $contrasenia,
+            $this->contrasenia
+        );
+    }
     public function scenarios()
     {
         $scenarios = parent::scenarios();

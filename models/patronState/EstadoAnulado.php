@@ -7,12 +7,15 @@ class EstadoAnulado extends EstadoBase
     {
         return [
             EstadoBase::ANULADO,
+
         ];
     }
 
     protected function getAllowedTransitions(): array
     {
-        return []; // Estado final
+        return [
+            EstadoBase::ANULADO,
+            EstadoBase::LISTO,]; // Estado final
     }
 }
 

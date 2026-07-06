@@ -13,7 +13,8 @@ use yii\widgets\DetailView;
             'id',
             'nombre',
             'contacto',
-            'direccion', 
+            'direccion',
+            'tipoprocedencia',
         ],
     ]) ?>
 

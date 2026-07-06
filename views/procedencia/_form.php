@@ -20,6 +20,8 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'direccion')->textInput() ?>
 
+   <?= $form->field($model, 'tipoprocedencia')->dropDownList([ 'Centro de salud' => 'Centro de salud', 'Hospitalaria' => 'Hospitalaria', 'Extra hospitalaria' => 'Extra hospitalaria', ], ['prompt' => '']) ?> 
+
 	<?php if (!Yii::$app->request->isAjax){ ?>
 	  	<div class="form-group">
 	        <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>

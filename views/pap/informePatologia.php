@@ -213,7 +213,7 @@ if (!empty($model->frase)) {
 }
 
 // ---------------- FIRMA ----------------
-if ($model->firmado) {
+if ($model->estaListo()) {
     $imgFile = Yii::$app->basePath . '/web/uploads/firmas/' . $model->usuario->firma->imagen;
     $imgW = 49;
     $imgH = 45;

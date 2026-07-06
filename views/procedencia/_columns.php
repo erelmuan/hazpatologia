@@ -20,6 +20,10 @@ return [
         'attribute'=>'direccion',
     ],
     [
+      'class'=>'\kartik\grid\DataColumn',
+      'attribute'=>'tipoprocedencia',
+    ],
+    [
         'class' => MyActionColumn::class,
         'dropdown' => false,
         'vAlign'=>'middle',

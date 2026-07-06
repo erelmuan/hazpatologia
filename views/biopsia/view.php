@@ -63,14 +63,13 @@ $isAjax = Yii::$app->request->isAjax;
     ]) ; ?>
 
     </div>
-    <? if ($model->ihq ){ ?>
+    <?php if ($model->ihq ):?>
     <div id="w0ss" class="x_panel">
     <div class="x_title"><h2><i class="fa fa-table"></i> ESTUDIO INMUNOHISTOQUIMICA  </h2>
       <div class="clearfix"> <div class="nav navbar-right panel_toolbox"></div>
     </div>
     </div>
-    <?
-      if ($model->ihq && isset($model->inmunohistoquimicaEscaneada)){
+    <?php  if ($model->ihq && isset($model->inmunohistoquimicaEscaneada)){
         echo DetailView::widget([
             'model' => $model,
             'attributes' => [
@@ -97,13 +96,57 @@ $isAjax = Yii::$app->request->isAjax;
       else {
           echo "ESTA ACTIVA LA OPCIÓN IHQ PERO NO SE CARGO NINGÚN ESTUDIO";
       }
-
    ?>
    </div>
-  <?
-      }
 
-        echo Html::a('<i class="fa fa-file-pdf-o"></i> Generar informe de biopsia', ['/biopsia/informe', 'id' => $model->id], [
+ <?php  endif   ?>
+
+
+<?php  if (isset($model->informeComplementario) &&  !$model->informeComplementario->estaAnulado()): ?>
+<div id="w0ss" class="x_panel">
+<div class="x_title"><h2><i class="fa fa-table"></i> INFORME COMPLEMENTARIO  </h2>
+  <div class="clearfix"> <div class="nav navbar-right panel_toolbox"></div>
+</div>
+</div>
+<?php
+  if ($model->informeComplementario->estaListo()){
+    echo DetailView::widget([
+        'model' => $model,
+        'attributes' => [
+
+        [
+          'value'=> Html::a('<i class="fa fa-file-pdf-o"></i> Generar informe complementario', ['/informe-complementario/documento-pdf', 'id' => $model->informeComplementario->id], [
+                'class'=>'btn btn-primary',
+                'target'=>'_blank', // Abrir en nueva pestaña
+                'data-toggle'=>'tooltip',
+                'title'=>'Se abrirá el archivo PDF generado en una nueva pestaña',
+                'data-pjax' => '0' // Evitar el manejo de PJAX
+            ]) ,
+          'label'=> 'Informe complementario',
+          'format'=>'raw',
+       ],
+       [
+         'value'=> $model->informeComplementario->descripcion ,
+         'label'=> 'Descripciòn',
+      ] ,
+
+        ],
+    ]) ;
+  }else {
+    echo "EL INFORME COMPLEMENTARIO NO ESTA LISTO.";
+
+  }
+
+?>
+</div>
+
+<?php  endif   ?>
+
+
+
+<?php
+
+       echo Html::a('<i class="fa fa-file-pdf-o"></i> Generar informe de biopsia', ['/biopsia/informe', 'id' => $model->id], [
               'class'=>'btn btn-dark',
               'target'=>'_blank',
               'data-toggle'=>'tooltip',

@@ -1,3 +1,9 @@
+version 3.1.3
+Se agrega el informe complementario
+incorporacion de tipo de procedencia en la  procedencia
+modificacaciones en el metodo de crear y actualizar de los estudios pap y biopsias
+Modulo de estadistica (prototipo)
+
 version 3.1.2
 Se hacen pequeñas modificaciones y se cambia la descripcion del documento del  fos
 version 3.1.1

@@ -47,7 +47,7 @@ function Header()
   $this->Cell(0,5,'UNIDAD DE ANATOMIA PATOLOGICA',0,0,'C');
   $this->Ln(6);
   $this->SetFont('Times','BI');
-  $this->Cell(0,5,'Informe Anatomo Patologico',0,0,'C');
+  $this->Cell(0,5,'INFORME COMPLEMENTARIO',0,0,'C');
 
   $this->Ln(11);
 }
@@ -87,41 +87,41 @@ $Inicio = 49;
 $pdf->SetFont('Times','B',10);
 $pdf->Text(14,$Inicio,"PACIENTE:");
 $pdf->SetFont('Times','',10);
-$pdf->Text(35,$Inicio,utf8_decode($model->solicitudbiopsia->paciente->apellido).' '.utf8_decode($model->solicitudbiopsia->paciente->nombre));
+$pdf->Text(35,$Inicio,utf8_decode($biopsia->solicitudbiopsia->paciente->apellido).' '.utf8_decode($biopsia->solicitudbiopsia->paciente->nombre));
 $pdf->SetFont('Times','B',10);
 $pdf->Text(120,$Inicio,"FECHA:");
 $pdf->SetFont('Times','',10);
-$pdf->Text(135,$Inicio,date("d/m/Y", strtotime($model->solicitudbiopsia->fechadeingreso)));
+$pdf->Text(135,$Inicio,date("d/m/Y", strtotime($biopsia->solicitudbiopsia->fechadeingreso)));
 
 $Inicio=$Inicio +8;
 $pdf->SetFont('Times','B',10);
 $pdf->Text(14,$Inicio ,"PROTOCOLO:");
 $pdf->SetFont('Times','',10);
-$pdf->Text(40,$Inicio ,$model->solicitudbiopsia->protocolo);
+$pdf->Text(40,$Inicio ,$biopsia->solicitudbiopsia->protocolo);
 $pdf->SetFont('Times','B',10);
 $pdf->Text(120,$Inicio,"H. CLINICA:");
 $pdf->SetFont('Times','',10);
-$pdf->Text(143,$Inicio,$model->solicitudbiopsia->paciente->hc);
+$pdf->Text(143,$Inicio,$biopsia->solicitudbiopsia->paciente->hc);
 
 $Inicio=$Inicio +8;
 $pdf->SetFont('Times','B',10);
 $pdf->Text(14,$Inicio ,"MEDICO:");
 $pdf->SetFont('Times','',10);
-$pdf->Text(31,$Inicio ,utf8_decode($model->solicitudbiopsia->medico->apellido).' '.utf8_decode($model->solicitudbiopsia->medico->nombre));
+$pdf->Text(31,$Inicio ,utf8_decode($biopsia->solicitudbiopsia->medico->apellido).' '.utf8_decode($biopsia->solicitudbiopsia->medico->nombre));
 $pdf->SetFont('Times','B',10);
 $pdf->Text(120,$Inicio,"DNI:");
 $pdf->SetFont('Times','',10);
- $pdf->Text(129,$Inicio,$model->solicitudbiopsia->paciente->num_documento);
+ $pdf->Text(129,$Inicio,$biopsia->solicitudbiopsia->paciente->num_documento);
 
 $Inicio=$Inicio +8;
 $pdf->SetFont('Times','B',10);
 $pdf->Text(14,$Inicio ,"PROCEDENCIA:");
 $pdf->SetFont('Times','',10);
-$pdf->Text(43,$Inicio ,$model->solicitudbiopsia->procedencia->nombre);
+$pdf->Text(43,$Inicio ,$biopsia->solicitudbiopsia->procedencia->nombre);
 $pdf->SetFont('Times','B',10);
 $pdf->Text(120,$Inicio,"EDAD:");
 $pdf->SetFont('Times','',10);
- $pdf->Text(133,$Inicio,$model->solicitudbiopsia->calcular_edad());
+ $pdf->Text(133,$Inicio,$biopsia->solicitudbiopsia->calcular_edad());
 //////////////////////////////
 
 
@@ -130,22 +130,7 @@ $pdf->SetFont('Times','B',10);
 $pdf->Text(14,$Inicio ,"MATERIAL:");
 $pdf->SetFont('Times','',10);
 $pdf->SetXY(30, $Inicio +1);
-$pdf->MultiCell(0,5, utf8_decode($model->material));
-
-
-$Inicio = $pdf->GetY() + 10 ;
-$pdf->SetFont('Times','B',10);
-$pdf->Text(14,$Inicio ,"EXAMEN MACROSCOPICO:");
-$pdf->SetFont('Times','',10);
-$pdf->SetXY(30, $Inicio +1);
-$pdf->MultiCell(0,5, utf8_decode($model->macroscopia));
-
-$Inicio = $pdf->GetY() + 10 ;
-$pdf->SetFont('Times','B',10);
-$pdf->Text(14,$Inicio ,"EXAMEN MICROSCOPICO:");
-$pdf->SetFont('Times','',10);
-$pdf->SetXY(30, $Inicio +1);
-$pdf->MultiCell(0,5, utf8_decode($model->microscopia));
+$pdf->MultiCell(0,5, utf8_decode($biopsia->material));
 
 $Inicio = $pdf->GetY() + 10;
 $pdf->SetFont('Times','B',10);
@@ -154,18 +139,19 @@ $pdf->SetFont('Times','',10);
 
 // Diagnóstico
 $pdf->SetXY(30, $Inicio + 1);
-$pdf->MultiCell(0, 5, utf8_decode($model->diagnostico));
-
+$pdf->MultiCell(0, 5, utf8_decode($biopsia->diagnostico));
 // Posición final del diagnóstico
 $Inicio = $pdf->GetY();
 
 // Frase (opcional)
-if (!empty($model->frase)) {
-    $pdf->Ln(2);
-    $pdf->SetXY(30, $Inicio +12);
-    $pdf->MultiCell(0, 5, utf8_decode($model->frase));
-    $Inicio = $pdf->GetY();
-}
+$Inicio = $pdf->GetY() + 10;
+$pdf->SetFont('Times','B',10);
+$pdf->Text(14, $Inicio,utf8_decode( "DESCRIPCIÓN:"));
+$pdf->SetFont('Times','',10);
+$pdf->SetXY(30, $Inicio + 1);
+$pdf->MultiCell(0, 5, utf8_decode($model->descripcion));
+// Posición final del diagnóstico
+$Inicio = $pdf->GetY();
 
 // ---------------- FIRMA ----------------
 if ($model->estaListo() ) {
@@ -182,10 +168,10 @@ if ($model->estaListo() ) {
 
 $pdf->Output(
     "I",
-    "BIOPSIA --- " .
+    "INFORME COMPLEMENTARIO BIOPSIA --- " .
     utf8_decode(
-        $model->solicitudbiopsia->paciente->apellido . " " .
-        $model->solicitudbiopsia->paciente->nombre
+        $biopsia->solicitudbiopsia->paciente->apellido . " " .
+        $biopsia->solicitudbiopsia->paciente->nombre
     ) . ".pdf"
 );
 

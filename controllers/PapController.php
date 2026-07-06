@@ -86,24 +86,7 @@ class PapController extends AppController {
         return $result;
     }
 
-    public function validar($post) {
 
-        if ($post['Pap']['firmado'] !== "1") {
-          $this->setearMensajeError('EN ESTADO LISTO, DEBE POSEER LA FIRMA');
-          return false;
-        }
-        if(empty($post['contrasenia'])){
-          $this->setearMensajeError("EN ESTADO LISTO, DEBE ESCRIBIR LA CONTRASEÑA");
-          return false;
-        }
-      if (!Yii::$app->security->validatePassword($post['contrasenia'], Yii::$app->user->identity->contrasenia)) {
-          $this->setearMensajeError('CONTRASEÑA INCORRECTA');
-            return false;
-        }
-        else {
-            return true;
-        }
-    }
     /**
      * Elimina el flag 'firmado' si el estado no es 2.
      */
@@ -174,6 +157,31 @@ class PapController extends AppController {
         return $this->render('_form', $viewData);
     }
 
+
+
+    private function procesarVph(Pap $model)
+    {
+        if (!$model->vph && $model->vphEscaneado) {
+            $model->inmunohistoquimicaescaneado->baja_logica = true;
+            $model->inmunohistoquimicaescaneado->save(false);
+        }
+
+        if ($model->vph) {
+            if ($model->vphEscaneado) {
+                return $this->redirect([
+                    'vph-escaneado/update',
+                    'id' => $model->vphEscaneado->id
+                ]);
+            }
+
+            return $this->redirect([
+                'vph-escaneado/create',
+                'id_pap' => $model->id
+            ]);
+        }
+
+        return null;
+    }
     /**
      * Creates a new Pap model.
      * For ajax request will return json object
@@ -182,45 +190,71 @@ class PapController extends AppController {
      */
      public function actionCreate()
      {
-         $request    = Yii::$app->request;
-         $model      = new Pap();
-         $solicitud  = Solicitudpap::findOne($_GET['idsol']);
-         // Cargamos estructuras de plantillas para el estudio
-         $estructura   = $this->cargarEstructuras($solicitud->id_estudio);
-         $post       = $request->post();
-         // Reutilizamos lógica de firma y estado
-         $this->prepararEstado($post);
-         if(!$this->aplicarFirma($post, $model)){
-           $model->load($post);
-           return $this->renderForm($model, $estructura,$solicitud);
-         };
-         $transaction = Yii::$app->db->beginTransaction();
-         try {
-             if ($model->load($post) && $model->save()) {
-               // Sincronizamos estado de solicitud
-               if ($solicitud->id_estado !== $model->id_estado) {
-                   $solicitud->cambiarEstado($model->id_estado);
-               }
-                 // Manejamos VPH vía actualizarRelaciones
-                 $resultado = $this->actualizarRelaciones($model, $transaction);
-                 if ($resultado !== null) {
-                     return $resultado;
-                 }
-                 $transaction->commit();
-                 return $this->redirect(['view', 'id' => $model->id]);
-             } else {
-                 $transaction->rollBack();
-                 return $this->renderForm($model, $estructura,$solicitud);
-             }
-         } catch (\Exception $e) {
-             $transaction->rollBack();
-             throw $e;
+         $request = Yii::$app->request;
+         $post      = $request->post();
+         $solicitud = Solicitudpap::findOne($request->get('idsol'));
+         if (!$solicitud) {
+             throw new \yii\web\NotFoundHttpException('Solicitud no encontrada.');
          }
+         $papExistente = Pap::find()
+           ->where(['id_solicitudpap' => $solicitud->id])
+           ->one();
+
+       if ($papExistente !== null) {
+           return $this->redirect([
+             'view',
+             'id' => $papExistente->id,
+             ]);
+       }
+         $model = new Pap();
+         $estructura = $this->cargarEstructuras($solicitud->id_estudio);
+         if ($model->load($post)) {
+             // Asociación segura desde el servidor
+             $model->id_solicitudpap = $solicitud->id;
+             // Si quiere quedar LISTO, validamos contraseña
+             if (!$this->comprobarEstado($model, $post)) {
+                 return $this->renderForm($model, $estructura, $solicitud);
+             }
+             $transaction = Yii::$app->db->beginTransaction();
+             try {
+                 if ($model->save()) {
+                     $solicitud->cambiarEstado((int)$model->id_estado);
+                     $respuesta = $this->procesarVph($model);
+                     $transaction->commit();
+                     if ($respuesta !== null) {
+                         return $respuesta;
+                     }
+                     return $this->redirect(['view', 'id' => $model->id]);
+                 }
+                 $transaction->rollBack();
+                 return $this->renderForm($model, $estructura, $solicitud);
+             } catch (\Throwable $e) {
+                 $transaction->rollBack();
+                 throw $e;
+             }
+         }
+         return $this->renderForm($model, $estructura, $solicitud);
      }
 
 
+     private function comprobarEstado(Pap $model, array $post): bool
+     {
+         if (!$model->estaListo() && !$model->estaAnulado()) {
+             return true;
+         }
+         $contrasenia = trim((string)($post['contrasenia'] ?? ''));
+         if ($contrasenia === '') {
+             $this->setearMensajeError('EN ESTADO LISTO O ANULADO, DEBE ESCRIBIR LA CONTRASEÑA');
+             return false;
+         }
+         $usuario = Yii::$app->user->identity;
+         if (!$usuario->validarContrasenia($contrasenia)) {
+             $this->setearMensajeError('CONTRASEÑA INCORRECTA');
+             return false;
+         }
 
-
+         return true;
+     }
     /**
      * Updates an existing Pap model.
      * For ajax request will return json object
@@ -229,42 +263,59 @@ class PapController extends AppController {
      * @return mixed
      */
 
-    public function actionUpdate($id)
-    {
-        $request = Yii::$app->request;
-        $model   = $this->findModel($id);
-        $post = $request->post();
-        $solicitud = $model->solicitudpap;
-        // Cargamos estructuras de plantillas para el estudio
-        $estructura = $this->cargarEstructuras($model->solicitudpap->id_estudio);
-        // Reutilizamos lógica de firma y estado
-        $this->prepararEstado($post);
-        if(!$this->aplicarFirma($post, $model)){
-          $model->load($post);
-          return $this->renderForm($model, $estructura,$model->solicitudpap);
-        };
-        $transaction = Yii::$app->db->beginTransaction();
-        try {
-            if ($model->load($post) && $model->save()) {
-              // Sincronizamos estado de solicitud
-                if ($model->solicitudpap->id_estado !== $model->id_estado) {
-                    $model->solicitudpap->cambiarEstado($model->id_estado);
-                }
-                $resultado = $this->actualizarRelaciones($model, $transaction);
-                if ($resultado !== null) {
-                    return $resultado;
-                }
-                $transaction->commit();
-                return $this->redirect(['view', 'id' => $model->id]);
-            } else {
-                $transaction->rollBack();
-                return $this->renderForm($model, $estructura, $solicitud);
-            }
-        } catch (\Exception $e) {
-            $transaction->rollBack();
-            throw $e;
-        }
-    }
+
+    /**
+     * Updates an existing Pap model.
+     */
+     public function actionUpdate($id)
+   {
+       $request = Yii::$app->request;
+       $post = $request->post();
+       $model = $this->findModel($id);
+       $estructura = $this->cargarEstructuras(
+           $model->solicitudpap->id_estudio
+       );
+       if ($model->load($post)) {
+           if (!$this->comprobarEstado($model, $post)) {
+               return $this->renderForm(
+                   $model,
+                   $estructura,
+                   $model->solicitudpap
+               );
+           }
+           $transaction = Yii::$app->db->beginTransaction();
+           try {
+               if ($model->save()) {
+                   if ( $model->solicitudpap->id_estado !== (int)$model->id_estado ) {
+                       $model->solicitudpap->cambiarEstado($model->id_estado);
+                   }
+                   $respuesta = $this->procesarVph($model);
+                   $transaction->commit();
+                   if ($respuesta !== null) {
+                       return $respuesta;
+                   }
+                   return $this->redirect(['view','id' => $model->id ]);
+               }
+               $transaction->rollBack();
+               return $this->renderForm(
+                   $model,
+                   $estructura,
+                   $model->solicitudpap
+               );
+           } catch (\Throwable $e) {
+               $transaction->rollBack();
+               throw $e;
+           }
+       }
+
+       return $this->renderForm(
+           $model,
+           $estructura,
+           $model->solicitudpap
+       );
+   }
+
+
 
     /**
      * Delete an existing Pap model.

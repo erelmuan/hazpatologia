@@ -64,7 +64,7 @@ $columns[]=
                 ]);
   }?>
 <div id="w0s" class="x_panel">
-  <div class="x_title"><h2><i class="fa fa-table"></i> SOLICITUDES ANULADAS </h2>
+  <div class="x_title"><h2><i class="fa fa-table"></i> ESTUDIOS ANULADOS </h2>
     <div class="clearfix"> <div class="nav navbar-right panel_toolbox"><?= Html::a('<i class="glyphicon glyphicon-arrow-left"></i> Atrás', ['/site/extras'], ['class'=>'btn btn-danger grid-button']) ?></div>
 </div>
   </div>

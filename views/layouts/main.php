@@ -125,7 +125,7 @@ use yii\widgets\Pjax;
                                     ],
 
                                     ["label" => "Consulta", "url" => ["/solicitud/consulta"], "icon" => "fas fa-search"],
-
+                                    ["label" => "Estadistica", "url" => ["/estadistica"], "icon" => "fas fa-chart-bar"],
 
                                 ],
                             ]

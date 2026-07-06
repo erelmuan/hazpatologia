@@ -61,136 +61,74 @@ class BiopsiaController extends AppController {
         }
     }
 
-    public function validar($post) {
-
-        if ($post['Biopsia']['firmado'] !== "1") {
-          $this->setearMensajeError('EN ESTADO LISTO, DEBE POSEER LA FIRMA');
-          return false;
-        }
-        if(empty($post['contrasenia'])){
-          $this->setearMensajeError("EN ESTADO LISTO, DEBE ESCRIBIR LA CONTRASEÑA");
-          return false;
-        }
-      if (!Yii::$app->security->validatePassword($post['contrasenia'], Yii::$app->user->identity->contrasenia)) {
-          $this->setearMensajeError('CONTRASEÑA INCORRECTA');
-            return false;
-        }
-        else {
-            return true;
-        }
-    }
-
-    /**
-     * Creates a new Biopsia model.
-     */
     public function actionCreate()
     {
-        $request  = Yii::$app->request;
-        $model = new Biopsia();
-        $solicitud = Solicitudbiopsia::findOne($request->get('idsol'));
-        // Cargamos estructuras de plantillas para el estudio
-        $estructura  = $this->cargarEstructuras($solicitud->id_estudio);
-        $post = $request->post();
-        // Reutilizamos lógica de firma y estado
-        $this->prepararEstado($post);
-        if(!$this->aplicarFirma($post, $model)){
-          $model->load($post);
-          return $this->renderForm($model, $estructura,$solicitud);
-        };
-        $transaction = Yii::$app->db->beginTransaction();
-        try {
-            if ($model->load($post) && $model->save()) {
-                // Sincronizamos estado de solicitud
-                if ($solicitud->id_estado !== $model->id_estado) {
-                    $solicitud->cambiarEstado($model->id_estado);
-                }
-                // Manejamos IHQ vía actualizarRelaciones
-                $resultado = $this->actualizarRelaciones($model, $transaction);
-                if ($resultado !== null) {
-                    return $resultado;
-                }
-                $transaction->commit();
-                return $this->redirect(['view', 'id' => $model->id]);
-            }
-            $transaction->rollBack();
-            // Usamos renderForm para create
-            return $this->renderForm($model,$estructura,$solicitud);
-        } catch (\Exception $e) {
-            $transaction->rollBack();
-            throw $e;
-        }
-    }
-
-    /**
-     * Updates an existing Biopsia model.
-     */
-    public function actionUpdate($id)
-    {
-        $request   = Yii::$app->request;
-        $model     = $this->findModel($id);
+        $request = Yii::$app->request;
         $post      = $request->post();
-        // Cargamos estructuras de plantillas para el estudio
-        $estructura = $this->cargarEstructuras($model->solicitudbiopsia->id_estudio);
-        // Reutilizamos lógica de firma y estado
-        $this->prepararEstado($post);
-        if(!$this->aplicarFirma($post, $model)){
-          $model->load($post);
-          return $this->renderForm($model, $estructura,$model->solicitudbiopsia);
-        };
-        $transaction = Yii::$app->db->beginTransaction();
-        try {
-            if ($model->load($post) && $model->save()) {
-              // Sincronizamos estado de solicitud
-                if ($model->solicitudbiopsia->id_estado !== $model->id_estado) {
-                    $model->solicitudbiopsia->cambiarEstado($model->id_estado);
-                }
-                $resultado = $this->actualizarRelaciones($model, $transaction);
-                if ($resultado !== null) {
-                    return $resultado;
-                }
-                $transaction->commit();
-                return $this->redirect(['view', 'id' => $model->id]);
-            }
-            $transaction->rollBack();
-            // Usamos renderForm para update (adaptado para que reutilizarla en la func create- se agrego el campo solicitud)
-            return $this->renderForm($model, $estructura,$model->solicitudbiopsia);
-        } catch (\Exception $e) {
-            $transaction->rollBack();
-            throw $e;
+        $solicitud = Solicitudbiopsia::findOne($request->get('idsol'));
+        if (!$solicitud) {
+            throw new \yii\web\NotFoundHttpException('Solicitud no encontrada.');
         }
+        $biopsiaExistente = Biopsia::find()
+          ->where(['id_solicitudbiopsia' => $solicitud->id])
+          ->one();
+
+      if ($biopsiaExistente !== null) {
+          return $this->redirect([
+            'view',
+            'id' => $biopsiaExistente->id,
+            ]);
+      }
+        $model = new Biopsia();
+        $estructura = $this->cargarEstructuras($solicitud->id_estudio);
+        if ($model->load($post)) {
+            // Asociación segura desde el servidor
+            $model->id_solicitudbiopsia = $solicitud->id;
+            // Si quiere quedar LISTO, validamos contraseña
+            if (!$this->comprobarEstado($model, $post)) {
+                return $this->renderForm($model, $estructura, $solicitud);
+            }
+            $transaction = Yii::$app->db->beginTransaction();
+            try {
+                if ($model->save()) {
+                    $solicitud->cambiarEstado((int)$model->id_estado);
+                    $respuesta = $this->procesarIhq($model);
+                    $transaction->commit();
+                    if ($respuesta !== null) {
+                        return $respuesta;
+                    }
+                    return $this->redirect(['view', 'id' => $model->id]);
+                }
+                $transaction->rollBack();
+                return $this->renderForm($model, $estructura, $solicitud);
+            } catch (\Throwable $e) {
+                $transaction->rollBack();
+                throw $e;
+            }
+        }
+        return $this->renderForm($model, $estructura, $solicitud);
     }
 
-    /**
-     * Elimina el flag 'firmado' si el estado no es 2.
-     */
-    private function prepararEstado(array &$post)
+    private function comprobarEstado(Biopsia $model, array $post): bool
     {
-        if (isset($post['Biopsia']['id_estado']) && $post['Biopsia']['id_estado'] != EstadoBase::LISTO) {
-            unset($post['Biopsia']['firmado']);
-        }
-    }
-
-    /**
-     * Valida y ajusta el estado antes de cargar el modelo.
-     */
-    private function aplicarFirma(array &$post, $model)
-    {
-        if (Usuario::esPatologo() && isset($post['Biopsia']['id_estado'])
-         && $post['Biopsia']['id_estado'] == EstadoBase::LISTO) {
-            if (!$this->validar($post)) {
-                unset($post['Biopsia']['id_estado']);
-                return false;
-            }
-                $post['Biopsia']['fechalisto'] = date('Y-m-d H:i:s');
-                $post['Biopsia']['id_usuario']  = Yii::$app->user->identity->getId();
-        }
+      if (!$model->estaListo() && !$model->estaAnulado()) {
           return true;
+      }
+        $contrasenia = trim((string)($post['contrasenia'] ?? ''));
+        if ($contrasenia === '') {
+          $this->setearMensajeError('EN ESTADO LISTO O ANULADO, DEBE ESCRIBIR LA CONTRASEÑA');
+            return false;
+        }
+        $usuario = Yii::$app->user->identity;
+        if (!$usuario->validarContrasenia($contrasenia)) {
+            $this->setearMensajeError('CONTRASEÑA INCORRECTA');
+            return false;
+        }
+
+        return true;
     }
 
-    /**
-     * Sincroniza estado de solicitud y maneja escaneados IHQ.
-     */
-    private function actualizarRelaciones($model, $transaction)
+    private function procesarIhq(Biopsia $model)
     {
         if (!$model->ihq && $model->inmunohistoquimicaEscaneada) {
             $model->inmunohistoquimicaEscaneada->baja_logica = true;
@@ -198,13 +136,13 @@ class BiopsiaController extends AppController {
         }
 
         if ($model->ihq) {
-            $transaction->commit();
             if ($model->inmunohistoquimicaEscaneada) {
                 return $this->redirect([
                     'inmunohistoquimica-escaneada/update',
                     'id' => $model->inmunohistoquimicaEscaneada->id
                 ]);
             }
+
             return $this->redirect([
                 'inmunohistoquimica-escaneada/create',
                 'id_biopsia' => $model->id
@@ -213,6 +151,57 @@ class BiopsiaController extends AppController {
 
         return null;
     }
+    /**
+     * Updates an existing Biopsia model.
+     */
+     public function actionUpdate($id)
+   {
+       $request = Yii::$app->request;
+       $post = $request->post();
+       $model = $this->findModel($id);
+       $estructura = $this->cargarEstructuras(
+           $model->solicitudbiopsia->id_estudio
+       );
+       if ($model->load($post)) {
+           if (!$this->comprobarEstado($model, $post)) {
+               return $this->renderForm(
+                   $model,
+                   $estructura,
+                   $model->solicitudbiopsia
+               );
+           }
+           $transaction = Yii::$app->db->beginTransaction();
+           try {
+               if ($model->save()) {
+                   if ( $model->solicitudbiopsia->id_estado !== (int)$model->id_estado ) {
+                       $model->solicitudbiopsia->cambiarEstado($model->id_estado);
+                   }
+                   $respuesta = $this->procesarIhq($model);
+                   $transaction->commit();
+                   if ($respuesta !== null) {
+                       return $respuesta;
+                   }
+                   return $this->redirect(['view','id' => $model->id ]);
+               }
+               $transaction->rollBack();
+               return $this->renderForm(
+                   $model,
+                   $estructura,
+                   $model->solicitudbiopsia
+               );
+           } catch (\Throwable $e) {
+               $transaction->rollBack();
+               throw $e;
+           }
+       }
+       return $this->renderForm(
+           $model,
+           $estructura,
+           $model->solicitudbiopsia
+       );
+   }
+
+
 
     /**
      * Renderiza el formulario con datos y estructuras necesarias.
@@ -227,7 +216,8 @@ class BiopsiaController extends AppController {
         $viewData = array_merge(
             ['model'          => $model,
             'solicitud'          => $solicitud,
-            'stateOptions'   => $stateOptions,],
+            'stateOptions'   => $stateOptions
+          ],
             $estructura
         );
         return $this->render('_form', $viewData);

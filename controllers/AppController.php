@@ -9,6 +9,7 @@ use yii\helpers\Json;
 use yii\filters\AccessControl;
 use app\components\Seguridad\Seguridad;
 use yii\filters\VerbFilter;
+use yii\web\NotFoundHttpException;
 class AppController extends Controller
 {
 
@@ -57,10 +58,12 @@ class AppController extends Controller
                           'class' => VerbFilter::className(),
                           'actions' => [
                               'logout' => ['post'],
+                               'delete' => ['POST'],
                           ],
                       ],
                   ];
       }
+
     public function beforeAction($action)
     {
         if (!parent::beforeAction($action)) {
@@ -93,7 +96,13 @@ class AppController extends Controller
 
             return $this->redirect($url);
         }
+        $id = Yii::$app->request->get('id');
 
+        if ($id !== null && !preg_match('/^\d{1,10}$/', $id)) {
+            throw new NotFoundHttpException(
+                'La página solicitada no existe.'
+            );
+        }
         return true;
     }
 

@@ -392,7 +392,7 @@ class SolicitudController extends AppController {
 
     public function actionFos($id, $id_carnet=null) {
         $request = Yii::$app->request;
-        $modelsolicitud = Solicitud::find()->where(['and', 'id = ' . $id])->one();
+        $modelsolicitud = Solicitud::findOne($id);
         if ($request->isAjax) {
             Yii::$app->response->format = Response::FORMAT_JSON;
                 return ['title' => "Obra Social - FOS", 'content' => $this->renderAjax('fosobrasocial',

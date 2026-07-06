@@ -3,7 +3,7 @@
 namespace app\models;
 use kartik\grid\GridView;
 use yii\helpers\ArrayHelper;
-
+use app\models\patronState\EstadoBase;
 use Yii;
 
 /**
@@ -270,6 +270,30 @@ class Pap extends \yii\db\ActiveRecord
     }
 
 
+    public function estaListo(): bool
+    {
+      //SI O SI INT!!! IMPORTANTISIMO
+        return (int)$this->id_estado === EstadoBase::LISTO;
+    }
+
+    public function estaBloqueado(): bool
+    {
+        return $this->estaListo() && !Usuario::esPatologo();
+    }
+    public function estaAnulado(){
+      return (int)$this->id_estado === EstadoBase::ANULADO;
+    }
+    public function beforeSave($insert)
+    {
+        if ($this->estaListo()) {
+            $this->fechalisto = date('Y-m-d H:i:s');
+            $this->id_usuario = Yii::$app->user->id;
+        } else {
+            $this->firmado = false;
+        }
+
+        return parent::beforeSave($insert);
+    }
     /**
      * @return \yii\db\ActiveQuery
     */

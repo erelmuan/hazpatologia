@@ -3,7 +3,8 @@
 namespace app\models;
 use kartik\grid\GridView;
 use yii\helpers\ArrayHelper;
-
+use app\models\patronState\EstadoBase;
+use app\models\Usuario;
 use Yii;
 
 /**
@@ -32,6 +33,7 @@ use Yii;
  * @property biopsiacie10[] $biopsiacie10s
  * @property Inmunohistoquimica $inmunohistoquimica
 * @property InmunohistoquimicaEscaneada $inmunohistoquimicaEscaneada
+* @property InformeComplementario $informeComplementario
  */
 use app\components\behaviors\AuditoriaBehaviors;
 
@@ -235,7 +237,33 @@ class Biopsia extends \yii\db\ActiveRecord
     }
 
 
+    public function estaListo(): bool
+    {
+      //SI O SI,
+        return (int)$this->id_estado === EstadoBase::LISTO;
+    }
+    public function estaBloqueado(): bool
+    {
+        return $this->estaListo() && !Usuario::esPatologo();
+    }
+    public function estaListoPersistido(): bool
+    {
+        return (int)$this->getOldAttribute('id_estado') === EstadoBase::LISTO;
+    }
+    public function estaAnulado(){
+      return (int)$this->id_estado === EstadoBase::ANULADO;
+    }
+    public function beforeSave($insert)
+    {
+        if ($this->estaListo()) {
+            $this->fechalisto = date('Y-m-d H:i:s');
+            $this->id_usuario = Yii::$app->user->id;
+        } else {
+            $this->firmado = false;
+        }
 
+        return parent::beforeSave($insert);
+    }
     /**
      * @return \yii\db\ActiveQuery
      */
@@ -289,5 +317,27 @@ class Biopsia extends \yii\db\ActiveRecord
      return $this->hasOne(Biopsiacie10::className(), ['id_biopsia' => 'id']);
    }
 
+   /**
+      * @return \yii\db\ActiveQuery
+      */
+     public function getInformeComplementario()
+     {
+         return $this->hasOne(InformeComplementario::className(), ['id_biopsia' => 'id']);
+     }
 
+    public function urlInformeComplementario(): array
+    {
+        if ($this->informeComplementario !== null) {
+            return ['/informe-complementario/update', 'id' => $this->informeComplementario->id];
+        }
+        return ['/informe-complementario/create', 'id_biopsia' => $this->id];
+    }
+
+    public function urlVerInformeComplementario():array
+    {
+        if ($this->informeComplementario !== null) {
+          return ['/informe-complementario/documento-pdf/', 'id' => $this->informeComplementario->id];
+        }
+        return false;
+    }
   }

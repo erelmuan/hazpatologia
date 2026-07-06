@@ -83,7 +83,10 @@ $config = [
              'enablePrettyUrl' => true,
              'showScriptName' => false,
              'rules' => [
-                 // '' => 'web/site/index',
+
+                  '<controller:[\w-]+>/create/<idsol:\d{1,10}>' => '<controller>/create',
+                   '<controller:[\w-]+>/<action:[\w-]+>/<id:\d{1,10}>' => '<controller>/<action>',
+                   '<controller:[\w-]+>/<action:[\w-]+>' => '<controller>/<action>',
                  // '<action>'=>'site/<action>',
                ['class'=>'yii\rest\UrlRule', 'controller' =>'vistaestudio'],
                ['class'=>'yii\rest\UrlRule', 'controller' =>'biopsiarest',

@@ -70,6 +70,19 @@ public static function getAvailableTransitions($fromStateId, $user, $entity): ar
 
             }
 
+
+            return $available;
+        }
+        if ($entityClass === \app\models\InformeComplementario::class || $entityClass === \app\models\InformeComplementario::class) {
+            if ($user->esPatologo()) {
+                $available[EstadoBase::EN_PROCESO]  = 'EN PROCESO';
+                $available[EstadoBase::LISTO]       = 'LISTO';
+
+            } else {
+                $available[EstadoBase::EN_PROCESO]  = 'EN PROCESO';
+
+            }
+
             return $available;
         }
     }

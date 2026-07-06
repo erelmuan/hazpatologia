@@ -20,6 +20,7 @@ use kartik\datecontrol\DateControl;
 use app\models\Usuario;
 use kartik\widgets\SwitchInput;
 use nex\chosen\Chosen;
+use app\models\patronState\EstadoBase;
 ?>
 <div id="w0" class="x_panel">
     <div class="x_title">
@@ -58,7 +59,6 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
            'Edad'=>['label'=>'Edad', 'options'=>['value'=>$solicitud->calcular_edad(), 'placeholder'=>'Edad...','readonly'=> true],'columnOptions'=>['class'=>'col-sm-1']],
            'Medico'=>['label'=> Html::a('<i class="glyphicon glyphicon-eye-open"></i>'.' '.'Medico', ['medico/view' ,'id'=> $solicitud->id_medico],
           ['role'=>'modal-remote','title'=> 'Ver medico']), 'options'=>['value'=>$solicitud->medico->apellido ." ". $solicitud->medico->nombre, 'readonly'=> true ,'url' => '#' ],'columnOptions'=>['class'=>'col-lg-3',],],
-         'id_solicitudbiopsia'=>['type'=>Form::INPUT_HIDDEN, 'columnOptions'=>['colspan'=>0], 'options'=>['value'=>$solicitud->id ]],
 
         ]
     ]);
@@ -74,7 +74,7 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
       <div class="form-group spacing-top-2">
 
         <?  echo (Html::label('Código material', 'username', ['class' => 'form-group field-biopsias-material has-success']));
-        if( !isset($model->estado) || $model->estado->descripcion!=="LISTO" || Usuario::esPatologo()){
+        if( !$model->estaBloqueado()){
 
         ?>
         <button type="button" class="btn btn-primary btn-xs" onclick="quitarSeleccion()" data-toggle="modal"
@@ -95,7 +95,7 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
             ],
             'options' => [
                   'onchange' => 'onEnviarMat (this.value)',
-                  'disabled'=>(isset($model->estado) && ($model->estado->descripcion=="LISTO" && !Usuario::esPatologo())),
+                  'disabled'=>$model->estaBloqueado(),
 
                   ],
         ]);
@@ -104,7 +104,7 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
       <div class="form-group spacing-top-6">
 
         <? echo ( Html::label('Código macroscopia', 'macro', ['class' => 'form-group field-biopsias-macroscopia has-success']));
-        if( !isset($model->estado) || $model->estado->descripcion!=="LISTO" || Usuario::esPatologo()){
+        if(!$model->estaBloqueado()){
 
          ?>
         <button type="button" class="btn btn-primary btn-xs" onclick="quitarSeleccion()" data-toggle="modal"
@@ -125,7 +125,7 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
                    ],
                    'options' => [
                          'onchange' => 'onEnviarMac (this.value)',
-                         'disabled'=>(isset($model->estado) && ($model->estado->descripcion=="LISTO" && !Usuario::esPatologo())),
+                         'disabled'=>($model->estaBloqueado()),
                          ],
                ]);
 
@@ -134,7 +134,7 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
 
          <div class="form-group spacing-top-6">
             <?  echo (Html::label('Código microscopia', 'username', ['class' => 'form-group field-biopsias-microscopia has-success']));
-            if( !isset($model->estado) || $model->estado->descripcion!=="LISTO" || Usuario::esPatologo()){
+            if( !$model->estaBloqueado()){
             ?>
 
             <button type="button" class="btn btn-primary btn-xs" onclick="quitarSeleccion()" data-toggle="modal"
@@ -155,8 +155,7 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
                        ],
                        'options' => [
                              'onchange' => 'onEnviarMic (this.value)',
-                             'disabled'=>(isset($model->estado) && ($model->estado->descripcion=="LISTO" && !Usuario::esPatologo())),
-
+                             'disabled'=>($model->estaBloqueado()),
                              ],
                    ]);
 
@@ -169,14 +168,14 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
           'onText' => 'Si',
           'offText' => 'No',
         ],
-        'disabled'=>isset($model->estado) && ($model->estado->descripcion=="LISTO" && !Usuario::esPatologo()),
+        'disabled'=>($model->estaBloqueado()),
       ]))->label('Estudio inmunostoquimica');
         ?>
       </div>
       <div class="form-group spacing-top-2">
         <?
       echo (Html::label('Código diagnostico', 'codigo diagnostico', ['class' => 'form-group field-biopsias-diagnostico has-success']));
-      if( !isset($model->estado) || $model->estado->descripcion!=="LISTO" || Usuario::esPatologo()){
+      if( !$model->estaBloqueado()){
       ?>
         <button type="button" class="btn btn-primary btn-xs" onclick="quitarSeleccion()" data-toggle="modal"
             data-target=".bs-diagnostico-modal-lg" style="margin-left: 10px;"><i
@@ -196,7 +195,7 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
            ],
            'options' => [
                  'onchange' => 'onEnviarDiag (this.value)',
-                 'disabled'=>(isset($model->estado) && ($model->estado->descripcion=="LISTO" && !Usuario::esPatologo())),
+                 'disabled'=>$model->estaBloqueado(),
 
                  ],
        ]);
@@ -206,7 +205,7 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
 
  <?
    echo (Html::label('Código frase', 'frase', ['class' => 'form-group field-biopsias-frase has-success'])) ;
-   if( !isset($model->estado) || $model->estado->descripcion!=="LISTO" || Usuario::esPatologo()){
+   if(!$model->estaBloqueado()){
    ?>
      <button type="button" class="btn btn-primary btn-xs" onclick="quitarSeleccion()" data-toggle="modal"
          data-target=".bs-frase-modal-lg" style="margin-left: 10px;"><i
@@ -227,7 +226,7 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
          ],
          'options' => [
                'onchange' => 'onEnviarFra (this.value)',
-               'disabled'=>(isset($model->estado) && ($model->estado->descripcion=="LISTO" && !Usuario::esPatologo())),
+                'disabled'=>$model->estaBloqueado(),
 
                ],
      ]);
@@ -245,44 +244,97 @@ $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_VERTICAL, 'formConfig'=>['la
 
 
     <div class="col-md-8 col-sm-12 col-xs-12 form-group">
-        <?=$form->field($model, 'material')->textarea(['rows' => 4,'style'=> 'font-size:17px;', 'disabled'=>(isset($model->estado) && ($model->estado->descripcion=="LISTO" && !Usuario::esPatologo()))])  ?>
+        <?=$form->field($model, 'material')->textarea(['rows' => 4,'style'=> 'font-size:17px;',   'disabled'=>$model->estaBloqueado()])  ?>
     </div>
     <div class="col-md-8 col-sm-12 col-xs-12 form-group">
-        <?= $form->field($model, 'macroscopia')->textarea(['rows' => 4,'style'=> 'font-size:17px;', 'disabled'=>(isset($model->estado) && ($model->estado->descripcion=="LISTO" && !Usuario::esPatologo()))]) ?>
+        <?= $form->field($model, 'macroscopia')->textarea(['rows' => 4,'style'=> 'font-size:17px;', 'disabled'=>$model->estaBloqueado()]) ?>
     </div>
     <div class="col-md-8 col-sm-12 col-xs-12 form-group">
-        <?= $form->field($model, 'microscopia')->textarea(['rows' => 4,'style'=> 'font-size:17px;', 'disabled'=>(isset($model->estado) && ($model->estado->descripcion=="LISTO" && !Usuario::esPatologo()))]) ?>
+        <?= $form->field($model, 'microscopia')->textarea(['rows' => 4,'style'=> 'font-size:17px;', 'disabled'=>$model->estaBloqueado()]) ?>
     </div>
     <div class="col-md-8 col-sm-12 col-xs-12 form-group">
         <div class="form-group spacing-top-2">
-          <?= $form->field($model, 'diagnostico')->textarea(['rows' => 4,'style'=> 'font-size:17px;', 'disabled'=>(isset($model->estado) && ($model->estado->descripcion=="LISTO" && !Usuario::esPatologo()))]) ?>
+          <?= $form->field($model, 'diagnostico')->textarea(['rows' => 4,'style'=> 'font-size:17px;','disabled'=>$model->estaBloqueado()]) ?>
         </div>
     </div>
     <div class="col-md-8 col-sm-12 col-xs-12 form-group">
-        <?= $form->field($model, 'frase')->textarea(['rows' => 4,'style'=> 'font-size:17px;', 'disabled'=>(isset($model->estado) && ($model->estado->descripcion=="LISTO" && !Usuario::esPatologo()))]) ?>
+        <?= $form->field($model, 'frase')->textarea(['rows' => 4,'style'=> 'font-size:17px;', 'disabled'=>$model->estaBloqueado()]) ?>
     </div>
 
-    <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-        <?= Html::submitButton($model->isNewRecord ? 'Guardar' : 'Actualizar', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary','disabled'=>(isset($model->estado) && ($model->estado->descripcion=="LISTO" && !Usuario::esPatologo()))]);
+    <div class="col-md-12 form-group"
+       style="display:flex; align-items:center; gap:10px;">
 
-        if( !$model->isNewRecord &&  $model->ihq){
-            if ($model->ihq && isset($model->inmunohistoquimicaEscaneada)){
-              echo Html::a('<i class="glyphicon glyphicon-arrow-right"></i> Ir inmunostoquimica',['/inmunohistoquimica-escaneada/update', 'id'=>$model->inmunohistoquimicaEscaneada->id], ['class'=>'btn btn-success grid-button']) ;
-            }
-        }
-        ?>
+      <?= Html::submitButton(
+          $model->isNewRecord ? 'Guardar' : 'Actualizar',
+          [
+              'class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary',
+              'disabled' => $model->estaBloqueado()
+          ]
+      ); ?>
 
-    </div>
+      <?php
+      if (!$model->isNewRecord && $model->ihq){
+
+          if ($model->ihq && isset($model->inmunohistoquimicaEscaneada)){
+
+              echo Html::a(
+                  '<i class="glyphicon glyphicon-arrow-right"></i> Ir inmunostoquimica',
+                  ['/inmunohistoquimica-escaneada/update', 'id'=>$model->inmunohistoquimicaEscaneada->id],
+                  ['class'=>'btn btn-success']
+              );
+
+          }
+
+      }
+      ?>
+
+      <div style="margin-left:auto;">
+        <? if($model->estaListoPersistido() ): ?>
+        <?php if ($model->informeComplementario !== null): ?>
+          <?= Html::a(
+              '<i class="fas fa-eye"></i>',
+              $model->urlVerInformeComplementario(),
+              [
+                  'class' => 'btn btn-info',
+                  'title' => 'Ver informe complementario',
+                  'target' => '_blank',
+                  'rel' => 'noopener noreferrer',
+              ]
+          ) ?>
+
+        <?php endif; ?>
+        <?= Html::a(
+            $model->informeComplementario !== null
+                ? '<i class="fas fa-pen"></i> Actualizar informe complementario'
+                : '<i class="fas fa-plus"></i> Crear informe complementario',
+            $model->urlInformeComplementario(),
+            [
+                'class' => $model->informeComplementario !== null
+                    ? 'btn btn-warning'
+                    : 'btn btn-success',
+            ]
+        ) ?>
+        <?php if ($model->informeComplementario !== null && $model->informeComplementario->estaEnproceso()): ?>
+        <?= Html::a('<i class="fas fa-trash"></i>',   ['/informe-complementario/delete', 'id' => $model->informeComplementario->id ],[
+             'class' => 'btn btn-danger btn-sm',
+             'role' => 'modal-remote',
+             'data-request-method' => 'post',
+             'data-confirm-title' => 'Confirmar eliminación',
+             'data-confirm-message' => '¿Está seguro de eliminar el informe complementario?',
+          ])
+          ?>
+
+      <?php endif; ?>
+      <?php endif ?>
+      </div>
+
+  </div>
     <? if (Usuario::esPatologo()) { ?>
     <div class="col-md-8 col-sm-12 col-xs-12 form-group">
         <div class='col-sm-5'>
             <label class="control-label" for="biopsia-contraseña">Contraseña</label>
             <input type="password" id="contraseña" class="form-control" name="contrasenia" style="width:50%; "
                 aria-required="true" aria-invalid="false">
-        </div>
-        <div class='col-sm-3'>
-            <?= $form->field($model, 'firmado')->checkbox()->label('FIRMAR (si el estado del estudio es EN PROCESO, se ignorara esta opción)'); ?>
-
         </div>
     </div>
     <? } ?>

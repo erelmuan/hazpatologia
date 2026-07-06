@@ -73,7 +73,7 @@ $form = ActiveForm::begin(['options'=>['enctype'=>'multipart/form-data'],'type'=
       <label> Estudio cargado </label>
       <p>
           <? if (isset($model->documento )&& !empty($model->documento)){ ?>
-            <iframe src=<?=Url::base().'/uploads/inmunohistoquimicas/'. str_replace("+", "%20",urlencode($model->documento)) ?> height="400" width="300"></iframe>
+            <embed src="<?= Yii::getAlias('@web') . '/uploads/inmunohistoquimicas/' . rawurlencode($model->documento) ?>" type="application/pdf" width="100%" height="700">
           <? }else {
               echo "NO TIENE ESTUDIO CARGADO";
           }?>
