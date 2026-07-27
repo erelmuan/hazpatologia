@@ -138,6 +138,9 @@ $config = [
      //    'pdfjs' => [
      //     'class' => '\yii2assets\pdfjs\Module',
      // ],
+      'estadistica' => [
+          'class' => 'app\modules\estadistica\Module',
+      ],
         'datecontrol' =>  [
            'class' => '\kartik\datecontrol\Module',
        ],

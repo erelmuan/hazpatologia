@@ -12,12 +12,20 @@ return [
         'width' => '50px',
     ],
     [
+      'class'=>'\kartik\grid\DataColumn',
+      'value'=> 'solicitudbiopsia.paciente.fecha_nacimiento',
+      'label'=> 'Fecha de nacimiento',
+      'format' => ['date', 'php:d/m/Y'],
+
+   ],
+
+    [
         //nombre
         'class'=>'\kartik\grid\DataColumn',
-        'label'=> 'Paciente',
+        'label'=> 'Nombre y apellido',
         'width' => '170px',
         'value' => function($model) {
-          return Html::a( $model->solicitudbiopsia->paciente->apellido .', '.$model->solicitudbiopsia->paciente->nombre,['paciente/view',"id"=> $model->solicitudbiopsia->paciente->id]
+          return Html::a( $model->solicitudbiopsia->paciente->nombre.', '. $model->solicitudbiopsia->paciente->apellido ,['paciente/view',"id"=> $model->solicitudbiopsia->paciente->id]
 
             ,[    'class' => 'text-success','role'=>'modal-remote','title'=>'Datos del paciente','data-toggle'=>'tooltip']
            );
@@ -30,12 +38,33 @@ return [
          'contentOptions' => ['style' => 'white-space: nowrap;'],
     ],
     [
-      'class'=>'\kartik\grid\DataColumn',
-      'value'=> 'solicitudbiopsia.paciente.fecha_nacimiento',
-      'label'=> 'Fecha de nacimiento',
-      'format' => ['date', 'php:d/m/Y'],
+        'class'=>'\kartik\grid\DataColumn',
+        'label'=> 'Fecha de informe listo',
+        'attribute'=>'fechalisto',
+        'format' => ['date', 'php:d/m/Y'],
+    ],
+    [
+        'class' => '\kartik\grid\DataColumn',
+        'label' => 'Lugar de origen de paciente',
+        'value' => function ($model) {
+            // Accedemos al primer domicilio si existe
+            $primerDomicilio = $model->solicitudbiopsia->paciente->domicilios[0] ?? null;
 
-   ],
+            // Si existe el domicilio y tiene localidad, devolvemos el nombre
+            return $primerDomicilio && $primerDomicilio->localidad
+                ? $primerDomicilio->localidad->nombre
+                : 'Sin especificar';
+        },
+    ],
+
+    [
+        //nombre
+        'class'=>'\kartik\grid\DataColumn',
+        'attribute'=>'solicitudbiopsia.paciente.num_documento',
+        'label'=> 'Documento'
+
+    ],
+
     [
         //nombre
         'class'=>'\kartik\grid\DataColumn',
@@ -43,13 +72,34 @@ return [
         'label'=> 'Sexo'
 
     ],
-    [
-        //nombre
-        'class'=>'\kartik\grid\DataColumn',
-        'attribute'=>'solicitudbiopsia.procedencia.nombre',
-        'label'=> 'Procedencia'
 
+    [
+        'class'=>'\kartik\grid\DataColumn',
+        'attribute'=>'material',
     ],
+    [
+        'class'=>'\kartik\grid\DataColumn',
+        'attribute'=>'diagnostico',
+    ],
+
+    [
+      'class' => '\kartik\grid\DataColumn',
+      'label' => 'Procedencia',
+      'value' => function ($model) {
+          // Accedemos de forma segura a la procedencia
+          $procedencia = $model->solicitudbiopsia->procedencia ?? null;
+          if (!$procedencia) {
+              return 'Sin especificar';
+          }
+          // Evaluamos si el tipo es Hospitalaria (ajusta 'Hospitalaria' al valor exacto de tu BD)
+          if ($procedencia->tipoprocedencia === 'Hospitalaria') {
+              return 'HOSPITAL ZATTI';
+          }
+          // Si no es Hospitalaria, devuelve el nombre de la procedencia
+          return $procedencia->nombre;
+      },
+      ],
+
       [
             'class'=>'\kartik\grid\DataColumn',
             'label'=> 'Medico',
@@ -70,10 +120,6 @@ return [
 
     [
         'class'=>'\kartik\grid\DataColumn',
-        'attribute'=>'material',
-    ],
-    [
-        'class'=>'\kartik\grid\DataColumn',
         'attribute'=>'macroscopia',
     ],
     [
@@ -87,10 +133,6 @@ return [
         'falseLabel' => 'No',
     ],
 
-    [
-        'class'=>'\kartik\grid\DataColumn',
-        'attribute'=>'diagnostico',
-    ],
 
     // [
     //     'class'=>'\kartik\grid\DataColumn',
@@ -110,12 +152,7 @@ return [
         'value' => 'solicitudbiopsia.fechadeingreso',
         'format' => ['date', 'php:d/m/Y'],
     ],
-    [
-        'class'=>'\kartik\grid\DataColumn',
-        'label'=> 'Fecha de informe listo',
-        'attribute'=>'fechalisto',
-        'format' => ['date', 'php:d/m/Y'],
-    ],
+
     [
         'class'=>'\kartik\grid\DataColumn',
         'attribute'=>'edad',
